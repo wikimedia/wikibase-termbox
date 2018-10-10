@@ -1,0 +1,19 @@
+{
+  "defaultSeverity": "warning",
+  "extends": [
+    "tslint:recommended",
+    "./tslint-wikimedia-eslint-rules-port.json"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**"
+    ]
+  },
+  "rules": {
+    "no-console": false,
+    "quotemark": [true, "single"],
+    "interface-name": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false
+  }
+}
