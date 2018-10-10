@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    Hello world!
+    {{message}}
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 
-export default class App extends Vue {}
+@Component
+export default class App extends Vue {
+  public message = 'Hello world!';
+}
 </script>
 
 <style lang="scss">
