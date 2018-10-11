@@ -4,5 +4,6 @@ node_js:
   - '8'
 
 script:
+  - npm run build-server
   - npm run lint
   - npm run test
