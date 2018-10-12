@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-    {{message}}
+  <div class="termbox-placeholder">
   </div>
 </template>
 
@@ -9,10 +8,14 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 
 @Component
-export default class App extends Vue {
-  public message = 'Hello world!';
+export default class TermBox extends Vue {
 }
 </script>
 
 <style lang="scss">
+.termbox-placeholder {
+    background: #ccc;
+    width: 100%;
+    height: 100px;
+}
 </style>
