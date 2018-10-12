@@ -1,7 +1,13 @@
+import path from 'path';
+import dotenv from 'dotenv';
 import app from './app';
 
-const port = 3030;
+dotenv.config( {
+    path: path.resolve( __dirname, '.env' ),
+} );
 
-app.listen( 3030, () => {
+const port = process.env.SSR_PORT;
+
+app.listen( port, () => {
     console.log( `server is running at port ${port}` );
 } );
