@@ -31,11 +31,13 @@ module.exports = {
   chainWebpack: config => {
     config.optimization.delete('splitChunks')
 
-    config.plugin('extract-css')
-      .tap(([options, ...args]) => [
-          Object.assign({}, options, { filename: `${filePrefix}[name].css` }),
-          ...args
-      ])
+    if ( process.env.NODE_ENV === 'production' ) {
+      config.plugin('extract-css')
+        .tap(([options, ...args]) => [
+            Object.assign({}, options, { filename: `${filePrefix}[name].css` }),
+            ...args
+        ])
+    }
 
     config.module
       .rule('vue')
