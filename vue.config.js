@@ -2,6 +2,7 @@ const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
 const TARGET_NODE = process.env.WEBPACK_TARGET === 'node'
+const filePrefix = 'wikibase.termbox.'
 
 const target = TARGET_NODE
   ? 'server'
@@ -20,20 +21,29 @@ module.exports = {
     output: {
       libraryTarget: TARGET_NODE
         ? 'commonjs2'
-        : undefined
+        : undefined,
+      filename: `${filePrefix}[name].js`
     },
     optimization: {
       splitChunks: undefined
     }
   }),
   chainWebpack: config => {
+    config.optimization.delete('splitChunks')
+
+    config.plugin('extract-css')
+      .tap(([options, ...args]) => [
+          Object.assign({}, options, { filename: `${filePrefix}[name].css` }),
+          ...args
+      ])
+
     config.module
-    .rule('vue')
-    .use('vue-loader')
-    .tap(options =>
-      Object.assign(options, {
-        optimizeSSR: false
-      })
-    )
+      .rule('vue')
+      .use('vue-loader')
+      .tap(options =>
+        Object.assign(options, {
+          optimizeSSR: false
+        })
+      )
   }
 }
