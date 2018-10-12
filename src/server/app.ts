@@ -4,7 +4,7 @@ import express from 'express';
 import { createBundleRenderer } from 'vue-server-renderer';
 
 const app = express();
-const serverBundle = fs.readFileSync( './dist/vue-ssr-server-bundle.json' );
+const serverBundle = fs.readFileSync( './serverDist/vue-ssr-server-bundle.json' );
 const renderer = createBundleRenderer(
     JSON.parse( serverBundle.toString() ),
     { runInNewContext: false },

@@ -8,6 +8,7 @@ const target = TARGET_NODE
   : 'client'
 
 module.exports = {
+  outputDir: TARGET_NODE ? 'serverDist' : 'dist',
   configureWebpack: () => ({
     entry: `./src/${target}-entry.ts`,
     target: TARGET_NODE ? 'node' : 'web',
