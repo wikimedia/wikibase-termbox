@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  node:
+    image: 'node:8.12'
+    volumes:
+      - '~/.npm:/.npm'
+      - './:/app'
+    working_dir: /app
+    environment:
+      - NODE_ENV
+
+  csr:
+    extends:
+      service: node
+    ports:
+      - '${CSR_PORT}:8080'
+    command: 'npm run-script serve'
+
+  ssr:
+    extends:
+      service: node
+    environment:
+      - SSR_PORT
+    ports:
+      - '${SSR_PORT}:${SSR_PORT}'
+    command: 'node serverBuild/server.js'
