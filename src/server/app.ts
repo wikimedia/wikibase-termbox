@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import express from 'express';
 import { createBundleRenderer } from 'vue-server-renderer';
 
