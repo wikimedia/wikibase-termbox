@@ -6,6 +6,10 @@ User interface for managing terms in Wikibase
 
 ## Configuring
 * set the server-specific environment variables: `cp .env.example .env` and modify `.env` accordingly
+  * `SSR_PORT` is the port at which you can reach the node server performing server-side vue rendering
+  * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network the SSR service should be attached to in order to make it available to wikibase. If you set this, the SSR service will be available inside of this network at http://node-ssr:<SSR_PORT from your .env file>
+  * `CSR_PORT` is the port at which you can reach the development server
+  * `NODE_ENV` is the environment to set for node.js
 
 ## Building
 * `docker-compose run --rm node npm run build` builds the frontend code

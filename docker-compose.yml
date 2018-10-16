@@ -25,3 +25,13 @@ services:
     ports:
       - '${SSR_PORT}:${SSR_PORT}'
     command: 'node serverBuild/server.js'
+    networks:
+      mediawiki_dev_network:
+        aliases:
+          - 'node-ssr'
+      default: ~
+
+networks:
+  mediawiki_dev_network:
+    external:
+      name: '${MEDIAWIKI_NETWORK_TO_JOIN}'
