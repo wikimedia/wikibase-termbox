@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "NODE_ENV=production vue-cli-service build",
     "build-server": "WEBPACK_TARGET=node vue-cli-service build --mode server && tsc --p src/server",
     "lint": "vue-cli-service lint --no-fix",
     "fix": "vue-cli-service lint",
