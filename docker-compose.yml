@@ -24,7 +24,7 @@ services:
       - SSR_PORT
     ports:
       - '${SSR_PORT}:${SSR_PORT}'
-    command: 'node serverBuild/server.js'
+    command: 'npm run dev-server'
     networks:
       mediawiki_dev_network:
         aliases:
