@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "WEBPACK_TARGET=dev vue-cli-service serve",
     "dev-server": "concurrently \"tsc -w --p src/server\" \"nodemon serverBuild/server.js\"",
     "build": "NODE_ENV=production vue-cli-service build",
     "build-server": "WEBPACK_TARGET=node vue-cli-service build && tsc --p src/server",

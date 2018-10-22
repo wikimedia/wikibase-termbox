@@ -2,6 +2,7 @@ const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
 const TARGET_NODE = process.env.WEBPACK_TARGET === 'node'
+const DEV_MODE = process.env.WEBPACK_TARGET === 'dev'
 const filePrefix = 'wikibase.termbox.'
 
 const target = TARGET_NODE
@@ -11,7 +12,7 @@ const target = TARGET_NODE
 module.exports = {
   outputDir: TARGET_NODE ? 'serverDist' : 'dist',
   configureWebpack: () => ({
-    entry: `./src/${target}-entry.ts`,
+	entry: DEV_MODE ? [ './src/mockup-entry.ts', `./src/${target}-entry.ts` ] : `./src/${target}-entry.ts`,
     target: TARGET_NODE ? 'node' : 'web',
     node: TARGET_NODE ? undefined : false,
     plugins: [
