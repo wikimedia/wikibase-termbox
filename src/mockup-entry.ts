@@ -1,4 +1,4 @@
-import MWConfig from '@/mock-data/mwConfig';
+import MWConfig from '@/mock-data/MwConfig';
 
 declare let mw: any;
 
