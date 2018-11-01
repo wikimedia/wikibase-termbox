@@ -66,12 +66,13 @@
         "error": "Error"
       }
     } ],
-    "yoda": [ "error", "never" ],
 
     "space-within-parens": [true, 1],
     "eofline": true,
     "no-misused-new": true,
     "no-unused-expression": true,
-    "no-consecutive-blank-lines": true
+    "no-consecutive-blank-lines": true,
+    "variable-name": [true, "ban-keywords", "check-format"],
+    "binary-expression-operand-order": true
   }
 }
