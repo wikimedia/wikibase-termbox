@@ -1,12 +1,16 @@
 language: node_js
 
-node_js:
-  - '8'
+services:
+  - docker
+
+install:
+  - cp .env.example .env
+  - docker-compose run --rm node npm ci
 
 script:
-  - npm run build-server
-  - npm run lint
-  - npm run test
+  - docker-compose run --rm node npm run build-server
+  - docker-compose run --rm node npm run lint
+  - docker-compose run --rm node npm run test
 
 notifications:
   email:
