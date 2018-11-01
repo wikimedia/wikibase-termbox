@@ -11,7 +11,7 @@
     "curly": [ "error", "all" ],
     "dot-location": [ "error", "property" ],
     "dot-notation": [ "error" ],
-    "indent": [ "error", "tab", { "SwitchCase": 1 } ],
+    "indent": [ true, "tabs" ],
     "key-spacing": [ "error", { "beforeColon": false, "afterColon": true } ],
     "linebreak-style": [ "error", "unix" ],
     "max-len": [ "warn", {
