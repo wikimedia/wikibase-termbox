@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
-    {{message}}
-    <TermBox/>
-  </div>
+	<div id="app">
+		{{message}}
+		<TermBox/>
+	</div>
 </template>
 
 <script lang="ts">
@@ -11,12 +11,12 @@ import Component from 'vue-class-component';
 import TermBox from './TermBox.vue';
 
 @Component( {
-  components: {
-    TermBox,
-  },
+	components: {
+		TermBox,
+	},
 } )
 export default class App extends Vue {
-  public message = 'Hello world!';
+	public message = 'Hello world!';
 }
 </script>
 
