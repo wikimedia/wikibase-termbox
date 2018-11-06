@@ -1,7 +1,9 @@
 import MWConfig from '@/mock-data/MwConfig';
 
-declare let mw: any;
+declare global {
+	interface Window { mw: any; }
+}
 
-mw = {
+window.mw = {
 	config: new MWConfig(),
 };
