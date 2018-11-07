@@ -2,7 +2,9 @@ version: '2'
 
 services:
   node:
-    image: 'node:8.12'
+    build:
+      context: ./
+    image: wmde/wikibase-termbox-node
     volumes:
       - '~/.npm:/.npm'
       - './:/app'

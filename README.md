@@ -2,7 +2,15 @@
 User interface for managing terms in Wikibase
 
 ## Installation
-* `docker-compose run --rm node npm install`
+```
+# ensure the node user uses your user id, so you own generated files
+docker-compose build --build-arg UID=$(id -u) --build-arg GID=$(id -g) node
+```
+
+```
+# install npm dependencies
+docker-compose run --rm node npm install
+  ```
 
 ## Configuring
 * set the server-specific environment variables: `cp .env.example .env` and modify `.env` accordingly
