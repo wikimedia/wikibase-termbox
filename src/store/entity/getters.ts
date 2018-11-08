@@ -1,47 +1,29 @@
 import { GetterTree } from 'vuex';
 import Entity from '@/store/entity/Entity';
-import Dictionary from '@/common/interfaces/Dictionary';
+import TermList from '@/datamodel/TermList';
+import AliasesList from '@/datamodel/AliasesList';
+import Term from '@/datamodel/Term';
 
 export const getters: GetterTree<Entity, any> = {
 	id( state: Entity ): string {
 		return state.id;
 	},
-	type( state: Entity ): string {
-		return state.type;
-	},
-	labels( state: Entity ): Dictionary<string> {
+	labels( state: Entity ): TermList {
 		return state.labels;
 	},
-	descriptions( state: Entity ): Dictionary<string> {
+	descriptions( state: Entity ): TermList {
 		return state.descriptions;
 	},
-	aliases( state: Entity ): Dictionary<string[]> {
+	aliases( state: Entity ): AliasesList {
 		return state.aliases;
 	},
-	getLabelByLanguage: ( state: Entity ) => ( languageCode: string ): string => {
-		let label: string = '';
-
-		if ( state.labels.hasOwnProperty( languageCode ) ) {
-			label = state.labels[ languageCode ];
-		}
-
-		return label;
+	getLabelByLanguage: ( state: Entity ) => ( languageCode: string ): Term | null => {
+		return state.labels[languageCode] || null;
 	},
-	getDescriptionByLanguage: ( state: Entity ) => ( languageCode: string ): string => {
-		let description: string = '';
-
-		if ( state.labels.hasOwnProperty( languageCode ) ) {
-			description = state.descriptions[ languageCode ];
-		}
-
-		return description;
+	getDescriptionByLanguage: ( state: Entity ) => ( languageCode: string ): Term | null => {
+		return state.descriptions[languageCode] || null;
 	},
-	getAliasesByLanguage: ( state: Entity ) => ( languageCode: string ): string[] => {
-		let aliases: string[] = [];
-
-		if ( state.labels.hasOwnProperty( languageCode ) ) {
-			aliases = state.aliases[ languageCode ];
-		}
-		return aliases;
+	getAliasesByLanguage: ( state: Entity ) => ( languageCode: string ): Term[] | null => {
+		return state.aliases[languageCode] || null;
 	},
 };

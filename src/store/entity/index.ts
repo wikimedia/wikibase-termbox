@@ -5,7 +5,6 @@ import { mutations } from '@/store/entity/mutations';
 
 const state: Entity = {
 	id: '',
-	type: '',
 	labels: {},
 	descriptions: {},
 	aliases: {},

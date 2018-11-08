@@ -2,46 +2,55 @@ import { mutations } from '@/store/entity/mutations';
 import {
 	ENTITY_INIT,
 } from '@/store/entity/mutationTypes';
-import {
-	emptyEntityType,
-	filledEntity as entity,
-} from '../data/EntityStores';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
+import Entity from '@/store/entity/Entity';
+import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
-describe( '/store/entity/mutations.ts', () => {
-	it( 'it throws an error on initilization if an invalid object is given', () => {
-		expect( () => {
-			mutations[ENTITY_INIT]( emptyEntityType, '' );
-		} ).toThrow( InvalidEntityException );
+function newMinimalStore(): Entity {
+	return {
+		id: 'Q1',
+		labels: {},
+		descriptions: {},
+		aliases: {},
+	} as Entity;
+}
 
-		expect( () => {
-			mutations[ENTITY_INIT]( emptyEntityType, [] );
-		} ).toThrow( InvalidEntityException );
+describe( 'entity/mutations', () => {
 
-		expect( () => {
-			mutations[ENTITY_INIT]( emptyEntityType, { id: 'whatEver' } );
-		} ).toThrow( InvalidEntityException );
+	describe( ENTITY_INIT, () => {
+
+		it( 'throws an error if an invalid object is given', () => {
+			expect( () => {
+				mutations[ENTITY_INIT]( newMinimalStore(), '' );
+			} ).toThrow( InvalidEntityException );
+
+			expect( () => {
+				mutations[ENTITY_INIT]( newMinimalStore(), [] );
+			} ).toThrow( InvalidEntityException );
+
+			expect( () => {
+				mutations[ENTITY_INIT]( newMinimalStore(), { id: 'whatever' } );
+			} ).toThrow( InvalidEntityException );
+		} );
+
+		it( 'contains entity data after initialization', () => {
+			const store: Entity = newMinimalStore();
+			const entity = new FingerprintableEntity(
+				'Q123',
+				{ en: { language: 'en', value: 'foo' } },
+				{ en: { language: 'en', value: 'foobar' } },
+				{ en: [ { language: 'en', value: 'f00bar' } ] },
+			);
+
+			mutations[ENTITY_INIT]( store, entity );
+
+			expect( store.labels ).toBe( entity.labels );
+			expect( store.id ).toBe( entity.id );
+			expect( store.labels ).toBe( entity.labels );
+			expect( store.descriptions ).toBe( entity.descriptions );
+			expect( store.aliases ).toBe( entity.aliases );
+		} );
+
 	} );
 
-	it( 'it contains data after initilization', () => {
-		function init() {
-			mutations[ENTITY_INIT]( emptyEntityType, entity );
-
-			return [
-				emptyEntityType.id,
-				emptyEntityType.type,
-				emptyEntityType.labels,
-				emptyEntityType.descriptions,
-				emptyEntityType.aliases,
-			];
-		}
-
-		expect( init() ).toStrictEqual( [
-			entity.id,
-			entity.type,
-			entity.labels,
-			entity.descriptions,
-			entity.aliases,
-		] );
-	} );
 } );
