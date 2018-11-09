@@ -11,5 +11,7 @@ export default ( context: object ) => {
 	Object.entries( context )
 		.forEach( ( [key, value] ) => app.$data[key] = value );
 
-	return app;
+	return new Promise( ( resolve, reject ) => {
+		resolve( app );
+	} );
 };

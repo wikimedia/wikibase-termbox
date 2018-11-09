@@ -13,12 +13,13 @@ app.get( '/termbox', ( _, res ) => {
 	const context = {
 		message: 'Hello from server',
 	};
-	renderer.renderToString( context, ( err, html ) => {
-		if ( err ) {
+	renderer.renderToString( context )
+		.then( ( html ) => {
+			res.send( html );
+		} )
+		.catch( ( err ) => {
 			console.log( err );
-		}
-		res.send( html );
-	} );
+		} );
 } );
 
 export default app;
