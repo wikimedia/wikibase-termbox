@@ -4,16 +4,17 @@
   "private": true,
   "scripts": {
     "serve": "WEBPACK_TARGET=dev vue-cli-service serve",
-    "dev-server": "concurrently \"tsc -w --p src/server\" \"nodemon serverBuild/server.js\"",
+    "dev-server": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon serverBuild/server.js\"",
     "build": "NODE_ENV=production vue-cli-service build",
-    "build-server": "WEBPACK_TARGET=node vue-cli-service build && tsc --p src/server",
-    "lint": "vue-cli-service lint --no-fix",
-    "fix": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit"
+    "build-server": "npm run copyClient; WEBPACK_TARGET=node vue-cli-service build",
+    "lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json",
+    "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
+    "test": "vue-cli-service test:unit;"
   },
   "dependencies": {
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
+    "only": "0.0.2",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^7.0.0",
@@ -21,6 +22,7 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+	"@types/node": "^10.12.6",
     "@types/dotenv": "^4.0.3",
     "@types/express": "^4.16.0",
     "@types/jest": "^23.1.4",

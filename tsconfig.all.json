@@ -6,16 +6,21 @@
     "sourceMap": true,
     "lib": [
       "esnext",
+	  "es5",
       "dom",
       "dom.iterable",
       "scripthost"
     ]
   },
+  "include": [
+	  "src/**/*.ts",
+	  "src/**/*.tsx",
+	  "src/**/*.vue",
+	  "tests/**/*.ts",
+	  "tests/**/*.ts",
+	  "tests/**/*.tsx"
+  ],
   "exclude": [
-	  "node_modules",
-	  "src/mock-data/**/*",
-	  "src/mockup-entry.ts",
-	  "src/server/**/*",
-	  "src/server-entry.ts"
+	  "node_modules"
   ]
 }
