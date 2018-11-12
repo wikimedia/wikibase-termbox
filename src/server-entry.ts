@@ -1,17 +1,13 @@
-import Vue from 'vue';
-import App from '@/components/App.vue';
+import TermboxRequest from '@/common/TermboxRequest';
+import buildApp from '@/common/buildApp';
+import EntityInitializer from '@/common/EntityInitializer';
 
-Vue.config.productionTip = false;
+export default ( context: any ) => {
 
-const app = new App();
+	// TODO: this file becomes a lot shorter once server/app.ts is able to dispatch TermboxRequest objects itself
 
-export default ( context: object ) => {
-	// Setting the data here is a bit silly, and should be considered more of a proof of concept.
-	// The better way is likely to fill the store with data from the context object instead.
-	Object.entries( context )
-		.forEach( ( [key, value]: [string, any] ) => app.$data[key] = value );
-
-	return new Promise( ( resolve, reject ) => {
-		resolve( app );
-	} );
+	return buildApp( new TermboxRequest(
+		context.language,
+		( new EntityInitializer() ).newFromSerialization( context.entity ) ),
+	);
 };

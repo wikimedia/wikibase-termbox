@@ -1,44 +1,41 @@
-import Vue from 'vue';
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import init from '@/client/init';
+import TermboxRequest from '@/common/TermboxRequest';
 import MwWindow from '../../../src/client/MwWindow';
 
-function configureMwHookWithEntity( key: string, entity: any ) {
+function mockMwEnv( language: string, entity: any ) {
 	( window as MwWindow ).mw = {
+		config: { get() { return language; } },
 		hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
-		config: { get: () => null }
 	};
 }
 
 describe( 'client/init', () => {
 
-	it( 'returns a Promise with an App component', () => {
-		configureMwHookWithEntity(
-			'wikibase.entityPage.entityLoaded', {
-				id: 'Q1',
-				labels: {},
-				descriptions: {},
-				aliases: {},
-			} );
-		const appPromise = init();
+	it( 'returns a Promise with a TermboxRequest', () => {
+		mockMwEnv( 'de', { id: 'Q1', labels: {}, descriptions: {}, aliases: {} } );
+		const termboxRequestPromise = init();
 
-		expect( appPromise ).toBeInstanceOf( Promise );
-		expect( appPromise ).resolves.toBeInstanceOf( Vue );
+		expect( termboxRequestPromise ).toBeInstanceOf( Promise );
+		expect( termboxRequestPromise ).resolves.toBeInstanceOf( TermboxRequest );
 	} );
 
-	it( 'initializes the store with entity data', () => {
+	it( 'loads a TermboxRequest from the mw environment', async () => {
 		const entity = {
-			id: 'Q1',
-			labels: { en: { language: 'en', value: 'potato' } },
-			descriptions: { en: { language: 'en', value: '...' } },
-			aliases: { en: [ { language: 'en', value: '...' } ] },
+			id: 'Q666',
+			labels: { en: { language: 'en', value: 'duck' } },
+			descriptions: { en: { language: 'en', value: 'aquatic bird' } },
+			aliases: { en: [{ language: 'en', value: 'floaty bird' }] },
 		};
-		configureMwHookWithEntity( 'wikibase.entityPage.entityLoaded', entity );
-		init().then( ( app ) => {
-			expect( app.$store.state.entity.id ).toBe( entity.id );
-			expect( app.$store.state.entity.labels ).toBe( entity.labels );
-			expect( app.$store.state.entity.descriptions ).toBe( entity.descriptions );
-			expect( app.$store.state.entity.aliases ).toBe( entity.aliases );
+
+		mockMwEnv( 'en', entity );
+
+		return init().then( ( request ) => {
+			expect( request.language ).toBe( 'en' );
+			expect( request.entity.id ).toBe( entity.id );
+			expect( request.entity.labels ).toBe( entity.labels );
+			expect( request.entity.descriptions ).toBe( entity.descriptions );
+			expect( request.entity.aliases ).toBe( entity.aliases );
 		} );
 	} );
 

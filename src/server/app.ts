@@ -10,8 +10,14 @@ const renderer = createBundleRenderer(
 );
 
 app.get( '/termbox', ( _, res ) => {
-	const context = {
-		message: 'Hello from server',
+	const context = { // TODO: this should be a dynamically created TermboxRequest
+		language: 'en',
+		entity: {
+			id: 'Q64',
+			labels: {},
+			descriptions: {},
+			aliases: {},
+		},
 	};
 	renderer.renderToString( context )
 		.then( ( html ) => {

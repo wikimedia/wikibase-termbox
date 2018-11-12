@@ -1,23 +1,14 @@
-import App from '@/components/App.vue';
-import store from '@/store';
-import { NS_ENTITY } from '@/store/namespaces';
-import { ENTITY_INIT } from '@/store/entity/mutationTypes';
 import EntityInitializer from '@/common/EntityInitializer';
-import Vue from 'vue';
+import TermboxRequest from '@/common/TermboxRequest';
 import MwWindow from '@/client/MwWindow';
 
-export default (): Promise<Vue> => {
-	return new Promise<Vue>( ( resolve, reject ) => {
+export default () => {
+	return new Promise<TermboxRequest>( ( resolve ) => {
 		( window as MwWindow ).mw.hook( 'wikibase.entityPage.entityLoaded' ).add( ( entity: any ) => {
-			store.commit(
-				`${NS_ENTITY}/${ENTITY_INIT}`,
+			resolve( new TermboxRequest(
+				( window as MwWindow ).mw.config.get( 'wgUserLanguage' ),
 				( new EntityInitializer() ).newFromSerialization( entity ),
-			);
-
-			resolve( new Vue( {
-				store,
-				render: ( h ) => h( App ),
-			} ) );
+			) );
 		} );
 	} );
 };
