@@ -10,11 +10,6 @@
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest",
-	  "node"
-    ],
     "paths": {
       "@/*": [
         "src/*"

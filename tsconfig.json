@@ -4,6 +4,17 @@
     "target": "esnext",
     "module": "esnext",
     "sourceMap": true,
+    "typeRoots": [ 
+		"./src/types", 
+		"./src/types/client",
+		"./node_modules/@types"
+    ],
+    "types": [
+		"mediawiki",
+		"webpack-env",
+		"jest",
+		"node"
+    ],
     "lib": [
       "esnext",
       "dom",
@@ -13,6 +24,7 @@
   },
   "exclude": [
 	  "node_modules",
+	  "src/types/**/*",
 	  "src/mock-data/**/*",
 	  "src/mockup-entry.ts",
 	  "src/server/**/*",

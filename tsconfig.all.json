@@ -4,9 +4,21 @@
     "target": "esnext",
     "module": "esnext",
     "sourceMap": true,
+    "typeRoots": [
+		"./src/types",
+		"./src/types/client",
+		"./src/types/server",
+		"./node_modules/@types"
+    ],
+    "types": [
+		"mediawiki",
+		"webpack-env",
+		"jest",
+		"node"
+    ],
     "lib": [
       "esnext",
-	  "es5",
+      "es5",
       "dom",
       "dom.iterable",
       "scripthost"
@@ -21,6 +33,7 @@
 	  "tests/**/*.tsx"
   ],
   "exclude": [
-	  "node_modules"
+	  "node_modules",
+	  "src/types/**/*"
   ]
 }

@@ -4,14 +4,25 @@
     "outDir": "serverBuild",
     "target": "es5",
     "module": "commonjs",
-	"sourceMap": true,
-	"lib": [
+    "sourceMap": true,
+    "typeRoots": [
+		"./src/types",
+		"./src/types/server",
+		"./node_modules/@types"
+    ],
+    "types": [
+		"webpack-env",
+		"jest",
+		"node"
+    ],
+    "lib": [
 		"es5",
 		"esnext"
-	]
+    ]
   },
   "exclude": [
 	  "node_modules",
+	  "src/types/**/*",
 	  "src/mock-data/**/*",
 	  "src/mockup-entry.ts",
 	  "src/client/**/*",
