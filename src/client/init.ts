@@ -4,7 +4,6 @@ import { NS_ENTITY } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/mutationTypes';
 import EntityInitializer from '@/common/EntityInitializer';
 import Vue from 'vue';
-/// <reference path="src/types/client/mediawiki/index.d.ts"/>
 import * as mediawiki from 'mediawiki';
 
 declare const window: mediawiki.mwWindow;

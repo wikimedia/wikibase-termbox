@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import init from '@/client/init';
-/// <reference path="src/types/client/mediawiki/index.d.ts"/>
 import * as mediawiki from 'mediawiki';
 
 declare const window: mediawiki.mwWindow;
