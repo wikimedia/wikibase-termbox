@@ -1,5 +1,8 @@
 # wikibase-termbox
-User interface for managing terms in Wikibase
+User interface for managing terms in Wikibase.
+
+This file can be considered a quick setup guide.
+To dive into the development documentation please refer to the [docs folder](./docs).
 
 ## Installation
 ```
