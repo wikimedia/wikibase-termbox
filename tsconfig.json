@@ -4,13 +4,12 @@
     "target": "esnext",
     "module": "esnext",
     "sourceMap": true,
-    "typeRoots": [ 
-		"./src/types", 
+    "typeRoots": [
+		"./src/types",
 		"./src/types/client",
 		"./node_modules/@types"
     ],
     "types": [
-		"mediawiki",
 		"webpack-env",
 		"jest",
 		"node"

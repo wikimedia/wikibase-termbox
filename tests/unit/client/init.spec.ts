@@ -1,14 +1,12 @@
 import Vue from 'vue';
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import init from '@/client/init';
-import * as mediawiki from 'mediawiki';
-
-declare const window: mediawiki.mwWindow;
+import MwWindow from '../../../src/client/MwWindow';
 
 function configureMwHookWithEntity( key: string, entity: any ) {
-	window.mw = {
-		hook: ( ignoreMe: 'wikibase.entityPage.entityLoaded' ) => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
-		get: ( ignoreMe: string ) => '',
+	( window as MwWindow ).mw = {
+		hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
+		config: { get: () => null }
 	};
 }
 
