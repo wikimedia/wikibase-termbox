@@ -11,9 +11,13 @@
     "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
     "test": "vue-cli-service test:unit"
   },
+  "_moduleAliases": {
+    "@": "serverBuild/"
+  },
   "dependencies": {
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
+    "module-alias": "^2.1.0",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^7.0.0",

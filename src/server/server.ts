@@ -1,5 +1,6 @@
 import path from 'path';
 import dotenv from 'dotenv';
+import 'module-alias/register';
 import app from './app';
 
 dotenv.config( {

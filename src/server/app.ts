@@ -1,6 +1,8 @@
 import fs from 'fs';
 import express from 'express';
 import { createBundleRenderer } from 'vue-server-renderer';
+import TermboxRequest from '@/common/TermboxRequest';
+import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
 const app = express();
 const serverBundle = fs.readFileSync( './serverDist/vue-ssr-server-bundle.json' );
@@ -10,16 +12,16 @@ const renderer = createBundleRenderer(
 );
 
 app.get( '/termbox', ( _, res ) => {
-	const context = { // TODO: this should be a dynamically created TermboxRequest
-		language: 'en',
-		entity: {
-			id: 'Q64',
-			labels: {},
-			descriptions: {},
-			aliases: {},
-		},
-	};
-	renderer.renderToString( context )
+	const termboxRequest = new TermboxRequest( // TODO: this is supposed to be dynamic
+		'en',
+		new FingerprintableEntity(
+			'Q64',
+			{},
+			{},
+			{},
+		),
+	);
+	renderer.renderToString( termboxRequest )
 		.then( ( html ) => {
 			res.send( html );
 		} )
