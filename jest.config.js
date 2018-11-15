@@ -1,4 +1,9 @@
 module.exports = {
+  globals: {
+    'ts-jest': {
+      tsConfigFile: './tsconfig.all.json',
+    },
+  },
   moduleFileExtensions: [
     'js',
     'jsx',
@@ -23,4 +28,4 @@ module.exports = {
     '**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'
   ],
   testURL: 'http://localhost/'
-}
+};
