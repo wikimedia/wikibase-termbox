@@ -8,8 +8,8 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
 export const mutations: MutationTree<Entity> = {
 	[ENTITY_INIT] ( state: Entity, entity: FingerprintableEntity ): void {
-		if ( !( entity instanceof FingerprintableEntity ) ) {
-			throw new InvalidEntityException();
+		if ( !( entity.constructor.name === FingerprintableEntity.name ) ) {
+			throw new InvalidEntityException( JSON.stringify( entity ) );
 		}
 
 		state.id = entity.id;
