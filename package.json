@@ -6,7 +6,7 @@
     "serve": "WEBPACK_TARGET=dev vue-cli-service serve",
     "dev-server": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon serverBuild/server/server.js\"",
     "build": "NODE_ENV=production vue-cli-service build",
-    "build-server": "WEBPACK_TARGET=node vue-cli-service build",
+    "build-server": "WEBPACK_TARGET=node vue-cli-service build && tsc -p tsconfig.server.json",
     "lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json",
     "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
     "test": "vue-cli-service test:unit"
