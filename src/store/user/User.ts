@@ -1,3 +1,3 @@
-export default interface UserProperties {
+export default interface User {
 	primaryLanguage: string;
 }
