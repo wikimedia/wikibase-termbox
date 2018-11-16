@@ -22,11 +22,11 @@ services:
   ssr:
     extends:
       service: node
-    environment:
-      - SSR_PORT
     ports:
       - '${SSR_PORT}:${SSR_PORT}'
     command: 'npm run dev-server'
+    external_links:
+      - 'nginx-proxy:default.web.mw.localhost'
     networks:
       mediawiki_dev_network:
         aliases:

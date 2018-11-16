@@ -18,10 +18,15 @@ docker-compose run --rm node npm install
 ## Configuring
 * set the server-specific environment variables: `cp .env.example .env` and modify `.env` accordingly
   * `SSR_PORT` is the port at which you can reach the node server performing server-side vue rendering
-  * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network the SSR service should also be attached to in order to make it available to wikibase. The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file>. This can be used in conjunction with e.g. https://github.com/addshore/mediawiki-docker-dev/
+  * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network the SSR service should also be attached to in order to make it available to wikibase and vice-versa.
+
+    Recommendation is to use this in conjunction with [addshore/mediawiki-docker-dev](https://github.com/addshore/mediawiki-docker-dev/).
+
+    The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file>, in turn the SSR services retrieves some information from <WIKIBASE_REPO_API>.
     > ⚠ Some versions of `docker-compose` insist this network exists. Make sure to set this value to an existing docker network (either created by another `docker-compose` project or you manually) - check via `docker network ls`
   * `CSR_PORT` is the port at which you can reach the development server
   * `NODE_ENV` is the environment to set for node.js
+  * `WIKIBASE_REPO_API` is the wikibase installation used as information authority (e.g. to load entity information)
 
 ## Building
 * `docker-compose run --rm node npm run build` builds the frontend code
