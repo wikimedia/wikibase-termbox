@@ -2,7 +2,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "serverBuild",
-    "target": "es5",
+    "target": "es2015",
     "module": "commonjs",
     "sourceMap": true,
     "typeRoots": [
@@ -17,7 +17,6 @@
 		"express"
     ],
     "lib": [
-		"es5",
 		"esnext"
     ]
   },
