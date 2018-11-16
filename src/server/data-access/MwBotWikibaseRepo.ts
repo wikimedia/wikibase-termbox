@@ -14,6 +14,22 @@ export default class MwBotWikibaseRepo implements WikibaseRepo {
 		this.entityInitializer = entityInitializer;
 	}
 
+	public getFingerprintableEntity( id: string ): Promise<FingerprintableEntity> {
+		return new Promise( ( resolve, reject ) => {
+			this.getEntity( id )
+				.then( ( entity: any ) => {
+					try {
+						resolve ( this.entityInitializer.newFromSerialization( entity ) );
+					} catch ( e ) {
+						reject( new TechnicalProblem( e.message ) );
+					}
+				} )
+				.catch( ( reason ) => {
+					reject( reason );
+				} );
+		} );
+	}
+
 	private getEntity( id: string ): Promise<any> {
 		return new Promise( ( resolve, reject ) => {
 			this.bot.request( {
@@ -39,22 +55,6 @@ export default class MwBotWikibaseRepo implements WikibaseRepo {
 				} )
 				.catch( ( reason: string ) => {
 					reject( new TechnicalProblem( reason ) );
-				} );
-		} );
-	}
-
-	public getFingerprintableEntity( id: string ): Promise<FingerprintableEntity> {
-		return new Promise( ( resolve, reject ) => {
-			this.getEntity( id )
-				.then( ( entity: any ) => {
-					try {
-						resolve ( this.entityInitializer.newFromSerialization( entity ) );
-					} catch ( e ) {
-						reject( new TechnicalProblem( e.message ) );
-					}
-				} )
-				.catch( ( reason ) => {
-					reject( reason );
 				} );
 		} );
 	}

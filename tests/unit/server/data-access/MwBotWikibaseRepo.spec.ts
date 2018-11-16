@@ -8,7 +8,7 @@ import mwbot from 'mwbot';
 function newMwBotWikibaseRepo( bot: any, initializer?: any ) {
 	return new MwBotWikibaseRepo(
 		bot,
-		initializer || {}
+		initializer || {},
 	);
 }
 
@@ -175,7 +175,7 @@ describe( 'MwBotWikibaseRepo', () => {
 			const initializer = {
 				newFromSerialization: () => {
 					throw new Error( 'initializer sad' );
-				}
+				},
 			};
 			const repo = newMwBotWikibaseRepo( bot, initializer );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
