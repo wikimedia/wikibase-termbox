@@ -18,6 +18,8 @@ describe( 'buildApp', () => {
 		expect( app.$store.state.entity.labels ).toBe( entity.labels );
 		expect( app.$store.state.entity.descriptions ).toBe( entity.descriptions );
 		expect( app.$store.state.entity.aliases ).toBe( entity.aliases );
+
+		expect( app.$store.state.user.primaryLanguage ).toBe( 'en' );
 	} );
 
 } );
