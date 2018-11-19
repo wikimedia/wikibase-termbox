@@ -7,18 +7,19 @@ function newEntityInitializer() {
 
 describe( 'EntityInitializer', () => {
 
-	it( 'throws an error given an invalid entity serialization', () => {
-		[
-			'not json',
-			{},
-			{ type: 'item' },
-			{ id: 'Q123' },
-		].forEach( ( serialization ) => {
+	test.each( [
+		[ 'not json' ],
+		[ {} ],
+		[ { type: 'item' } ],
+		[ { id: 'Q123' } ],
+	] )(
+		'throws an error given an invalid entity serialization',
+		( serialization ) => {
 			expect( () => {
 				newEntityInitializer().newFromSerialization( serialization );
 			} ).toThrow();
-		} );
-	} );
+		},
+	);
 
 	it( 'initializes entity fields from json', () => {
 		const entity = {
