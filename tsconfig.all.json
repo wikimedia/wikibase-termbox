@@ -5,15 +5,15 @@
     "module": "esnext",
     "sourceMap": true,
     "typeRoots": [
-		"./src/types",
-		"./src/types/client",
-		"./src/types/server",
-		"./node_modules/@types"
+      "./src/types",
+      "./src/types/client",
+      "./src/types/server",
+      "./node_modules/@types"
     ],
     "types": [
-		"webpack-env",
-		"jest",
-		"node"
+      "webpack-env",
+      "jest",
+      "node"
     ],
     "lib": [
       "esnext",
@@ -25,13 +25,13 @@
     "allowJs": true
   },
   "include": [
-	  "./*.js",
-	  "src/**/*.ts",
-	  "src/**/*.tsx",
-	  "src/**/*.vue",
-	  "tests/**/*.ts",
-	  "tests/**/*.ts",
-	  "tests/**/*.tsx"
+    "./*.js",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
   ],
   "exclude": [
     "node_modules"
