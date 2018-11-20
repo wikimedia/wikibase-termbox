@@ -1,8 +1,8 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
-/**
- * Rejects to TechnicalProblem or EntityNotFound errors in case of problems
- */
 export default interface WikibaseRepo {
+	/**
+	 * Rejects to TechnicalProblem or EntityNotFound errors in case of problems
+	 */
 	getFingerprintableEntity( id: string ): Promise<FingerprintableEntity>;
 }
