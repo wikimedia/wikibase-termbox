@@ -1,8 +1,9 @@
 <template>
-	<div class="wikibase-entitytermsview">
+	<section class="wikibase-entitytermsview">
 		({{entityId}})
+		<!-- TODO: place heading/pre-content here //-->
 		<TermBox/>
-	</div>
+	</section>
 </template>
 
 <script lang="ts">
@@ -26,6 +27,7 @@ import { LANGUAGE_INIT } from '../store/language/actionTypes';
 		} ),
 	},
 } )
+
 export default class App extends Vue {
 
 	public static asyncData( store: Store<any>, request: TermboxRequest ): Promise<any> {
