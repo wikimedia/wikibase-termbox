@@ -6,26 +6,26 @@
     "module": "commonjs",
     "sourceMap": true,
     "typeRoots": [
-		"./src/types",
-		"./src/types/server",
-		"./node_modules/@types"
+      "./src/types",
+      "./src/types/server",
+      "./node_modules/@types"
     ],
     "types": [
-		"webpack-env",
-		"jest",
-		"node",
-		"express"
+      "webpack-env",
+      "jest",
+      "node",
+      "express"
     ],
     "lib": [
-		"esnext"
+      "esnext"
     ]
   },
   "exclude": [
-	  "node_modules",
-	  "src/types/client/**/*",
-	  "src/mock-data/**/*",
-	  "src/mockup-entry.ts",
-	  "src/client/**/*",
-	  "src/client-entry.ts"
-	]
+    "node_modules",
+    "src/types/client/**/*",
+    "src/mock-data/**/*",
+    "src/mockup-entry.ts",
+    "src/client/**/*",
+    "src/client-entry.ts"
+  ]
 }

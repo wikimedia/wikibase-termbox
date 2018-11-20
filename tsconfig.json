@@ -5,14 +5,14 @@
     "module": "esnext",
     "sourceMap": true,
     "typeRoots": [
-		"./src/types",
-		"./src/types/client",
-		"./node_modules/@types"
+      "./src/types",
+      "./src/types/client",
+      "./node_modules/@types"
     ],
     "types": [
-		"webpack-env",
-		"jest",
-		"node"
+      "webpack-env",
+      "jest",
+      "node"
     ],
     "lib": [
       "esnext",
@@ -22,11 +22,11 @@
     ]
   },
   "exclude": [
-	  "node_modules",
-	  "src/types/**/*",
-	  "src/mock-data/**/*",
-	  "src/mockup-entry.ts",
-	  "src/server/**/*",
-	  "src/server-entry.ts"
+    "node_modules",
+    "src/types/**/*",
+    "src/mock-data/**/*",
+    "src/mockup-entry.ts",
+    "src/server/**/*",
+    "src/server-entry.ts"
   ]
 }
