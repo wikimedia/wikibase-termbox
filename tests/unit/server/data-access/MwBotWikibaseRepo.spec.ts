@@ -1,8 +1,8 @@
 import EntityInitializer from '@/common/EntityInitializer';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import MwBotWikibaseRepo from '@/server/data-access/MwBotWikibaseRepo';
-import EntityNotFound from '@/server/data-access/error/EntityNotFound';
-import TechnicalProblem from '@/server/data-access/error/TechnicalProblem';
+import EntityNotFound from '@/common/data-access/error/EntityNotFound';
+import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import mwbot from 'mwbot';
 
 function newMwBotWikibaseRepo( bot: any, initializer?: any ) {

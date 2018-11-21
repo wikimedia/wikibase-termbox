@@ -1,7 +1,7 @@
 import EntityRepository from '@/common/data-access/EntityRepository';
 import mwbot from 'mwbot';
-import TechnicalProblem from '@/server/data-access/error/TechnicalProblem';
-import EntityNotFound from '@/server/data-access/error/EntityNotFound';
+import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
+import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityInitializer from '@/common/EntityInitializer';
 

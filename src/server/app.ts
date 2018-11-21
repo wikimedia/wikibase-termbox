@@ -3,11 +3,8 @@ import express from 'express';
 import { createBundleRenderer } from 'vue-server-renderer';
 import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import QueryValidator from './route-handler/termbox/QueryValidator';
-import MwBotWikibaseRepo from './data-access/MwBotWikibaseRepo';
 import InvalidRequest from './route-handler/termbox/error/InvalidRequest';
-import EntityNotFound from './route-handler/termbox/error/EntityNotFound';
-import EntityInitializer from '@/common/EntityInitializer';
-import mwbot from 'mwbot';
+import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 
 const app = express();
 const serverBundle = fs.readFileSync( './serverDist/vue-ssr-server-bundle.json' );
@@ -19,12 +16,6 @@ const renderer = createBundleRenderer(
 app.get( '/termbox', ( request, response ) => {
 	const termboxHandler = new TermboxHandler(
 		new QueryValidator(),
-		new MwBotWikibaseRepo(
-			new mwbot( {
-				apiUrl: app.get( 'WIKIBASE_REPO_API' ),
-			} ),
-			new EntityInitializer(),
-		),
 	);
 
 	termboxHandler
@@ -36,7 +27,7 @@ app.get( '/termbox', ( request, response ) => {
 		.catch( ( err ) => {
 			if ( err instanceof InvalidRequest ) {
 				response.status( 400 ).send( 'Bad request' );
-			} else if ( err instanceof EntityNotFound ) {
+			} else if ( err.constructor.name === EntityNotFound.name ) { // how to instanceof?
 				response.status( 404 ).send( 'Entity not found' );
 			} else {
 				response.status( 500 ).send( 'Technical problem ' + JSON.stringify( err ) );

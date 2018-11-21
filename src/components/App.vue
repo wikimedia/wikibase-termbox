@@ -25,7 +25,7 @@ import TermboxRequest from '@/common/TermboxRequest';
 } )
 export default class App extends Vue {
 
-	public static asyncData( store: Store<any>, request: TermboxRequest ) {
+	public static asyncData( store: Store<any>, request: TermboxRequest ): Promise<any> {
 		return store.dispatch( `${NS_ENTITY}/entityInit`, request.entityId );
 	}
 
