@@ -1,11 +1,11 @@
-import WikibaseRepo from '@/server/data-access/WikibaseRepo';
+import EntityRepository from '@/common/data-access/EntityRepository';
 import mwbot from 'mwbot';
 import TechnicalProblem from '@/server/data-access/error/TechnicalProblem';
 import EntityNotFound from '@/server/data-access/error/EntityNotFound';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityInitializer from '@/common/EntityInitializer';
 
-export default class MwBotWikibaseRepo implements WikibaseRepo {
+export default class MwBotWikibaseRepo implements EntityRepository {
 	private bot: mwbot;
 	private entityInitializer: EntityInitializer;
 

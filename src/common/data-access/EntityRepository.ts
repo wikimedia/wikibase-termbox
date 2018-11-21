@@ -1,6 +1,6 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
-export default interface WikibaseRepo {
+export default interface EntityRepository {
 	/**
 	 * Rejects to TechnicalProblem or EntityNotFound errors in case of problems
 	 */

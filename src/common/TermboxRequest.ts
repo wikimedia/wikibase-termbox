@@ -1,12 +1,10 @@
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-
 export default class TermboxRequest {
 	public readonly language: string;
-	public readonly entity: FingerprintableEntity;
+	public readonly entityId: string;
 
-	constructor( language: string, entity: FingerprintableEntity ) {
+	constructor( language: string, entityId: string ) {
 		this.language = language;
-		this.entity = entity;
+		this.entityId = entityId;
 	}
 
 }

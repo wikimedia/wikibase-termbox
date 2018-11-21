@@ -1,1 +1,1 @@
-export const ENTITY_INIT: string = 'initilizeEntity';
+export const ENTITY_INIT: string = 'initializeEntity';

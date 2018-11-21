@@ -1,6 +1,6 @@
 import TermboxRequest from '@/common/TermboxRequest';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import WikibaseRepo from '@/server/data-access/WikibaseRepo';
+import EntityRepository from '@/common/data-access/EntityRepository';
 import ApiEntityNotFound from '@/server/data-access/error/EntityNotFound';
 import EntityNotFound from './error/EntityNotFound';
 import InvalidRequest from './error/InvalidRequest';
@@ -9,10 +9,10 @@ import QueryValidator from './QueryValidator';
 
 export default class TermboxHandler {
 
-	private repo: WikibaseRepo;
+	private repo: EntityRepository;
 	private queryValidator: QueryValidator;
 
-	constructor( queryValidator: QueryValidator, repo: WikibaseRepo ) {
+	constructor( queryValidator: QueryValidator, repo: EntityRepository ) {
 		this.queryValidator = queryValidator;
 		this.repo = repo;
 	}

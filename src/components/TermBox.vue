@@ -7,7 +7,7 @@
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 import Component from 'vue-class-component';
-import { instance as factory } from '../common/TermboxFactory';
+import { factory } from '@/common/TermboxFactory';
 import { mapState } from 'vuex';
 import { NS_USER } from '@/store/namespaces';
 

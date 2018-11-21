@@ -9,8 +9,9 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import TermBox from './TermBox.vue';
-import { mapState } from 'vuex';
+import { mapState, Store } from 'vuex';
 import { NS_ENTITY } from '../store/namespaces';
+import TermboxRequest from '@/common/TermboxRequest';
 
 @Component( {
 	components: {
@@ -23,6 +24,11 @@ import { NS_ENTITY } from '../store/namespaces';
 	},
 } )
 export default class App extends Vue {
+
+	public static asyncData( store: Store<any>, request: TermboxRequest ) {
+		return store.dispatch( `${NS_ENTITY}/entityInit`, request.entityId );
+	}
+
 }
 </script>
 
