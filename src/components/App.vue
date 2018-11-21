@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wikibase-entitytermsview">
 		({{entityId}})
 		<TermBox/>
 	</div>

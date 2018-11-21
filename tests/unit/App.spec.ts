@@ -17,6 +17,7 @@ describe( 'App.vue', () => {
 			new FingerprintableEntity( 'Q42', {}, {}, {} ),
 		);
 		expect( wrapper.text() ).toMatch( '(Q42)' );
+		expect( wrapper.classes() ).toEqual( [ 'wikibase-entitytermsview' ] );
 	} );
 
 } );
