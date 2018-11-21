@@ -1,16 +1,16 @@
 module.exports = {
 	globals: {
 		'ts-jest': {
-			tsConfigFile: './tsconfig.all.json',
+			tsConfig: './tsconfig.all.json',
 		},
 	},
 	moduleFileExtensions: [
 		'js',
-		'jsx',
 		'json',
-		'vue',
+		'jsx',
 		'ts',
 		'tsx',
+		'vue',
 	],
 	transform: {
 		'^.+\\.vue$': 'vue-jest',
@@ -28,4 +28,5 @@ module.exports = {
 		'**/tests/(unit|edge-to-edge)/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
 	],
 	testURL: 'http://localhost/',
+	preset: 'ts-jest',
 };
