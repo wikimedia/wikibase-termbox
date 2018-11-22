@@ -7,10 +7,16 @@ import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
 import getChildComponents from './common/getChildComponents';
 
-factory.setLanguageTranslationRepository( new WikibaseApiLanguageRepository() );
+const WIKIBASE_REPO_API = 'http://default.web.mw.localhost/mediawiki/api.php'; // TODO
+
+factory.setLanguageTranslationRepository( new WikibaseApiLanguageRepository(
+	new mwbot( {
+		apiUrl: WIKIBASE_REPO_API,
+	} ),
+) );
 factory.setEntityRepository( new MwBotWikibaseRepo(
 	new mwbot( {
-		apiUrl: 'http://default.web.mw.localhost/mediawiki/api.php', // TODO
+		apiUrl: WIKIBASE_REPO_API,
 	} ),
 	new EntityInitializer(),
 ) );
