@@ -1,15 +1,25 @@
-import UlsLanguageRepository from '@/client/data-access/UlsLanguageRepository';
+import UlsLanguageTranslationRepository from '@/client/data-access/UlsLanguageTranslationRepository';
 
-function newUlsLanguageRepository() {
-	return new UlsLanguageRepository();
+function newUlsLanguageRepository( getLanguageNameByCode: ( langCode: string ) => string ) {
+	return new UlsLanguageTranslationRepository( getLanguageNameByCode );
 }
 
-describe( 'UlsLanguageRepository', () => {
+describe( 'UlsLanguageTranslationRepository', () => {
 
-	it( 'gets the language name from ULS', () => {
-		return newUlsLanguageRepository().getLanguageName( 'en', 'en' ).then( ( name ) => {
-			expect( name ).toBe( 'English' );
-		} );
+	it( 'gets the language name from the given function', () => {
+		const mockWbGetLanguageNameByCode = jest.fn();
+		const langTranslation = 'English';
+		mockWbGetLanguageNameByCode.mockReturnValue( langTranslation );
+
+		return newUlsLanguageRepository( mockWbGetLanguageNameByCode )
+			.getLanguagesInLanguage( 'en' ).then( ( name ) => {
+				expect( mockWbGetLanguageNameByCode ).toBeCalledWith( 'en' );
+				expect( name ).toEqual( {
+					en: {
+						en: langTranslation,
+					},
+				} );
+			} );
 	} );
 
 } );

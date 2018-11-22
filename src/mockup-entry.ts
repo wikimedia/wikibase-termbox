@@ -7,3 +7,9 @@ import MwWindow from './client/MwWindow';
 	config: new MWConfig(),
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
 };
+
+( window as MwWindow ).wb = {
+	getLanguageNameByCode( languageCode: string ): string {
+		return `${languageCode}Name`;
+	},
+};

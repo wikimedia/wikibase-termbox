@@ -11,6 +11,11 @@ interface MediaWiki {
 	config: MwConfig;
 }
 
+interface Wikibase {
+	getLanguageNameByCode( languageCode: string ): string;
+}
+
 export default interface MwWindow extends Window {
 	mw: MediaWiki;
+	wb: Wikibase;
 }
