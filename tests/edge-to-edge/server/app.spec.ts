@@ -2,38 +2,112 @@ import request from 'supertest';
 import mockQ64 from '@/mock-data/data/Q64_data.json';
 import app from '@/server/app';
 import nock from 'nock';
+import { config } from '@/server/TermboxConfig';
 
-const WIKIBASE_TEST_API_HOST = 'http://wikibase-repo-api.testonly.localhost';
-const WIKIBASE_TEST_API_PATH = '/api.php';
+const wikibaseRepoApi = new URL( config.getWikibaseRepoApi() );
+
+const WIKIBASE_TEST_API_HOST = wikibaseRepoApi.origin;
+const WIKIBASE_TEST_API_PATH = wikibaseRepoApi.pathname;
+
+function nockSuccessfulLanguageTranslationLoading( inLanguage: string ) {
+	nock( WIKIBASE_TEST_API_HOST )
+		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+			action: 'query',
+			meta: 'wbcontentlanguages',
+			wbclcontext: 'term',
+			wbclprop: 'code|name',
+			uselang: inLanguage,
+		} )
+		.reply( 200, {
+			batchcomplete: '',
+			query: {
+				wbcontentlanguages: {
+					en: {
+						code: 'en',
+						name: 'Englisch',
+					},
+					de: {
+						code: 'de',
+						name: 'Deutsch',
+					},
+				},
+			},
+		} );
+}
+
+function nockSuccessfulEntityLoading( entityId: string ) {
+	nock( WIKIBASE_TEST_API_HOST )
+		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+			ids: entityId,
+			action: 'wbgetentities',
+		} )
+		.reply( 200, {
+			entities: {
+				[ entityId ]: mockQ64, // TODO build dynamic mock response if needed
+			},
+		} );
+}
 
 describe( 'Termbox SSR', () => {
-	app.set( 'WIKIBASE_REPO_API', WIKIBASE_TEST_API_HOST + WIKIBASE_TEST_API_PATH );
-
 	afterEach( () => {
 		nock.cleanAll();
 		nock.enableNetConnect();
 	} );
 
-	it( 'renders Server Error when requesting /termbox and backend request encounters malformed response', ( done ) => {
+	it( 'renders Server Error when requesting /termbox and entity backend emits malformed response', ( done ) => {
+		const entityId = 'Q64';
+		const language = 'de';
+
 		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q64&action=wbgetentities' )
+			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+				ids: entityId,
+				action: 'wbgetentities',
+			} )
 			.reply( 200, {
 				malformed: 'yes',
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: 'Q64', language: 'de' } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
 			expect( response.status ).toBe( 500 );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
 		} );
 	} );
 
-	it( 'renders Server Error when requesting /termbox and backend request fails', ( done ) => {
+	it( 'renders Server Error when requesting /termbox and entity backend request fails', ( done ) => {
+		const entityId = 'Q64';
+		const language = 'de';
+
 		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q64&action=wbgetentities' )
+			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+				ids: entityId,
+				action: 'wbgetentities',
+			} )
 			.reply( 500, 'upstream system error' );
 
-		request( app ).get( '/termbox' ).query( { entity: 'Q64', language: 'de' } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+			expect( response.status ).toBe( 500 );
+			expect( response.text ).toContain( 'Technical problem' );
+			done();
+		} );
+	} );
+
+	it( 'renders Server Error when requesting /termbox and language translation backend request fails', ( done ) => {
+		const entityId = 'Q64';
+		const language = 'de';
+
+		nock( WIKIBASE_TEST_API_HOST )
+			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+				action: 'query',
+				meta: 'wbcontentlanguages',
+				wbclcontext: 'term',
+				wbclprop: 'code|name',
+				uselang: language,
+			} )
+			.reply( 500, 'upstream system error' );
+		nockSuccessfulEntityLoading( entityId );
+
+		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
 			expect( response.status ).toBe( 500 );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
@@ -49,17 +123,21 @@ describe( 'Termbox SSR', () => {
 	} );
 
 	it( 'renders Not found when requesting /termbox with well-formed query for unknown entity', ( done ) => {
+		const entityId = 'Q63';
+		const language = 'de';
+
+		nockSuccessfulLanguageTranslationLoading( 'de' );
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q63&action=wbgetentities' )
 			.reply( 200, {
 				entities: {
-					Q63: {
+					[ entityId ]: {
 						missing: '',
 					},
 				},
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: 'Q63', language: 'de' } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
 			expect( response.status ).toBe( 404 );
 			expect( response.text ).toContain( 'Entity not found' );
 			done();
@@ -67,17 +145,16 @@ describe( 'Termbox SSR', () => {
 	} );
 
 	it( 'renders the termbox when requesting /termbox with well-formed query for known entity', ( done ) => {
-		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q64&action=wbgetentities' )
-			.reply( 200, {
-				entities: {
-					Q64: mockQ64,
-				},
-			} );
+		const entityId = 'Q64';
+		const language = 'de';
 
-		request( app ).get( '/termbox' ).query( { entity: 'Q64', language: 'de' } ).then( ( response ) => {
+		nockSuccessfulLanguageTranslationLoading( language );
+		nockSuccessfulEntityLoading( entityId );
+
+		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
 			expect( response.status ).toBe( 200 );
-			expect( response.text ).toContain( '(Q64)' );
+			expect( response.text ).toContain( '(' + entityId + ')' );
+			expect( response.text ).toContain( 'Deutsch' );
 			done();
 		} );
 	} );

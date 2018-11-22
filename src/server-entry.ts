@@ -1,4 +1,5 @@
 import buildApp from '@/common/buildApp';
+import { config } from './server/TermboxConfig';
 import { factory } from './common/TermboxFactory';
 import WikibaseApiLanguageRepository from './server/data-access/WikibaseApiLanguageRepository';
 import TermboxRequest from './common/TermboxRequest';
@@ -7,7 +8,7 @@ import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
 import getChildComponents from './common/getChildComponents';
 
-const WIKIBASE_REPO_API = 'http://default.web.mw.localhost/mediawiki/api.php'; // TODO
+const WIKIBASE_REPO_API = config.getWikibaseRepoApi(); // TODO test
 
 factory.setLanguageTranslationRepository( new WikibaseApiLanguageRepository(
 	new mwbot( {
