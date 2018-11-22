@@ -1,10 +1,16 @@
-import LanguageRepository from '@/common/data-access/LanguageRepository';
+import LanguageTranslationRepository from '@/common/data-access/LanguageTranslationRepository';
+import LanguageTranslations from '../../datamodel/LanguageTranslations';
 
-export default class WikibaseApiLanguageRepository implements LanguageRepository {
+export default class WikibaseApiLanguageRepository implements LanguageTranslationRepository {
 
-	public getLanguageName( languageCode: string, inLanguage: string ): Promise<string> {
-		return new Promise<string>( ( resolve ) => {
-			resolve( '' );
+	public getLanguagesInLanguage( inLanguage: string ): Promise<LanguageTranslations> {
+		return new Promise<LanguageTranslations>( ( resolve ) => {
+			resolve( {
+				de: {
+					de: 'Deutsch',
+					en: 'Englisch',
+				},
+			} );
 		} );
 	}
 

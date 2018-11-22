@@ -9,7 +9,7 @@ import getChildComponents from '@/common/getChildComponents';
 
 Vue.config.productionTip = false;
 
-factory.setLanguageRepository( new UlsLanguageRepository() );
+factory.setLanguageTranslationRepository( new UlsLanguageRepository() );
 factory.setEntityRepository( new EntityRepository() );
 
 init().then( ( termboxRequest: TermboxRequest ) => {

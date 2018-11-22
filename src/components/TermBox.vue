@@ -7,30 +7,29 @@
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 import Component from 'vue-class-component';
-import { factory } from '@/common/TermboxFactory';
-import { mapState } from 'vuex';
-import { NS_USER } from '@/store/namespaces';
+import { mapState, mapGetters } from 'vuex';
+import { NS_USER, NS_LANGUAGE } from '@/store/namespaces';
 
 interface TermboxBindings extends Vue {
 
 	primaryLanguage: string;
 
+	getLanguageTranslation( language: string, inLanguage: string ): string;
 }
 
 @Component( {
-	computed: mapState( NS_USER, {
-		primaryLanguage: 'primaryLanguage',
-	} ),
+	computed: {
+		...mapState( NS_USER, {
+			primaryLanguage: 'primaryLanguage',
+		} ),
+		...mapGetters( NS_LANGUAGE, {
+			getLanguageTranslation: 'getTranslationByCode',
+		} ),
+	},
 } )
 export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) {
-	public primaryLanguageName = '';
-
-	public created() {
-		factory.getLanguageRepository()
-			.getLanguageName( this.primaryLanguage, this.primaryLanguage )
-			.then( ( languageName ) => {
-				this.primaryLanguageName = languageName;
-			} );
+	get primaryLanguageName() {
+		return this.getLanguageTranslation( this.primaryLanguage, this.primaryLanguage );
 	}
 
 }

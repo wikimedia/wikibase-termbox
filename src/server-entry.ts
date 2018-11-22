@@ -7,7 +7,7 @@ import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
 import getChildComponents from './common/getChildComponents';
 
-factory.setLanguageRepository( new WikibaseApiLanguageRepository() );
+factory.setLanguageTranslationRepository( new WikibaseApiLanguageRepository() );
 factory.setEntityRepository( new MwBotWikibaseRepo(
 	new mwbot( {
 		apiUrl: 'http://default.web.mw.localhost/mediawiki/api.php', // TODO

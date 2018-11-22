@@ -1,19 +1,19 @@
-import LanguageRepository from '@/common/data-access/LanguageRepository';
+import LanguageTranslationRepository from '@/common/data-access/LanguageTranslationRepository';
 import EntityRepository from '@/common/data-access/EntityRepository';
 
 export default class TermboxFactory {
-	private languageRepository?: LanguageRepository;
+	private languageTranslationRepository?: LanguageTranslationRepository;
 	private entityRepository?: EntityRepository;
 
-	public setLanguageRepository( lookup: LanguageRepository ) {
-		this.languageRepository = lookup;
+	public setLanguageTranslationRepository( lookup: LanguageTranslationRepository ) {
+		this.languageTranslationRepository = lookup;
 	}
 
-	public getLanguageRepository() {
-		if ( this.languageRepository ) {
-			return this.languageRepository;
+	public getLanguageTranslationRepository() {
+		if ( this.languageTranslationRepository ) {
+			return this.languageTranslationRepository;
 		} else {
-			throw new Error( 'languageRepository is undefined' );
+			throw new Error( 'languageTranslationRepository is undefined' );
 		}
 	}
 
