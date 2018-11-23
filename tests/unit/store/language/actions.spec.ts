@@ -1,19 +1,26 @@
 import { actions } from '@/store/language/actions';
-import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
-import { LANGUAGE_TRANSLATION_UPDATE } from '../../../../src/store/language/mutationTypes';
+import { LANGUAGE_INIT, ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
+import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
-import LanguageTranslations from '../../../../src/datamodel/LanguageTranslations';
-import LanguageState from '../../../../src/store/language/LanguageState';
-
-function newMinimalStore( fields: any ): LanguageState {
-	return {
-		languages: {},
-		translations: {},
-		...fields,
-	} as LanguageState;
-}
+import LanguageTranslations from '@/datamodel/LanguageTranslations';
+import LanguageState from '@/store/language/LanguageState';
 
 describe( 'language/actions', () => {
+	describe( LANGUAGE_INIT, () => {
+		it( 'does not commit anything yet, just returns a promise', ( done ) => {
+			const commitMock = jest.fn();
+			const context = {
+				commit: commitMock,
+			};
+			const action = actions[ LANGUAGE_INIT ] as any; // TODO
+
+			action( context ).then( () => {
+				expect( commitMock ).not.toBeCalled();
+				done();
+			} );
+		} );
+	} );
+
 	describe( ENSURE_AVAILABLE_IN_LANGUAGE, () => {
 		it( `commits translations to ${LANGUAGE_TRANSLATION_UPDATE} on getLanguagesInLanguage lookup`, ( done ) => {
 			const inLanguage = 'de';
@@ -30,9 +37,9 @@ describe( 'language/actions', () => {
 				},
 			} );
 			const commitMock = jest.fn();
-			const context = newMinimalStore( {
+			const context = {
 				commit: commitMock,
-			} );
+			};
 			const action = actions[ ENSURE_AVAILABLE_IN_LANGUAGE ] as any; // TODO
 
 			action( context, inLanguage ).then( () => {
