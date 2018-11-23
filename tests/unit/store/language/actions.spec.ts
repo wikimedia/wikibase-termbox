@@ -3,7 +3,6 @@ import { LANGUAGE_INIT, ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/ac
 import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
-import LanguageState from '@/store/language/LanguageState';
 
 describe( 'language/actions', () => {
 	describe( LANGUAGE_INIT, () => {
