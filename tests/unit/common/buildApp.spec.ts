@@ -1,25 +1,46 @@
-import TermboxRequest from '@/common/TermboxRequest';
 import buildApp from '@/common/buildApp';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import App from '@/components/App.vue';
+
+const mockGetChildComponents = jest.fn();
+jest.mock( '@/common/getChildComponents', () => ( {
+	__esModule: true,
+	default: ( app: any ) => mockGetChildComponents( app ),
+} ) );
+
+jest.mock( '@/store' );
+
+import store from '@/store';
 
 describe( 'buildApp', () => {
 
-	it( 'fills the store from the TermboxRequest', () => {
-		const entity = new FingerprintableEntity(
-			'Q23',
-			{ en: { language: 'en', value: 'derp' } },
-			{ en: { language: 'en', value: 'derp derp' } },
-			{ en: [{ language: 'en', value: 'derp derp' }] },
-		);
-		const req = new TermboxRequest( 'en', entity );
-		const app = buildApp( req );
+	it( 'returns the app', () => {
+		const request = { language: 'en', entityId: 'Q123' };
+		mockGetChildComponents.mockReturnValue( [] );
 
-		expect( app.$store.state.entity.id ).toBe( entity.id );
-		expect( app.$store.state.entity.labels ).toBe( entity.labels );
-		expect( app.$store.state.entity.descriptions ).toBe( entity.descriptions );
-		expect( app.$store.state.entity.aliases ).toBe( entity.aliases );
+		return buildApp( request ).then( ( app ) => {
+			expect( app ).toBeInstanceOf( App );
+		} );
+	} );
 
-		expect( app.$store.state.user.primaryLanguage ).toBe( 'en' );
+	it( 'calls asyncData on all components, then returns the app', () => {
+		const request = { language: 'en', entityId: 'Q123' };
+
+		const mockAsyncData1 = jest.fn();
+		const mockAsyncData2 = jest.fn();
+		const mockComponent1 = { asyncData: mockAsyncData1 };
+		const mockComponent2 = { asyncData: mockAsyncData2 };
+
+		mockAsyncData1.mockReturnValue( Promise.resolve() );
+		mockAsyncData1.mockReturnValue( Promise.resolve() );
+
+		mockGetChildComponents.mockReturnValue( [ mockComponent1, mockComponent2, {} ] );
+
+		return buildApp( request ).then( ( app ) => {
+			expect( mockAsyncData1 ).toBeCalledWith( store, request );
+			expect( mockAsyncData2 ).toBeCalledWith( store, request );
+
+			expect( app ).toBeInstanceOf( App );
+		} );
 	} );
 
 } );
