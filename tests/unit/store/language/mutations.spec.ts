@@ -3,7 +3,7 @@ import {
 	LANGUAGE_TRANSLATION_UPDATE,
 } from '@/store/language/mutationTypes';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
-import LanguageState from '../../../../src/store/language/LanguageState';
+import LanguageState from '@/store/language/LanguageState';
 
 function newMinimalStore(): LanguageState {
 	return {

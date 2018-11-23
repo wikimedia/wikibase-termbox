@@ -1,5 +1,5 @@
 import { getters } from '@/store/language/getters';
-import LanguageState from '../../../../src/store/language/LanguageState';
+import LanguageState from '@/store/language/LanguageState';
 
 function newMinimalStore(): LanguageState {
 	return {
