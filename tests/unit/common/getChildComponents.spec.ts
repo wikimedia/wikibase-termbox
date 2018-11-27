@@ -7,6 +7,8 @@ import Component from 'vue-class-component';
 describe( 'getChildComponents', () => {
 
 	it( 'adds the root component', () => {
+		@Component( {
+		} )
 		class Root extends Vue {
 		}
 
@@ -14,6 +16,8 @@ describe( 'getChildComponents', () => {
 	} );
 
 	it( 'adds children of the root component', () => {
+		@Component( {
+		} )
 		class Child1 extends Vue {
 		}
 
@@ -27,6 +31,8 @@ describe( 'getChildComponents', () => {
 	} );
 
 	it( 'recursively gets child components', () => {
+		@Component( {
+		} )
 		class NestedChild extends Vue {
 		}
 
@@ -36,6 +42,8 @@ describe( 'getChildComponents', () => {
 		class Child1 extends Vue {
 		}
 
+		@Component( {
+		} )
 		class Child2 extends Vue {
 		}
 
