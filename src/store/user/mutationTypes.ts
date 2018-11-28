@@ -1,1 +1,1 @@
-export const LANGUAGE_INIT: string = 'initilizeLanguage';
+export const LANGUAGE_INIT: string = 'initializeLanguage';
