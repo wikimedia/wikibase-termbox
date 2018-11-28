@@ -6,18 +6,20 @@ import MwBotWikibaseRepo from './server/data-access/MwBotWikibaseRepo';
 import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
 
-const WIKIBASE_REPO_API = config.getWikibaseRepoApi(); // TODO test
+const apiBot = new mwbot( {
+	apiUrl: config.getWikibaseRepoApi(), // TODO test
+} );
 
-factory.setLanguageTranslationRepository( new WikibaseApiLanguageRepository(
-	new mwbot( {
-		apiUrl: WIKIBASE_REPO_API,
-	} ),
-) );
-factory.setEntityRepository( new MwBotWikibaseRepo(
-	new mwbot( {
-		apiUrl: WIKIBASE_REPO_API,
-	} ),
-	new EntityInitializer(),
-) );
+factory.setLanguageTranslationRepository(
+	new WikibaseApiLanguageRepository(
+		apiBot,
+	),
+);
+factory.setEntityRepository(
+	new MwBotWikibaseRepo(
+		apiBot,
+		new EntityInitializer(),
+	),
+);
 
 export default buildApp;
