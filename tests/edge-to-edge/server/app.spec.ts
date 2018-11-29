@@ -3,11 +3,20 @@ import mockQ64 from '@/mock-data/data/Q64_data.json';
 import app from '@/server/app';
 import nock from 'nock';
 import { config } from '@/server/TermboxConfig';
+import 'jest-dom/extend-expect';
 
 const wikibaseRepoApi = new URL( config.getWikibaseRepoApi() );
 
 const WIKIBASE_TEST_API_HOST = wikibaseRepoApi.origin;
 const WIKIBASE_TEST_API_PATH = wikibaseRepoApi.pathname;
+
+const germanInGerman = 'Deutsch';
+
+function getDomFromMarkup( markup: string ): HTMLElement {
+	const newNode = document.createElement( 'div' );
+	newNode.innerHTML = markup;
+	return newNode;
+}
 
 function nockSuccessfulLanguageTranslationLoading( inLanguage: string ) {
 	nock( WIKIBASE_TEST_API_HOST )
@@ -28,7 +37,7 @@ function nockSuccessfulLanguageTranslationLoading( inLanguage: string ) {
 					},
 					de: {
 						code: 'de',
-						name: 'Deutsch',
+						name: germanInGerman,
 					},
 				},
 			},
@@ -153,7 +162,22 @@ describe( 'Termbox SSR', () => {
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
 			expect( response.status ).toBe( 200 );
-			expect( response.text ).toContain( 'Deutsch' );
+
+			const $dom = getDomFromMarkup( response.text );
+
+			expect( $dom.querySelector( '.wikibase-termbox-primaryLanguage' ) )
+				.toBeVisible();
+
+			expect( $dom.querySelector( '.wikibase-termbox-language' ) )
+				.toHaveTextContent( germanInGerman );
+
+			expect( $dom.querySelector( '.wikibase-termbox-label' ) )
+				.toHaveTextContent( mockQ64.labels.de.value );
+			expect( $dom.querySelector( '.wikibase-termbox-description' ) )
+				.toHaveTextContent( mockQ64.descriptions.de.value );
+			expect( $dom.querySelectorAll( '.wikibase-termbox-aliases li' ).length )
+				.toBe( mockQ64.aliases.de.length );
+
 			done();
 		} );
 	} );
