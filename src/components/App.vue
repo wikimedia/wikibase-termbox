@@ -1,7 +1,5 @@
 <template>
 	<section class="wikibase-entitytermsview">
-		({{entityId}})
-		<!-- TODO: place heading/pre-content here //-->
 		<TermBox/>
 	</section>
 </template>
@@ -10,7 +8,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import TermBox from './TermBox.vue';
-import { mapState, Store } from 'vuex';
+import { Store } from 'vuex';
 import { NS_ENTITY, NS_USER, NS_LANGUAGE } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/actionTypes';
 import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
@@ -20,11 +18,6 @@ import { LANGUAGE_INIT } from '../store/language/actionTypes';
 @Component( {
 	components: {
 		TermBox,
-	},
-	computed: {
-		...mapState( NS_ENTITY, {
-			entityId: 'id',
-		} ),
 	},
 } )
 

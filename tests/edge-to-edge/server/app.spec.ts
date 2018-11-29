@@ -153,7 +153,6 @@ describe( 'Termbox SSR', () => {
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
 			expect( response.status ).toBe( 200 );
-			expect( response.text ).toContain( '(' + entityId + ')' );
 			expect( response.text ).toContain( 'Deutsch' );
 			done();
 		} );
