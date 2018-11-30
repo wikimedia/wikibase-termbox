@@ -9,7 +9,7 @@
 				<ul v-if="hasAliases" class="wikibase-termbox__aliases">
 					<li v-for="alias in aliases"
 						class="wikibase-termbox__alias"
-						data-separator="|">{{ alias.value }}</li>
+						:data-separator="'wikibase-termbox-alias-separator' | message">{{ alias.value }}</li>
 				</ul>
 				<p class="wikibase-termbox__aliases-placeholder" v-else>?</p>
 			</div>
@@ -31,6 +31,9 @@ import {
 	NS_LANGUAGE,
 } from '@/store/namespaces';
 import Term from '@/datamodel/Term';
+import message from '@/filter/message';
+
+Vue.filter( 'message', message );
 
 interface EntityBindings {
 	entityLabel: ( languageCode: string ) => Term;
