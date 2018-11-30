@@ -113,8 +113,9 @@ describe( 'TermBox.vue', () => {
 	it( 'renders the entity aliases', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		const items = wrapper.find( '.wikibase-termbox__aliases' ).text().split( /\s+/ );
-		expect( items ).toStrictEqual( `${ aliasesDe[0] } ${ aliasesDe[1] }`.split( /\s+/ ) );
+		const aliases = wrapper.findAll( '.wikibase-termbox__alias' );
+		expect( aliases.at( 0 ).text() ).toStrictEqual( aliasesDe[0] );
+		expect( aliases.at( 1 ).text() ).toStrictEqual( aliasesDe[1] );
 	} );
 
 	it( 'renders ? in case of unknown user-language for aliases', () => {

@@ -165,7 +165,9 @@ describe( 'Termbox SSR', () => {
 
 			const $dom = getDomFromMarkup( response.text );
 
-			expect( $dom.querySelector( '.wikibase-termbox__primaryLanguage' ) )
+			expect( $dom.querySelectorAll( '.wikibase-termbox' ).length ).toBe( 1 );
+
+			expect( $dom.querySelector( '.wikibase-termbox--primaryLanguage' ) )
 				.toBeVisible();
 
 			expect( $dom.querySelector( '.wikibase-termbox__language' ) )

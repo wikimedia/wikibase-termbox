@@ -1,14 +1,15 @@
 <template>
-	<div class="wikibase-termbox__primaryLanguage">
+	<!-- TODO dynamize wikibase-termbox--primaryLanguage for T205261 -->
+	<div class="wikibase-termbox wikibase-termbox--primaryLanguage">
 		<div>
 			<div class="wikibase-termbox__term">
 				<span class="wikibase-termbox__language">{{primaryLanguageName}}</span>
 				<h2 class="wikibase-termbox__label">{{ label }}</h2>
 				<p class="wikibase-termbox__description">{{ description }}</p>
 				<ul v-if="hasAliases" class="wikibase-termbox__aliases">
-					<li v-for="alias in aliases">
-						{{ alias.value }}
-					</li>
+					<li v-for="alias in aliases"
+						class="wikibase-termbox__alias"
+						data-separator="|">{{ alias.value }}</li>
 				</ul>
 				<p class="wikibase-termbox__aliases-placeholder" v-else>?</p>
 			</div>
@@ -103,4 +104,49 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 </script>
 
 <style lang="scss">
+.wikibase-termbox { // container - need a strong selector chain to reliably override reset css
+	.wikibase-termbox { // for use as a prefix
+		&__language {
+			color: $color-dark-azureish-gray;
+			font-size: 0.9rem;
+		}
+
+		&__label {
+			color: $color-black;
+			line-height: 1.3em;
+			font-weight: bold;
+		}
+
+		&__description {
+			margin-top: 0.5rem;
+			margin-left: 0.5em;
+			color: $color-black;
+			line-height: 1.3em;
+		}
+
+		&__aliases {
+			margin-top: 0.5rem;
+			margin-left: 0.5em;
+			color: $color-light-azureish-gray;
+			line-height: 1.3em;
+		}
+
+		&__alias {
+			display: inline;
+		}
+
+		&__alias:not( :last-child )::after {
+			content: attr( data-separator );
+			white-space: nowrap;
+			padding: 0 0.4em;
+		}
+	}
+
+	// unless we find another difference we should move the primaryLanguage modifier to the label
+	&.wikibase-termbox--primaryLanguage {
+		.wikibase-termbox__label {
+			font-size: 1.5rem;
+		}
+	}
+}
 </style>
