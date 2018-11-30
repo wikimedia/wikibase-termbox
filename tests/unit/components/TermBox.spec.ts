@@ -70,7 +70,7 @@ describe( 'TermBox.vue', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		expect( wrapper.find( '.wikibase-termbox-language' ).text() ).toBe( langDe );
+		expect( wrapper.find( '.wikibase-termbox__language' ).text() ).toBe( langDe );
 	} );
 
 	it( 'renders random ?+ in case of unknown user-language for language labels', () => {
@@ -78,7 +78,7 @@ describe( 'TermBox.vue', () => {
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		// this not part of the component
-		expect( wrapper.find( '.wikibase-termbox-language' ).text() ).toBe( '????' );
+		expect( wrapper.find( '.wikibase-termbox__language' ).text() ).toBe( '????' );
 	} );
 
 	it( 'renders the entity label', () => {
@@ -86,34 +86,34 @@ describe( 'TermBox.vue', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		expect( wrapper.find( '.wikibase-termbox-label' ).text() ).toBe( labelDe );
+		expect( wrapper.find( '.wikibase-termbox__label' ).text() ).toBe( labelDe );
 	} );
 
 	it( 'renders ??? in case of unknown user-language for labels', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'en' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		expect( wrapper.find( '.wikibase-termbox-label' ).text() ).toBe( '???' );
+		expect( wrapper.find( '.wikibase-termbox__label' ).text() ).toBe( '???' );
 	} );
 
 	it( 'renders the entity description', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		expect( wrapper.find( '.wikibase-termbox-description' ).text() ).toBe( descriptionDe );
+		expect( wrapper.find( '.wikibase-termbox__description' ).text() ).toBe( descriptionDe );
 	} );
 
 	it( 'renders ?? in case of unknown user-language for descriptions', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'en' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		expect( wrapper.find( '.wikibase-termbox-description' ).text() ).toBe( '??' );
+		expect( wrapper.find( '.wikibase-termbox__description' ).text() ).toBe( '??' );
 	} );
 
 	it( 'renders the entity aliases', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		const items = wrapper.find( '.wikibase-termbox-aliases' ).text().split( /\s+/ );
+		const items = wrapper.find( '.wikibase-termbox__aliases' ).text().split( /\s+/ );
 		expect( items ).toStrictEqual( `${ aliasesDe[0] } ${ aliasesDe[1] }`.split( /\s+/ ) );
 	} );
 
@@ -121,6 +121,6 @@ describe( 'TermBox.vue', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'en' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		expect( wrapper.find( '.wikibase-termbox-aliases' ).text() ).toBe( '?' );
+		expect( wrapper.find( '.wikibase-termbox__aliases-placeholder' ).text() ).toBe( '?' );
 	} );
 } );

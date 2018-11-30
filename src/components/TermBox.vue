@@ -1,19 +1,19 @@
 <template>
-	<div class="wikibase-termbox-primaryLanguage">
+	<div class="wikibase-termbox__primaryLanguage">
 		<div>
-			<div class="wikibase-termbox-term">
-				<span class="wikibase-termbox-language">{{primaryLanguageName}}</span>
-				<h2 class="wikibase-termbox-label">{{ label }}</h2>
-				<p class="wikibase-termbox-description">{{ description }}</p>
-				<ul v-if="hasAliases" class="wikibase-termbox-aliases">
+			<div class="wikibase-termbox__term">
+				<span class="wikibase-termbox__language">{{primaryLanguageName}}</span>
+				<h2 class="wikibase-termbox__label">{{ label }}</h2>
+				<p class="wikibase-termbox__description">{{ description }}</p>
+				<ul v-if="hasAliases" class="wikibase-termbox__aliases">
 					<li v-for="alias in aliases">
 						{{ alias.value }}
 					</li>
 				</ul>
-				<p class="wikibase-termbox-aliases" v-else>?</p>
+				<p class="wikibase-termbox__aliases-placeholder" v-else>?</p>
 			</div>
 		</div>
-		<div class="wikibase-termbox-action"></div>
+		<div class="wikibase-termbox__action"></div>
 	</div>
 </template>
 
