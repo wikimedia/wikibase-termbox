@@ -44,6 +44,7 @@
     "nock": "^10.0.2",
     "node-sass": "^4.9.0",
     "nodemon": "^1.18.7",
+    "reset-css": "^4.0.1",
     "sass-loader": "^7.0.1",
     "supertest": "^3.3.0",
     "ts-jest": "^23.0.0",
