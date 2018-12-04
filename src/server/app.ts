@@ -5,6 +5,7 @@ import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import QueryValidator from './route-handler/termbox/QueryValidator';
 import InvalidRequest from './route-handler/termbox/error/InvalidRequest';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
+import HttpStatus from 'http-status-codes';
 
 const app = express();
 const serverBundle = fs.readFileSync( './serverDist/vue-ssr-server-bundle.json' );
@@ -26,11 +27,11 @@ app.get( '/termbox', ( request, response ) => {
 		} )
 		.catch( ( err ) => {
 			if ( err instanceof InvalidRequest ) {
-				response.status( 400 ).send( 'Bad request' );
+				response.status( HttpStatus.BAD_REQUEST ).send( 'Bad request' );
 			} else if ( err.constructor.name === EntityNotFound.name ) { // how to instanceof?
-				response.status( 404 ).send( 'Entity not found' );
+				response.status( HttpStatus.NOT_FOUND ).send( 'Entity not found' );
 			} else {
-				response.status( 500 ).send( 'Technical problem ' + JSON.stringify( err ) );
+				response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem ' + JSON.stringify( err ) );
 			}
 		} );
 } );

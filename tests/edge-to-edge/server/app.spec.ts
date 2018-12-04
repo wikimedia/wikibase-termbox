@@ -4,6 +4,7 @@ import app from '@/server/app';
 import nock from 'nock';
 import { config } from '@/server/TermboxConfig';
 import 'jest-dom/extend-expect';
+import HttpStatus from 'http-status-codes';
 
 const wikibaseRepoApi = new URL( config.getWikibaseRepoApi() );
 
@@ -27,7 +28,7 @@ function nockSuccessfulLanguageTranslationLoading( inLanguage: string ) {
 			wbclprop: 'code|name',
 			uselang: inLanguage,
 		} )
-		.reply( 200, {
+		.reply( HttpStatus.OK, {
 			batchcomplete: '',
 			query: {
 				wbcontentlanguages: {
@@ -50,7 +51,7 @@ function nockSuccessfulEntityLoading( entityId: string ) {
 			ids: entityId,
 			action: 'wbgetentities',
 		} )
-		.reply( 200, {
+		.reply( HttpStatus.OK, {
 			entities: {
 				[ entityId ]: mockQ64, // TODO build dynamic mock response if needed
 			},
@@ -72,12 +73,12 @@ describe( 'Termbox SSR', () => {
 				ids: entityId,
 				action: 'wbgetentities',
 			} )
-			.reply( 200, {
+			.reply( HttpStatus.OK, {
 				malformed: 'yes',
 			} );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
-			expect( response.status ).toBe( 500 );
+			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
 		} );
@@ -92,10 +93,10 @@ describe( 'Termbox SSR', () => {
 				ids: entityId,
 				action: 'wbgetentities',
 			} )
-			.reply( 500, 'upstream system error' );
+			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
-			expect( response.status ).toBe( 500 );
+			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
 		} );
@@ -113,11 +114,11 @@ describe( 'Termbox SSR', () => {
 				wbclprop: 'code|name',
 				uselang: language,
 			} )
-			.reply( 500, 'upstream system error' );
+			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 		nockSuccessfulEntityLoading( entityId );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
-			expect( response.status ).toBe( 500 );
+			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
 		} );
@@ -125,7 +126,7 @@ describe( 'Termbox SSR', () => {
 
 	it( 'renders Bad Request when requesting /termbox without well-formed query', ( done ) => {
 		request( app ).get( '/termbox' ).then( ( response ) => {
-			expect( response.status ).toBe( 400 );
+			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 			expect( response.text ).toContain( 'Bad request' );
 			done();
 		} );
@@ -138,7 +139,7 @@ describe( 'Termbox SSR', () => {
 		nockSuccessfulLanguageTranslationLoading( 'de' );
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q63&action=wbgetentities' )
-			.reply( 200, {
+			.reply( HttpStatus.OK, {
 				entities: {
 					[ entityId ]: {
 						missing: '',
@@ -147,7 +148,7 @@ describe( 'Termbox SSR', () => {
 			} );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
-			expect( response.status ).toBe( 404 );
+			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
 			done();
 		} );
@@ -161,7 +162,7 @@ describe( 'Termbox SSR', () => {
 		nockSuccessfulEntityLoading( entityId );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
-			expect( response.status ).toBe( 200 );
+			expect( response.status ).toBe( HttpStatus.OK );
 
 			const $dom = getDomFromMarkup( response.text );
 
