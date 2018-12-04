@@ -117,7 +117,6 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 		&__label {
 			color: $color-black;
 			line-height: 1.3em;
-			font-weight: bold;
 		}
 
 		&__description {
@@ -148,7 +147,7 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 	// unless we find another difference we should move the primaryLanguage modifier to the label
 	&.wikibase-termbox--primaryLanguage {
 		.wikibase-termbox__label {
-			font-size: 1.5rem;
+			@include fontSize( 23px );
 		}
 	}
 }

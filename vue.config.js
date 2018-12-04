@@ -53,7 +53,7 @@ module.exports = {
 	css: {
 		loaderOptions: {
 			sass: {
-				data: `@import "@/styles/_variables.scss";`,
+				data: `@import "@/styles/_main.scss";`,
 			},
 		},
 	},
