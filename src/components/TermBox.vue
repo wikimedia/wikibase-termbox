@@ -111,7 +111,7 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 	.wikibase-termbox { // for use as a prefix
 		&__language {
 			color: $color-dark-azureish-gray;
-			font-size: 0.9rem;
+			@include fontSize( 13px );
 		}
 
 		&__label {
