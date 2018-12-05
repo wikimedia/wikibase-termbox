@@ -112,13 +112,14 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 		&__language {
 			color: $color-dark-azureish-gray;
 			@include fontSize( 13px );
-			font-family: 'Lato Regular', 'Arial Regular';
+			font-family: $font-family-lato;
 		}
 
 		&__label {
 			color: $color-black;
 			line-height: 1.3em;
-			font-family: 'Charter Bold', 'Georgia Regular', 'Linux Libertine Bold';
+			font-family: $font-family-charter;
+			font-weight: bold;
 		}
 
 		&__description {
@@ -126,7 +127,7 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 			margin-left: 0.5em;
 			color: $color-black;
 			line-height: 1.3em;
-			font-family: 'Lato Regular', 'Arial Regular';
+			font-family: $font-family-lato;
 		}
 
 		&__aliases {
@@ -134,7 +135,7 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 			margin-left: 0.5em;
 			color: $color-light-azureish-gray;
 			line-height: 1.3em;
-			font-family: 'Lato Regular', 'Arial Regular';
+			font-family: $font-family-lato;
 		}
 
 		&__alias {
