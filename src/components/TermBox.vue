@@ -11,7 +11,7 @@
 						class="wikibase-termbox__alias"
 						:data-separator="'wikibase-termbox-alias-separator' | message">{{ alias.value }}</li>
 				</ul>
-				<p class="wikibase-termbox__aliases-placeholder" v-else>?</p>
+				<p class="wikibase-termbox__aliases wikibase-termbox__aliases--placeholder" v-else>?</p>
 			</div>
 		</div>
 		<div class="wikibase-termbox__action"></div>

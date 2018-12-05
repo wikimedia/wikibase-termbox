@@ -122,6 +122,6 @@ describe( 'TermBox.vue', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'en' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
-		expect( wrapper.find( '.wikibase-termbox__aliases-placeholder' ).text() ).toBe( '?' );
+		expect( wrapper.find( '.wikibase-termbox__aliases--placeholder' ).text() ).toBe( '?' );
 	} );
 } );
