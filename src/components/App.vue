@@ -36,6 +36,6 @@ export default class App extends Vue {
 
 <style lang="scss">
 .wikibase-entitytermsview {
-	@import 'reset-css';
+	@import '~reset-css/sass/_reset';
 }
 </style>
