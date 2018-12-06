@@ -115,6 +115,13 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 			font-family: $font-family-lato;
 		}
 
+		&__label,
+		&__description,
+		&__aliases {
+			min-width: 260px;
+			max-width: 420px;
+		}
+
 		&__label {
 			color: $color-black;
 			line-height: 1.3em;
