@@ -1,0 +1,22 @@
+version: v3
+
+base: docker-registry.wikimedia.org/nodejs10-slim
+
+# can't live in /srv/service as currently node_modules outside of project root is not supported
+lives:
+  in: /opt/lib
+
+variants:
+  build:
+    base: docker-registry.wikimedia.org/nodejs10-devel
+    node:
+      requirements: [ package.json, package-lock.json ]
+  build-server:
+    includes: [ build ]
+    builder:
+      command: [ npm, run-script, build-server ]
+      requirements: [ "." ]
+  test:
+    # technically build-server is only needed for tests/edge-to-edge
+    includes: [ build-server ]
+    entrypoint: [ npm, test ]

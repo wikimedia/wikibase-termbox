@@ -40,3 +40,18 @@ docker-compose run --rm node npm install
 ## Development
 * `docker-compose run --rm node npm run test` runs all tests
 * `docker-compose run --rm node npm run lint` for linting, `docker-compose run --rm node npm run fix` for fixing fixable lint errors
+
+## Blubber build
+
+This project can be build with [blubber](https://wikitech.wikimedia.org/wiki/Blubber), configuration is located in the `.pipeline` directory.
+
+Instructions above will gradually be migrated to use blubber.
+
+Beware, for the time being, blubber generated Dockerfiles conflict with the hand-crafted, earlier version.
+
+Running tests
+```
+blubber .pipeline/blubber.yaml test > Dockerfile
+docker build -t wmde/wikibase-termbox-test .
+docker run --rm wmde/wikibase-termbox-test
+```
