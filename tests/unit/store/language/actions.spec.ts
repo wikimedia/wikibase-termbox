@@ -1,12 +1,31 @@
 import { actions } from '@/store/language/actions';
 import { LANGUAGE_INIT, ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
-import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
+import {
+	LANGUAGE_TRANSLATION_UPDATE,
+	LANGUAGE_UPDATE,
+} from '@/store/language/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
+import LanguageCollection from '@/datamodel/LanguageCollection';
 
 describe( 'language/actions', () => {
 	describe( LANGUAGE_INIT, () => {
-		it( 'does not commit anything yet, just returns a promise', ( done ) => {
+		it( 'commits a fixed set of languages and returns a resolved promise', ( done ) => {
+			const languages = {
+				en: {
+					code: 'en',
+					directionality: 'ltr',
+				},
+				de: {
+					code: 'de',
+					directionality: 'ltr',
+				},
+				ar: {
+					code: 'ar',
+					directionality: 'rtl',
+				},
+			} as LanguageCollection;
+
 			const commitMock = jest.fn();
 			const context = {
 				commit: commitMock,
@@ -14,7 +33,10 @@ describe( 'language/actions', () => {
 			const action = actions[ LANGUAGE_INIT ] as any; // TODO
 
 			action( context ).then( () => {
-				expect( commitMock ).not.toBeCalled();
+				expect( commitMock ).toBeCalledWith(
+					LANGUAGE_UPDATE,
+					languages,
+				);
 				done();
 			} );
 		} );
