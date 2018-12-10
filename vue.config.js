@@ -28,6 +28,7 @@ module.exports = {
 		},
 		optimization: {
 			splitChunks: undefined,
+			minimize: !TARGET_NODE, // needed for comparison of `.constructor.name`s
 		},
 	} ),
 	chainWebpack: config => {

@@ -5,6 +5,9 @@ import WikibaseApiLanguageRepository from './server/data-access/WikibaseApiLangu
 import MwBotWikibaseRepo from './server/data-access/MwBotWikibaseRepo';
 import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
+import BundleBoundaryPassingException, { ErrorReason } from '@/common/exceptions/BundleBoundaryPassingException';
+import TermboxRequest from '@/common/TermboxRequest';
+import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 
 const apiBot = new mwbot( {
 	apiUrl: config.getWikibaseRepoApi(), // TODO test
@@ -22,4 +25,12 @@ factory.setEntityRepository(
 	),
 );
 
-export default buildApp;
+export default ( termboxRequest: TermboxRequest ) => {
+	return buildApp( termboxRequest ).catch( ( err: any ) => {
+		if ( err instanceof EntityNotFound ) {
+			throw new BundleBoundaryPassingException( ErrorReason.EntityNotFound );
+		}
+
+		throw err;
+	} );
+};

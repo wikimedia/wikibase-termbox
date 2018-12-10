@@ -4,8 +4,8 @@ import { createBundleRenderer } from 'vue-server-renderer';
 import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import QueryValidator from './route-handler/termbox/QueryValidator';
 import InvalidRequest from './route-handler/termbox/error/InvalidRequest';
-import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import HttpStatus from 'http-status-codes';
+import BundleBoundaryPassingException, { ErrorReason } from '@/common/exceptions/BundleBoundaryPassingException';
 
 const app = express();
 const serverBundle = fs.readFileSync( './serverDist/vue-ssr-server-bundle.json' );
@@ -28,8 +28,10 @@ app.get( '/termbox', ( request, response ) => {
 		.catch( ( err ) => {
 			if ( err instanceof InvalidRequest ) {
 				response.status( HttpStatus.BAD_REQUEST ).send( 'Bad request' );
-			} else if ( err.constructor.name === EntityNotFound.name ) { // how to instanceof?
-				response.status( HttpStatus.NOT_FOUND ).send( 'Entity not found' );
+			} else if ( err.constructor.name === BundleBoundaryPassingException.name ) {
+				if ( err.reason === ErrorReason.EntityNotFound ) {
+					response.status( HttpStatus.NOT_FOUND ).send( 'Entity not found' );
+				}
 			} else {
 				response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem ' + JSON.stringify( err ) );
 			}
