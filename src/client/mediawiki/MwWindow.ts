@@ -20,7 +20,20 @@ interface Wikibase {
 	};
 }
 
+export interface UlsData {
+	getDir: ( languageCode: string ) => string;
+}
+
+interface JQUls {
+	data: UlsData;
+}
+
+interface JQuery {
+	uls: JQUls;
+}
+
 export default interface MwWindow extends Window {
 	mw: MediaWiki;
 	wb: Wikibase;
+	$: JQuery;
 }
