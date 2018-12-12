@@ -3,6 +3,7 @@ import MwBotWikibaseContentLanguagesRepo from '@/server/data-access/MwBotWikibas
 import mwbot from 'mwbot';
 import ContentLanguagesLanguageRepo from '@/server/data-access/ContentLanguagesLanguageRepo';
 import { WikibaseApiContentLanguages } from '@/server/data-access/WikibaseContentLanguagesRepo';
+import RtlDetectLib from 'rtl-detect';
 
 function newWikibaseContentLanguagesRepository( contentLanguagesRepo: any ) {
 	return new ContentLanguagesLanguageRepo(
@@ -23,11 +24,11 @@ describe( 'ContentLanguagesLanguageRepo', () => {
 			getContentLanguages.mockResolvedValue( {
 				en: {
 					code: 'en',
-					name: 'Englisch',
+					name: 'English',
 				},
-				de: {
-					code: 'de',
-					name: 'Deutsch',
+				ar: {
+					code: 'ar',
+					name: 'Arabic',
 				},
 			} as WikibaseApiContentLanguages );
 			const contentLanguagesRepo = {
@@ -42,11 +43,38 @@ describe( 'ContentLanguagesLanguageRepo', () => {
 						code: 'en',
 						directionality: 'ltr',
 					},
-					de: {
-						code: 'de',
-						directionality: 'ltr',
+					ar: {
+						code: 'ar',
+						directionality: 'rtl',
 					},
 				} as LanguageCollection );
+				done();
+			} );
+		} );
+
+		it( 'loads language directionality from rtl-detect', ( done ) => {
+			const spyGetLangDir = jest.spyOn( RtlDetectLib, 'getLangDir' );
+
+			const getContentLanguages = jest.fn();
+			getContentLanguages.mockResolvedValue( {
+				en: {
+					code: 'en',
+					name: 'English',
+				},
+				ar: {
+					code: 'ar',
+					name: 'Arabic',
+				},
+			} as WikibaseApiContentLanguages );
+			const contentLanguagesRepo = {
+				getContentLanguages,
+			};
+			const repo = newWikibaseContentLanguagesRepository( contentLanguagesRepo );
+
+			repo.getLanguages().then( ( languages: LanguageCollection ) => {
+				expect( spyGetLangDir ).toBeCalledTimes( 2 );
+				expect( spyGetLangDir ).toBeCalledWith( 'en' );
+				expect( spyGetLangDir ).toBeCalledWith( 'ar' );
 				done();
 			} );
 		} );
