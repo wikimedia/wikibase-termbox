@@ -5,6 +5,15 @@ import nock from 'nock';
 import { config } from '@/server/TermboxConfig';
 import 'jest-dom/extend-expect';
 import HttpStatus from 'http-status-codes';
+import Vue from 'vue';
+
+/**
+ * edge-to-edge tests are simulating actual requests against the server
+ * and are - by definition - run in a development context. While the
+ * production tip is valuable for the server (should we bork config) it
+ * makes no sense to show it during tests
+ */
+Vue.config.productionTip = false;
 
 const wikibaseRepoApi = new URL( config.getWikibaseRepoApi() );
 
