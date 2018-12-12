@@ -5,7 +5,7 @@ import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import QueryValidator from './route-handler/termbox/QueryValidator';
 import InvalidRequest from './route-handler/termbox/error/InvalidRequest';
 import HttpStatus from 'http-status-codes';
-import BundleBoundaryPassingException, { ErrorReason } from '@/common/exceptions/BundleBoundaryPassingException';
+import BundleBoundaryPassingException, { ErrorReason } from './exceptions/BundleBoundaryPassingException';
 
 const app = express();
 const serverBundle = fs.readFileSync( './serverDist/vue-ssr-server-bundle.json' );

@@ -5,7 +5,7 @@ import WikibaseApiLanguageRepository from './server/data-access/WikibaseApiLangu
 import MwBotWikibaseRepo from './server/data-access/MwBotWikibaseRepo';
 import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
-import BundleBoundaryPassingException, { ErrorReason } from '@/common/exceptions/BundleBoundaryPassingException';
+import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
 import TermboxRequest from '@/common/TermboxRequest';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 

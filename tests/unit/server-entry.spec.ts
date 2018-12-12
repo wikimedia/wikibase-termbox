@@ -1,7 +1,7 @@
 import serverEntry from '@/server-entry';
 import TermboxRequest from '@/common/TermboxRequest';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
-import BundleBoundaryPassingException, { ErrorReason } from '@/common/exceptions/BundleBoundaryPassingException';
+import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
 
 const mockBuildApp = jest.fn();
 jest.mock( '@/common/buildApp', () => ( {
