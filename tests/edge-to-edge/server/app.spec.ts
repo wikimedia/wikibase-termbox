@@ -28,7 +28,7 @@ function getDomFromMarkup( markup: string ): HTMLElement {
 	return newNode;
 }
 
-function nockSuccessfulLanguageTranslationLoading( inLanguage: string ) {
+function nockSuccessfulLanguageLoading( inLanguage: string ) {
 	nock( WIKIBASE_TEST_API_HOST )
 		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
 			action: 'query',
@@ -141,11 +141,47 @@ describe( 'Termbox SSR', () => {
 		} );
 	} );
 
+	it( 'renders Bad request when requesting /termbox with well-formed query for unknown language', ( done ) => {
+		const entityId = 'Q63';
+		const language = 'ylq';
+
+		nockSuccessfulEntityLoading( entityId );
+		nock( WIKIBASE_TEST_API_HOST )
+			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+				action: 'query',
+				meta: 'wbcontentlanguages',
+				wbclcontext: 'term',
+				wbclprop: 'code|name',
+				uselang: language,
+			} )
+			.reply( HttpStatus.OK, {
+				batchcomplete: '',
+				query: {
+					wbcontentlanguages: {
+						en: {
+							code: 'en',
+							name: 'English',
+						},
+						de: {
+							code: 'de',
+							name: 'German',
+						},
+					},
+				},
+			} );
+
+		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
+			expect( response.text ).toContain( 'Bad request. Language not existing' );
+			done();
+		} );
+	} );
+
 	it( 'renders Not found when requesting /termbox with well-formed query for unknown entity', ( done ) => {
 		const entityId = 'Q63';
 		const language = 'de';
 
-		nockSuccessfulLanguageTranslationLoading( 'de' );
+		nockSuccessfulLanguageLoading( 'de' );
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q63&action=wbgetentities' )
 			.reply( HttpStatus.OK, {
@@ -167,7 +203,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const language = 'de';
 
-		nockSuccessfulLanguageTranslationLoading( language );
+		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulEntityLoading( entityId );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {

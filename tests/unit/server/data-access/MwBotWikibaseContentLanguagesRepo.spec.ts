@@ -1,24 +1,24 @@
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import TranslationLanguageNotFound from '@/common/data-access/error/TranslationLanguageNotFound';
-import WikibaseApiLanguageRepository from '@/server/data-access/WikibaseApiLanguageRepository';
+import MwBotWikibaseContentLanguagesRepo from '@/server/data-access/MwBotWikibaseContentLanguagesRepo';
 import mwbot from 'mwbot';
-import LanguageTranslations from '@/datamodel/LanguageTranslations';
+import { WikibaseApiContentLanguages } from '@/server/data-access/WikibaseContentLanguagesRepo';
 
-function newWikibaseApiLanguageRepository( bot: any ) {
-	return new WikibaseApiLanguageRepository(
+function newMwBotWikibaseContentLanguagesRepo( bot: any ) {
+	return new MwBotWikibaseContentLanguagesRepo(
 		bot,
 	);
 }
 
-describe( 'WikibaseApiLanguageRepository', () => {
+describe( 'MwBotWikibaseContentLanguagesRepo', () => {
 
 	it( 'can be constructed with mwbot', () => {
-		expect( newWikibaseApiLanguageRepository( new mwbot( {} ) ) )
-			.toBeInstanceOf( WikibaseApiLanguageRepository );
+		expect( newMwBotWikibaseContentLanguagesRepo( new mwbot( {} ) ) )
+			.toBeInstanceOf( MwBotWikibaseContentLanguagesRepo );
 	} );
 
-	describe( 'getLanguageName', () => {
-		it( 'creates a well-formed wbcontentlanguages query', ( done ) => {
+	describe( 'getContentLanguages', () => {
+		it( 'creates a well-formed wbcontentlanguages query with uselang', ( done ) => {
 			const inLanguage = 'de';
 			const bot = {
 				request: ( params: object ) => {
@@ -34,27 +34,48 @@ describe( 'WikibaseApiLanguageRepository', () => {
 				},
 			};
 
-			const repo = newWikibaseApiLanguageRepository( bot );
-			repo.getLanguagesInLanguage( inLanguage ).catch( () => {
+			const repo = newMwBotWikibaseContentLanguagesRepo( bot );
+			repo.getContentLanguages( inLanguage ).catch( () => {
 				done();
 			} );
 		} );
 
-		it( 'resolves to a language name on success', ( done ) => {
+		it( 'creates a well-formed wbcontentlanguages query without uselang', ( done ) => {
+			const bot = {
+				request: ( params: object ) => {
+					expect( params ).toEqual( {
+						action: 'query',
+						meta: 'wbcontentlanguages',
+						wbclcontext: 'term',
+						wbclprop: 'code|name',
+					} );
+
+					return Promise.reject( 'This test focuses on the request.' );
+				},
+			};
+
+			const repo = newMwBotWikibaseContentLanguagesRepo( bot );
+			repo.getContentLanguages( null ).catch( () => {
+				done();
+			} );
+		} );
+
+		it( 'resolves to languages on success', ( done ) => {
 			const inLanguage = 'de';
+			const languages: WikibaseApiContentLanguages = {
+				en: {
+					code: 'en',
+					name: 'Englisch',
+				},
+				de: {
+					code: 'de',
+					name: 'Deutsch',
+				},
+			};
 			const results = {
 				batchcomplete: '',
 				query: {
-					wbcontentlanguages: {
-						en: {
-							code: 'en',
-							name: 'Englisch',
-						},
-						de: {
-							code: 'de',
-							name: 'Deutsch',
-						},
-					},
+					wbcontentlanguages: languages,
 				},
 			};
 			const bot = {
@@ -63,14 +84,9 @@ describe( 'WikibaseApiLanguageRepository', () => {
 				},
 			};
 
-			const repo = newWikibaseApiLanguageRepository( bot );
-			repo.getLanguagesInLanguage( inLanguage ).then( ( languageTranslations: LanguageTranslations ) => {
-				expect( languageTranslations ).toEqual( {
-					[ inLanguage ]: {
-						en: 'Englisch',
-						de: 'Deutsch',
-					},
-				} as LanguageTranslations );
+			const repo = newMwBotWikibaseContentLanguagesRepo( bot );
+			repo.getContentLanguages( inLanguage ).then( ( resultLanguages: WikibaseApiContentLanguages ) => {
+				expect( resultLanguages ).toBe( languages );
 				done();
 			} );
 		} );
@@ -86,8 +102,8 @@ describe( 'WikibaseApiLanguageRepository', () => {
 				},
 			};
 
-			const repo = newWikibaseApiLanguageRepository( bot );
-			repo.getLanguagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
+			const repo = newMwBotWikibaseContentLanguagesRepo( bot );
+			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'wbcontentlanguages result not well formed.' );
 				done();
@@ -108,8 +124,8 @@ describe( 'WikibaseApiLanguageRepository', () => {
 				},
 			};
 
-			const repo = newWikibaseApiLanguageRepository( bot );
-			repo.getLanguagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
+			const repo = newMwBotWikibaseContentLanguagesRepo( bot );
+			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'wbcontentlanguages result not well formed.' );
 				done();
@@ -135,41 +151,10 @@ describe( 'WikibaseApiLanguageRepository', () => {
 				},
 			};
 
-			const repo = newWikibaseApiLanguageRepository( bot );
-			repo.getLanguagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
+			const repo = newMwBotWikibaseContentLanguagesRepo( bot );
+			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TranslationLanguageNotFound );
 				expect( reason.message ).toEqual( 'Asked for data in a language that itself is not existing.' );
-				done();
-			} );
-		} );
-
-		it( 'rejects in case a found language lacks the name property', ( done ) => {
-			const inLanguage = 'de';
-			const language = {
-				code: 'en',
-			};
-			const results = {
-				batchcomplete: '',
-				query: {
-					wbcontentlanguages: {
-						en: language,
-						de: {
-							code: 'de',
-							name: 'Deutsch',
-						},
-					},
-				},
-			};
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( results );
-				},
-			};
-
-			const repo = newWikibaseApiLanguageRepository( bot );
-			repo.getLanguagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
-				expect( reason ).toBeInstanceOf( TechnicalProblem );
-				expect( reason.message ).toEqual( 'Error: Name for a language not given.' );
 				done();
 			} );
 		} );
@@ -181,12 +166,13 @@ describe( 'WikibaseApiLanguageRepository', () => {
 					return Promise.reject( new Error( 'invalidjson: No valid JSON response.' ) );
 				},
 			};
-			const repo = newWikibaseApiLanguageRepository( bot );
-			repo.getLanguagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
+			const repo = newMwBotWikibaseContentLanguagesRepo( bot );
+			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'Error: invalidjson: No valid JSON response.' );
 				done();
 			} );
 		} );
 	} );
+
 } );

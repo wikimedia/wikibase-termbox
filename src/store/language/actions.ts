@@ -12,24 +12,11 @@ import LanguageCollection from '@/datamodel/LanguageCollection';
 export const actions: ActionTree<LanguageState, any> = {
 
 	[ LANGUAGE_INIT ]( context: ActionContext<LanguageState, any> ): Promise<void> {
-		// TODO commit dynamic list from upstream source
-		// TODO same api. how to do only one call?
-		context.commit( LANGUAGE_UPDATE, {
-			en: {
-				code: 'en',
-				directionality: 'ltr',
-			},
-			de: {
-				code: 'de',
-				directionality: 'ltr',
-			},
-			ar: {
-				code: 'ar',
-				directionality: 'rtl',
-			},
-		} as LanguageCollection );
-
-		return Promise.resolve();
+		return factory.getLanguageRepository()
+			.getLanguages()
+			.then( ( languages: LanguageCollection ) => {
+				context.commit( LANGUAGE_UPDATE, languages );
+			} );
 	},
 
 	[ ENSURE_AVAILABLE_IN_LANGUAGE ]( context: ActionContext<LanguageState, any>, inLanguage: string ): Promise<void> {

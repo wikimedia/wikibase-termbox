@@ -13,6 +13,7 @@ Vue.config.productionTip = false;
 factory.setLanguageTranslationRepository(
 	new UlsLanguageTranslationRepository( ( window as MwWindow ).wb.getLanguageNameByCode ),
 );
+// TODO factory.setLanguageRepository( languageRepo );
 factory.setEntityRepository( new EntityRepository(
 	( window as MwWindow ).mw.hook( Hooks.entityLoaded ),
 ) );

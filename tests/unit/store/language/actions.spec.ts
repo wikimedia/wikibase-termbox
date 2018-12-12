@@ -25,7 +25,11 @@ describe( 'language/actions', () => {
 					directionality: 'rtl',
 				},
 			} as LanguageCollection;
-
+			const getLanguagesMock = jest.fn();
+			getLanguagesMock.mockResolvedValue( languages );
+			factory.setLanguageRepository( {
+				getLanguages: getLanguagesMock,
+			} );
 			const commitMock = jest.fn();
 			const context = {
 				commit: commitMock,

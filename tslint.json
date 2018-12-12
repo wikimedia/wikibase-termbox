@@ -14,7 +14,8 @@
     "quotemark": [true, "single"],
     "interface-name": false,
     "ordered-imports": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "import-spacing": false
   },
   "jsRules": {
     "quotemark": [ true, "single" ],

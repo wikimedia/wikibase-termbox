@@ -1,5 +1,6 @@
 export enum ErrorReason {
-	EntityNotFound,
+	EntityNotFound = 'EntityNotFound',
+	LanguageNotFound = 'LanguageNotFound',
 }
 
 /**

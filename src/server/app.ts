@@ -31,6 +31,8 @@ app.get( '/termbox', ( request, response ) => {
 			} else if ( err.constructor.name === BundleBoundaryPassingException.name ) {
 				if ( err.reason === ErrorReason.EntityNotFound ) {
 					response.status( HttpStatus.NOT_FOUND ).send( 'Entity not found' );
+				} else if ( err.reason === ErrorReason.LanguageNotFound ) {
+					response.status( HttpStatus.BAD_REQUEST ).send( 'Bad request. Language not existing' );
 				}
 			} else {
 				response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem ' + JSON.stringify( err ) );
