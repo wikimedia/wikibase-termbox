@@ -1,8 +1,7 @@
 import request from 'supertest';
 import mockQ64 from '@/mock-data/data/Q64_data.json';
-import app from '@/server/app';
+import createApp from '@/server/app';
 import nock from 'nock';
-import { config } from '@/server/TermboxConfig';
 import 'jest-dom/extend-expect';
 import HttpStatus from 'http-status-codes';
 import Vue from 'vue';
@@ -15,10 +14,10 @@ import Vue from 'vue';
  */
 Vue.config.productionTip = false;
 
-const wikibaseRepoApi = new URL( config.getWikibaseRepoApi() );
+const WIKIBASE_TEST_API_HOST = 'http://mw.testonly.localhost';
+const WIKIBASE_TEST_API_PATH = '/mediawiki/api.php';
 
-const WIKIBASE_TEST_API_HOST = wikibaseRepoApi.origin;
-const WIKIBASE_TEST_API_PATH = wikibaseRepoApi.pathname;
+const app = createApp( WIKIBASE_TEST_API_HOST + WIKIBASE_TEST_API_PATH );
 
 const germanInGerman = 'Deutsch';
 

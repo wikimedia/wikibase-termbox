@@ -1,11 +1,8 @@
 import buildApp from '@/common/buildApp';
-import { config } from './server/TermboxConfig';
 import { factory } from './common/TermboxFactory';
 import MwBotWikibaseFingerprintableEntityRepo from './server/data-access/MwBotWikibaseFingerprintableEntityRepo';
-import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
 import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
-import TermboxRequest from '@/common/TermboxRequest';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import MwBotWikibaseContentLanguagesRepo from './server/data-access/MwBotWikibaseContentLanguagesRepo';
 import TranslationLanguageNotFound from './common/data-access/error/TranslationLanguageNotFound';
@@ -13,11 +10,10 @@ import ContentLanguagesLanguageTranslationRepo from './server/data-access/Conten
 import ContentLanguagesLanguageRepo from './server/data-access/ContentLanguagesLanguageRepo';
 import WaitingForLanguageWikibaseContentLanguagesRepo
 	from './server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
+import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
 
-export default ( termboxRequest: TermboxRequest ) => {
-	const apiBot = new mwbot( {
-		apiUrl: config.getWikibaseRepoApi(), // TODO test
-	} );
+export default ( context: BundleRendererContext ) => {
+	const apiBot = context.services.mediawikiBot;
 
 	const languageRepo = new WaitingForLanguageWikibaseContentLanguagesRepo(
 		new MwBotWikibaseContentLanguagesRepo(
@@ -38,7 +34,7 @@ export default ( termboxRequest: TermboxRequest ) => {
 		),
 	);
 
-	return buildApp( termboxRequest ).catch( ( err: any ) => {
+	return buildApp( context.request ).catch( ( err: any ) => {
 		if ( err instanceof EntityNotFound ) {
 			throw new BundleBoundaryPassingException( ErrorReason.EntityNotFound );
 		} else if ( err instanceof TranslationLanguageNotFound ) {

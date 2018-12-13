@@ -32,6 +32,9 @@ services:
         aliases:
           - 'node-ssr'
       default: ~
+    environment:
+      - SSR_PORT
+      - WIKIBASE_REPO_API
 
 networks:
   mediawiki_dev_network:
