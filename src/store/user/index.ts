@@ -8,7 +8,7 @@ const state: User = {
 	primaryLanguage: '',
 };
 
-const namespaced: boolean = true;
+const namespaced = true;
 
 export const user: Module<User, any> = {
 	namespaced,

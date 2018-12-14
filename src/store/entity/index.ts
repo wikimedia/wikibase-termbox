@@ -11,7 +11,7 @@ const state: Entity = {
 	aliases: {},
 };
 
-const namespaced: boolean = true;
+const namespaced = true;
 
 export const entity: Module<Entity, any> = {
 	namespaced,

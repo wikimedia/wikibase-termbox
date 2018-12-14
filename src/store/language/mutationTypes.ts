@@ -1,2 +1,2 @@
-export const LANGUAGE_TRANSLATION_UPDATE: string = 'translationUpdate';
-export const LANGUAGE_UPDATE: string = 'languageUpdate';
+export const LANGUAGE_TRANSLATION_UPDATE = 'translationUpdate';
+export const LANGUAGE_UPDATE = 'languageUpdate';

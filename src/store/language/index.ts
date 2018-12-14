@@ -9,7 +9,7 @@ const state: LanguageState = {
 	languages: {},
 };
 
-const namespaced: boolean = true;
+const namespaced = true;
 
 export const language: Module<LanguageState, any> = {
 	namespaced,

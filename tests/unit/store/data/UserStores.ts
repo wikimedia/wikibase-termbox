@@ -2,7 +2,7 @@ import { Module } from 'vuex';
 import User from '@/store/user/User';
 import { getters } from '@/store/user/getters';
 
-const namespaced: boolean = false;
+const namespaced = false;
 
 let state: User = {
 	primaryLanguage: '',
