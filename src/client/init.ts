@@ -1,5 +1,5 @@
 import TermboxRequest from '@/common/TermboxRequest';
-import MwWindow from '@/client/MwWindow';
+import MwWindow from '@/client/mediawiki/MwWindow';
 
 export default () => {
 	return new Promise<TermboxRequest>( ( resolve ) => {

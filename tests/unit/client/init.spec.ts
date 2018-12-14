@@ -1,7 +1,7 @@
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import init from '@/client/init';
 import TermboxRequest from '@/common/TermboxRequest';
-import MwWindow from '../../../src/client/MwWindow';
+import MwWindow from '@/client/mediawiki/MwWindow';
 
 function mockMwEnv( language: string, entityId: any ) {
 	( window as MwWindow ).mw = {

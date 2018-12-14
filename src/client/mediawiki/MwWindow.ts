@@ -1,13 +1,12 @@
-interface MwHookHandler {
-	add: ( hookCallback: ( args: any ) => void ) => void;
-}
+import HookHandler from '@/client/mediawiki/HookHandler';
+import { Hooks } from '@/client/mediawiki/Hooks';
 
 interface MwConfig {
 	get( key: string ): any;
 }
 
 interface MediaWiki {
-	hook: ( key: string ) => MwHookHandler;
+	hook: ( key: Hooks ) => HookHandler;
 	config: MwConfig;
 }
 
