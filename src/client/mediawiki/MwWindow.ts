@@ -10,8 +10,14 @@ interface MediaWiki {
 	config: MwConfig;
 }
 
+export interface WikibaseContentLanguages {
+	getAllPairs: () => any;
+}
+
 interface Wikibase {
-	getLanguageNameByCode( languageCode: string ): string;
+	WikibaseContentLanguages: {
+		new(): WikibaseContentLanguages;
+	};
 }
 
 export default interface MwWindow extends Window {

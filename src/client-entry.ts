@@ -11,7 +11,7 @@ import { Hooks } from '@/client/mediawiki/Hooks';
 Vue.config.productionTip = false;
 
 factory.setLanguageTranslationRepository(
-	new UlsLanguageTranslationRepository( ( window as MwWindow ).wb.getLanguageNameByCode ),
+	new UlsLanguageTranslationRepository( new ( window as MwWindow ).wb.WikibaseContentLanguages() ),
 );
 // TODO factory.setLanguageRepository( languageRepo );
 factory.setEntityRepository( new EntityRepository(

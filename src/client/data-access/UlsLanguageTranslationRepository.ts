@@ -1,24 +1,23 @@
 import LanguageTranslationRepository from '@/common/data-access/LanguageTranslationRepository';
-import LanguageTranslations from '@/datamodel/LanguageTranslations';
-
-export type LanguageNameInUserLangCallback = ( languageCode: string ) => string;
+import LanguageTranslations, { StringTMap } from '@/datamodel/LanguageTranslations';
+import { WikibaseContentLanguages } from '@/client/mediawiki/MwWindow';
 
 export default class UlsLanguageTranslationRepository implements LanguageTranslationRepository {
 
-	private readonly getLanguageNameInUserLang: LanguageNameInUserLangCallback;
-
-	public constructor( getLanguageNameByCode: LanguageNameInUserLangCallback ) {
-		this.getLanguageNameInUserLang = getLanguageNameByCode;
+	private contentLanguages: WikibaseContentLanguages;
+	constructor( contentLanguages: WikibaseContentLanguages ) {
+		this.contentLanguages = contentLanguages;
 	}
 
 	public getLanguagesInLanguage( inLanguage: string ): Promise<LanguageTranslations> {
 		return new Promise<LanguageTranslations>( ( resolve ) => {
 			resolve( {
-				[inLanguage]: {
-					[inLanguage]: this.getLanguageNameInUserLang( inLanguage ),
-				},
+				[inLanguage]: this.getLanguagesNames(),
 			} as LanguageTranslations );
 		} );
 	}
 
+	private getLanguagesNames(): StringTMap<string> {
+		return this.contentLanguages.getAllPairs();
+	}
 }
