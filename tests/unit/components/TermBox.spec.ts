@@ -6,11 +6,13 @@ import {
 	NS_ENTITY,
 	NS_USER,
 	NS_LANGUAGE,
+	NS_LINKS,
 } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
 
 const localVue = createLocalVue();
 const langDe = 'Deutsch';
@@ -125,4 +127,14 @@ describe( 'TermBox.vue', () => {
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		expect( wrapper.find( '.wikibase-termbox__aliases--placeholder' ).text() ).toBe( '?' );
 	} );
+
+	it( 'contains an edit link', () => {
+		const editLinkUrl = '/edit/Q42';
+		store.commit( `${NS_LINKS}/${EDIT_LINK_URL_UPDATE}`, editLinkUrl );
+		const wrapper = shallowMount( TermBox, { store, localVue } );
+
+		expect( wrapper.find( '.wikibase-termbox__action-edit a' ).attributes( 'href' ) )
+			.toBe( editLinkUrl );
+	} );
+
 } );

@@ -6,9 +6,12 @@ import * as directionalities from '@/mock-data/data/en_lang_dir_data.json';
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import MwWindow from '@/client/mediawiki/MwWindow';
 
+/* tslint:disable:max-classes-per-file */
+
 ( window as MwWindow ).mw = {
 	config: new MWConfig(),
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
+	Title: class Title { public getUrl() { return '/edit/' + entity.id; } },
 };
 
 class MockupWikibaseContentLanguages {

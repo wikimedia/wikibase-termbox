@@ -11,7 +11,7 @@ jest.mock( '@/common/buildApp', () => ( {
 
 describe( 'server-entry', () => {
 	it( 'converts bundle internal EntityNotFound exception to DTO', ( done ) => {
-		const request = new TermboxRequest( 'en', 'Q4711' );
+		const request = new TermboxRequest( 'en', 'Q4711', '/edit/Q4711' );
 
 		mockBuildApp.mockReturnValue( Promise.reject( new EntityNotFound( 'bad entity id' ) ) );
 
@@ -23,7 +23,7 @@ describe( 'server-entry', () => {
 	} );
 
 	it( 'rethrows exceptions without custom propagation handling', ( done ) => {
-		const request = new TermboxRequest( 'en', 'Q4711' );
+		const request = new TermboxRequest( 'en', 'Q4711', '/edit/Q4711' );
 		const someException = new Error( 'mine' );
 
 		mockBuildApp.mockReturnValue( Promise.reject( someException ) );

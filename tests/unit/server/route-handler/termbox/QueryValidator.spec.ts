@@ -20,13 +20,13 @@ describe( 'QueryValidator', () => {
 		);
 
 		test.each( [
-			[ { entity: 'Q2', language: 'de' } ],
-			[ { entity: 'P1', language: 'en' } ],
-			[ { entity: 'Q45121097', language: 'ru' } ],
-			[ { entity: 'P999', language: 'zh' } ],
-			[ { entity: 'Q4711', language: 'crh-Cyrl' } ],
-			[ { entity: 'P8888', language: 'zh-hans-sg' } ],
-			[ { entity: 'P999', language: 'zh', strayvalue: 'ignored' } ],
+			[ { entity: 'Q2', language: 'de', editLink: '/somewhere/Q2' } ],
+			[ { entity: 'P1', language: 'en', editLink: '/somewhere/Q2' } ],
+			[ { entity: 'Q45121097', language: 'ru', editLink: '/somewhere/Q2' } ],
+			[ { entity: 'P999', language: 'zh', editLink: '/somewhere/Q2' } ],
+			[ { entity: 'Q4711', language: 'crh-Cyrl', editLink: '/somewhere/Q2' } ],
+			[ { entity: 'P8888', language: 'zh-hans-sg', editLink: '/somewhere/Q2' } ],
+			[ { entity: 'P999', language: 'zh', strayvalue: 'ignored', editLink: '/somewhere/Q2' } ],
 		] )(
 			'accepts valid request #%# (%o)',
 			( query: object ) => {

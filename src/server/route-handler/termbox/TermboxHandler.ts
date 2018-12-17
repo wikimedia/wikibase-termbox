@@ -25,6 +25,7 @@ export default class TermboxHandler {
 				new TermboxRequest(
 					query.language,
 					query.entity,
+					query.editLink,
 				),
 			);
 		} );

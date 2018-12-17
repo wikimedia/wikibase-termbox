@@ -14,7 +14,11 @@
 				<p class="wikibase-termbox__aliases wikibase-termbox__aliases--placeholder" v-else>?</p>
 			</div>
 		</div>
-		<div class="wikibase-termbox__action"></div>
+		<div class="wikibase-termbox__actions">
+			<div class="wikibase-termbox__action-edit">
+				<a :href="editLinkUrl"></a>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -29,6 +33,7 @@ import {
 	NS_ENTITY,
 	NS_USER,
 	NS_LANGUAGE,
+	NS_LINKS,
 } from '@/store/namespaces';
 import Term from '@/datamodel/Term';
 import message from '@/filter/message';
@@ -49,6 +54,7 @@ interface TermboxBindings extends Vue, EntityBindings {
 
 @Component( {
 	computed: {
+		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [
 			'primaryLanguage',
 		] ),

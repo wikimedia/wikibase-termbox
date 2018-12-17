@@ -26,6 +26,9 @@ export default class QueryValidator {
 				},
 			},
 		},
+		editLink: {
+			presence: true,
+		},
 	};
 
 	public getErrors(): object[] {

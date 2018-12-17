@@ -76,6 +76,7 @@ describe( 'Termbox SSR', () => {
 	it( 'renders Server Error when requesting /termbox and entity backend emits malformed response', ( done ) => {
 		const entityId = 'Q64';
 		const language = 'de';
+		const editLink = '/some/' + entityId;
 
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
@@ -86,7 +87,7 @@ describe( 'Termbox SSR', () => {
 				malformed: 'yes',
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
@@ -96,6 +97,7 @@ describe( 'Termbox SSR', () => {
 	it( 'renders Server Error when requesting /termbox and entity backend request fails', ( done ) => {
 		const entityId = 'Q64';
 		const language = 'de';
+		const editLink = '/some';
 
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
@@ -104,7 +106,7 @@ describe( 'Termbox SSR', () => {
 			} )
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
@@ -114,6 +116,7 @@ describe( 'Termbox SSR', () => {
 	it( 'renders Server Error when requesting /termbox and language translation backend request fails', ( done ) => {
 		const entityId = 'Q64';
 		const language = 'de';
+		const editLink = '/some/' + entityId;
 
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
@@ -126,7 +129,7 @@ describe( 'Termbox SSR', () => {
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 		nockSuccessfulEntityLoading( entityId );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 			done();
@@ -144,6 +147,7 @@ describe( 'Termbox SSR', () => {
 	it( 'renders Bad request when requesting /termbox with well-formed query for unknown language', ( done ) => {
 		const entityId = 'Q63';
 		const language = 'ylq';
+		const editLink = '/some/' + entityId;
 
 		nockSuccessfulEntityLoading( entityId );
 		nock( WIKIBASE_TEST_API_HOST )
@@ -170,7 +174,7 @@ describe( 'Termbox SSR', () => {
 				},
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 			expect( response.text ).toContain( 'Bad request. Language not existing' );
 			done();
@@ -180,6 +184,7 @@ describe( 'Termbox SSR', () => {
 	it( 'renders Not found when requesting /termbox with well-formed query for unknown entity', ( done ) => {
 		const entityId = 'Q63';
 		const language = 'de';
+		const editLink = '/some/' + entityId;
 
 		nockSuccessfulLanguageLoading( 'de' );
 		nock( WIKIBASE_TEST_API_HOST )
@@ -192,7 +197,7 @@ describe( 'Termbox SSR', () => {
 				},
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
 			done();
@@ -202,11 +207,12 @@ describe( 'Termbox SSR', () => {
 	it( 'renders the termbox when requesting /termbox with well-formed query for known entity', ( done ) => {
 		const entityId = 'Q64';
 		const language = 'de';
+		const editLink = '/some/' + entityId;
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulEntityLoading( entityId );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.OK );
 
 			const $dom = getDomFromMarkup( response.text );
@@ -225,6 +231,9 @@ describe( 'Termbox SSR', () => {
 				.toHaveTextContent( mockQ64.descriptions.de.value );
 			expect( $dom.querySelectorAll( '.wikibase-termbox__aliases li' ).length )
 				.toBe( mockQ64.aliases.de.length );
+
+			expect( $dom.querySelector( '.wikibase-termbox__action-edit a' ) )
+				.toHaveAttribute( 'href', editLink );
 
 			done();
 		} );

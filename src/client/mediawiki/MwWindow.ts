@@ -5,9 +5,14 @@ interface MwConfig {
 	get( key: string ): any;
 }
 
+interface MwTitle {
+	new( title: string, namespace: number ): any;
+}
+
 interface MediaWiki {
 	hook: ( key: Hooks ) => HookHandler;
 	config: MwConfig;
+	Title: MwTitle;
 }
 
 export interface WikibaseContentLanguages {
