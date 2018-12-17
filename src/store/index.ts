@@ -6,14 +6,16 @@ import { language } from '@/store/language';
 
 Vue.use( Vuex );
 
-// any should be replaced if root gets properties
-const storeBundle: StoreOptions<any> = {
-	modules: {
-		entity,
-		user,
-		language,
-	},
-	strict: process.env.NODE_ENV !== 'production',
-};
+export function createStore () {
+	// any should be replaced if root gets properties
+	const storeBundle: StoreOptions<any> = {
+		modules: {
+			entity,
+			user,
+			language,
+		},
+		strict: process.env.NODE_ENV !== 'production',
+	};
 
-export default new Vuex.Store<any>( storeBundle );
+	return new Vuex.Store<any>( storeBundle );
+}

@@ -7,9 +7,11 @@ jest.mock( '@/common/getChildComponents', () => ( {
 	default: ( app: any ) => mockGetChildComponents( app ),
 } ) );
 
-jest.mock( '@/store' );
-
-import store from '@/store';
+const mockCreateStore = jest.fn();
+jest.mock( '@/store', () => ( {
+	__esModule: true,
+	createStore: () => mockCreateStore(),
+} ) );
 
 describe( 'buildApp', () => {
 
@@ -29,6 +31,9 @@ describe( 'buildApp', () => {
 		const mockAsyncData2 = jest.fn();
 		const mockComponent1 = { asyncData: mockAsyncData1 };
 		const mockComponent2 = { asyncData: mockAsyncData2 };
+
+		const store = {};
+		mockCreateStore.mockReturnValue( store );
 
 		mockAsyncData1.mockReturnValue( Promise.resolve() );
 		mockAsyncData1.mockReturnValue( Promise.resolve() );

@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import TermBox from '@/components/TermBox.vue';
-import store from '@/store/index';
+import { createStore } from '@/store';
 import {
 	NS_ENTITY,
 	NS_USER,
@@ -20,52 +20,54 @@ const descriptionDe = 'Jakob mag potatoes.';
 const aliasesDe = [ 'Antwort auf alles', 'Ihr kennt ja nicht einmal die Frage!' ];
 localVue.use( Vuex );
 
-store.commit(
-`${NS_ENTITY}/${ENTITY_INIT}`,
-	new FingerprintableEntity(
-		'Q42',
-		{
-			de: {
-				language: 'de',
-				value: labelDe,
-			},
-		},
-		{
-			de: {
-				language: 'de',
-				value: descriptionDe,
-			},
-		},
-		{
-			de: [
-				{
-					language: 'de',
-					value: aliasesDe[0],
-				},
-				{
-					language: 'de',
-					value: aliasesDe[1],
-				},
-			],
-		},
-	),
-);
-
-store.commit(
-	`${NS_LANGUAGE }/${LANGUAGE_TRANSLATION_UPDATE}`,
-	{
-		de: {
-			de: langDe,
-			en: 'Englisch',
-		},
-		en: {
-			de: 'German',
-			en: 'English',
-		},
-	} as LanguageTranslations,
-);
-
 describe( 'TermBox.vue', () => {
+	const store = createStore();
+
+	store.commit(
+		`${NS_ENTITY}/${ENTITY_INIT}`,
+		new FingerprintableEntity(
+			'Q42',
+			{
+				de: {
+					language: 'de',
+					value: labelDe,
+				},
+			},
+			{
+				de: {
+					language: 'de',
+					value: descriptionDe,
+				},
+			},
+			{
+				de: [
+					{
+						language: 'de',
+						value: aliasesDe[0],
+					},
+					{
+						language: 'de',
+						value: aliasesDe[1],
+					},
+				],
+			},
+		),
+	);
+
+	store.commit(
+		`${NS_LANGUAGE }/${LANGUAGE_TRANSLATION_UPDATE}`,
+		{
+			de: {
+				de: langDe,
+				en: 'Englisch',
+			},
+			en: {
+				de: 'German',
+				en: 'English',
+			},
+		} as LanguageTranslations,
+	);
+
 	it( 'renders the language label', () => {
 		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
 
