@@ -1,6 +1,5 @@
 const VueSSRServerPlugin = require( 'vue-server-renderer/server-plugin' );
 const VueSSRClientPlugin = require( 'vue-server-renderer/client-plugin' );
-
 const TARGET_NODE = process.env.WEBPACK_TARGET === 'node';
 const DEV_MODE = process.env.WEBPACK_TARGET === 'dev';
 const filePrefix = 'wikibase.termbox.';
