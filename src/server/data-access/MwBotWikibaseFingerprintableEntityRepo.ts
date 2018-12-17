@@ -5,7 +5,7 @@ import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityInitializer from '@/common/EntityInitializer';
 
-export default class MwBotWikibaseRepo implements EntityRepository {
+export default class MwBotWikibaseFingerprintableEntityRepo implements EntityRepository {
 	private bot: mwbot;
 	private entityInitializer: EntityInitializer;
 

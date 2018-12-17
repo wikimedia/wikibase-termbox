@@ -1,21 +1,22 @@
 import EntityInitializer from '@/common/EntityInitializer';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import MwBotWikibaseRepo from '@/server/data-access/MwBotWikibaseRepo';
+import MwBotWikibaseFingerprintableEntityRepo from '@/server/data-access/MwBotWikibaseFingerprintableEntityRepo';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import mwbot from 'mwbot';
 
-function newMwBotWikibaseRepo( bot: any, initializer?: any ) {
-	return new MwBotWikibaseRepo(
+function newMwBotWikibaseFingerprintableEntityRepo( bot: any, initializer?: any ) {
+	return new MwBotWikibaseFingerprintableEntityRepo(
 		bot,
 		initializer || {},
 	);
 }
 
-describe( 'MwBotWikibaseRepo', () => {
+describe( 'MwBotWikibaseFingerprintableEntityRepo', () => {
 
 	it( 'can be constructed with mwbot', () => {
-		expect( newMwBotWikibaseRepo( new mwbot( {} ) ) ).toBeInstanceOf( MwBotWikibaseRepo );
+		expect( newMwBotWikibaseFingerprintableEntityRepo( new mwbot( {} ) ) )
+			.toBeInstanceOf( MwBotWikibaseFingerprintableEntityRepo );
 	} );
 
 	describe( 'getFingerprintableEntity', () => {
@@ -32,7 +33,7 @@ describe( 'MwBotWikibaseRepo', () => {
 				},
 			};
 
-			const repo = newMwBotWikibaseRepo( bot );
+			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
 			repo.getFingerprintableEntity( entityId ).catch( () => {
 				done();
 			} );
@@ -75,7 +76,7 @@ describe( 'MwBotWikibaseRepo', () => {
 				},
 			};
 
-			const repo = newMwBotWikibaseRepo( bot, new EntityInitializer() );
+			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot, new EntityInitializer() );
 			repo.getFingerprintableEntity( entityId ).then( ( result: FingerprintableEntity ) => {
 				expect( result ).toBeInstanceOf( FingerprintableEntity );
 				expect( result.id ).toEqual( entity.id );
@@ -93,7 +94,7 @@ describe( 'MwBotWikibaseRepo', () => {
 					return Promise.resolve( {} );
 				},
 			};
-			const repo = newMwBotWikibaseRepo( bot );
+			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'wbgetentities result not well formed.' );
@@ -115,7 +116,7 @@ describe( 'MwBotWikibaseRepo', () => {
 					} );
 				},
 			};
-			const repo = newMwBotWikibaseRepo( bot );
+			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
 				expect( reason.message ).toEqual( 'wbgetentities result does not contain relevant entity.' );
@@ -136,7 +137,7 @@ describe( 'MwBotWikibaseRepo', () => {
 					} );
 				},
 			};
-			const repo = newMwBotWikibaseRepo( bot );
+			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
 				expect( reason.message ).toEqual( 'Entity flagged missing in response.' );
@@ -151,7 +152,7 @@ describe( 'MwBotWikibaseRepo', () => {
 					return Promise.reject( new Error( 'invalidjson: No valid JSON response' ) );
 				},
 			};
-			const repo = newMwBotWikibaseRepo( bot );
+			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'Error: invalidjson: No valid JSON response' );
@@ -177,7 +178,7 @@ describe( 'MwBotWikibaseRepo', () => {
 					throw new Error( 'initializer sad' );
 				},
 			};
-			const repo = newMwBotWikibaseRepo( bot, initializer );
+			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot, initializer );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'initializer sad' );

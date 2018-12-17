@@ -1,7 +1,7 @@
 import buildApp from '@/common/buildApp';
 import { config } from './server/TermboxConfig';
 import { factory } from './common/TermboxFactory';
-import MwBotWikibaseRepo from './server/data-access/MwBotWikibaseRepo';
+import MwBotWikibaseFingerprintableEntityRepo from './server/data-access/MwBotWikibaseFingerprintableEntityRepo';
 import mwbot from 'mwbot';
 import EntityInitializer from './common/EntityInitializer';
 import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
@@ -32,7 +32,7 @@ export default ( termboxRequest: TermboxRequest ) => {
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
 	factory.setEntityRepository(
-		new MwBotWikibaseRepo(
+		new MwBotWikibaseFingerprintableEntityRepo(
 			apiBot,
 			new EntityInitializer(),
 		),
