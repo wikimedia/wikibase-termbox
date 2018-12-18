@@ -1,5 +1,5 @@
 import fs from 'fs';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { createBundleRenderer } from 'vue-server-renderer';
 import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import QueryValidator from './route-handler/termbox/QueryValidator';
@@ -14,7 +14,7 @@ const renderer = createBundleRenderer(
 	{ runInNewContext: false },
 );
 
-app.get( '/termbox', ( request, response ) => {
+app.get( '/termbox', ( request: Request, response: Response ) => {
 	const termboxHandler = new TermboxHandler(
 		new QueryValidator(),
 	);
