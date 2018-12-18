@@ -9,7 +9,7 @@
 				<ul v-if="hasAliases" class="wikibase-termbox__aliases">
 					<li v-for="alias in aliases"
 						class="wikibase-termbox__alias"
-						:data-separator="'wikibase-termbox-alias-separator' | message">{{ alias.value }}</li>
+						:data-separator="message( messageKeys.ALIAS_SEPARATOR )">{{ alias.value }}</li>
 				</ul>
 				<p class="wikibase-termbox__aliases wikibase-termbox__aliases--placeholder" v-else>?</p>
 			</div>
@@ -22,22 +22,19 @@
 
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
-import Component from 'vue-class-component';
+import Component, { mixins } from 'vue-class-component';
+import Messages, { MessagesMixin } from './mixins/Messages';
 import {
 	mapState,
 	mapGetters,
 } from 'vuex';
 import {
 	NS_ENTITY,
-	NS_USER,
 	NS_LANGUAGE,
 	NS_LINKS,
 } from '@/store/namespaces';
 import Term from '@/datamodel/Term';
-import message from '@/filter/message';
 import EditPen from '@/components/EditPen.vue';
-
-Vue.filter( 'message', message );
 
 interface EntityBindings {
 	entityLabel: ( languageCode: string ) => Term;
@@ -45,9 +42,7 @@ interface EntityBindings {
 	entityAliases: ( languageCode: string ) => Term[];
 }
 
-interface TermboxBindings extends Vue, EntityBindings {
-	primaryLanguage: string;
-
+interface TermboxBindings extends Vue, EntityBindings, MessagesMixin {
 	getLanguageTranslation( language: string, inLanguage: string ): string;
 }
 
@@ -55,9 +50,6 @@ interface TermboxBindings extends Vue, EntityBindings {
 	components: { EditPen },
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
-		...mapState( NS_USER, [
-			'primaryLanguage',
-		] ),
 		...mapGetters( NS_ENTITY, {
 			entityLabel: 'getLabelByLanguage',
 			entityDescription: 'getDescriptionByLanguage',
@@ -68,7 +60,7 @@ interface TermboxBindings extends Vue, EntityBindings {
 		} ),
 	},
 } )
-export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) {
+export default class TermBox extends ( mixins( Messages ) as VueConstructor<TermboxBindings> ) {
 	get label(): string {
 		const label: Term = this.entityLabel( this.primaryLanguage );
 		if ( label === null ) {

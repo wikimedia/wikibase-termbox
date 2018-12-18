@@ -1,3 +1,5 @@
+import * as Messages from './data/de_messages_data.json';
+
 export default class MockMwMessages {
 	public static message( key: string ) {
 		return {
@@ -6,7 +8,6 @@ export default class MockMwMessages {
 			},
 		};
 	}
-	private static messages: any = {
-		'wikibase-edit': 'bearbeiten',
-	};
+
+	private static messages = Messages.default;
 }
