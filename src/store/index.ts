@@ -4,6 +4,7 @@ import createEntity from './entity';
 import createUser from './user';
 import createLanguage from './language';
 import createLinks from './links';
+import createMessages from './messages';
 
 Vue.use( Vuex );
 
@@ -14,6 +15,7 @@ export function createStore () {
 			user: createUser(),
 			language: createLanguage(),
 			links: createLinks(),
+			messages: createMessages(),
 		},
 		strict: process.env.NODE_ENV !== 'production',
 	};
