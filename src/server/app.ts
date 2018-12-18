@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { resolve } from 'path';
 import express, { Request, Response } from 'express';
 import { createBundleRenderer } from 'vue-server-renderer';
 import TermboxHandler from './route-handler/termbox/TermboxHandler';
@@ -8,9 +8,8 @@ import HttpStatus from 'http-status-codes';
 import BundleBoundaryPassingException, { ErrorReason } from './exceptions/BundleBoundaryPassingException';
 
 const app = express();
-const serverBundle = fs.readFileSync( './serverDist/vue-ssr-server-bundle.json' );
 const renderer = createBundleRenderer(
-	JSON.parse( serverBundle.toString() ),
+	resolve( './serverDist/vue-ssr-server-bundle.json' ),
 	{ runInNewContext: false },
 );
 
