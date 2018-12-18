@@ -45,7 +45,7 @@ describe( 'ContentLanguagesLanguageTranslationRepo', () => {
 						en: 'Englisch',
 						de: 'Deutsch',
 					},
-				} as LanguageTranslations );
+				} );
 				done();
 			} );
 		} );

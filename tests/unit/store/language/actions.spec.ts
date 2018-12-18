@@ -11,7 +11,7 @@ import LanguageCollection from '@/datamodel/LanguageCollection';
 describe( 'language/actions', () => {
 	describe( LANGUAGE_INIT, () => {
 		it( 'commits a fixed set of languages and returns a resolved promise', ( done ) => {
-			const languages = {
+			const languages: LanguageCollection = {
 				en: {
 					code: 'en',
 					directionality: 'ltr',
@@ -24,7 +24,7 @@ describe( 'language/actions', () => {
 					code: 'ar',
 					directionality: 'rtl',
 				},
-			} as LanguageCollection;
+			};
 			const getLanguagesMock = jest.fn();
 			getLanguagesMock.mockResolvedValue( languages );
 			factory.setLanguageRepository( {
@@ -49,12 +49,12 @@ describe( 'language/actions', () => {
 	describe( ENSURE_AVAILABLE_IN_LANGUAGE, () => {
 		it( `commits translations to ${LANGUAGE_TRANSLATION_UPDATE} on getLanguagesInLanguage lookup`, ( done ) => {
 			const inLanguage = 'de';
-			const translations = {
+			const translations: LanguageTranslations = {
 				de: {
 					de: 'Deutsch',
 					en: 'Englisch',
 				},
-			} as LanguageTranslations;
+			};
 			factory.setLanguageTranslationRepository( {
 				getLanguagesInLanguage: ( thisInLanguage: string ) => {
 					expect( thisInLanguage ).toBe( inLanguage );

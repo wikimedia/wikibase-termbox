@@ -3,8 +3,8 @@ import { StringTMap } from '@/datamodel/LanguageTranslations';
 
 describe( 'UlsLanguageRepository', () => {
 	it( 'get WikibaseContentLanguages and uls to build a language collection', () => {
-		const langTranslation = { en: 'English', he: 'Hebrew', ar: 'Arabic', de: 'German' } as StringTMap<string>;
-		const langDirs = { en: 'ltr', he: 'rtl', ar: 'rtl', de: 'ltr' } as StringTMap<string>;
+		const langTranslation: StringTMap<string> = { en: 'English', he: 'Hebrew', ar: 'Arabic', de: 'German' };
+		const langDirs: StringTMap<string> = { en: 'ltr', he: 'rtl', ar: 'rtl', de: 'ltr' };
 		const translator = {
 			getAllPairs: () => langTranslation,
 		};

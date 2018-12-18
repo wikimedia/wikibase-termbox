@@ -11,14 +11,14 @@ function newMinimalStore(): LanguageState {
 	return {
 		translations: {},
 		languages: {},
-	} as LanguageState;
+	};
 }
 
 describe( 'language/mutations', () => {
 	describe( LANGUAGE_UPDATE, () => {
 		it( 'contains languages after initialization', () => {
 			const store = newMinimalStore();
-			const languages = {
+			const languages: LanguageCollection = {
 				de: {
 					code: 'de',
 					directionality: 'ltr',
@@ -27,7 +27,7 @@ describe( 'language/mutations', () => {
 					code: 'en',
 					directionality: 'ltr',
 				},
-			} as LanguageCollection;
+			};
 
 			mutations[ LANGUAGE_UPDATE ]( store, languages );
 
@@ -42,7 +42,7 @@ describe( 'language/mutations', () => {
 				directionality: 'ltr',
 			};
 			store.languages.de = originalDe;
-			const languages = {
+			const languages: LanguageCollection = {
 				en: {
 					code: 'en',
 					directionality: 'ltr',
@@ -51,7 +51,7 @@ describe( 'language/mutations', () => {
 					code: 'ar',
 					directionality: 'rtl',
 				},
-			} as LanguageCollection;
+			};
 
 			mutations[ LANGUAGE_UPDATE ]( store, languages );
 
@@ -81,7 +81,7 @@ describe( 'language/mutations', () => {
 
 		it( 'contains entity data after initialization', () => {
 			const store = newMinimalStore();
-			const translations = {
+			const translations: LanguageTranslations = {
 				de: {
 					de: 'Deutsch',
 					en: 'Englisch',
@@ -90,7 +90,7 @@ describe( 'language/mutations', () => {
 					de: 'German',
 					en: 'English',
 				},
-			} as LanguageTranslations;
+			};
 
 			mutations[ LANGUAGE_TRANSLATION_UPDATE ]( store, translations );
 

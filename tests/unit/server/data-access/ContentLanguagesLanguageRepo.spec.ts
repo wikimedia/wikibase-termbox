@@ -2,7 +2,6 @@ import LanguageCollection from '@/datamodel/LanguageCollection';
 import MwBotWikibaseContentLanguagesRepo from '@/server/data-access/MwBotWikibaseContentLanguagesRepo';
 import mwbot from 'mwbot';
 import ContentLanguagesLanguageRepo from '@/server/data-access/ContentLanguagesLanguageRepo';
-import { WikibaseApiContentLanguages } from '@/server/data-access/WikibaseContentLanguagesRepo';
 import RtlDetectLib from 'rtl-detect';
 
 function newWikibaseContentLanguagesRepository( contentLanguagesRepo: any ) {
@@ -30,7 +29,7 @@ describe( 'ContentLanguagesLanguageRepo', () => {
 					code: 'ar',
 					name: 'Arabic',
 				},
-			} as WikibaseApiContentLanguages );
+			} );
 			const contentLanguagesRepo = {
 				getContentLanguages,
 			};
@@ -47,7 +46,7 @@ describe( 'ContentLanguagesLanguageRepo', () => {
 						code: 'ar',
 						directionality: 'rtl',
 					},
-				} as LanguageCollection );
+				} );
 				done();
 			} );
 		} );
@@ -65,7 +64,7 @@ describe( 'ContentLanguagesLanguageRepo', () => {
 					code: 'ar',
 					name: 'Arabic',
 				},
-			} as WikibaseApiContentLanguages );
+			} );
 			const contentLanguagesRepo = {
 				getContentLanguages,
 			};

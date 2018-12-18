@@ -8,7 +8,7 @@ function newMinimalStore( fields: any ): Entity {
 		descriptions: {},
 		aliases: {},
 		...fields,
-	} as Entity;
+	};
 }
 
 describe( 'entity/Getters', () => {

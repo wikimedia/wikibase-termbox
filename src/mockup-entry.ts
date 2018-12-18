@@ -13,7 +13,7 @@ import MwWindow from '@/client/mediawiki/MwWindow';
 
 class MockupWikibaseContentLanguages {
 	public getAllPairs(): StringTMap<string> {
-		return languageMap.default as StringTMap<string>;
+		return languageMap.default;
 	}
 }
 

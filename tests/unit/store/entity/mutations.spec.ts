@@ -12,7 +12,7 @@ function newMinimalStore(): Entity {
 		labels: {},
 		descriptions: {},
 		aliases: {},
-	} as Entity;
+	};
 }
 
 describe( 'entity/mutations', () => {

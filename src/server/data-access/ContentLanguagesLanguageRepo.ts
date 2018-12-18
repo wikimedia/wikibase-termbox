@@ -1,6 +1,5 @@
 import LanguageRepository from '@/common/data-access/LanguageRepository';
 import LanguageCollection from '@/datamodel/LanguageCollection';
-import Language from '@/datamodel/Language';
 import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages } from './WikibaseContentLanguagesRepo';
 import RtlDetectLib from 'rtl-detect';
 
@@ -22,7 +21,7 @@ export default class ContentLanguagesLanguageRepo implements LanguageRepository 
 						// * languages do not have directionality - scripts do
 						// * the configured wikibase instance may have more/different languages
 						directionality: RtlDetectLib.getLangDir( languageCode ),
-					} as Language;
+					};
 				} );
 
 				return languages;

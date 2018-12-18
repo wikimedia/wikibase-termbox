@@ -19,7 +19,7 @@ function newMinimalStore(): LanguageState {
 				en: 'English',
 			},
 		},
-	} as LanguageState;
+	};
 }
 
 describe( 'language/Getters', () => {

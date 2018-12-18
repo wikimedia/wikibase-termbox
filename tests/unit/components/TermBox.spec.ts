@@ -11,7 +11,6 @@ import { ENTITY_INIT } from '@/store/entity/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import LanguageTranslations from '@/datamodel/LanguageTranslations';
 
 const localVue = createLocalVue();
 const langDe = 'Deutsch';
@@ -65,7 +64,7 @@ describe( 'TermBox.vue', () => {
 				de: 'German',
 				en: 'English',
 			},
-		} as LanguageTranslations,
+		},
 	);
 
 	it( 'renders the language label', () => {
