@@ -11,6 +11,7 @@ import ContentLanguagesLanguageRepo from './server/data-access/ContentLanguagesL
 import WaitingForLanguageWikibaseContentLanguagesRepo
 	from './server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
 import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
+import MessagesRepository from '@/common/data-access/MessagesRepository';
 
 export default ( context: BundleRendererContext ) => {
 	const apiBot = context.services.mediawikiBot;
@@ -33,6 +34,11 @@ export default ( context: BundleRendererContext ) => {
 			new EntityInitializer(),
 		),
 	);
+	factory.setMessagesRepository( ( { // TODO this is a dummy
+		getMessagesInLanguage( inLanguage: string ) {
+			return Promise.resolve( {} );
+		},
+	} as any ) as MessagesRepository );
 
 	return buildApp( context.request ).catch( ( err: any ) => {
 		if ( err instanceof EntityNotFound ) {

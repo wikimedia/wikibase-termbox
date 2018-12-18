@@ -1,7 +1,7 @@
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import init from '@/client/init';
 import TermboxRequest from '@/common/TermboxRequest';
-import MwWindow from '@/client/mediawiki/MwWindow';
+import MwWindow, { MwMessage } from '@/client/mediawiki/MwWindow';
 
 function mockMwEnv( language: string, entityId: any, namespaces: any = null, title: any = null ) {
 	( window as MwWindow ).mw = {
@@ -23,6 +23,11 @@ function mockMwEnv( language: string, entityId: any, namespaces: any = null, tit
 				getUrl: jest.fn(),
 			};
 		} ),
+		message: ( key: string, ...params: string[] ): MwMessage =>  {
+			return {
+				text: () => '',
+			};
+		},
 	};
 }
 

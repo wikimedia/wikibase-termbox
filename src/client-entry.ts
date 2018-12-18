@@ -5,6 +5,7 @@ import TermboxRequest from '@/common/TermboxRequest';
 import { factory } from '@/common/TermboxFactory';
 import UlsLanguageTranslationRepository from '@/client/data-access/UlsLanguageTranslationRepository';
 import UlsLanguageRepository from '@/client/data-access/UlsLanguageRepository';
+import MessagesRepository from '@/client/data-access/MessagesRepository';
 import EntityRepository from '@/client/data-access/EntityRepository';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
@@ -22,6 +23,12 @@ factory.setLanguageRepository(
 	new UlsLanguageRepository(
 		contentLanguages,
 		( window as MwWindow ).$.uls.data,
+	),
+);
+
+factory.setMessagesRepository(
+	new MessagesRepository(
+		( window as MwWindow ).mw.message,
 	),
 );
 

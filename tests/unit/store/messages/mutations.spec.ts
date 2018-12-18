@@ -23,7 +23,5 @@ describe( 'message/mutations', () => {
 			expect( store.messages.de.test ).toBe( messages.de.test );
 			expect( store.messages.de.test3 ).toBe( messages.de.test3 );
 		} );
-
 	} );
-
 } );

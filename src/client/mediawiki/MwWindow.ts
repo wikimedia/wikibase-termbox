@@ -7,10 +7,17 @@ interface MwConfig {
 
 type MwTitle = new( title: string, namespace: number ) => any;
 
+export interface MwMessage {
+	text: () => string;
+}
+
+export type MwMessages = ( key: string, ...params: string[] ) => MwMessage;
+
 interface MediaWiki {
 	hook: ( key: Hooks ) => HookHandler;
 	config: MwConfig;
 	Title: MwTitle;
+	message: MwMessages;
 }
 
 export interface WikibaseContentLanguages {

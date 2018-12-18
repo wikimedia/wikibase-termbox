@@ -43,6 +43,7 @@ export default class App extends ( Vue as VueConstructor<AppBindings> ) {
 			store.dispatch( `${NS_ENTITY}/${ENTITY_INIT}`, request.entityId ),
 			store.dispatch( `${NS_USER}/${LANGUAGE_PREFERENCE}`, request.language ),
 			store.dispatch( `${NS_LINKS}/${EDIT_LINK_URL_INIT}`, request.editLinkUrl ),
+			/* Messages are dispatched in src/store/user/actions.ts */
 		] );
 	}
 

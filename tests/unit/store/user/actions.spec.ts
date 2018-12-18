@@ -1,8 +1,12 @@
 import { actions } from '@/store/user/actions';
 import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
-import { NS_LANGUAGE } from '@/store/namespaces';
+import {
+	NS_LANGUAGE,
+	NS_MESSAGES,
+} from '@/store/namespaces';
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
+import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 
 describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
@@ -25,6 +29,11 @@ describe( 'user/actions', () => {
 				);
 				expect( dispatchMock ).toBeCalledWith(
 					`${NS_LANGUAGE}/${ENSURE_AVAILABLE_IN_LANGUAGE}`,
+					inLanguage,
+					{ root: true },
+				);
+				expect( dispatchMock ).toBeCalledWith(
+					`${NS_MESSAGES}/${MESSAGES_INIT}`,
 					inLanguage,
 					{ root: true },
 				);
