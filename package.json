@@ -22,6 +22,7 @@
     "mwbot": "^1.0.10",
     "rtl-detect": "^1.0.2",
     "ts-deferred": "^1.0.4",
+    "tslib": "^1.9.3",
     "validate.js": "^0.12.0",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
