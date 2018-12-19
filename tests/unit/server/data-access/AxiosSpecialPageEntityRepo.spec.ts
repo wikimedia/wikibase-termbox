@@ -1,35 +1,35 @@
 import EntityInitializer from '@/common/EntityInitializer';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import AxiosWikibaseFingerprintableEntityRepo from '@/server/data-access/AxiosWikibaseFingerprintableEntityRepo';
+import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEntityRepo';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
+import { MEDIAWIKI_INDEX_SCRIPT } from '@/common/constants';
 import HttpStatus from 'http-status-codes';
 
 const axiosMock = new MockAdapter( axios );
 
-function newAxiosWikibaseFingerprintableEntityRepo( initializer?: any ) {
-	return new AxiosWikibaseFingerprintableEntityRepo(
+function newAxiosSpecialPageEntityRepo( initializer?: any ) {
+	return new AxiosSpecialPageEntityRepo(
 		axios,
 		initializer || {},
 	);
 }
 
-describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
+describe( 'AxiosSpecialPageEntityRepo', () => {
 
 	beforeEach( () => {
 		axiosMock.reset();
 	} );
 
 	it( 'can be constructed with axios', () => {
-		expect( newAxiosWikibaseFingerprintableEntityRepo() )
-			.toBeInstanceOf( AxiosWikibaseFingerprintableEntityRepo );
+		expect( newAxiosSpecialPageEntityRepo() )
+			.toBeInstanceOf( AxiosSpecialPageEntityRepo );
 	} );
 
 	describe( 'getFingerprintableEntity', () => {
-		it( 'with well-formed wbgetentities query resolves to an Entity on success', ( done ) => {
+		it( 'with well-formed request resolves to an Entity on success', ( done ) => {
 			const entityId = 'Q3';
 			const entity = {
 				pageid: 3,
@@ -60,13 +60,12 @@ describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
 					Q3: entity,
 				},
 			};
-
-			axiosMock.onGet( MEDIAWIKI_API_SCRIPT, { params: {
-				ids: entityId,
-				action: 'wbgetentities',
+			axiosMock.onGet( MEDIAWIKI_INDEX_SCRIPT, { params: {
+				title: 'Special:EntityData',
+				id: entityId,
 			} } ).reply( HttpStatus.OK, results );
 
-			const repo = newAxiosWikibaseFingerprintableEntityRepo( new EntityInitializer() );
+			const repo = newAxiosSpecialPageEntityRepo( new EntityInitializer() );
 			repo.getFingerprintableEntity( entityId ).then( ( result: FingerprintableEntity ) => {
 				expect( result ).toBeInstanceOf( FingerprintableEntity );
 				expect( result.id ).toEqual( entity.id );
@@ -81,10 +80,10 @@ describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
 			const entityId = 'Q3';
 			axiosMock.onGet().reply( HttpStatus.OK, '<some><random><html>' );
 
-			const repo = newAxiosWikibaseFingerprintableEntityRepo();
+			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
-				expect( reason.message ).toEqual( 'wbgetentities result not well formed.' );
+				expect( reason.message ).toEqual( 'result not well formed.' );
 				done();
 			} );
 		} );
@@ -93,16 +92,15 @@ describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
 			const entityId = 'Q3';
 			axiosMock.onGet().reply( HttpStatus.OK, {} );
 
-			const repo = newAxiosWikibaseFingerprintableEntityRepo();
+			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
-				expect( reason.message ).toEqual( 'wbgetentities result not well formed.' );
+				expect( reason.message ).toEqual( 'result not well formed.' );
 				done();
 			} );
 		} );
 
 		it( 'rejects on result missing relevant entity in entities', ( done ) => {
-			// this maybe is not really a thing as wbgetentities returns the entity with a 'missing' key
 			const entityId = 'Q3';
 			axiosMock.onGet().reply( HttpStatus.OK, {
 				entities: {
@@ -111,26 +109,18 @@ describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
 					},
 				},
 			} );
-
-			const repo = newAxiosWikibaseFingerprintableEntityRepo();
+			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
-				expect( reason.message ).toEqual( 'wbgetentities result does not contain relevant entity.' );
+				expect( reason.message ).toEqual( 'result does not contain relevant entity.' );
 				done();
 			} );
 		} );
 
-		it( 'rejects on result indicating relevant entity as missing in entities', ( done ) => {
+		it( 'rejects on result indicating relevant entity as missing', ( done ) => {
 			const entityId = 'Q3';
-			axiosMock.onGet().reply( HttpStatus.OK, {
-				entities: {
-					Q3: {
-						missing: '',
-					},
-				},
-			} );
-
-			const repo = newAxiosWikibaseFingerprintableEntityRepo();
+			axiosMock.onGet().reply( HttpStatus.NOT_FOUND, 'something something <h1>Not Found</h1> something' );
+			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
 				expect( reason.message ).toEqual( 'Entity flagged missing in response.' );
@@ -140,9 +130,8 @@ describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
 
 		it( 'rejects stating the reason in case of API problems', ( done ) => {
 			const entityId = 'Q3';
-			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR, 'API problem' );
-
-			const repo = newAxiosWikibaseFingerprintableEntityRepo();
+			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR );
+			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'Error: Request failed with status code 500' );
@@ -159,13 +148,12 @@ describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
 					},
 				},
 			} );
-
 			const initializer = {
 				newFromSerialization: () => {
 					throw new Error( 'initializer sad' );
 				},
 			};
-			const repo = newAxiosWikibaseFingerprintableEntityRepo( initializer );
+			const repo = newAxiosSpecialPageEntityRepo( initializer );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'initializer sad' );
