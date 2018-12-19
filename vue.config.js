@@ -4,6 +4,8 @@ const TARGET_NODE = process.env.WEBPACK_TARGET === 'node';
 const DEV_MODE = process.env.WEBPACK_TARGET === 'dev';
 const filePrefix = 'wikibase.termbox.';
 
+const assetsPath = './assets';
+
 const target = TARGET_NODE
 	? 'server'
 	: 'client';
@@ -39,6 +41,16 @@ module.exports = {
 					Object.assign( {}, options, { filename: `${filePrefix}[name].css` } ),
 					...args,
 				] );
+
+			config.module
+				.rule('images')
+				.test( /\.(png|jpe?g|gif|svg)(\?.*)?$/ )
+				.use( 'url-loader' )
+				.loader( 'url-loader' )
+				.options( {
+					limit: -1,
+					name: assetsPath + '/[name].[ext]',
+				} );
 		}
 
 		config.module

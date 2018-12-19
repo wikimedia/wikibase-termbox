@@ -3,7 +3,6 @@ node_modules
 dist/*
 !dist/wikibase.termbox.main.js
 !dist/wikibase.termbox.main.css
-!dist/img/*
 # local env files
 .env.local
 .env.*.local
