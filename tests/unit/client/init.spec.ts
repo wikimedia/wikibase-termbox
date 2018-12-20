@@ -33,7 +33,9 @@ describe( 'client/init', () => {
 		const termboxRequestPromise = init();
 
 		expect( termboxRequestPromise ).toBeInstanceOf( Promise );
-		expect( termboxRequestPromise ).resolves.toBeInstanceOf( TermboxRequest );
+		return termboxRequestPromise.then( ( request ) => {
+			expect( request ).toBeInstanceOf( TermboxRequest );
+		} );
 	} );
 
 	it( 'generates a TermboxRequest from the mw environment', () => {
