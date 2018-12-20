@@ -1,6 +1,7 @@
 import Vuex from 'vuex';
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import TermBox from '@/components/TermBox.vue';
+import EditPen from '@/components/EditPen.vue';
 import { createStore } from '@/store';
 import {
 	NS_ENTITY,
@@ -128,13 +129,13 @@ describe( 'TermBox.vue', () => {
 		expect( wrapper.find( '.wikibase-termbox__aliases--placeholder' ).text() ).toBe( '?' );
 	} );
 
-	it( 'contains an edit link', () => {
+	it( 'contains an edit pen', () => {
 		const editLinkUrl = '/edit/Q42';
 		store.commit( `${NS_LINKS}/${EDIT_LINK_URL_UPDATE}`, editLinkUrl );
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 
-		expect( wrapper.find( '.wikibase-termbox__action-edit a' ).attributes( 'href' ) )
-			.toBe( editLinkUrl );
+		expect( wrapper.find( EditPen ).props() )
+			.toHaveProperty( 'href', editLinkUrl );
 	} );
 
 } );

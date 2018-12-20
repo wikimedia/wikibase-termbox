@@ -15,9 +15,7 @@
 			</div>
 		</div>
 		<div class="wikibase-termbox__actions">
-			<div class="wikibase-termbox__action-edit">
-				<a :href="editLinkUrl"></a>
-			</div>
+			<EditPen :href="editLinkUrl"></EditPen>
 		</div>
 	</div>
 </template>
@@ -37,6 +35,7 @@ import {
 } from '@/store/namespaces';
 import Term from '@/datamodel/Term';
 import message from '@/filter/message';
+import EditPen from '@/components/EditPen.vue';
 
 Vue.filter( 'message', message );
 
@@ -53,6 +52,7 @@ interface TermboxBindings extends Vue, EntityBindings {
 }
 
 @Component( {
+	components: { EditPen },
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [
@@ -68,7 +68,6 @@ interface TermboxBindings extends Vue, EntityBindings {
 		} ),
 	},
 } )
-
 export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) {
 	get label(): string {
 		const label: Term = this.entityLabel( this.primaryLanguage );
