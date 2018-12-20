@@ -113,6 +113,9 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 
 <style lang="scss">
 .wikibase-termbox { // container - need a strong selector chain to reliably override reset css
+
+	display: flex;
+
 	.wikibase-termbox { // for use as a prefix
 		&__language {
 			color: $color-dark-azureish-gray;
@@ -158,6 +161,12 @@ export default class TermBox extends ( Vue as VueConstructor<TermboxBindings> ) 
 			content: attr( data-separator );
 			white-space: nowrap;
 			padding: 0 0.4em;
+		}
+
+		&__actions {
+			margin-left: auto;
+			// TODO: this is only here because the other pens don't have a width of 48px
+			margin-right: -9px;
 		}
 	}
 

@@ -231,7 +231,7 @@ describe( 'Termbox SSR', () => {
 			expect( $dom.querySelectorAll( '.wikibase-termbox__aliases li' ).length )
 				.toBe( mockQ64.aliases.de.length );
 
-			expect( $dom.querySelector( '.wikibase-termbox__action-edit a' ) )
+			expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
 				.toHaveAttribute( 'href', editLink );
 
 			done();
