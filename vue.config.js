@@ -4,8 +4,6 @@ const TARGET_NODE = process.env.WEBPACK_TARGET === 'node';
 const DEV_MODE = process.env.WEBPACK_TARGET === 'dev';
 const filePrefix = 'wikibase.termbox.';
 
-const assetsPath = './assets';
-
 const target = TARGET_NODE
 	? 'server'
 	: 'client';
@@ -42,14 +40,15 @@ module.exports = {
 					...args,
 				] );
 
+			// ResourceLoader has access to /assets/* and /dist/*.css - use assets directly
 			config.module
-				.rule('images')
+				.rule( 'images' )
 				.test( /\.(png|jpe?g|gif|svg)(\?.*)?$/ )
 				.use( 'url-loader' )
 				.loader( 'url-loader' )
 				.options( {
 					limit: -1,
-					name: assetsPath + '/[name].[ext]',
+					name: '[path]/[name].[ext]',
 				} );
 		}
 
