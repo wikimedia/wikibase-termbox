@@ -18,7 +18,11 @@ function mockMwEnv( language: string, entityId: any, namespaces: any = null, tit
 			}
 		} },
 		hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( {} ),
-		Title: title || jest.fn().mockImplementation(),
+		Title: title || jest.fn().mockImplementation( () => {
+			return {
+				getUrl: jest.fn(),
+			};
+		} ),
 	};
 }
 
