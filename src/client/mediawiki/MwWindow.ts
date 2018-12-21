@@ -5,9 +5,7 @@ interface MwConfig {
 	get( key: string ): any;
 }
 
-interface MwTitle {
-	new( title: string, namespace: number ): any;
-}
+type MwTitle = new( title: string, namespace: number ) => any;
 
 interface MediaWiki {
 	hook: ( key: Hooks ) => HookHandler;
@@ -20,9 +18,7 @@ export interface WikibaseContentLanguages {
 }
 
 interface Wikibase {
-	WikibaseContentLanguages: {
-		new(): WikibaseContentLanguages;
-	};
+	WikibaseContentLanguages: new() => WikibaseContentLanguages;
 }
 
 export interface UlsData {
