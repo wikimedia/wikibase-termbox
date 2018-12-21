@@ -25,6 +25,10 @@ export default class EditPen extends Vue {
 		width: 48px;
 		height: 48px;
 		display: block;
+
+		[dir='rtl'] & {
+			transform: scaleX(-1);
+		}
 	}
 }
 </style>

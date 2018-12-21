@@ -8,18 +8,48 @@ import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { ENTITY_INIT } from '@/store/entity/actionTypes';
 import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
 import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
+import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
+import { LANGUAGE_INIT as USER_LANGUAGE_INIT } from '@/store/user/mutationTypes';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 
+function newInitializedStore() {
+	const store = createStore();
+
+	store.commit( `${NS_USER}/${USER_LANGUAGE_INIT}`, 'ar' );
+	store.commit(
+		`${NS_LANGUAGE}/${LANGUAGE_UPDATE}`,
+		{
+			ar: { directionality: 'rtl' },
+			en: { directionality: 'ltr' },
+		},
+	);
+
+	return store;
+}
+
 describe( 'App.vue', () => {
 
 	it( 'renders the mountable root element', () => {
-		const store = createStore();
-
-		const wrapper = shallowMount( App, { store, localVue } );
-		expect( wrapper.classes() ).toEqual( [ 'wikibase-entitytermsview' ] );
+		const wrapper = shallowMount( App, { store: newInitializedStore(), localVue } );
+		expect( wrapper.classes() ).toContain( 'wikibase-entitytermsview' );
 	} );
+
+	test.each( [
+		[ 'en', 'ltr' ],
+		[ 'ar', 'rtl' ],
+	] )(
+		'includes the user language (%s) directionality (%s) in its root element',
+		( lang: string, directionality: string ) => {
+			const store = newInitializedStore();
+			const wrapper = shallowMount( App, { store, localVue } );
+
+			store.commit( `${NS_USER}/${USER_LANGUAGE_INIT}`, lang );
+
+			expect( wrapper.attributes( 'dir' ) ).toBe( directionality );
+		},
+	);
 
 	it( 'loads required data in asyncData', () => {
 		const entity = 'Q123';
@@ -29,6 +59,7 @@ describe( 'App.vue', () => {
 		const store = {
 			dispatch: jest.fn(),
 		};
+
 		const request = new TermboxRequest( language, entity, editLinkUrl );
 
 		return ( App as any ).asyncData( store, request ).then( () => {
