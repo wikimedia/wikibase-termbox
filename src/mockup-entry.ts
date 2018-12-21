@@ -5,11 +5,14 @@ import * as languageMap from '@/mock-data/data/en_lang_data.json';
 import * as directionalities from '@/mock-data/data/en_lang_dir_data.json';
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import MwWindow from '@/client/mediawiki/MwWindow';
+import getOrEnforceUrlParameter from './mock-data/getOrEnforceUrlParameter';
+
+const language = getOrEnforceUrlParameter( 'language', 'de' );
 
 /* tslint:disable:max-classes-per-file */
 
 ( window as MwWindow ).mw = {
-	config: new MWConfig(),
+	config: new MWConfig( language ),
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
 	Title: class Title { public getUrl() { return '/edit/' + entity.id; } },
 };
