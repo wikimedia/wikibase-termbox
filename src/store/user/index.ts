@@ -4,16 +4,18 @@ import { actions } from '@/store/user/actions';
 import { getters } from '@/store/user/getters';
 import { mutations } from '@/store/user/mutations';
 
-const state: User = {
-	primaryLanguage: '',
-};
+export default function (): Module<User, any> {
+	const state: User = {
+		primaryLanguage: '',
+	};
 
-const namespaced = true;
+	const namespaced = true;
 
-export const user: Module<User, any> = {
-	namespaced,
-	state,
-	actions,
-	getters,
-	mutations,
-};
+	return {
+		namespaced,
+		state,
+		actions,
+		getters,
+		mutations,
+	};
+}

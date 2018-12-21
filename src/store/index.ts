@@ -1,19 +1,19 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { entity } from '@/store/entity';
-import { user } from '@/store/user';
-import { language } from '@/store/language';
-import { links } from '@/store/links';
+import createEntity from './entity';
+import createUser from './user';
+import createLanguage from './language';
+import createLinks from './links';
 
 Vue.use( Vuex );
 
 export function createStore () {
 	const storeBundle: StoreOptions<any> = {
 		modules: {
-			entity,
-			user,
-			language,
-			links,
+			entity: createEntity(),
+			user: createUser(),
+			language: createLanguage(),
+			links: createLinks(),
 		},
 		strict: process.env.NODE_ENV !== 'production',
 	};

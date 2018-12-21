@@ -4,19 +4,21 @@ import { getters } from '@/store/entity/getters';
 import { mutations } from '@/store/entity/mutations';
 import { actions } from '@/store/entity/actions';
 
-const state: Entity = {
-	id: '',
-	labels: {},
-	descriptions: {},
-	aliases: {},
-};
+export default function (): Module<Entity, any> {
+	const state: Entity = {
+		id: '',
+		labels: {},
+		descriptions: {},
+		aliases: {},
+	};
 
-const namespaced = true;
+	const namespaced = true;
 
-export const entity: Module<Entity, any> = {
-	namespaced,
-	state,
-	getters,
-	mutations,
-	actions,
-};
+	return {
+		namespaced,
+		state,
+		getters,
+		mutations,
+		actions,
+	};
+}
