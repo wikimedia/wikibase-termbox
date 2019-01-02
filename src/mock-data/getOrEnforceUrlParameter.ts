@@ -1,3 +1,5 @@
+import 'url-search-params-polyfill';
+
 /**
  * Get the value of the current (i.e. in browser) URL's GET param
  * or redirect to the given default value if not present
