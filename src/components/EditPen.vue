@@ -1,14 +1,20 @@
 <template>
-	<div class="wikibase-termbox__edit-action">
-		<a :href="href"></a>
-	</div>
+	<Sectionedit>
+		<div class="wikibase-termbox__edit-action">
+			<a :href="href"></a>
+		</div>
+	</Sectionedit>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import Sectionedit from './Sectionedit.vue';
 
 @Component( {
+	components: {
+		Sectionedit,
+	},
 	props: {
 		href: String,
 	},
