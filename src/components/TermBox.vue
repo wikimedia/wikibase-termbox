@@ -9,7 +9,7 @@
 				<ul v-if="hasAliases" class="wikibase-termbox__aliases">
 					<li v-for="alias in aliases"
 						class="wikibase-termbox__alias"
-						:data-separator="message( messageKeys.ALIAS_SEPARATOR )">{{ alias.value }}</li>
+						:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>
 				</ul>
 				<p class="wikibase-termbox__aliases wikibase-termbox__aliases--placeholder" v-else>?</p>
 			</div>
@@ -32,6 +32,7 @@ import {
 	NS_ENTITY,
 	NS_LANGUAGE,
 	NS_LINKS,
+	NS_USER,
 } from '@/store/namespaces';
 import Term from '@/datamodel/Term';
 import EditPen from '@/components/EditPen.vue';
@@ -50,6 +51,7 @@ interface TermboxBindings extends Vue, EntityBindings, MessagesMixin {
 	components: { EditPen },
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
+		...mapState( NS_USER, [ 'primaryLanguage' ] ),
 		...mapGetters( NS_ENTITY, {
 			entityLabel: 'getLabelByLanguage',
 			entityDescription: 'getDescriptionByLanguage',

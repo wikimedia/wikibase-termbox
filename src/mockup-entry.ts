@@ -5,16 +5,15 @@ import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyI
 import MwWindow from '@/client/mediawiki/MwWindow';
 import getOrEnforceUrlParameter from './mock-data/getOrEnforceUrlParameter';
 import MockupWikibaseContentLanguages from '@/mock-data/MockWikibaseContentLanguages';
-import MockMwMessages from '@/mock-data/MockMwMessages';
+import { message } from './mock-data/MockMwMessages';
 
 const language = getOrEnforceUrlParameter( 'language', 'de' );
-/* tslint:disable:max-classes-per-file */
 
 ( window as MwWindow ).mw = {
 	config: new MWConfig( language ),
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
 	Title: class Title { public getUrl() { return '/edit/' + entity.id; } },
-	message: MockMwMessages.message,
+	message,
 };
 
 ( window as MwWindow ).wb = {

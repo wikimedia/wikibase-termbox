@@ -3,9 +3,8 @@ import {
 	MESSAGES_INIT,
 } from '@/store/messages/mutationTypes';
 import Messages from '@/store/messages/Messages';
-import MessageCollection from '@/datamodel/MessageTranslationCollection';
 
-describe( 'message/mutations', () => {
+describe( 'messages/mutations', () => {
 
 	describe( MESSAGES_INIT, () => {
 		it( 'contains messages after initialization', () => {
@@ -16,12 +15,11 @@ describe( 'message/mutations', () => {
 					test2: 'Still a test',
 					test3: 'What ever',
 				},
-			} as MessageCollection;
+			};
 
 			mutations[ MESSAGES_INIT ]( store, messages );
 
-			expect( store.messages.de.test ).toBe( messages.de.test );
-			expect( store.messages.de.test3 ).toBe( messages.de.test3 );
+			expect( store.messages.de ).toEqual( messages.de );
 		} );
 	} );
 } );

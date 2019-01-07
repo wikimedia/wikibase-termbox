@@ -5,6 +5,7 @@ import {
 	NS_MESSAGES,
 	NS_USER,
 } from '@/store/namespaces';
+import { MessageKeys } from '@/common/MessageKeys';
 
 Vue.use( Vuex );
 
@@ -54,5 +55,9 @@ describe( 'Messages', () => {
 
 		expect( messages.message( messageKey ) ).toBe( messageKey );
 		expect( getter ).toBeCalledWith( language, messageKey );
+	} );
+
+	it( 'sets the MESSAGE_KEYS property', () => {
+		expect( ( new Messages() ).MESSAGE_KEYS ).toBe( MessageKeys );
 	} );
 } );

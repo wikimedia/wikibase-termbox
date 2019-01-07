@@ -2,9 +2,8 @@ import { actions } from '@/store/messages/actions';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
-import MessagesRepository from '@/common/data-access/MessagesRepository';
 
-describe( 'entity/actions', () => {
+describe( 'messages/actions', () => {
 	describe( MESSAGES_INIT, () => {
 		it( `commits to ${MESSAGES_INIT_MUTATION}`, ( done ) => {
 
@@ -19,7 +18,7 @@ describe( 'entity/actions', () => {
 				getMessagesInLanguage: ( inLanguage: string ) => {
 					return Promise.resolve( mockMessages );
 				},
-			} as MessagesRepository );
+			} );
 
 			const context = {
 				commit: jest.fn(),
@@ -27,7 +26,7 @@ describe( 'entity/actions', () => {
 
 			const action = actions[ MESSAGES_INIT ] as any;
 
-			action( context, 'de' ).then( ( code: string ) => {
+			action( context, 'de' ).then( () => {
 				expect( context.commit ).toBeCalledWith(
 					MESSAGES_INIT_MUTATION,
 					mockMessages,

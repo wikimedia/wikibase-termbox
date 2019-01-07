@@ -8,8 +8,8 @@ import MessageTranslationCollection from '@/datamodel/MessageTranslationCollecti
 export const mutations: MutationTree<Messages> = {
 	[ MESSAGES_INIT ] ( state: Messages, messages: MessageTranslationCollection ): void {
 		state.messages = {};
-		Object.entries( messages ).forEach( ( [ inLanguage, message ] ) => {
-			state.messages[ inLanguage ] = message;
+		Object.entries( messages ).forEach( ( [ inLanguage, translations ] ) => {
+			state.messages[ inLanguage ] = translations;
 		} );
 	},
 };

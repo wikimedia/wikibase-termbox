@@ -9,6 +9,7 @@ import MessagesRepository from '@/client/data-access/MessagesRepository';
 import EntityRepository from '@/client/data-access/EntityRepository';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
+import { MessageKeys } from '@/common/MessageKeys';
 
 Vue.config.productionTip = false;
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
@@ -29,6 +30,7 @@ factory.setLanguageRepository(
 factory.setMessagesRepository(
 	new MessagesRepository(
 		( window as MwWindow ).mw.message,
+		Object.values( MessageKeys ),
 	),
 );
 

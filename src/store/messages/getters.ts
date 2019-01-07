@@ -8,10 +8,10 @@ export const getters: GetterTree<Messages, any> = {
 	},
 
 	getMessageInLanguage: ( state: Messages ) => ( inLanguage: string, messageKey: string ): string | null => {
-		const message = state.messages[ inLanguage ];
-		if ( !message ) {
+		const translations = state.messages[ inLanguage ];
+		if ( !translations ) {
 			return null;
 		}
-		return message[ messageKey ] || null;
+		return translations[ messageKey ] || null;
 	},
 };

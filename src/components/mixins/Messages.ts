@@ -13,7 +13,7 @@ import {
 export interface MessagesMixin extends Vue {
 	getMessageInLanguage: ( inLanguage: string, messageKey: string ) => string | null;
 	primaryLanguage: string;
-	messagesKeys: any;
+	MESSAGE_KEYS: typeof MessageKeys;
 	message( messageKey: string ): string;
 }
 
@@ -24,7 +24,8 @@ export interface MessagesMixin extends Vue {
 	},
 } )
 export default class Messages extends ( Vue as VueConstructor<MessagesMixin> ) {
-	public messageKeys = MessageKeys;
+	public MESSAGE_KEYS = MessageKeys;
+
 	public message( messageKey: string ): string {
 		const messageContent = this.getMessageInLanguage(
 			this.primaryLanguage,

@@ -3,7 +3,7 @@ import Messages from '@/store/messages/Messages';
 
 describe( 'messages/Getters', () => {
 
-	describe( 'getMessageInLanguage', () => {
+	describe( 'getAllMessagesInLanguage', () => {
 		it( 'returns a message for the given language code', () => {
 			const messages: Messages = {
 				messages: {
