@@ -24,7 +24,7 @@ export interface MessagesMixin extends Vue {
 	},
 } )
 export default class Messages extends ( Vue as VueConstructor<MessagesMixin> ) {
-	public MESSAGE_KEYS = MessageKeys;
+	public readonly MESSAGE_KEYS = MessageKeys;
 
 	public message( messageKey: string ): string {
 		const messageContent = this.getMessageInLanguage(

@@ -5,6 +5,7 @@ import nock from 'nock';
 import 'jest-dom/extend-expect';
 import HttpStatus from 'http-status-codes';
 import Vue from 'vue';
+import * as messages from '@/mock-data/data/de_messages_data.json';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -49,6 +50,38 @@ function nockSuccessfulLanguageLoading( inLanguage: string ) {
 						name: germanInGerman,
 					},
 				},
+			},
+		} );
+}
+
+function getMessagesAndKeys() {
+	const mwMessages: Array<{ [key: string]: string }> = [];
+	const messageKeys: string[] = [];
+
+	Object.keys( messages.default ).forEach( ( key: string ) => {
+		mwMessages.push( {
+			'name': key,
+			'normalizedname': key,
+			'*': messages.default[ key ],
+		} );
+		messageKeys.push( key );
+	} );
+	return [ mwMessages, messageKeys ];
+}
+
+function nockSuccessfulMessagesLoading( inLanguage: string ) {
+	const messageAndKeys = getMessagesAndKeys();
+	nock( WIKIBASE_TEST_API_HOST )
+		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+			action: 'query',
+			meta: 'allmessages',
+			ammessages: messageAndKeys[1].join( '|' ),
+			amlang: inLanguage,
+		} )
+		.reply( HttpStatus.OK, {
+			batchcomplete: '',
+			query: {
+				allmessages: messageAndKeys[0],
 			},
 		} );
 }
@@ -149,6 +182,7 @@ describe( 'Termbox SSR', () => {
 		const editLink = '/some/' + entityId;
 
 		nockSuccessfulEntityLoading( entityId );
+		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
 				action: 'query',
@@ -185,7 +219,8 @@ describe( 'Termbox SSR', () => {
 		const language = 'de';
 		const editLink = '/some/' + entityId;
 
-		nockSuccessfulLanguageLoading( 'de' );
+		nockSuccessfulLanguageLoading( language );
+		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q63&action=wbgetentities' )
 			.reply( HttpStatus.OK, {
@@ -209,6 +244,7 @@ describe( 'Termbox SSR', () => {
 		const editLink = '/some/' + entityId;
 
 		nockSuccessfulLanguageLoading( language );
+		nockSuccessfulMessagesLoading( language );
 		nockSuccessfulEntityLoading( entityId );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {

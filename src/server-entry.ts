@@ -8,9 +8,11 @@ import MwBotWikibaseContentLanguagesRepo from './server/data-access/MwBotWikibas
 import TranslationLanguageNotFound from './common/data-access/error/TranslationLanguageNotFound';
 import ContentLanguagesLanguageTranslationRepo from './server/data-access/ContentLanguagesLanguageTranslationRepo';
 import ContentLanguagesLanguageRepo from './server/data-access/ContentLanguagesLanguageRepo';
+import MwBotWikibaseMessagesRepo from './server/data-access/MwBotWikibaseMessagesRepo';
 import WaitingForLanguageWikibaseContentLanguagesRepo
 	from './server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
 import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
+import { MessageKeys } from '@/common/MessageKeys';
 
 export default ( context: BundleRendererContext ) => {
 	const apiBot = context.services.mediawikiBot;
@@ -27,17 +29,18 @@ export default ( context: BundleRendererContext ) => {
 	factory.setLanguageRepository(
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
+	factory.setMessagesRepository(
+		new MwBotWikibaseMessagesRepo(
+			apiBot ,
+			Object.values( MessageKeys ),
+		),
+	);
 	factory.setEntityRepository(
 		new MwBotWikibaseFingerprintableEntityRepo(
 			apiBot,
 			new EntityInitializer(),
 		),
 	);
-	factory.setMessagesRepository( { // TODO this is a dummy
-		getMessagesInLanguage( inLanguage: string ) {
-			return Promise.resolve( {} );
-		},
-	} );
 
 	return buildApp( context.request ).catch( ( err: any ) => {
 		if ( err instanceof EntityNotFound ) {
