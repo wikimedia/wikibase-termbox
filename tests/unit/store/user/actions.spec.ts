@@ -7,6 +7,7 @@ import {
 } from '@/store/namespaces';
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
+import { action } from '@/store/util';
 
 describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
@@ -20,20 +21,20 @@ describe( 'user/actions', () => {
 				commit: commitMock,
 				dispatch: dispatchMock,
 			};
-			const action = actions[ LANGUAGE_PREFERENCE ] as any; // TODO
+			const languagePreferenceAction = actions[ LANGUAGE_PREFERENCE ] as any; // TODO
 
-			action( context, inLanguage ).then( () => {
+			languagePreferenceAction( context, inLanguage ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_INIT,
 					inLanguage,
 				);
 				expect( dispatchMock ).toBeCalledWith(
-					`${NS_LANGUAGE}/${ENSURE_AVAILABLE_IN_LANGUAGE}`,
+					action( NS_LANGUAGE, ENSURE_AVAILABLE_IN_LANGUAGE ),
 					inLanguage,
 					{ root: true },
 				);
 				expect( dispatchMock ).toBeCalledWith(
-					`${NS_MESSAGES}/${MESSAGES_INIT}`,
+					action( NS_MESSAGES, MESSAGES_INIT ),
 					inLanguage,
 					{ root: true },
 				);

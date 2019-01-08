@@ -8,6 +8,7 @@ import {
 	NS_MESSAGES,
 } from '@/store/namespaces';
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
+import { action } from '@/store/util';
 
 export const actions: ActionTree<User, any> = {
 
@@ -15,8 +16,8 @@ export const actions: ActionTree<User, any> = {
 		context.commit( LANGUAGE_INIT, language );
 
 		return Promise.all( [
-			context.dispatch( `${NS_MESSAGES}/${MESSAGES_INIT}`, language, { root: true } ),
-			context.dispatch( `${NS_LANGUAGE}/${ENSURE_AVAILABLE_IN_LANGUAGE}`, language, { root: true } ),
+			context.dispatch( action( NS_MESSAGES, MESSAGES_INIT ), language, { root: true } ),
+			context.dispatch( action( NS_LANGUAGE, ENSURE_AVAILABLE_IN_LANGUAGE ), language, { root: true } ),
 		] );
 	},
 };

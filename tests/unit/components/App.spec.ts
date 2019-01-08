@@ -10,6 +10,7 @@ import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
 import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { LANGUAGE_INIT as USER_LANGUAGE_INIT } from '@/store/user/mutationTypes';
+import { action, mutation } from '@/store/util';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
@@ -17,9 +18,9 @@ localVue.use( Vuex );
 function newInitializedStore() {
 	const store = createStore();
 
-	store.commit( `${NS_USER}/${USER_LANGUAGE_INIT}`, 'ar' );
+	store.commit( mutation( NS_USER, USER_LANGUAGE_INIT ), 'ar' );
 	store.commit(
-		`${NS_LANGUAGE}/${LANGUAGE_UPDATE}`,
+		mutation( NS_LANGUAGE, LANGUAGE_UPDATE ),
 		{
 			ar: { directionality: 'rtl' },
 			en: { directionality: 'ltr' },
@@ -45,7 +46,7 @@ describe( 'App.vue', () => {
 			const store = newInitializedStore();
 			const wrapper = shallowMount( App, { store, localVue } );
 
-			store.commit( `${NS_USER}/${USER_LANGUAGE_INIT}`, lang );
+			store.commit( mutation( NS_USER, USER_LANGUAGE_INIT ), lang );
 
 			expect( wrapper.attributes( 'dir' ) ).toBe( directionality );
 		},
@@ -63,10 +64,10 @@ describe( 'App.vue', () => {
 		const request = new TermboxRequest( language, entity, editLinkUrl );
 
 		return ( App as any ).asyncData( store, request ).then( () => {
-			expect( store.dispatch ).toHaveBeenCalledWith( `${NS_LANGUAGE}/${LANGUAGE_INIT}` );
-			expect( store.dispatch ).toHaveBeenCalledWith( `${NS_ENTITY}/${ENTITY_INIT}`, entity );
-			expect( store.dispatch ).toHaveBeenCalledWith( `${NS_USER}/${LANGUAGE_PREFERENCE}`, language );
-			expect( store.dispatch ).toHaveBeenCalledWith( `${NS_LINKS}/${EDIT_LINK_URL_INIT}`, editLinkUrl );
+			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LANGUAGE, LANGUAGE_INIT ) );
+			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_ENTITY, ENTITY_INIT ), entity );
+			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_USER, LANGUAGE_PREFERENCE ), language );
+			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LINKS, EDIT_LINK_URL_INIT ), editLinkUrl );
 		} );
 	} );
 

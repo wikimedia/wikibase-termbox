@@ -14,6 +14,7 @@ import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
+import { mutation } from '@/store/util';
 
 const localVue = createLocalVue();
 const langDe = 'Deutsch';
@@ -26,7 +27,7 @@ describe( 'TermBox.vue', () => {
 	const store = createStore();
 
 	store.commit(
-		`${NS_ENTITY}/${ENTITY_INIT}`,
+		mutation( NS_ENTITY, ENTITY_INIT ),
 		new FingerprintableEntity(
 			'Q42',
 			{
@@ -57,7 +58,7 @@ describe( 'TermBox.vue', () => {
 	);
 
 	store.commit(
-		`${NS_LANGUAGE }/${LANGUAGE_TRANSLATION_UPDATE}`,
+		mutation( NS_LANGUAGE , LANGUAGE_TRANSLATION_UPDATE ),
 		{
 			de: {
 				de: langDe,
@@ -71,14 +72,14 @@ describe( 'TermBox.vue', () => {
 	);
 
 	it( 'renders the language label', () => {
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		expect( wrapper.find( '.wikibase-termbox__language' ).text() ).toBe( langDe );
 	} );
 
 	it( 'renders random ?+ in case of unknown user-language for language labels', () => {
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'zh' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'zh' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		// this not part of the component
@@ -87,35 +88,35 @@ describe( 'TermBox.vue', () => {
 
 	it( 'renders the entity label', () => {
 
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		expect( wrapper.find( '.wikibase-termbox__label' ).text() ).toBe( labelDe );
 	} );
 
 	it( 'renders ??? in case of unknown user-language for labels', () => {
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'en' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'en' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		expect( wrapper.find( '.wikibase-termbox__label' ).text() ).toBe( '???' );
 	} );
 
 	it( 'renders the entity description', () => {
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		expect( wrapper.find( '.wikibase-termbox__description' ).text() ).toBe( descriptionDe );
 	} );
 
 	it( 'renders ?? in case of unknown user-language for descriptions', () => {
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'en' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'en' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		expect( wrapper.find( '.wikibase-termbox__description' ).text() ).toBe( '??' );
 	} );
 
 	it( 'renders the entity aliases', () => {
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'de' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		const aliases = wrapper.findAll( '.wikibase-termbox__alias' );
 		expect( aliases.at( 0 ).text() ).toStrictEqual( aliasesDe[0] );
@@ -123,7 +124,7 @@ describe( 'TermBox.vue', () => {
 	} );
 
 	it( 'renders ? in case of unknown user-language for aliases', () => {
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, 'en' );
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'en' );
 
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 		expect( wrapper.find( '.wikibase-termbox__aliases--placeholder' ).text() ).toBe( '?' );
@@ -131,7 +132,7 @@ describe( 'TermBox.vue', () => {
 
 	it( 'contains an edit pen', () => {
 		const editLinkUrl = '/edit/Q42';
-		store.commit( `${NS_LINKS}/${EDIT_LINK_URL_UPDATE}`, editLinkUrl );
+		store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
 		const wrapper = shallowMount( TermBox, { store, localVue } );
 
 		expect( wrapper.find( EditPen ).props() )
