@@ -6,6 +6,7 @@ import { NS_MESSAGES } from '@/store/namespaces';
 import { MessageKeys } from '@/common/MessageKeys';
 import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
+import { mutation } from '@/store/util';
 
 describe( 'EditPen', () => {
 
@@ -26,8 +27,8 @@ describe( 'EditPen', () => {
 		const editMessage = 'bearbeiten';
 
 		const store = createStore();
-		store.commit( `${NS_USER}/${LANGUAGE_INIT}`, userLanguage );
-		store.commit( `${NS_MESSAGES}/${MESSAGES_INIT}`, {
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
+		store.commit( mutation( NS_MESSAGES, MESSAGES_INIT ), {
 			[ userLanguage ]: {
 				[ MessageKeys.EDIT ]: editMessage,
 			},
