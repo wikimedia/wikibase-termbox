@@ -1,15 +1,18 @@
 <template>
 	<Sectionedit>
 		<div class="wikibase-termbox__edit-action">
-			<a :href="href"></a>
+			<a :href="href" :title="message( MESSAGE_KEYS.EDIT )">
+				<span class="wikibase-termbox__edit-action-text">{{ message( MESSAGE_KEYS.EDIT ) }}</span>
+			</a>
 		</div>
 	</Sectionedit>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
 import Sectionedit from './Sectionedit.vue';
+import { VueConstructor } from 'vue';
+import Component, { mixins } from 'vue-class-component';
+import Messages, { MessagesMixin } from './mixins/Messages';
 
 @Component( {
 	components: {
@@ -19,9 +22,7 @@ import Sectionedit from './Sectionedit.vue';
 		href: String,
 	},
 } )
-export default class EditPen extends Vue {
-
-}
+export default class EditPen extends ( mixins( Messages ) as VueConstructor<MessagesMixin> ) {}
 </script>
 
 <style lang="scss">
@@ -35,6 +36,10 @@ export default class EditPen extends Vue {
 		[dir='rtl'] & {
 			transform: scaleX(-1);
 		}
+	}
+
+	&__edit-action-text {
+		@include sr-only();
 	}
 }
 </style>
