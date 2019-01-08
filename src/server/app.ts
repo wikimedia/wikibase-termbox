@@ -46,7 +46,8 @@ export default ( WIKIBASE_REPO_API: string ) => {
 						response.status( HttpStatus.BAD_REQUEST ).send( 'Bad request. Language not existing' );
 					}
 				} else {
-					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem ' + JSON.stringify( err ) );
+					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
+					console.log( err );
 				}
 			} );
 	} );
