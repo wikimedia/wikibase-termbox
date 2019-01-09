@@ -1,5 +1,7 @@
 import 'module-alias/register';
 import createApp from './app';
+import BundleRendererServices from './bundle-renderer/BundleRendererServices';
+import mwbot from 'mwbot';
 
 function verifyAndReportSetting( name: string, value: any ) {
 	if ( typeof value === 'undefined' ) {
@@ -13,7 +15,14 @@ function verifyAndReportSetting( name: string, value: any ) {
 verifyAndReportSetting( 'WIKIBASE_REPO_API', process.env.WIKIBASE_REPO_API );
 verifyAndReportSetting( 'SSR_PORT', process.env.SSR_PORT );
 
-createApp( process.env.WIKIBASE_REPO_API as string )
+const services = new BundleRendererServices(
+	new mwbot( {
+		apiUrl: process.env.WIKIBASE_REPO_API,
+	} ),
+	console,
+);
+
+createApp( services )
 	.listen( process.env.SSR_PORT, () => {
 		console.info( `server is now running...` );
 	} );

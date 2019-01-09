@@ -5,7 +5,10 @@ import mwbot from 'mwbot';
 
 describe( 'BundleRendererContext', () => {
 	it( 'can be constructed and assigns properties', () => {
-		const services = new BundleRendererServices( new mwbot( {} ) );
+		const services = new BundleRendererServices(
+			new mwbot( {} ),
+			{ log: () => {} },
+		);
 		const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711' );
 
 		const context = new BundleRendererContext(

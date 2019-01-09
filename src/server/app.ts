@@ -8,19 +8,13 @@ import HttpStatus from 'http-status-codes';
 import BundleBoundaryPassingException, { ErrorReason } from './exceptions/BundleBoundaryPassingException';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import BundleRendererContextBuilder from './bundle-renderer/BundleRendererContextBuilder';
-import mwbot from 'mwbot';
 
-export default ( WIKIBASE_REPO_API: string ) => {
+export default ( services: BundleRendererServices ) => {
 
 	const app = express();
 	const renderer = createBundleRenderer(
 		resolve( './serverDist/vue-ssr-server-bundle.json' ),
 		{ runInNewContext: false },
-	);
-	const services = new BundleRendererServices(
-		new mwbot( {
-			apiUrl: WIKIBASE_REPO_API,
-		} ),
 	);
 	const contextBuilder = new BundleRendererContextBuilder( services );
 
@@ -47,7 +41,7 @@ export default ( WIKIBASE_REPO_API: string ) => {
 					}
 				} else {
 					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
-					console.log( err );
+					services.logger.log( err );
 				}
 			} );
 	} );

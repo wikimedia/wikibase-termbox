@@ -6,6 +6,8 @@ import 'jest-dom/extend-expect';
 import HttpStatus from 'http-status-codes';
 import Vue from 'vue';
 import * as messages from '@/mock-data/data/de_messages_data.json';
+import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
+import mwbot from 'mwbot';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -18,7 +20,18 @@ Vue.config.productionTip = false;
 const WIKIBASE_TEST_API_HOST = 'http://mw.testonly.localhost';
 const WIKIBASE_TEST_API_PATH = '/mediawiki/api.php';
 
-const app = createApp( WIKIBASE_TEST_API_HOST + WIKIBASE_TEST_API_PATH );
+const logger = {
+	log: jest.fn(),
+};
+
+const services = new BundleRendererServices(
+	new mwbot( {
+		apiUrl: WIKIBASE_TEST_API_HOST + WIKIBASE_TEST_API_PATH,
+	} ),
+	logger,
+);
+
+const app = createApp( services );
 
 const germanInGerman = 'Deutsch';
 
@@ -103,6 +116,8 @@ describe( 'Termbox SSR', () => {
 	afterEach( () => {
 		nock.cleanAll();
 		nock.enableNetConnect();
+
+		logger.log.mockClear();
 	} );
 
 	it( 'renders Server Error when requesting /termbox and entity backend emits malformed response', ( done ) => {
@@ -124,6 +139,10 @@ describe( 'Termbox SSR', () => {
 		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
+
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: wbgetentities result not well formed.' );
+
 			done();
 		} );
 	} );
@@ -145,6 +164,10 @@ describe( 'Termbox SSR', () => {
 		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
+
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: invalidjson: No valid JSON response' );
+
 			done();
 		} );
 	} );
@@ -169,6 +192,10 @@ describe( 'Termbox SSR', () => {
 		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
+
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: invalidjson: No valid JSON response' );
+
 			done();
 		} );
 	} );
@@ -215,6 +242,7 @@ describe( 'Termbox SSR', () => {
 		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 			expect( response.text ).toContain( 'Bad request. Language not existing' );
+			expect( logger.log ).not.toBeCalled();
 			done();
 		} );
 	} );
@@ -239,6 +267,7 @@ describe( 'Termbox SSR', () => {
 		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
+			expect( logger.log ).not.toBeCalled();
 			done();
 		} );
 	} );
@@ -274,6 +303,8 @@ describe( 'Termbox SSR', () => {
 
 			expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
 				.toHaveAttribute( 'href', editLink );
+
+			expect( logger.log ).not.toBeCalled();
 
 			done();
 		} );

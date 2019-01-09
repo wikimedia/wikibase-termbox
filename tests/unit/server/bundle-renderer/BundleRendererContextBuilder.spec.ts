@@ -15,6 +15,7 @@ describe( 'BundleRendererContextBuilder', () => {
 				new mwbot( {
 					apiUrl: 'http://mywiki.com/api.php',
 				} ),
+				{ log: () => {} },
 			);
 			const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711' );
 
