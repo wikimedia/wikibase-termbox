@@ -1,4 +1,5 @@
 {
 	"wikibase-edit": "bearbeiten",
-	"wikibase-aliases-separator": "|"
+	"wikibase-aliases-separator": "|",
+	"wikibase-entitytermsforlanguagelistview-more": "Alle eingegebenen Sprachen"
 }
