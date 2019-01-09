@@ -10,6 +10,7 @@ export default class MWConfig {
 			wgUserLanguage: this.language,
 			wbEntityId: 'Q64',
 			wgNamespaceIds: { special: -1 },
+			wgIsProbablyEditable: true,
 		};
 
 		return config[ key ];

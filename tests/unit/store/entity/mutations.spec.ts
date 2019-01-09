@@ -1,17 +1,21 @@
 import { mutations } from '@/store/entity/mutations';
 import {
 	ENTITY_INIT,
+	EDITABILITY_UPDATE,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import Entity from '@/store/entity/Entity';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
-function newMinimalStore(): Entity {
+function newMinimalStore( entity: any = {} ): Entity {
 	return {
 		id: 'Q1',
 		labels: {},
 		descriptions: {},
 		aliases: {},
+		isEditable: false,
+
+		...entity,
 	};
 }
 
@@ -51,6 +55,16 @@ describe( 'entity/mutations', () => {
 			expect( store.aliases ).toBe( entity.aliases );
 		} );
 
+	} );
+
+	it( EDITABILITY_UPDATE, () => {
+		const store = newMinimalStore( { isEditable: false } );
+
+		mutations[ EDITABILITY_UPDATE ]( store, true );
+		expect( store.isEditable ).toBe( true );
+
+		mutations[ EDITABILITY_UPDATE ]( store, false );
+		expect( store.isEditable ).toBe( false );
 	} );
 
 } );

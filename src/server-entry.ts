@@ -41,6 +41,12 @@ export default ( context: BundleRendererContext ) => {
 			new EntityInitializer(),
 		),
 	);
+	factory.setEntityEditabilityResolver( {
+		isEditable() {
+			// hiding elements used for editing is done by the consumer of the SSR service
+			return Promise.resolve( true );
+		},
+	} );
 
 	return buildApp( context.request ).catch( ( err: any ) => {
 		if ( err instanceof EntityNotFound ) {

@@ -38,6 +38,14 @@ factory.setEntityRepository( new EntityRepository(
 	( window as MwWindow ).mw.hook( Hooks.entityLoaded ),
 ) );
 
+factory.setEntityEditabilityResolver( {
+	isEditable() {
+		return Promise.resolve(
+			( window as MwWindow ).mw.config.get( 'wgIsProbablyEditable' ),
+		);
+	},
+} );
+
 init().then( ( termboxRequest: TermboxRequest ) => {
 	buildApp( termboxRequest ).then( ( app ) => {
 		app.$mount( '.wikibase-entitytermsview' );

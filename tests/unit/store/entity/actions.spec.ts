@@ -4,9 +4,21 @@ import { ENTITY_INIT as ENTITY_INIT_MUTATION } from '@/store/entity/mutationType
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
+import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
 
 describe( 'entity/actions', () => {
 	describe( ENTITY_INIT, () => {
+		beforeEach( () => {
+			factory.setEntityEditabilityResolver( {
+				isEditable: () => Promise.resolve( true ),
+			} );
+			factory.setEntityRepository( {
+				getFingerprintableEntity: () => Promise.resolve(
+					new FingerprintableEntity( 'Q123', {}, {}, {} ),
+				),
+			} );
+		} );
+
 		it( `commits to ${ENTITY_INIT_MUTATION} on successful FingerprintableEntity lookup`, ( done ) => {
 			const entityId = 'Q42';
 
@@ -28,6 +40,21 @@ describe( 'entity/actions', () => {
 					entity,
 				);
 				done();
+			} );
+		} );
+
+		it( `commits to ${EDITABILITY_UPDATE} on successful lookup and editability resolution`, () => {
+			const isEditable = true;
+			factory.setEntityEditabilityResolver( {
+				isEditable: () => Promise.resolve( isEditable ),
+			} );
+
+			const context = {
+				commit: jest.fn(),
+			};
+
+			return ( actions[ ENTITY_INIT ] as any )( context, 'Q1' ).then( () => {
+				expect( context.commit ).toHaveBeenCalledWith( EDITABILITY_UPDATE, isEditable );
 			} );
 		} );
 

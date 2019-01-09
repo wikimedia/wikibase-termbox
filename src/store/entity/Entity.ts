@@ -6,4 +6,6 @@ export default interface Entity {
 	labels: TermList;
 	descriptions: TermList;
 	aliases: AliasesList;
+
+	isEditable: boolean;
 }

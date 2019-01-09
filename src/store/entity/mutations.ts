@@ -1,6 +1,7 @@
 import { MutationTree } from 'vuex';
 import Entity from '@/store/entity/Entity';
 import {
+	EDITABILITY_UPDATE,
 	ENTITY_INIT,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
@@ -17,4 +18,9 @@ export const mutations: MutationTree<Entity> = {
 		state.descriptions = entity.descriptions;
 		state.aliases = entity.aliases;
 	},
+
+	[ EDITABILITY_UPDATE ]( state: Entity, isEditable: boolean ) {
+		state.isEditable = isEditable;
+	},
+
 };

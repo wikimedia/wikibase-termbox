@@ -44,4 +44,22 @@ describe( 'TermboxFactory', () => {
 		} );
 	} );
 
+	describe( 'entityEditabilityResolver', () => {
+		it( 'throws an error if it is not set', () => {
+			expect( () => newTermboxFactory().getEntityEditabilityResolver() ).toThrow();
+		} );
+
+		it( 'can set and get an entityEditabilityResolver', () => {
+			const factory = newTermboxFactory();
+			const mockEntityEditabilityResolver = {
+				isEditable() {
+					return Promise.resolve( true );
+				},
+			};
+
+			factory.setEntityEditabilityResolver( mockEntityEditabilityResolver );
+			expect( factory.getEntityEditabilityResolver() ).toBe( mockEntityEditabilityResolver );
+		} );
+	} );
+
 } );

@@ -10,6 +10,7 @@ export default function (): Module<Entity, any> {
 		labels: {},
 		descriptions: {},
 		aliases: {},
+		isEditable: false,
 	};
 
 	const namespaced = true;

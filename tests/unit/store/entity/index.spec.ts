@@ -8,6 +8,8 @@ describe( 'store/entity/index', () => {
 			labels: {},
 			descriptions: {},
 			aliases: {},
+
+			isEditable: false,
 		} );
 	} );
 } );
