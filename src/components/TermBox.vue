@@ -159,6 +159,7 @@ export default class TermBox extends ( mixins( Messages ) as VueConstructor<Term
 
 		&__actions {
 			margin-left: auto;
+			padding-left: 16px; // minimum horizontal separation between "interaction bar" and other content
 			// TODO: this is only here because the other pens don't have a width of 48px
 			margin-right: -9px;
 		}
