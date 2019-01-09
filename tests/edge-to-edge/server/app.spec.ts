@@ -110,6 +110,8 @@ describe( 'Termbox SSR', () => {
 		const language = 'de';
 		const editLink = '/some/' + entityId;
 
+		nockSuccessfulLanguageLoading( language );
+		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
 				ids: entityId,
@@ -131,6 +133,8 @@ describe( 'Termbox SSR', () => {
 		const language = 'de';
 		const editLink = '/some';
 
+		nockSuccessfulLanguageLoading( language );
+		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
 				ids: entityId,
@@ -159,6 +163,7 @@ describe( 'Termbox SSR', () => {
 				uselang: language,
 			} )
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
+		nockSuccessfulMessagesLoading( language );
 		nockSuccessfulEntityLoading( entityId );
 
 		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
