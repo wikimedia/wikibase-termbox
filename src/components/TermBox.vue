@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<div class="wikibase-termbox__actions">
-			<EditPen :href="editLinkUrl"></EditPen>
+			<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
 		</div>
 	</div>
 </template>
@@ -52,6 +52,7 @@ interface TermboxBindings extends Vue, EntityBindings, MessagesMixin {
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
+		...mapState( NS_ENTITY, [ 'isEditable' ] ),
 		...mapGetters( NS_ENTITY, {
 			entityLabel: 'getLabelByLanguage',
 			entityDescription: 'getDescriptionByLanguage',

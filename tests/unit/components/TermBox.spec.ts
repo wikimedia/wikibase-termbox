@@ -9,7 +9,7 @@ import {
 	NS_LANGUAGE,
 	NS_LINKS,
 } from '@/store/namespaces';
-import { ENTITY_INIT } from '@/store/entity/mutationTypes';
+import { ENTITY_INIT, EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -130,13 +130,23 @@ describe( 'TermBox.vue', () => {
 		expect( wrapper.find( '.wikibase-termbox__aliases--placeholder' ).text() ).toBe( '?' );
 	} );
 
-	it( 'contains an edit pen', () => {
-		const editLinkUrl = '/edit/Q42';
-		store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
-		const wrapper = shallowMount( TermBox, { store, localVue } );
+	describe( 'edit pen', () => {
+		it( 'is there given the entity is editable', () => {
+			const editLinkUrl = '/edit/Q42';
+			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+			store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
+			const wrapper = shallowMount( TermBox, { store, localVue } );
 
-		expect( wrapper.find( EditPen ).props() )
-			.toHaveProperty( 'href', editLinkUrl );
+			expect( wrapper.find( EditPen ).props() )
+				.toHaveProperty( 'href', editLinkUrl );
+		} );
+
+		it( 'is not there given the entity is not editable', () => {
+			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), false );
+			const wrapper = shallowMount( TermBox, { store, localVue } );
+
+			expect( wrapper.find( EditPen ).exists() ).toBeFalsy();
+		} );
 	} );
 
 } );
