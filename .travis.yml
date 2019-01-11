@@ -10,8 +10,7 @@ install:
 
 script:
   - docker-compose run --rm node npm run build-server
-  - docker-compose run --rm node npm run lint
-  - docker-compose run --rm node npm run test
+  - docker-compose run --rm node npm test
   - docker-compose run --rm node npm run build
   # check that dist contains the latest build result
   - git status && git diff-index --quiet HEAD dist/

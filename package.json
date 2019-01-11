@@ -7,9 +7,10 @@
     "dev-server": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon serverBuild/server/server.js\"",
     "build": "rm -rf node_modules/.cache && NODE_ENV=production vue-cli-service build",
     "build-server": "rm -rf node_modules/.cache && NODE_ENV=production WEBPACK_TARGET=node vue-cli-service build && tsc -p tsconfig.server.json",
-    "lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json",
+    "test:lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json",
     "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
-    "test": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "test": "npm-run-all test:*"
   },
   "_moduleAliases": {
     "@": "serverBuild/"
@@ -48,6 +49,7 @@
     "nock": "^10.0.4",
     "node-sass": "^4.11.0",
     "nodemon": "^1.18.9",
+    "npm-run-all": "^4.1.5",
     "reset-css": "^4.0.1",
     "sass-loader": "^7.0.1",
     "supertest": "^3.3.0",
