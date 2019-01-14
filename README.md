@@ -38,8 +38,13 @@ docker-compose run --rm node npm install
   * a development server for the frontend part in development mode reachable at http://localhost:<CSR_PORT from your .env file>
 
 ## Development
-* `docker-compose run --rm node npm run test` runs all tests
-* `docker-compose run --rm node npm run lint` for linting, `docker-compose run --rm node npm run fix` for fixing fixable lint errors
+
+### Run all code quality tools
+* `docker-compose run --rm node npm test`
+
+### Run code quality tools individually
+* `docker-compose run --rm node npm run test:unit` runs all tests
+* `docker-compose run --rm node npm run test:lint` for linting, `docker-compose run --rm node npm run fix` for fixing auto-fixable lint errors
 
 ## Blubber build
 
