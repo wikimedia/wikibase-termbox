@@ -1,19 +1,6 @@
 <template>
-	<!-- TODO dynamize wikibase-termbox--primaryLanguage for T205261 -->
-	<div class="wikibase-termbox wikibase-termbox--primaryLanguage">
-		<div>
-			<div class="wikibase-termbox__term">
-				<span class="wikibase-termbox__language">{{primaryLanguageName}}</span>
-				<h2 class="wikibase-termbox__label">{{ label }}</h2>
-				<p class="wikibase-termbox__description">{{ description }}</p>
-				<ul v-if="hasAliases" class="wikibase-termbox__aliases">
-					<li v-for="alias in aliases"
-						class="wikibase-termbox__alias"
-						:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>
-				</ul>
-				<p class="wikibase-termbox__aliases wikibase-termbox__aliases--placeholder" v-else>?</p>
-			</div>
-		</div>
+	<div class="wikibase-termbox">
+		<Fingerprint :language="primaryLanguage" :isPrimary="true" />
 		<div class="wikibase-termbox__actions">
 			<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
 		</div>
@@ -21,155 +8,42 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
-import Component, { mixins } from 'vue-class-component';
-import Messages, { MessagesMixin } from './mixins/Messages';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import {
 	mapState,
-	mapGetters,
 } from 'vuex';
 import {
 	NS_ENTITY,
-	NS_LANGUAGE,
 	NS_LINKS,
 	NS_USER,
 } from '@/store/namespaces';
-import Term from '@/datamodel/Term';
 import EditPen from '@/components/EditPen.vue';
-
-interface EntityBindings {
-	entityLabel: ( languageCode: string ) => Term;
-	entityDescription: ( languageCode: string ) => Term;
-	entityAliases: ( languageCode: string ) => Term[];
-}
-
-interface TermboxBindings extends Vue, EntityBindings, MessagesMixin {
-	getLanguageTranslation( language: string, inLanguage: string ): string;
-}
+import Fingerprint from '@/components/Fingerprint.vue';
 
 @Component( {
-	components: { EditPen },
+	components: { Fingerprint, EditPen },
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
 		...mapState( NS_ENTITY, [ 'isEditable' ] ),
-		...mapGetters( NS_ENTITY, {
-			entityLabel: 'getLabelByLanguage',
-			entityDescription: 'getDescriptionByLanguage',
-			entityAliases: 'getAliasesByLanguage',
-		} ),
-		...mapGetters( NS_LANGUAGE, {
-			getLanguageTranslation: 'getTranslationByCode',
-		} ),
 	},
 } )
-export default class TermBox extends ( mixins( Messages ) as VueConstructor<TermboxBindings> ) {
-	get label(): string {
-		const label: Term = this.entityLabel( this.primaryLanguage );
-		if ( label === null ) {
-			return '???';
-		} else {
-			return label.value;
-		}
-	}
+export default class TermBox extends Vue {
 
-	get description(): string {
-		const description: Term = this.entityDescription( this.primaryLanguage );
-		if ( description === null ) {
-			return '??';
-		} else {
-			return description.value;
-		}
-	}
-
-	get hasAliases(): boolean {
-		return !( this.entityAliases( this.primaryLanguage ) == null );
-	}
-
-	get aliases(): Term[] {
-		const aliases: Term[] =  this.entityAliases( this.primaryLanguage );
-		if ( aliases === null ) {
-			return [];
-		} else {
-			return aliases;
-		}
-	}
-
-	get primaryLanguageName(): string {
-		const name = this.getLanguageTranslation( this.primaryLanguage, this.primaryLanguage );
-		if ( name === null ) {
-			return '????';
-		} else {
-			return name;
-		}
-	}
 }
 </script>
 
 <style lang="scss">
 .wikibase-termbox { // container - need a strong selector chain to reliably override reset css
-
 	display: flex;
 
 	.wikibase-termbox { // for use as a prefix
-		&__language {
-			color: $color-dark-azureish-gray;
-			@include fontSize( 13px );
-			font-family: $font-family-sansserif;
-		}
-
-		&__label,
-		&__description,
-		&__aliases {
-			min-width: 260px;
-			max-width: 420px;
-		}
-
-		&__label {
-			color: $color-black;
-			line-height: 1.3em;
-			font-family: $font-family-serif;
-			font-weight: bold;
-		}
-
-		&__description {
-			margin-top: 0.5rem;
-			margin-left: 0.5em;
-			color: $color-black;
-			line-height: 1.3em;
-			font-family: $font-family-sansserif;
-		}
-
-		&__aliases {
-			margin-top: 0.5rem;
-			margin-left: 0.5em;
-			color: $color-light-azureish-gray;
-			line-height: 1.3em;
-			font-family: $font-family-sansserif;
-		}
-
-		&__alias {
-			display: inline;
-		}
-
-		&__alias:not( :last-child )::after {
-			content: attr( data-separator );
-			white-space: nowrap;
-			padding: 0 0.4em;
-		}
-
 		&__actions {
 			margin-left: auto;
 			padding-left: 16px; // minimum horizontal separation between "interaction bar" and other content
 			// TODO: this is only here because the other pens don't have a width of 48px
 			margin-right: -9px;
-		}
-	}
-
-	// unless we find another difference we should move the primaryLanguage modifier to the label
-	&.wikibase-termbox--primaryLanguage {
-		.wikibase-termbox__label {
-			@include fontSize( 23px );
 		}
 	}
 }

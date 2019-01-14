@@ -288,17 +288,17 @@ describe( 'Termbox SSR', () => {
 
 			expect( $dom.querySelectorAll( '.wikibase-termbox' ).length ).toBe( 1 );
 
-			expect( $dom.querySelector( '.wikibase-termbox--primaryLanguage' ) )
+			expect( $dom.querySelector( '.wikibase-termbox-fingerprint--primaryLanguage' ) )
 				.toBeVisible();
 
-			expect( $dom.querySelector( '.wikibase-termbox__language' ) )
+			expect( $dom.querySelector( '.wikibase-termbox-fingerprint__language' ) )
 				.toHaveTextContent( germanInGerman );
 
-			expect( $dom.querySelector( '.wikibase-termbox__label' ) )
+			expect( $dom.querySelector( '.wikibase-termbox-fingerprint__label' ) )
 				.toHaveTextContent( mockQ64.labels.de.value );
-			expect( $dom.querySelector( '.wikibase-termbox__description' ) )
+			expect( $dom.querySelector( '.wikibase-termbox-fingerprint__description' ) )
 				.toHaveTextContent( mockQ64.descriptions.de.value );
-			expect( $dom.querySelectorAll( '.wikibase-termbox__aliases li' ).length )
+			expect( $dom.querySelectorAll( '.wikibase-termbox-fingerprint__aliases li' ).length )
 				.toBe( mockQ64.aliases.de.length );
 
 			expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
