@@ -119,6 +119,25 @@ describe( 'entity/Getters', () => {
 			)( 'de' ) ).toBe( null );
 		} );
 
-	} );
+		it( 'getAllEnteredLanguageCodes returns all entered language-codes on a entity', () => {
+			const labels = {
+				de: 'irgendwas',
+				it: 'qualcosa',
+			};
+			const descriptions = {
+				'de': 'irgendwas',
+				'en': 'something somting',
+				'zh': '别的',
+				'zh-tw': '別的',
+			};
+			const aliases = {
+				pl: [ { language: 'pl', value: 'coś' } ],
+				fr: [ { language: 'fr', value: 'quelque chose' } ],
+			};
 
+			expect( getters.getAllEnteredLanguageCodes(
+				newMinimalStore( { labels, descriptions, aliases } ), null, null, null,
+			) ).toStrictEqual( [ 'de', 'it', 'en', 'zh', 'zh-tw', 'pl', 'fr' ] );
+		} );
+	} );
 } );
