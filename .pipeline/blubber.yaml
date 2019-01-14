@@ -2,6 +2,12 @@ version: v3
 
 base: docker-registry.wikimedia.org/nodejs10-slim
 
+apt: {
+  packages: [
+    ca-certificates, # ability to talk to remote APIs with TLS
+  ]
+}
+
 # can't live in /srv/service as currently node_modules outside of project root is not supported
 lives:
   in: /opt/lib
@@ -17,6 +23,26 @@ variants:
       command: [ npm, run-script, build-server ]
       requirements: [ "." ]
   test:
-    # technically build-server is only needed for tests/edge-to-edge
+    # build-server is needed for tests/edge-to-edge to work
     includes: [ build-server ]
     entrypoint: [ npm, test ]
+  install-prod:
+    base: docker-registry.wikimedia.org/nodejs10-devel
+    node:
+      env: production
+      requirements: [ package.json, package-lock.json ]
+  production:
+    artifacts:
+      - from: install-prod
+        source: /opt/lib/node_modules
+        destination: /srv/service/node_modules
+      - from: build-server
+        source: /opt/lib/serverBuild
+        destination: /srv/service/serverBuild
+      - from: build-server
+        source: /opt/lib/serverDist
+        destination: /srv/service/serverDist
+    lives:
+      in: /srv/service
+    node: { env: production }
+    entrypoint: [ node, "serverBuild/server/server.js" ]

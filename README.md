@@ -34,7 +34,7 @@ docker-compose run --rm node npm install
 
 ## Starting the server
 * `docker-compose up` starts two servers
-  * the SSR server at http://localhost:<SSR_PORT from your .env file>
+  * a development SSR server at http://localhost:<SSR_PORT from your .env file>
   * a development server for the frontend part in development mode reachable at http://localhost:<CSR_PORT from your .env file>
 
 ## Development
@@ -52,9 +52,19 @@ This project can be build with [blubber](https://wikitech.wikimedia.org/wiki/Blu
 
 Instructions above will gradually be migrated to use blubber.
 
-Running tests
+### Running tests
 ```
 blubber .pipeline/blubber.yaml test > Dockerfile
 docker build -t wmde/wikibase-termbox-test .
 docker run --rm wmde/wikibase-termbox-test
+```
+
+### Running for production
+
+E.g. with production wikidata configured as the backend (`WIKIBASE_REPO_API`).
+
+```
+blubber .pipeline/blubber.yaml production > Dockerfile
+docker build -t wmde/wikibase-termbox-production .
+docker run --rm -p "3030:3030" -e WIKIBASE_REPO_API=https://www.wikidata.org/w/api.php -e SSR_PORT=3030 wmde/wikibase-termbox-production
 ```
