@@ -4,6 +4,7 @@ services:
   node:
     build:
       context: ./
+      dockerfile: docker/Dockerfile-node
     image: wmde/wikibase-termbox-node
     volumes:
       - '~/.npm:/.npm'

@@ -52,8 +52,6 @@ This project can be build with [blubber](https://wikitech.wikimedia.org/wiki/Blu
 
 Instructions above will gradually be migrated to use blubber.
 
-Beware, for the time being, blubber generated Dockerfiles conflict with the hand-crafted, earlier version.
-
 Running tests
 ```
 blubber .pipeline/blubber.yaml test > Dockerfile
