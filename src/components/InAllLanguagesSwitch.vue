@@ -14,7 +14,7 @@ import Messages, { MessagesMixin } from './mixins/Messages';
 @Component
 export default class InAllLanguagesSwitch extends ( mixins( Messages ) as VueConstructor<MessagesMixin> ) {
 
-	public link = 'place-holder-link';
+	public link = '#';
 
 	public showAllLanguages() {
 		console.log( 'TODO flip all-languages.' );

@@ -37,6 +37,6 @@ describe( 'InAllLanguagesSwitch.vue', () => {
 		const wrapper = shallowMount( InAllLanguagesSwitch, { store, localVue } );
 		expect(
 			wrapper.find( '.wikibase-termbox-subsection-switch__switch>a' ).attributes( 'href' ),
-		).toBe( 'place-holder-link' );
+		).toBe( '#' );
 	} );
 } );
