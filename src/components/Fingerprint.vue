@@ -1,6 +1,6 @@
 <template>
-	<div 
-		class="wikibase-termbox-fingerprint" 
+	<div
+		class="wikibase-termbox-fingerprint"
 		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }">
 		<span class="wikibase-termbox-fingerprint__language">{{ languageName }}</span>
 		<h2 class="wikibase-termbox-fingerprint__label">{{ label }}</h2>
@@ -103,6 +103,14 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 
 <style lang="scss">
 .wikibase-termbox-fingerprint {
+
+	.wikibase-termbox & { // this serves as strong selector to overcome reset.css
+		margin-top: 32px;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
 
 	.wikibase-termbox-fingerprint { // for use as a prefix
 		&__language {

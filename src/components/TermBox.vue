@@ -1,9 +1,13 @@
 <template>
 	<div class="wikibase-termbox">
-		<Fingerprint :language="primaryLanguage" :isPrimary="true" />
-		<div class="wikibase-termbox__actions">
-			<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
+		<div class="wikibase-termbox__primary">
+			<Fingerprint :language="primaryLanguage" :isPrimary="true" />
+			<div class="wikibase-termbox__actions">
+				<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
+			</div>
 		</div>
+
+		<AllEnteredLanguages/>
 	</div>
 </template>
 
@@ -20,9 +24,10 @@ import {
 } from '@/store/namespaces';
 import EditPen from '@/components/EditPen.vue';
 import Fingerprint from '@/components/Fingerprint.vue';
+import AllEnteredLanguages from '@/components/AllEnteredLanguagesExpandable.vue';
 
 @Component( {
-	components: { Fingerprint, EditPen },
+	components: { AllEnteredLanguages, Fingerprint, EditPen },
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
@@ -36,9 +41,12 @@ export default class TermBox extends Vue {
 
 <style lang="scss">
 .wikibase-termbox { // container - need a strong selector chain to reliably override reset css
-	display: flex;
 
 	.wikibase-termbox { // for use as a prefix
+		&__primary {
+			display: flex;
+		}
+
 		&__actions {
 			margin-left: auto;
 			padding-left: 16px; // minimum horizontal separation between "interaction bar" and other content
