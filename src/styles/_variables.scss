@@ -8,3 +8,9 @@ $font-family-sansserif: 'Helvetica Neue', 'Helvetica', 'Nimbus Sans L', 'Arial',
 $font-family-serif: 'Linux Libertine', 'Georgia', 'Times', serif;
 
 $svg-pen: url( '../../assets/pen.svg' );
+
+$sm: 501px;
+$md: 892px;
+$lg: 1036px;
+
+$grid-breakpoints: ( sm: $sm, md: $md, lg: $lg );

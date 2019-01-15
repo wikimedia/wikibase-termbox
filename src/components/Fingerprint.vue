@@ -160,10 +160,40 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		}
 	}
 
-	// unless we find another difference we should move the primaryLanguage modifier to the label
 	&--primaryLanguage {
 		.wikibase-termbox-fingerprint__label {
 			@include fontSize( 23px );
+		}
+	}
+	&:not(&--primaryLanguage) {
+
+		@include media-breakpoint-up(md) {
+			display: flex;
+			flex-wrap: wrap;
+
+			.wikibase-termbox-fingerprint__language {
+				flex-basis: 100%;
+				margin-bottom: 8px;
+			}
+
+			.wikibase-termbox-fingerprint__label,
+			.wikibase-termbox-fingerprint__description,
+			.wikibase-termbox-fingerprint__aliases {
+				flex: 1;
+			}
+			.wikibase-termbox-fingerprint__description,
+			.wikibase-termbox-fingerprint__aliases {
+				margin-left: 16px;
+				margin-top: 0;
+			}
+		}
+
+		@include media-breakpoint-up(lg) {
+			.wikibase-termbox-fingerprint__language {
+				flex-basis: 128px;
+				margin-right: 16px;
+				margin-bottom: 0;
+			}
 		}
 	}
 }
