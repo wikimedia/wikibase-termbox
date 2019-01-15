@@ -26,3 +26,8 @@ createApp( services )
 	.listen( process.env.SSR_PORT, () => {
 		console.info( `server is now running...` );
 	} );
+
+process.on( 'SIGINT', () => {
+	console.info( 'Process received SIGINT' );
+	process.exit( 0 );
+} );
