@@ -12,16 +12,22 @@ import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import { mutation } from '@/store/util';
 
-const languageProp = 'de';
-const langDe = 'Deutsch';
-const labelDe  = 'All I know';
-const descriptionDe = 'Jakob mag potatoes.';
-const aliasesDe = [ 'Antwort auf alles', 'Ihr kennt ja nicht einmal die Frage!' ];
+const userLanguageCode = 'de';
+
+const languageCodeDe = 'de';
+
+const languageNameDeInDe = 'Deutsch';
+
+const entityLabelDe  = 'All I know';
+const entityDescriptionDe = 'Jakob mag potatoes.';
+const entityAliasesDe = [ 'Antwort auf alles', 'Ihr kennt ja nicht einmal die Frage!' ];
+
+const languageCodeWithoutDataInEntity = 'en';
+
 const store = createStore();
-const emptyStore = createStore();
 
 describe( 'Fingerprint.vue', () => {
-	store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
+	store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguageCode );
 	store.commit(
 		mutation( NS_ENTITY, ENTITY_INIT ),
 		new FingerprintableEntity(
@@ -29,24 +35,24 @@ describe( 'Fingerprint.vue', () => {
 			{
 				de: {
 					language: 'de',
-					value: labelDe,
+					value: entityLabelDe,
 				},
 			},
 			{
 				de: {
 					language: 'de',
-					value: descriptionDe,
+					value: entityDescriptionDe,
 				},
 			},
 			{
 				de: [
 					{
 						language: 'de',
-						value: aliasesDe[0],
+						value: entityAliasesDe[0],
 					},
 					{
 						language: 'de',
-						value: aliasesDe[1],
+						value: entityAliasesDe[1],
 					},
 				],
 			},
@@ -57,7 +63,7 @@ describe( 'Fingerprint.vue', () => {
 		mutation( NS_LANGUAGE , LANGUAGE_TRANSLATION_UPDATE ),
 		{
 			de: {
-				de: langDe,
+				de: languageNameDeInDe,
 				en: 'Englisch',
 			},
 			en: {
@@ -74,7 +80,7 @@ describe( 'Fingerprint.vue', () => {
 				store,
 				propsData: {
 					isPrimary: true,
-					language: languageProp,
+					language: languageCodeDe,
 				},
 			},
 		);
@@ -88,7 +94,7 @@ describe( 'Fingerprint.vue', () => {
 				store,
 				propsData: {
 					isPrimary: false,
-					language: languageProp,
+					language: languageCodeDe,
 				},
 			},
 		);
@@ -101,33 +107,34 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeDe,
 				},
 			},
 		);
 		expect( wrapper.classes() ).toEqual( [ 'wikibase-termbox-fingerprint' ] );
 	} );
 
-	it( 'renders the name of current language', () => {
+	it( 'renders the translation of the name of the language in user language', () => {
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
 				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeDe,
 				},
 			},
 		);
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__language' ).text() ).toBe( langDe );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__language' ).text() ).toBe( languageNameDeInDe );
 	} );
 
-	it( 'renders random ?+ in case of unknown language name', () => {
+	it( 'renders ???? in case of missing language name translation in user language', () => {
+		const languageCodeWithUntranslatedName = 'fr';
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
-				store: emptyStore,
+				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeWithUntranslatedName,
 				},
 			},
 		);
@@ -141,20 +148,20 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeDe,
 				},
 			},
 		);
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).text() ).toBe( labelDe );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).text() ).toBe( entityLabelDe );
 	} );
 
-	it( 'renders ??? in case of unknown user-language for labels', () => {
+	it( 'renders ??? in case entity does not have a label in language', () => {
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
-				store: emptyStore,
+				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeWithoutDataInEntity,
 				},
 			},
 		);
@@ -167,20 +174,20 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeDe,
 				},
 			},
 		);
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__description' ).text() ).toBe( descriptionDe );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__description' ).text() ).toBe( entityDescriptionDe );
 	} );
 
-	it( 'renders ?? in case of unknown user-language for descriptions', () => {
+	it( 'renders ?? in case entity does not have a description in language', () => {
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
-				store: emptyStore,
+				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeWithoutDataInEntity,
 				},
 			},
 		);
@@ -193,22 +200,22 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeDe,
 				},
 			},
 		);
 		const aliases = wrapper.findAll( '.wikibase-termbox-fingerprint__alias' );
-		expect( aliases.at( 0 ).text() ).toStrictEqual( aliasesDe[0] );
-		expect( aliases.at( 1 ).text() ).toStrictEqual( aliasesDe[1] );
+		expect( aliases.at( 0 ).text() ).toStrictEqual( entityAliasesDe[0] );
+		expect( aliases.at( 1 ).text() ).toStrictEqual( entityAliasesDe[1] );
 	} );
 
-	it( 'renders ? in case of unknown user-language for aliases', () => {
+	it( 'renders ? in case entity does not have aliases in language', () => {
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
-				store: emptyStore,
+				store,
 				propsData: {
-					language: languageProp,
+					language: languageCodeWithoutDataInEntity,
 				},
 			},
 		);
