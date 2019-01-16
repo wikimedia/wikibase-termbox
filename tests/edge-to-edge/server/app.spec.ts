@@ -289,7 +289,7 @@ describe( 'Termbox SSR', () => {
 			expect( $dom.querySelectorAll( '.wikibase-termbox' ).length ).toBe( 1 );
 
 			const $primaryLanguageFingerprint = $dom
-				.querySelector( '.wikibase-termbox-fingerprint--primaryLanguage' ) as Element;
+				.querySelector( '.wikibase-termbox-fingerprint--primaryLanguage' );
 			expect( $primaryLanguageFingerprint )
 				.toBeVisible();
 			expect( $primaryLanguageFingerprint )
@@ -297,8 +297,13 @@ describe( 'Termbox SSR', () => {
 			expect( $primaryLanguageFingerprint )
 				.toHaveAttribute( 'lang', language );
 
-			expect( $dom.querySelector( '.wikibase-termbox-fingerprint__language' ) )
+			const $language = $dom.querySelector( '.wikibase-termbox-fingerprint__language' );
+			expect( $language )
 				.toHaveTextContent( germanInGerman );
+			expect( $language )
+				.toHaveAttribute( 'dir', 'ltr' );
+			expect( $language )
+				.toHaveAttribute( 'lang', language );
 
 			expect( $dom.querySelector( '.wikibase-termbox-fingerprint__label' ) )
 				.toHaveTextContent( mockQ64.labels.de.value );

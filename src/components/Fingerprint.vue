@@ -4,7 +4,7 @@
 		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }"
 		:lang="language.code"
 		:dir="language.directionality">
-		<span class="wikibase-termbox-fingerprint__language">{{ languageName }}</span>
+		<LanguageNameInUserLanguage class="wikibase-termbox-fingerprint__language" :language="language"/>
 		<h2 class="wikibase-termbox-fingerprint__label">{{ label }}</h2>
 		<div class="wikibase-termbox-fingerprint__description-wrapper">
 			<p class="wikibase-termbox-fingerprint__description">{{ description }}</p>
@@ -24,17 +24,14 @@
 import Vue, { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import Messages, { MessagesMixin } from './mixins/Messages';
-import {
-	mapState,
-	mapGetters,
-} from 'vuex';
+import { mapGetters } from 'vuex';
 import {
 	NS_ENTITY,
 	NS_LANGUAGE,
-	NS_USER,
 } from '@/store/namespaces';
 import Term from '@/datamodel/Term';
 import Language from '@/datamodel/Language';
+import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
 interface EntityBindings {
 	entityLabel: ( languageCode: string ) => Term;
 	entityDescription: ( languageCode: string ) => Term;
@@ -43,10 +40,10 @@ interface EntityBindings {
 interface FingerprintBindings extends Vue, EntityBindings, MessagesMixin {
 	languageCode: string;
 	isPrimary: boolean;
-	getLanguageTranslation( language: string, inLanguage: string ): string;
 	getLanguageByCode( languageCode: string ): Language;
 }
 @Component( {
+	components: { LanguageNameInUserLanguage },
 	props: {
 		languageCode: {
 			type: String,
@@ -59,14 +56,12 @@ interface FingerprintBindings extends Vue, EntityBindings, MessagesMixin {
 		},
 	},
 	computed: {
-		...mapState( NS_USER, [ 'primaryLanguage' ] ),
 		...mapGetters( NS_ENTITY, {
 			entityLabel: 'getLabelByLanguage',
 			entityDescription: 'getDescriptionByLanguage',
 			entityAliases: 'getAliasesByLanguage',
 		} ),
 		...mapGetters( NS_LANGUAGE, {
-			getLanguageTranslation: 'getTranslationByCode',
 			getLanguageByCode: 'getByCode',
 		} ),
 	},
@@ -98,14 +93,6 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			return [];
 		} else {
 			return aliases;
-		}
-	}
-	get languageName(): string {
-		const name = this.getLanguageTranslation( this.language.code, this.primaryLanguage );
-		if ( name === null ) {
-			return '????';
-		} else {
-			return name;
 		}
 	}
 
