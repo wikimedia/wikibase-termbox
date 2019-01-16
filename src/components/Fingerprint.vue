@@ -106,6 +106,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 
 	.wikibase-termbox & { // this serves as strong selector to overcome reset.css
 		margin-top: 32px;
+		min-width: 0; // https://css-tricks.com/flexbox-truncated-text/
 
 		&:first-child {
 			margin-top: 0;
@@ -119,12 +120,21 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			font-family: $font-family-sansserif;
 		}
 
+		$descriptionAliasIndent: 0.5em;
+		$fingerprintMinWidth: 260px;
+
 		&__label,
 		&__description,
 		&__aliases {
-			min-width: 260px;
+			min-width: $fingerprintMinWidth;
 			max-width: 420px;
 		}
+
+		&__description,
+		&__aliases {
+			min-width: calc(#{$fingerprintMinWidth} - #{$descriptionAliasIndent});
+		}
+
 
 		&__label {
 			color: $color-black;
