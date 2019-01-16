@@ -125,10 +125,13 @@ describe( 'entity/Getters', () => {
 				it: 'qualcosa',
 			};
 			const descriptions = {
+				'zh-hk': '別的',
+				'de-sb': 'irgendwas',
 				'de': 'irgendwas',
 				'en': 'something somting',
 				'zh': '别的',
 				'zh-tw': '別的',
+				'de-au': 'irgendwas',
 			};
 			const aliases = {
 				pl: [ { language: 'pl', value: 'coś' } ],
@@ -137,7 +140,7 @@ describe( 'entity/Getters', () => {
 
 			expect( getters.getAllEnteredLanguageCodes(
 				newMinimalStore( { labels, descriptions, aliases } ), null, null, null,
-			) ).toStrictEqual( [ 'de', 'it', 'en', 'zh', 'zh-tw', 'pl', 'fr' ] );
+			) ).toStrictEqual( [ 'de', 'de-au', 'de-sb',  'en', 'fr', 'it', 'pl', 'zh', 'zh-hk', 'zh-tw'] );
 		} );
 	} );
 } );

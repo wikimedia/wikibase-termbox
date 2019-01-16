@@ -33,6 +33,6 @@ export const getters: GetterTree<Entity, any> = {
 				...Object.keys( state.descriptions ),
 				...Object.keys( state.aliases ),
 			] ),
-		];
+		].sort();
 	},
 };
