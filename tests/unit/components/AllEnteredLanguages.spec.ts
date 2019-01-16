@@ -25,7 +25,7 @@ describe( 'AllEnteredLanguages', () => {
 
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
-		expect( wrapper.find( Fingerprint ).props( 'language' ) ).toBe( language );
+		expect( wrapper.find( Fingerprint ).props( 'languageCode' ) ).toBe( language );
 	} );
 
 	it( 'does not contain the primary user language', () => {
@@ -45,7 +45,7 @@ describe( 'AllEnteredLanguages', () => {
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
 		expect( wrapper.findAll( Fingerprint ).length ).toBe( 1 );
-		expect( wrapper.find( Fingerprint ).props( 'language' ) ).toBe( 'en' );
+		expect( wrapper.find( Fingerprint ).props( 'languageCode' ) ).toBe( 'en' );
 	} );
 
 } );

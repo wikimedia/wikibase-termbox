@@ -1,7 +1,7 @@
 <template>
 	<div class="wikibase-termbox">
 		<div class="wikibase-termbox__primary">
-			<Fingerprint :language="primaryLanguage" :isPrimary="true" />
+			<Fingerprint :languageCode="primaryLanguage" :isPrimary="true" />
 			<div class="wikibase-termbox__actions">
 				<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
 			</div>

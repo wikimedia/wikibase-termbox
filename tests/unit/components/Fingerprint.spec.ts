@@ -8,12 +8,14 @@ import {
 } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
-import { LANGUAGE_TRANSLATION_UPDATE } from '@/store/language/mutationTypes';
+import { LANGUAGE_TRANSLATION_UPDATE, LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import { mutation } from '@/store/util';
+import Language from '@/datamodel/Language';
 
 const userLanguageCode = 'de';
 
+const languageCodeAr = 'ar';
 const languageCodeDe = 'de';
 
 const languageNameDeInDe = 'Deutsch';
@@ -23,6 +25,9 @@ const entityDescriptionDe = 'Jakob mag potatoes.';
 const entityAliasesDe = [ 'Antwort auf alles', 'Ihr kennt ja nicht einmal die Frage!' ];
 
 const languageCodeWithoutDataInEntity = 'en';
+
+const languageAr: Language = { code: languageCodeAr, directionality: 'rtl' };
+const languageDe: Language = { code: languageCodeDe, directionality: 'ltr' };
 
 const store = createStore();
 
@@ -62,13 +67,27 @@ describe( 'Fingerprint.vue', () => {
 	store.commit(
 		mutation( NS_LANGUAGE , LANGUAGE_TRANSLATION_UPDATE ),
 		{
-			de: {
-				de: languageNameDeInDe,
-				en: 'Englisch',
+			ar: {
+				ar: 'العربية',
+				de: 'الألمانية',
+				en: 'الإنجليزية',
 			},
+			de: {
+				ar: 'Arabisch',
+				de: languageNameDeInDe,
+				// en: 'Englisch', // intentionally missing, see '????' test below
+			},
+		},
+	);
+
+	store.commit(
+		mutation( NS_LANGUAGE , LANGUAGE_UPDATE ),
+		{
+			ar: languageAr,
+			de: languageDe,
 			en: {
-				de: 'German',
-				en: 'English',
+				code: 'en',
+				directionality: 'ltr',
 			},
 		},
 	);
@@ -80,7 +99,7 @@ describe( 'Fingerprint.vue', () => {
 				store,
 				propsData: {
 					isPrimary: true,
-					language: languageCodeDe,
+					languageCode: languageCodeDe,
 				},
 			},
 		);
@@ -94,7 +113,7 @@ describe( 'Fingerprint.vue', () => {
 				store,
 				propsData: {
 					isPrimary: false,
-					language: languageCodeDe,
+					languageCode: languageCodeDe,
 				},
 			},
 		);
@@ -107,7 +126,7 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeDe,
+					languageCode: languageCodeDe,
 				},
 			},
 		);
@@ -120,21 +139,24 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeDe,
+					languageCode: languageCodeDe,
 				},
 			},
 		);
 		expect( wrapper.find( '.wikibase-termbox-fingerprint__language' ).text() ).toBe( languageNameDeInDe );
 	} );
 
+	/**
+	 * This requires an inconsistent store to happen (language exists but no translation for it)
+	 */
 	it( 'renders ???? in case of missing language name translation in user language', () => {
-		const languageCodeWithUntranslatedName = 'fr';
+		const languageCodeWithUntranslatedName = 'en';
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
 				store,
 				propsData: {
-					language: languageCodeWithUntranslatedName,
+					languageCode: languageCodeWithUntranslatedName,
 				},
 			},
 		);
@@ -148,7 +170,7 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeDe,
+					languageCode: languageCodeDe,
 				},
 			},
 		);
@@ -161,7 +183,7 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeWithoutDataInEntity,
+					languageCode: languageCodeWithoutDataInEntity,
 				},
 			},
 		);
@@ -174,7 +196,7 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeDe,
+					languageCode: languageCodeDe,
 				},
 			},
 		);
@@ -187,7 +209,7 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeWithoutDataInEntity,
+					languageCode: languageCodeWithoutDataInEntity,
 				},
 			},
 		);
@@ -200,7 +222,7 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeDe,
+					languageCode: languageCodeDe,
 				},
 			},
 		);
@@ -215,10 +237,22 @@ describe( 'Fingerprint.vue', () => {
 			{
 				store,
 				propsData: {
-					language: languageCodeWithoutDataInEntity,
+					languageCode: languageCodeWithoutDataInEntity,
 				},
 			},
 		);
 		expect( wrapper.find( '.wikibase-termbox-fingerprint__aliases--placeholder' ).text() ).toBe( '?' );
+	} );
+
+	it( 'marks-up the fingerprint with the language directionality', () => {
+		const wrapper = shallowMount( Fingerprint, { store, propsData: { languageCode: languageCodeAr } } );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint' ).attributes( 'dir' ) )
+			.toBe( languageAr.directionality );
+	} );
+
+	it( 'marks-up the fingerprint with the language code', () => {
+		const wrapper = shallowMount( Fingerprint, { store, propsData: { languageCode: languageCodeAr } } );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint' ).attributes( 'lang' ) )
+			.toBe( languageAr.code );
 	} );
 } );

@@ -1,7 +1,9 @@
 <template>
 	<div
 		class="wikibase-termbox-fingerprint"
-		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }">
+		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }"
+		:lang="language.code"
+		:dir="language.directionality">
 		<span class="wikibase-termbox-fingerprint__language">{{ languageName }}</span>
 		<h2 class="wikibase-termbox-fingerprint__label">{{ label }}</h2>
 		<div class="wikibase-termbox-fingerprint__description-wrapper">
@@ -32,19 +34,21 @@ import {
 	NS_USER,
 } from '@/store/namespaces';
 import Term from '@/datamodel/Term';
+import Language from '@/datamodel/Language';
 interface EntityBindings {
 	entityLabel: ( languageCode: string ) => Term;
 	entityDescription: ( languageCode: string ) => Term;
 	entityAliases: ( languageCode: string ) => Term[];
 }
 interface FingerprintBindings extends Vue, EntityBindings, MessagesMixin {
-	language: string;
+	languageCode: string;
 	isPrimary: boolean;
 	getLanguageTranslation( language: string, inLanguage: string ): string;
+	getLanguageByCode( languageCode: string ): Language;
 }
 @Component( {
 	props: {
-		language: {
+		languageCode: {
 			type: String,
 			required: true,
 		},
@@ -63,12 +67,14 @@ interface FingerprintBindings extends Vue, EntityBindings, MessagesMixin {
 		} ),
 		...mapGetters( NS_LANGUAGE, {
 			getLanguageTranslation: 'getTranslationByCode',
+			getLanguageByCode: 'getByCode',
 		} ),
 	},
 } )
 export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<FingerprintBindings> ) {
+
 	get label(): string {
-		const label: Term = this.entityLabel( this.language );
+		const label: Term = this.entityLabel( this.language.code );
 		if ( label === null ) {
 			return '???';
 		} else {
@@ -76,7 +82,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		}
 	}
 	get description(): string {
-		const description: Term = this.entityDescription( this.language );
+		const description: Term = this.entityDescription( this.language.code );
 		if ( description === null ) {
 			return '??';
 		} else {
@@ -87,7 +93,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		return this.aliases.length > 0;
 	}
 	get aliases(): Term[] {
-		const aliases: Term[] =  this.entityAliases( this.language );
+		const aliases: Term[] =  this.entityAliases( this.language.code );
 		if ( aliases === null ) {
 			return [];
 		} else {
@@ -95,12 +101,16 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		}
 	}
 	get languageName(): string {
-		const name = this.getLanguageTranslation( this.language, this.primaryLanguage );
+		const name = this.getLanguageTranslation( this.language.code, this.primaryLanguage );
 		if ( name === null ) {
 			return '????';
 		} else {
 			return name;
 		}
+	}
+
+	get language(): Language {
+		return this.getLanguageByCode( this.languageCode );
 	}
 }
 </script>

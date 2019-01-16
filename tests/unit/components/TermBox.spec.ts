@@ -22,7 +22,7 @@ describe( 'TermBox.vue', () => {
 		const wrapper = shallowMount( TermBox, { store } );
 
 		expect( wrapper.find( Fingerprint ).props() )
-			.toHaveProperty( 'language', userLanguage );
+			.toHaveProperty( 'languageCode', userLanguage );
 		expect( wrapper.find( Fingerprint ).props() )
 			.toHaveProperty( 'isPrimary', true );
 	} );

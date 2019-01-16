@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Fingerprint v-for="language in allEnteredLanguagesWithoutUserLanguage" :language="language" :key="language"/>
+		<Fingerprint v-for="language in allEnteredLanguagesWithoutUserLanguage" :languageCode="language" :key="language"/>
 	</div>
 </template>
 
