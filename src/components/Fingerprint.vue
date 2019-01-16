@@ -103,46 +103,33 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 
 <style lang="scss">
 .wikibase-termbox-fingerprint {
-
 	.wikibase-termbox & { // this serves as strong selector to overcome reset.css
 		margin-top: 32px;
-		min-width: 0; // https://css-tricks.com/flexbox-truncated-text/
-
 		&:first-child {
 			margin-top: 0;
 		}
 	}
-
 	.wikibase-termbox-fingerprint { // for use as a prefix
 		&__language {
 			color: $color-dark-azureish-gray;
 			@include fontSize( 13px );
 			font-family: $font-family-sansserif;
 		}
-
-		$descriptionAliasIndent: 0.5em;
-		$fingerprintMinWidth: 260px;
-
 		&__label,
 		&__description,
 		&__aliases {
-			min-width: $fingerprintMinWidth;
+			min-width: 260px;
 			max-width: 420px;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
 		}
-
-		&__description,
-		&__aliases {
-			min-width: calc(#{$fingerprintMinWidth} - #{$descriptionAliasIndent});
-		}
-
-
 		&__label {
 			color: $color-black;
 			line-height: 1.3em;
 			font-family: $font-family-serif;
 			font-weight: bold;
 		}
-
 		&__description {
 			margin-top: 0.5rem;
 			margin-left: 0.5em;
@@ -150,7 +137,6 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			line-height: 1.3em;
 			font-family: $font-family-sansserif;
 		}
-
 		&__aliases {
 			margin-top: 0.5rem;
 			margin-left: 0.5em;
@@ -158,34 +144,28 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			line-height: 1.3em;
 			font-family: $font-family-sansserif;
 		}
-
 		&__alias {
 			display: inline;
 		}
-
 		&__alias:not( :last-child )::after {
 			content: attr( data-separator );
 			white-space: nowrap;
 			padding: 0 0.4em;
 		}
 	}
-
 	&--primaryLanguage {
 		.wikibase-termbox-fingerprint__label {
 			@include fontSize( 23px );
 		}
 	}
 	&:not(&--primaryLanguage) {
-
 		@include media-breakpoint-up(md) {
 			display: flex;
 			flex-wrap: wrap;
-
 			.wikibase-termbox-fingerprint__language {
 				flex-basis: 100%;
 				margin-bottom: 8px;
 			}
-
 			.wikibase-termbox-fingerprint__label,
 			.wikibase-termbox-fingerprint__description,
 			.wikibase-termbox-fingerprint__aliases {
@@ -197,7 +177,6 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 				margin-top: 0;
 			}
 		}
-
 		@include media-breakpoint-up(lg) {
 			.wikibase-termbox-fingerprint__language {
 				flex-basis: 128px;
