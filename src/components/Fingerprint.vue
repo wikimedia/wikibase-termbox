@@ -84,7 +84,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		}
 	}
 	get hasAliases(): boolean {
-		return !( this.entityAliases( this.language ) == null );
+		return this.aliases.length > 0;
 	}
 	get aliases(): Term[] {
 		const aliases: Term[] =  this.entityAliases( this.language );
