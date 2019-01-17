@@ -118,8 +118,10 @@ describe( 'entity/Getters', () => {
 				newMinimalStore( { aliases } ), null, null, null,
 			)( 'de' ) ).toBe( null );
 		} );
+	} );
 
-		it( 'getAllEnteredLanguageCodes returns all entered language-codes on a entity', () => {
+	describe( 'getAllEnteredLanguageCodes', () => {
+		it( 'returns all entered language-codes on an entity ordered by language code', () => {
 			const labels = {
 				de: 'irgendwas',
 				it: 'qualcosa',
@@ -140,7 +142,7 @@ describe( 'entity/Getters', () => {
 
 			expect( getters.getAllEnteredLanguageCodes(
 				newMinimalStore( { labels, descriptions, aliases } ), null, null, null,
-			) ).toStrictEqual( [ 'de', 'de-au', 'de-sb',  'en', 'fr', 'it', 'pl', 'zh', 'zh-hk', 'zh-tw'] );
+			) ).toStrictEqual( [ 'de', 'de-au', 'de-sb', 'en', 'fr', 'it', 'pl', 'zh', 'zh-hk', 'zh-tw'] );
 		} );
 	} );
 } );
