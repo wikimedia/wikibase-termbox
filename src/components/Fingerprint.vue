@@ -4,9 +4,11 @@
 		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }">
 		<LanguageNameInUserLanguage class="wikibase-termbox-fingerprint__language" :language="language"/>
 		<div class="wikibase-termbox-fingerprint__terms">
-			<h2 class="wikibase-termbox-fingerprint__label"
+			<component
+				:is="isPrimary ? 'h2' : 'div'"
+				class="wikibase-termbox-fingerprint__label"
 				:lang="language.code"
-				:dir="language.directionality">{{ label }}</h2>
+				:dir="language.directionality">{{ label }}</component>
 			<div class="wikibase-termbox-fingerprint__description-wrapper">
 				<p class="wikibase-termbox-fingerprint__description"
 				   :lang="language.code"

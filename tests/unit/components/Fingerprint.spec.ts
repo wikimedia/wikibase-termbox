@@ -71,7 +71,7 @@ describe( 'Fingerprint.vue', () => {
 		},
 	);
 
-	it( 'renders the component with primarayLanguage as modifier if isPrimary flag is true', () => {
+	it( 'renders the component with label heading and primaryLanguage as modifier if isPrimary flag is true', () => {
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
@@ -83,9 +83,10 @@ describe( 'Fingerprint.vue', () => {
 			},
 		);
 		expect( wrapper.classes( 'wikibase-termbox-fingerprint--primaryLanguage' ) ).toBeTruthy();
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).element.tagName ).toBe( 'H2' );
 	} );
 
-	it( 'renders the component with no modifier if isPrimary flag is false', () => {
+	it( 'renders the component with no modifier and no heading if isPrimary flag is false', () => {
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
@@ -97,6 +98,7 @@ describe( 'Fingerprint.vue', () => {
 			},
 		);
 		expect( wrapper.classes() ).toEqual( [ 'wikibase-termbox-fingerprint' ] );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).element.tagName ).toBe( 'DIV' );
 	} );
 
 	it( 'renders the component with no modifier if isPrimary flag is not set', () => {
