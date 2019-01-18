@@ -1,5 +1,7 @@
 .git
-dist
+# dist
+## the dist folder (client side code) is not needed for running the server (blubber's main business)
+## but npm does a sanity check if the checked in version matches the build result (used by wikidata as submodule)
 node_modules
 serverBuild
 serverDist
