@@ -1,17 +1,22 @@
 <template>
 	<div
 		class="wikibase-termbox-fingerprint"
-		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }"
-		:lang="language.code"
-		:dir="language.directionality">
+		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }">
 		<LanguageNameInUserLanguage class="wikibase-termbox-fingerprint__language" :language="language"/>
 		<div class="wikibase-termbox-fingerprint__terms">
-			<h2 class="wikibase-termbox-fingerprint__label">{{ label }}</h2>
+			<h2 class="wikibase-termbox-fingerprint__label"
+				:lang="language.code"
+				:dir="language.directionality">{{ label }}</h2>
 			<div class="wikibase-termbox-fingerprint__description-wrapper">
-				<p class="wikibase-termbox-fingerprint__description">{{ description }}</p>
+				<p class="wikibase-termbox-fingerprint__description"
+				   :lang="language.code"
+				   :dir="language.directionality">{{ description }}</p>
 			</div>
 			<div class="wikibase-termbox-fingerprint__aliases-wrapper">
-				<ul v-if="hasAliases" class="wikibase-termbox-fingerprint__aliases">
+				<ul v-if="hasAliases"
+					class="wikibase-termbox-fingerprint__aliases"
+					:lang="language.code"
+					:dir="language.directionality">
 					<li v-for="alias in aliases"
 						class="wikibase-termbox-fingerprint__alias"
 						:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>

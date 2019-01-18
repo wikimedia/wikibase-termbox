@@ -1,5 +1,5 @@
 <template>
-	<span :lang="userLanguage.code" :dir="userLanguage.directionality">{{ languageName }}</span>
+	<span>{{ languageName }}</span>
 </template>
 
 <script lang="ts">
@@ -41,10 +41,6 @@ interface LanguageNameInUserLanguageBindings extends Vue {
 	},
 } )
 export default class LanguageNameInUserLanguage extends ( Vue as VueConstructor<LanguageNameInUserLanguageBindings> ) {
-	get userLanguage(): Language {
-		return this.getLanguageByCode( this.userLanguageCode );
-	}
-
 	get languageName(): string {
 		const name = this.getLanguageTranslation( this.language.code, this.userLanguageCode );
 		if ( name === null ) {

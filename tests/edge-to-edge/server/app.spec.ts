@@ -292,25 +292,25 @@ describe( 'Termbox SSR', () => {
 				.querySelector( '.wikibase-termbox-fingerprint--primaryLanguage' );
 			expect( $primaryLanguageFingerprint )
 				.toBeVisible();
-			expect( $primaryLanguageFingerprint )
-				.toHaveAttribute( 'dir', 'ltr' );
-			expect( $primaryLanguageFingerprint )
-				.toHaveAttribute( 'lang', language );
 
 			const $language = $dom.querySelector( '.wikibase-termbox-fingerprint__language' );
-			expect( $language )
-				.toHaveTextContent( germanInGerman );
-			expect( $language )
-				.toHaveAttribute( 'dir', 'ltr' );
-			expect( $language )
-				.toHaveAttribute( 'lang', language );
+			expect( $language ).toHaveTextContent( germanInGerman );
 
-			expect( $dom.querySelector( '.wikibase-termbox-fingerprint__label' ) )
-				.toHaveTextContent( mockQ64.labels.de.value );
-			expect( $dom.querySelector( '.wikibase-termbox-fingerprint__description' ) )
-				.toHaveTextContent( mockQ64.descriptions.de.value );
-			expect( $dom.querySelectorAll( '.wikibase-termbox-fingerprint__aliases li' ).length )
-				.toBe( mockQ64.aliases.de.length );
+			const $label = $dom.querySelector( '.wikibase-termbox-fingerprint__label' );
+			expect( $label ).toHaveTextContent( mockQ64.labels.de.value );
+			expect( $label ).toBeInstanceOf( Element );
+			expect( $label!.getAttribute( 'lang' ) ).toBe( language );
+			expect( $label!.getAttribute( 'dir' ) ).toBe( 'ltr' );
+
+			const $description = $dom.querySelector( '.wikibase-termbox-fingerprint__description' );
+			expect( $description ).toHaveTextContent( mockQ64.descriptions.de.value );
+			expect( $description!.getAttribute( 'lang' ) ).toBe( language );
+			expect( $description!.getAttribute( 'dir' ) ).toBe( 'ltr' );
+
+			const $aliases = $dom.querySelector( '.wikibase-termbox-fingerprint__aliases' );
+			expect( $aliases!.getAttribute( 'lang' ) ).toBe( language );
+			expect( $aliases!.getAttribute( 'dir' ) ).toBe( 'ltr' );
+			expect( $aliases!.querySelectorAll( 'li' ) ).toHaveLength( mockQ64.aliases.de.length );
 
 			expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
 				.toHaveAttribute( 'href', editLink );

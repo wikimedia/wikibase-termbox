@@ -54,6 +54,7 @@ describe( 'Fingerprint.vue', () => {
 						value: entityAliasesDe[1],
 					},
 				],
+				ar: [ { language: 'ar', value: 'برلين ألمانيا' } ],
 			},
 		),
 	);
@@ -208,15 +209,19 @@ describe( 'Fingerprint.vue', () => {
 		expect( wrapper.find( '.wikibase-termbox-fingerprint__aliases--placeholder' ).text() ).toBe( '?' );
 	} );
 
-	it( 'marks-up the fingerprint with the language directionality', () => {
+	it( 'marks-up the elements of the fingerprint with the language code and directionality', () => {
 		const wrapper = shallowMount( Fingerprint, { store, propsData: { languageCode: languageCodeAr } } );
-		expect( wrapper.find( '.wikibase-termbox-fingerprint' ).attributes( 'dir' ) )
-			.toBe( languageAr.directionality );
-	} );
+		const $label = wrapper.find( '.wikibase-termbox-fingerprint__label' );
+		const $description = wrapper.find( '.wikibase-termbox-fingerprint__description' );
+		const $aliases = wrapper.find( '.wikibase-termbox-fingerprint__aliases' );
 
-	it( 'marks-up the fingerprint with the language code', () => {
-		const wrapper = shallowMount( Fingerprint, { store, propsData: { languageCode: languageCodeAr } } );
-		expect( wrapper.find( '.wikibase-termbox-fingerprint' ).attributes( 'lang' ) )
-			.toBe( languageAr.code );
+		expect( $label.attributes( 'lang' ) ).toBe( languageAr.code );
+		expect( $label.attributes( 'dir' ) ).toBe( languageAr.directionality );
+
+		expect( $description.attributes( 'lang' ) ).toBe( languageAr.code );
+		expect( $description.attributes( 'dir' ) ).toBe( languageAr.directionality );
+
+		expect( $aliases.attributes( 'lang' ) ).toBe( languageAr.code );
+		expect( $aliases.attributes( 'dir' ) ).toBe( languageAr.directionality );
 	} );
 } );

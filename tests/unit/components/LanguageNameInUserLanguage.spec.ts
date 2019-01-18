@@ -85,21 +85,4 @@ describe( 'LanguageNameInUserLanguage', () => {
 		expect( wrapper.text() ).toBe( '????' );
 	} );
 
-	it( 'marks-up the language translations with the user language directionality', () => {
-		const wrapper = shallowMount( LanguageNameInUserLanguage, {
-			store,
-			propsData: { language: languageAr },
-		} );
-		expect( wrapper.attributes( 'dir' ) )
-			.toBe( userLanguage.directionality );
-	} );
-
-	it( 'marks-up the language translations with the user language code', () => {
-		const wrapper = shallowMount( LanguageNameInUserLanguage, {
-			store,
-			propsData: { language: languageAr },
-		} );
-		expect( wrapper.attributes( 'lang' ) )
-			.toBe( userLanguage.code );
-	} );
 } );
