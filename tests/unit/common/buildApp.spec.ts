@@ -16,7 +16,12 @@ jest.mock( '@/store', () => ( {
 describe( 'buildApp', () => {
 
 	it( 'returns the app', () => {
-		const request = { language: 'en', entityId: 'Q123', editLinkUrl: '/edit/Q123' };
+		const request = {
+			language: 'en',
+			entityId: 'Q123',
+			editLinkUrl: '/edit/Q123',
+			secondaryLanguages: [ 'en', 'de' ],
+		};
 		mockGetChildComponents.mockReturnValue( [] );
 
 		return buildApp( request ).then( ( app ) => {
@@ -25,7 +30,12 @@ describe( 'buildApp', () => {
 	} );
 
 	it( 'calls asyncData on all components, then returns the app', () => {
-		const request = { language: 'en', entityId: 'Q123', editLinkUrl: '/edit/Q123' };
+		const request = {
+			language: 'en',
+			entityId: 'Q123',
+			editLinkUrl: '/edit/Q123',
+			secondaryLanguages: [ 'en', 'de' ],
+		};
 
 		const mockAsyncData1 = jest.fn();
 		const mockAsyncData2 = jest.fn();

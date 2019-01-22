@@ -6,6 +6,7 @@ const namespaced = false;
 
 let state: User = {
 	primaryLanguage: '',
+	secondaryLanguages: [],
 };
 
 export const emptyUserType: User = state;
@@ -17,6 +18,7 @@ export const emptyUserModule: Module<User, any> = {
 
 state = {
 	primaryLanguage: 'de',
+	secondaryLanguages: [ 'en', 'fr', 'it', 'zh' ],
 };
 
 export const filledUserType: User = state;

@@ -7,6 +7,7 @@ import { mutations } from '@/store/user/mutations';
 export default function (): Module<User, any> {
 	const state: User = {
 		primaryLanguage: '',
+		secondaryLanguages: [],
 	};
 
 	const namespaced = true;

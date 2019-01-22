@@ -1,6 +1,9 @@
 import { actions } from '@/store/user/actions';
 import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
-import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
+import {
+	LANGUAGE_INIT,
+	SECONDARY_LANGUAGES_INIT,
+} from '@/store/user/mutationTypes';
 import {
 	NS_LANGUAGE,
 	NS_MESSAGES,
@@ -11,8 +14,8 @@ import { action } from '@/store/util';
 
 describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
-		it( 'commits user language and ensures language translations', ( done ) => {
-			const inLanguage = 'de';
+		it( 'commits user language as well as the frequent languages and ensures language translations', ( done ) => {
+			const primaryLanguage = 'de';
 
 			const commitMock = jest.fn();
 			const dispatchMock = jest.fn();
@@ -21,21 +24,29 @@ describe( 'user/actions', () => {
 				commit: commitMock,
 				dispatch: dispatchMock,
 			};
+
+			const secondaryLanguages = [ 'de', 'en', 'fr', 'zh', 'pl' ];
 			const languagePreferenceAction = actions[ LANGUAGE_PREFERENCE ] as any; // TODO
 
-			languagePreferenceAction( context, inLanguage ).then( () => {
+			languagePreferenceAction( context, { primaryLanguage, secondaryLanguages } ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_INIT,
-					inLanguage,
+					primaryLanguage,
 				);
+
+				expect( commitMock ).toBeCalledWith(
+					SECONDARY_LANGUAGES_INIT,
+					[ 'en', 'fr', 'zh', 'pl' ],
+				);
+
 				expect( dispatchMock ).toBeCalledWith(
 					action( NS_LANGUAGE, ENSURE_AVAILABLE_IN_LANGUAGE ),
-					inLanguage,
+					primaryLanguage,
 					{ root: true },
 				);
 				expect( dispatchMock ).toBeCalledWith(
 					action( NS_MESSAGES, MESSAGES_INIT ),
-					inLanguage,
+					primaryLanguage,
 					{ root: true },
 				);
 				done();

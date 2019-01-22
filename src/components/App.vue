@@ -42,7 +42,10 @@ export default class App extends ( Vue as VueConstructor<AppBindings> ) {
 		return Promise.all( [
 			store.dispatch( action( NS_LANGUAGE, LANGUAGE_INIT ) ),
 			store.dispatch( action( NS_ENTITY, ENTITY_INIT ), request.entityId ),
-			store.dispatch( action( NS_USER, LANGUAGE_PREFERENCE ), request.language ),
+			store.dispatch(
+				action( NS_USER, LANGUAGE_PREFERENCE ),
+				{ primaryLanguage: request.language, secondaryLanguages: request.secondaryLanguages },
+			),
 			store.dispatch( action( NS_LINKS, EDIT_LINK_URL_INIT ), request.editLinkUrl ),
 		] );
 	}

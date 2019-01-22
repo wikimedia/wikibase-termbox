@@ -13,6 +13,7 @@ export default () => {
 				`SetLabelDescriptionAliases/${entityId}`,
 				config.get( 'wgNamespaceIds' ).special,
 			) ).getUrl(),
+			( window as MwWindow ).mw.uls.getFrequentLanguageList(),
 		) );
 	} );
 };

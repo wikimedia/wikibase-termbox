@@ -5,6 +5,7 @@ describe( 'store/user/index', () => {
 		const module = createUser();
 		expect( module.state ).toEqual( {
 			primaryLanguage: '',
+			secondaryLanguages: [],
 		} );
 	} );
 } );

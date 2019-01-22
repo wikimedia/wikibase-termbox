@@ -3,7 +3,13 @@ import init from '@/client/init';
 import TermboxRequest from '@/common/TermboxRequest';
 import MwWindow, { MwMessage } from '@/client/mediawiki/MwWindow';
 
-function mockMwEnv( language: string, entityId: any, namespaces: any = null, title: any = null ) {
+function mockMwEnv(
+	language: string,
+	entityId: any,
+	namespaces: any = null,
+	title: any = null,
+	secondaryLanguages: any = null,
+) {
 	( window as MwWindow ).mw = {
 		config: { get( key ) {
 			switch ( key ) {
@@ -28,6 +34,9 @@ function mockMwEnv( language: string, entityId: any, namespaces: any = null, tit
 				text: () => '',
 			};
 		},
+		uls: {
+			getFrequentLanguageList: secondaryLanguages || jest.fn(),
+		},
 	};
 }
 
@@ -47,6 +56,11 @@ describe( 'client/init', () => {
 		const namespaces = { special: 42 };
 		const getUrl = jest.fn();
 		const expectedEditLinkUrl = '/some/url';
+
+		const expectedSecondaryLanguages = [ 'de', 'en', 'fr' ];
+		const ulsGetFrequentLanguagesMock = jest.fn();
+		ulsGetFrequentLanguagesMock.mockReturnValue( expectedSecondaryLanguages );
+
 		getUrl.mockReturnValue( expectedEditLinkUrl );
 		const titleClass = jest.fn().mockImplementation( () => {
 			return {
@@ -54,14 +68,16 @@ describe( 'client/init', () => {
 			};
 		} );
 
-		mockMwEnv( 'en', 'Q666', namespaces, titleClass );
+		mockMwEnv( 'en', 'Q666', namespaces, titleClass, ulsGetFrequentLanguagesMock );
 
 		return init().then( ( request ) => {
 			expect( titleClass ).toHaveBeenCalledWith( 'SetLabelDescriptionAliases/Q666', namespaces.special );
+			expect( ulsGetFrequentLanguagesMock ).toHaveBeenCalled();
 
 			expect( request.language ).toBe( 'en' );
 			expect( request.entityId ).toBe( 'Q666' );
 			expect( request.editLinkUrl ).toBe( expectedEditLinkUrl );
+			expect( request.secondaryLanguages ).toBe( expectedSecondaryLanguages );
 		} );
 	} );
 

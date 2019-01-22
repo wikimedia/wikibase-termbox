@@ -26,6 +26,7 @@ export default class TermboxHandler {
 					query.language,
 					query.entity,
 					query.editLink,
+					[ 'todo' ],
 				),
 			);
 		} );

@@ -17,7 +17,7 @@ describe( 'BundleRendererContextBuilder', () => {
 				} ),
 				{ log: () => {} },
 			);
-			const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711' );
+			const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711', [ 'todo' ] );
 
 			const builder = newBundleRendererContextBuilder( services );
 			const bundleContext = builder.passRequest( request );
