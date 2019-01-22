@@ -26,15 +26,18 @@ export default ( context: BundleRendererContext ) => {
 	factory.setLanguageTranslationRepository(
 		new ContentLanguagesLanguageTranslationRepo( languageRepo ),
 	);
+
 	factory.setLanguageRepository(
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
+
 	factory.setMessagesRepository(
 		new MwBotWikibaseMessagesRepo(
 			apiBot ,
 			Object.values( MessageKeys ),
 		),
 	);
+
 	factory.setEntityRepository(
 		new MwBotWikibaseFingerprintableEntityRepo(
 			apiBot,

@@ -124,6 +124,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const language = 'de';
 		const editLink = '/some/' + entityId;
+		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -136,7 +137,12 @@ describe( 'Termbox SSR', () => {
 				malformed: 'yes',
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
@@ -151,6 +157,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const language = 'de';
 		const editLink = '/some';
+		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -161,7 +168,12 @@ describe( 'Termbox SSR', () => {
 			} )
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
@@ -176,6 +188,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const language = 'de';
 		const editLink = '/some/' + entityId;
+		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
 		nock( WIKIBASE_TEST_API_HOST )
 			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
@@ -189,7 +202,12 @@ describe( 'Termbox SSR', () => {
 		nockSuccessfulMessagesLoading( language );
 		nockSuccessfulEntityLoading( entityId );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
@@ -212,6 +230,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q63';
 		const language = 'ylq';
 		const editLink = '/some/' + entityId;
+		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
 		nockSuccessfulEntityLoading( entityId );
 		nockSuccessfulMessagesLoading( language );
@@ -239,7 +258,12 @@ describe( 'Termbox SSR', () => {
 				},
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 			expect( response.text ).toContain( 'Bad request. Language not existing' );
 			expect( logger.log ).not.toBeCalled();
@@ -251,6 +275,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q63';
 		const language = 'de';
 		const editLink = '/some/' + entityId;
+		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -264,7 +289,12 @@ describe( 'Termbox SSR', () => {
 				},
 			} );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
 			expect( logger.log ).not.toBeCalled();
@@ -276,12 +306,18 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const language = 'de';
 		const editLink = '/some/' + entityId;
+		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
 		nockSuccessfulEntityLoading( entityId );
 
-		request( app ).get( '/termbox' ).query( { entity: entityId, language, editLink } ).then( ( response ) => {
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.OK );
 
 			const $dom = getDomFromMarkup( response.text );

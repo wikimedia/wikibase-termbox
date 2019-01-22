@@ -1,5 +1,7 @@
 import validate from 'validate.js';
 
+const languagePattern = '[a-z]{2}[a-z-]*';
+
 export default class QueryValidator {
 	private errors = [];
 
@@ -7,7 +9,7 @@ export default class QueryValidator {
 		language: {
 			presence: true,
 			format: {
-				pattern: /^[a-z]{2}[a-z-]*$/i,
+				pattern: new RegExp( `^${languagePattern}$`, 'i' ),
 				message: ( value: any ) => {
 					return validate.format( '^"%{value}" is not a valid language code', {
 						value,
@@ -21,6 +23,17 @@ export default class QueryValidator {
 				pattern: /^(Q|P)[1-9]\d{0,9}$/,
 				message: ( value: any ) => {
 					return validate.format( '^"%{value}" is not a valid entity id', {
+						value,
+					} );
+				},
+			},
+		},
+		preferredLanguages: {
+			presence: true,
+			format: {
+				pattern: new RegExp( `^${languagePattern}(\\|${languagePattern})*$`, 'i' ),
+				message: ( value: any ) => {
+					return validate.format( '^"%{value}" is not a valid preferred language chain', {
 						value,
 					} );
 				},

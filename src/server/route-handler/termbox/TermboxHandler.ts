@@ -20,13 +20,12 @@ export default class TermboxHandler {
 				);
 				return;
 			}
-
 			resolve(
 				new TermboxRequest(
 					query.language,
 					query.entity,
 					query.editLink,
-					[ 'todo' ],
+					query.preferredLanguages.split( '|' ),
 				),
 			);
 		} );

@@ -11,12 +11,13 @@ describe( 'TermboxHandler', () => {
 		it( 'resolves to TermboxRequest on valid request', ( done ) => {
 			const entity = 'Q64';
 			const language = 'de';
+			const preferredLanguages = 'de|en|fr|it|pl|zh';
 			const queryValidator = {
 				validate: () => true,
 			};
 
 			const routeHandler = newTermboxHandler( queryValidator );
-			routeHandler.createTermboxRequest( { entity, language } )
+			routeHandler.createTermboxRequest( { entity, language, preferredLanguages } )
 				.then( ( termboxRequest: TermboxRequest ) => {
 					expect( termboxRequest ).toBeInstanceOf( TermboxRequest );
 					expect( termboxRequest.language ).toEqual( language );
@@ -26,7 +27,7 @@ describe( 'TermboxHandler', () => {
 		} );
 
 		it( 'rejects when failing to validate request', ( done ) => {
-			const request = { entity: '', language: '' };
+			const request = { entity: '', language: '', preferredLanguages: '' };
 			const queryValidator = {
 				validate: () => false,
 				getErrors: () => [ { entity: 'bad' }, { language: 'worse' } ],

@@ -80,5 +80,4 @@ describe( 'client/init', () => {
 			expect( request.secondaryLanguages ).toBe( expectedSecondaryLanguages );
 		} );
 	} );
-
 } );

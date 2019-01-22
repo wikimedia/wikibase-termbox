@@ -15,5 +15,4 @@ export default class TermboxRequest {
 		this.editLinkUrl = editLinkUrl;
 		this.secondaryLanguages = secondaryLanguages;
 	}
-
 }

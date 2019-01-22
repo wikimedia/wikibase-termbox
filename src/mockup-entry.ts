@@ -1,7 +1,6 @@
 import MWConfig from '@/mock-data/MwConfig';
 import entity from './mock-data/data/Q64_data.json';
 import * as directionalities from '@/mock-data/data/en_lang_dir_data.json';
-import * as frequentLanguages from '@/mock-data/data/en_frequent_languages.json';
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import getOrEnforceUrlParameter from './mock-data/getOrEnforceUrlParameter';
@@ -9,6 +8,10 @@ import MockupWikibaseContentLanguages from '@/mock-data/MockWikibaseContentLangu
 import { message } from './mock-data/MockMwMessages';
 
 const language = getOrEnforceUrlParameter( 'language', 'de' );
+const preferredLanguages = getOrEnforceUrlParameter(
+	'preferredLanguages',
+	'en|de|fr|bar|nds|nl|it|es|ru|vmf|tr|gsw|da|hr|ku-latn|el|ksh|pl|hsb|frr|dsb|stq|pfl',
+);
 
 ( window as MwWindow ).mw = {
 	config: new MWConfig( language ),
@@ -16,7 +19,7 @@ const language = getOrEnforceUrlParameter( 'language', 'de' );
 	Title: class Title { public getUrl() { return '/edit/' + entity.id; } },
 	message,
 	uls: {
-		getFrequentLanguageList: () => frequentLanguages.default.frequentLanguages,
+		getFrequentLanguageList: () => preferredLanguages.split( '|' ),
 	},
 };
 

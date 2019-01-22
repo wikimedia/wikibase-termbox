@@ -10,7 +10,6 @@ jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
 	default: ( termboxRequest: TermboxRequest ) => mockBuildApp( termboxRequest ),
 } ) );
-const todo = [ 'todo' ];
 const getMediawikiBot = jest.fn();
 function getMockBundleRendererServices() {
 	const services = {} as BundleRendererServices;
@@ -26,7 +25,7 @@ describe( 'server-entry', () => {
 
 		const ssrContext = new BundleRendererContext(
 			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', todo ),
+			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
 		);
 
 		mockBuildApp.mockResolvedValue( 'hello' );
@@ -41,7 +40,7 @@ describe( 'server-entry', () => {
 	it( 'uses mwbot from services', ( done ) => {
 		const ssrContext = new BundleRendererContext(
 			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', todo ),
+			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
 		);
 
 		serverEntry( ssrContext ).then( () => {
@@ -53,7 +52,7 @@ describe( 'server-entry', () => {
 	it( 'converts bundle internal EntityNotFound exception to DTO', ( done ) => {
 		const ssrContext = new BundleRendererContext(
 			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', todo ),
+			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
 		);
 
 		mockBuildApp.mockReturnValue( Promise.reject( new EntityNotFound( 'bad entity id' ) ) );
@@ -68,7 +67,7 @@ describe( 'server-entry', () => {
 	it( 'rethrows exceptions without custom propagation handling', ( done ) => {
 		const ssrContext = new BundleRendererContext(
 			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', todo ),
+			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
 		);
 		const someException = new Error( 'mine' );
 

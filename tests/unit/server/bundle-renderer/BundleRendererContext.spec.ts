@@ -9,7 +9,7 @@ describe( 'BundleRendererContext', () => {
 			new mwbot( {} ),
 			{ log: () => {} },
 		);
-		const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711', [ 'todo' ] );
+		const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] );
 
 		const context = new BundleRendererContext(
 			services,

@@ -16,7 +16,6 @@ describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
 		it( 'commits user language as well as the frequent languages and ensures language translations', ( done ) => {
 			const primaryLanguage = 'de';
-
 			const commitMock = jest.fn();
 			const dispatchMock = jest.fn();
 			dispatchMock.mockResolvedValue( Promise.resolve() );
