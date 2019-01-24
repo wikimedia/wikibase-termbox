@@ -1,1 +1,8 @@
-{"messages": ["wikibase-edit", "wikibase-aliases-separator", "wikibase-entitytermsforlanguagelistview-more"]}
+{
+	"messages": [
+		"wikibase-edit",
+		"wikibase-aliases-separator",
+		"wikibase-entitytermsforlanguagelistview-more",
+		"wikibase-entitytermsview-entitytermsforlanguagelistview-toggler"
+	]
+}

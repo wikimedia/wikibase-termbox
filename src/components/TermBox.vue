@@ -7,7 +7,7 @@
 			</div>
 		</div>
 
-		<AllEnteredLanguages/>
+		<InMoreLanguagesExpandable/>
 	</div>
 </template>
 
@@ -24,10 +24,10 @@ import {
 } from '@/store/namespaces';
 import EditPen from '@/components/EditPen.vue';
 import Fingerprint from '@/components/Fingerprint.vue';
-import AllEnteredLanguages from '@/components/AllEnteredLanguagesExpandable.vue';
+import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 
 @Component( {
-	components: { AllEnteredLanguages, Fingerprint, EditPen },
+	components: { InMoreLanguagesExpandable, Fingerprint, EditPen },
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),

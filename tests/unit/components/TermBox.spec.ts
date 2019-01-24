@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import TermBox from '@/components/TermBox.vue';
 import EditPen from '@/components/EditPen.vue';
 import Fingerprint from '@/components/Fingerprint.vue';
+import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { createStore } from '@/store';
 import {
 	NS_ENTITY,
@@ -46,6 +47,13 @@ describe( 'TermBox.vue', () => {
 
 			expect( wrapper.find( EditPen ).exists() ).toBeFalsy();
 		} );
+	} );
+
+	it( 'shows a list of the user\'s preferred languages', () => {
+		const store = createStore();
+		const wrapper = shallowMount( TermBox, { store } );
+
+		expect( wrapper.find( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
 	} );
 
 } );

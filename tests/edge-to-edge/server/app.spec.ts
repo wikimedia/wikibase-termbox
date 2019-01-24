@@ -62,6 +62,10 @@ function nockSuccessfulLanguageLoading( inLanguage: string ) {
 						code: 'de',
 						name: germanInGerman,
 					},
+					fr: {
+						code: 'fr',
+						name: 'Français',
+					},
 				},
 			},
 		} );
@@ -110,6 +114,14 @@ function nockSuccessfulEntityLoading( entityId: string ) {
 				[ entityId ]: mockQ64, // TODO build dynamic mock response if needed
 			},
 		} );
+}
+
+function expectLabelInLanguage( $fingerprint: Element, language: string, directionality = 'ltr' ) {
+	const $label = $fingerprint.querySelector( '.wikibase-termbox-fingerprint__label' );
+	expect( $label ).toHaveTextContent( mockQ64.labels[ language ].value );
+	expect( $label ).toBeInstanceOf( Element );
+	expect( $label!.getAttribute( 'lang' ) ).toBe( language );
+	expect( $label!.getAttribute( 'dir' ) ).toBe( directionality );
 }
 
 describe( 'Termbox SSR', () => {
@@ -302,58 +314,87 @@ describe( 'Termbox SSR', () => {
 		} );
 	} );
 
-	it( 'renders the termbox when requesting /termbox with well-formed query for known entity', ( done ) => {
-		const entityId = 'Q64';
-		const language = 'de';
-		const editLink = '/some/' + entityId;
-		const preferredLanguages = 'de|en|pl|zh|fr|ar';
+	describe( 'successful /termbox request for a known entity', () => {
 
-		nockSuccessfulLanguageLoading( language );
-		nockSuccessfulMessagesLoading( language );
-		nockSuccessfulEntityLoading( entityId );
+		it( 'renders the primary Fingerprint component in the requested language', () => {
+			const entityId = 'Q64';
+			const language = 'de';
+			const editLink = '/some/' + entityId;
 
-		request( app ).get( '/termbox' ).query( {
-			entity: entityId,
-			language,
-			editLink,
-			preferredLanguages,
-		} ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.OK );
+			nockSuccessfulLanguageLoading( language );
+			nockSuccessfulMessagesLoading( language );
+			nockSuccessfulEntityLoading( entityId );
 
-			const $dom = getDomFromMarkup( response.text );
+			return request( app ).get( '/termbox' ).query( {
+				entity: entityId,
+				language,
+				editLink,
+				preferredLanguages: language,
+			} ).then( ( response ) => {
+				expect( response.status ).toBe( HttpStatus.OK );
 
-			expect( $dom.querySelectorAll( '.wikibase-termbox' ).length ).toBe( 1 );
+				const $dom = getDomFromMarkup( response.text );
 
-			const $primaryLanguageFingerprint = $dom
-				.querySelector( '.wikibase-termbox-fingerprint--primaryLanguage' );
-			expect( $primaryLanguageFingerprint )
-				.toBeVisible();
+				expect( $dom.querySelectorAll( '.wikibase-termbox' ).length ).toBe( 1 );
 
-			const $language = $dom.querySelector( '.wikibase-termbox-fingerprint__language' );
-			expect( $language ).toHaveTextContent( germanInGerman );
+				const $primaryLanguageFingerprint = $dom
+					.querySelector( '.wikibase-termbox-fingerprint--primaryLanguage' );
+				expect( $primaryLanguageFingerprint )
+					.toBeVisible();
 
-			const $label = $dom.querySelector( '.wikibase-termbox-fingerprint__label' );
-			expect( $label ).toHaveTextContent( mockQ64.labels.de.value );
-			expect( $label ).toBeInstanceOf( Element );
-			expect( $label!.getAttribute( 'lang' ) ).toBe( language );
-			expect( $label!.getAttribute( 'dir' ) ).toBe( 'ltr' );
+				const $language = $dom.querySelector( '.wikibase-termbox-fingerprint__language' );
+				expect( $language ).toHaveTextContent( germanInGerman );
 
-			const $description = $dom.querySelector( '.wikibase-termbox-fingerprint__description' );
-			expect( $description ).toHaveTextContent( mockQ64.descriptions.de.value );
-			expect( $description!.getAttribute( 'lang' ) ).toBe( language );
-			expect( $description!.getAttribute( 'dir' ) ).toBe( 'ltr' );
+				expectLabelInLanguage( $primaryLanguageFingerprint!, language );
 
-			const $aliases = $dom.querySelector( '.wikibase-termbox-fingerprint__aliases' );
-			expect( $aliases!.getAttribute( 'lang' ) ).toBe( language );
-			expect( $aliases!.getAttribute( 'dir' ) ).toBe( 'ltr' );
-			expect( $aliases!.querySelectorAll( 'li' ) ).toHaveLength( mockQ64.aliases.de.length );
+				const $description = $dom.querySelector( '.wikibase-termbox-fingerprint__description' );
+				expect( $description ).toHaveTextContent( mockQ64.descriptions.de.value );
+				expect( $description!.getAttribute( 'lang' ) ).toBe( language );
+				expect( $description!.getAttribute( 'dir' ) ).toBe( 'ltr' );
 
-			expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
-				.toHaveAttribute( 'href', editLink );
+				const $aliases = $dom.querySelector( '.wikibase-termbox-fingerprint__aliases' );
+				expect( $aliases!.getAttribute( 'lang' ) ).toBe( language );
+				expect( $aliases!.getAttribute( 'dir' ) ).toBe( 'ltr' );
+				expect( $aliases!.querySelectorAll( 'li' ) ).toHaveLength( mockQ64.aliases.de.length );
 
-			expect( logger.log ).not.toBeCalled();
+				expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
+					.toHaveAttribute( 'href', editLink );
 
-			done();
+				expect( logger.log ).not.toBeCalled();
+			} );
 		} );
+
+		it( 'renders the "in more languages" section for other preferred languages', () => {
+			const entityId = 'Q64';
+			const language = 'de';
+			const preferredLanguages = 'de|en|fr';
+			const secondaryLanguages = [ 'en', 'fr' ];
+
+			nockSuccessfulLanguageLoading( language );
+			nockSuccessfulMessagesLoading( language );
+			nockSuccessfulEntityLoading( entityId );
+
+			return request( app ).get( '/termbox' ).query( {
+				entity: entityId,
+				language,
+				editLink: '/some/' + entityId,
+				preferredLanguages,
+			} ).then( ( response ) => {
+				expect( response.status ).toBe( HttpStatus.OK );
+
+				const $dom = getDomFromMarkup( response.text );
+				const $moreLanguagesFingerprints = $dom.querySelectorAll(
+					'.wikibase-termbox-in-more-languages .wikibase-termbox-fingerprint',
+				);
+				expect( $moreLanguagesFingerprints ).toHaveLength( secondaryLanguages.length );
+
+				expectLabelInLanguage( $moreLanguagesFingerprints[ 0 ], secondaryLanguages[ 0 ] );
+				expectLabelInLanguage( $moreLanguagesFingerprints[ 1 ], secondaryLanguages[ 1 ] );
+
+				expect( logger.log ).not.toBeCalled();
+			} );
+		} );
+
 	} );
+
 } );
