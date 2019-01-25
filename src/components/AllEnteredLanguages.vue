@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Fingerprint v-for="language in allEnteredLanguagesWithoutUserLanguage" :languageCode="language" :key="language"/>
+		<Fingerprint v-for="language in allEnteredLanguagesWithoutUserLanguages" :languageCode="language" :key="language"/>
 	</div>
 </template>
 
@@ -14,6 +14,7 @@ import { mapGetters, mapState } from 'vuex';
 interface AllEnteredLanguagesBinding extends Vue {
 
 	primaryLanguage: string;
+	secondaryLanguages: string[];
 	getAllEnteredLanguageCodes: string[];
 
 }
@@ -21,15 +22,15 @@ interface AllEnteredLanguagesBinding extends Vue {
 @Component( {
 	components: { Fingerprint },
 	computed: {
-		...mapState( NS_USER, [ 'primaryLanguage' ] ),
+		...mapState( NS_USER, [ 'primaryLanguage', 'secondaryLanguages' ] ),
 		...mapGetters( NS_ENTITY, [ 'getAllEnteredLanguageCodes' ] ),
 	},
 } )
 export default class AllEnteredLanguages extends ( Vue as VueConstructor<AllEnteredLanguagesBinding> ) {
 
-	get allEnteredLanguagesWithoutUserLanguage() {
+	get allEnteredLanguagesWithoutUserLanguages() {
 		return this.getAllEnteredLanguageCodes.filter( ( languageKey ) => {
-			return languageKey !== this.primaryLanguage;
+			return languageKey !== this.primaryLanguage && this.secondaryLanguages.indexOf( languageKey ) === -1;
 		} );
 	}
 }

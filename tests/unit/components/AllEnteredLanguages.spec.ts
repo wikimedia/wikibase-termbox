@@ -5,7 +5,7 @@ import { createStore } from '@/store';
 import {
 	NS_USER,
 } from '@/store/namespaces';
-import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
+import { LANGUAGE_INIT, SECONDARY_LANGUAGES_INIT } from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/mutationTypes';
@@ -46,6 +46,27 @@ describe( 'AllEnteredLanguages', () => {
 
 		expect( wrapper.findAll( Fingerprint ).length ).toBe( 1 );
 		expect( wrapper.find( Fingerprint ).props( 'languageCode' ) ).toBe( 'en' );
+	} );
+
+	it( 'does not contain the secondary user languages', () => {
+		const store = createStore();
+		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), [ 'en', 'fr' ] );
+
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), new FingerprintableEntity(
+			'Q42',
+			{
+				de: { language: 'de', value: 'kartoffel' },
+				en: { language: 'en', value: 'potato' },
+				fr: { language: 'fr', value: 'pomme de terre' },
+			},
+			{},
+			{},
+		) );
+
+		const wrapper = shallowMount( AllEnteredLanguages, { store } );
+
+		expect( wrapper.findAll( Fingerprint ).length ).toBe( 1 );
+		expect( wrapper.find( Fingerprint ).props( 'languageCode' ) ).toBe( 'de' );
 	} );
 
 } );
