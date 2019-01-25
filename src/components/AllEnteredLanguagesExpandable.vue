@@ -12,15 +12,10 @@
 import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import Messages, { MessagesMixin } from './mixins/Messages';
-import { NS_USER } from '@/store/namespaces';
-import { mapState } from 'vuex';
 import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
 
 @Component( {
 	components: { AllEnteredLanguages },
-	computed: {
-		...mapState( NS_USER, [ 'primaryLanguage' ] ),
-	},
 } )
 export default class AllEnteredLanguagesExpandable extends ( mixins( Messages ) as VueConstructor<MessagesMixin> ) {
 
