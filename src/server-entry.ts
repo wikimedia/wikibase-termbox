@@ -33,7 +33,7 @@ export default ( context: BundleRendererContext ) => {
 
 	factory.setMessagesRepository(
 		new MwBotWikibaseMessagesRepo(
-			apiBot ,
+			apiBot,
 			Object.values( MessageKeys ),
 		),
 	);
