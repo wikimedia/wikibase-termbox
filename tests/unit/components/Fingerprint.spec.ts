@@ -11,6 +11,10 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import { mutation } from '@/store/util';
 import Language from '@/datamodel/Language';
+import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
+import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
+import { NS_MESSAGES, NS_USER } from '@/store/namespaces';
+import { MessageKeys } from '@/common/MessageKeys';
 
 const languageCodeAr = 'ar';
 const languageCodeDe = 'de';
@@ -144,7 +148,17 @@ describe( 'Fingerprint.vue', () => {
 		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).text() ).toBe( entityLabelDe );
 	} );
 
-	it( 'renders ??? in case entity does not have a label in language', () => {
+	it( 'renders "missing label" message in case entity does not have a label in language', () => {
+		const missingLabelMessage = 'label missing';
+		const userLanguage = 'en';
+
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
+		store.commit( mutation( NS_MESSAGES, MESSAGES_INIT ), {
+			[ userLanguage ]: {
+				[ MessageKeys.MISSING_LABEL ]: missingLabelMessage,
+			},
+		} );
+
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
@@ -154,7 +168,7 @@ describe( 'Fingerprint.vue', () => {
 				},
 			},
 		);
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).text() ).toBe( '???' );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).text() ).toBe( missingLabelMessage );
 	} );
 
 	it( 'renders the entity description', () => {
@@ -170,7 +184,17 @@ describe( 'Fingerprint.vue', () => {
 		expect( wrapper.find( '.wikibase-termbox-fingerprint__description' ).text() ).toBe( entityDescriptionDe );
 	} );
 
-	it( 'renders ?? in case entity does not have a description in language', () => {
+	it( 'renders "missing description" message in case entity does not have a description in language', () => {
+		const missingDescriptionMessage = 'description missing';
+		const userLanguage = 'en';
+
+		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
+		store.commit( mutation( NS_MESSAGES, MESSAGES_INIT ), {
+			[ userLanguage ]: {
+				[ MessageKeys.MISSING_DESCRIPTION ]: missingDescriptionMessage,
+			},
+		} );
+
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
@@ -180,7 +204,7 @@ describe( 'Fingerprint.vue', () => {
 				},
 			},
 		);
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__description' ).text() ).toBe( '??' );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__description' ).text() ).toBe( missingDescriptionMessage );
 	} );
 
 	it( 'renders the entity aliases', () => {
@@ -198,7 +222,7 @@ describe( 'Fingerprint.vue', () => {
 		expect( aliases.at( 1 ).text() ).toStrictEqual( entityAliasesDe[1] );
 	} );
 
-	it( 'renders ? in case entity does not have aliases in language', () => {
+	it( 'renders a visible field with no text in case entity does not have aliases in language', () => {
 		const wrapper = shallowMount(
 			Fingerprint,
 			{
@@ -208,7 +232,7 @@ describe( 'Fingerprint.vue', () => {
 				},
 			},
 		);
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__aliases--placeholder' ).text() ).toBe( '?' );
+		expect( wrapper.find( '.wikibase-termbox-fingerprint__aliases--placeholder' ).isEmpty() ).toBeTruthy();
 	} );
 
 	it( 'marks-up the elements of the fingerprint with the language code and directionality', () => {

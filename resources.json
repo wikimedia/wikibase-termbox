@@ -3,6 +3,8 @@
 		"wikibase-edit",
 		"wikibase-aliases-separator",
 		"wikibase-entitytermsforlanguagelistview-more",
-		"wikibase-entitytermsview-entitytermsforlanguagelistview-toggler"
+		"wikibase-entitytermsview-entitytermsforlanguagelistview-toggler",
+		"wikibase-label-empty",
+		"wikibase-description-empty"
 	]
 }

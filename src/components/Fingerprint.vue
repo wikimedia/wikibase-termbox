@@ -7,12 +7,14 @@
 			<component
 				:is="isPrimary ? 'h2' : 'div'"
 				class="wikibase-termbox-fingerprint__label"
+				:class="{ 'wikibase-termbox-fingerprint__label--missing': !label }"
 				:lang="language.code"
-				:dir="language.directionality">{{ label }}</component>
+				:dir="language.directionality">{{ labelText }}</component>
 			<div class="wikibase-termbox-fingerprint__description-wrapper">
 				<p class="wikibase-termbox-fingerprint__description"
+				   :class="{ 'wikibase-termbox-fingerprint__description--missing': !description }"
 				   :lang="language.code"
-				   :dir="language.directionality">{{ description }}</p>
+				   :dir="language.directionality">{{ descriptionText }}</p>
 			</div>
 			<div class="wikibase-termbox-fingerprint__aliases-wrapper">
 				<ul v-if="hasAliases"
@@ -23,7 +25,7 @@
 						class="wikibase-termbox-fingerprint__alias"
 						:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>
 				</ul>
-				<p class="wikibase-termbox-fingerprint__aliases wikibase-termbox-fingerprint__aliases--placeholder" v-else>?</p>
+				<div class="wikibase-termbox-fingerprint__aliases wikibase-termbox-fingerprint__aliases--placeholder" v-else/>
 			</div>
 		</div>
 	</div>
@@ -77,22 +79,28 @@ interface FingerprintBindings extends Vue, EntityBindings, MessagesMixin {
 } )
 export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<FingerprintBindings> ) {
 
-	get label(): string {
-		const label: Term = this.entityLabel( this.language.code );
-		if ( label === null ) {
-			return '???';
-		} else {
-			return label.value;
-		}
+	get label() {
+		return this.entityLabel( this.language.code );
 	}
-	get description(): string {
-		const description: Term = this.entityDescription( this.language.code );
-		if ( description === null ) {
-			return '??';
-		} else {
-			return description.value;
+	get labelText() {
+		if ( this.label ) {
+			return this.label.value;
 		}
+
+		return this.message( this.MESSAGE_KEYS.MISSING_LABEL );
 	}
+
+	get description() {
+		return this.entityDescription( this.language.code );
+	}
+	get descriptionText() {
+		if ( this.description ) {
+			return this.description.value;
+		}
+
+		return this.message( this.MESSAGE_KEYS.MISSING_DESCRIPTION );
+	}
+
 	get hasAliases(): boolean {
 		return this.aliases.length > 0;
 	}
@@ -141,6 +149,17 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			line-height: 1.3em;
 			font-family: $font-family-serif;
 			font-weight: bold;
+
+			&--missing {
+				color: $color-moderate-red;
+				font-weight: normal;
+				font-family: $font-family-sansserif;
+			}
+		}
+		&__description {
+			&--missing {
+				color: $color-moderate-red;
+			}
 		}
 		&__description-wrapper {
 			margin-top: 0.5rem;
@@ -158,6 +177,10 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		&__description,
 		&__aliases {
 			margin-left: 0.5em;
+
+			&--placeholder{
+				height:1.25em;
+			}
 		}
 
 		&__alias {

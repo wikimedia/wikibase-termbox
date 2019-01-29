@@ -3,4 +3,6 @@ export enum MessageKeys {
 	ALIAS_SEPARATOR = 'wikibase-aliases-separator',
 	ALL_LANGUAGES = 'wikibase-entitytermsforlanguagelistview-more',
 	IN_MORE_LANGUAGES = 'wikibase-entitytermsview-entitytermsforlanguagelistview-toggler',
+	MISSING_LABEL = 'wikibase-label-empty',
+	MISSING_DESCRIPTION = 'wikibase-description-empty',
 }
