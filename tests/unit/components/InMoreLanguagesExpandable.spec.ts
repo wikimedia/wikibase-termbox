@@ -32,13 +32,13 @@ describe( 'InMoreLanguagesExpandable', () => {
 
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 
-			expect( wrapper.find( '.wikibase-termbox-subsection-switch a' ).text() ).toBe( expectedLinkText );
+			expect( wrapper.find( '.wikibase-termbox-subsection-switch span' ).text() ).toBe( expectedLinkText );
 		} );
 
 		it( 'toggle collapses/expands the user\'s preferred languages on click', () => {
 			const store = createStore();
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
-			wrapper.find( '.wikibase-termbox-subsection-switch a' ).trigger( 'click' );
+			wrapper.find( '.wikibase-termbox-subsection-switch' ).trigger( 'click' );
 
 			expect( wrapper.find( InMoreLanguages ).exists() ).toBeFalsy();
 		} );

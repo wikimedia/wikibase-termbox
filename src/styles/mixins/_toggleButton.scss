@@ -1,0 +1,52 @@
+@mixin toggle-button($svg) {
+	display:flex;
+	height: 48px;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	text-decoration: none;
+
+	&:before {
+		border-top: 2px solid $color-light-gray;
+		content:'';
+		margin: -1px;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: -1;
+	}
+
+	> span {
+		background: white;
+		color: $color-light-azureish-gray;
+		font-weight: bold;
+		font-family: $font-family-sansserif;
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+	}
+
+	&:after {
+		background: $svg 50% 50% no-repeat;
+		background-color: white;
+		width: 48px;
+		height: 48px;
+		content: ' ';
+		position: absolute;
+		right: 0%;
+		transform: scaleY(-1);
+	}
+
+	&--expanded:after {
+		transform: scaleY(1);
+	}
+
+	@include media-breakpoint-up(md) {
+		justify-content: inherit;
+
+		> span {
+			margin-left:134px;
+		}
+	}
+}

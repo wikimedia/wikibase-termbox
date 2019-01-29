@@ -1,10 +1,13 @@
 <template>
 	<div class="wikibase-termbox-in-more-languages">
-		<div class="wikibase-termbox-subsection-switch">
-			<a href="#" @click.prevent="toggleShowMoreLanguages()">
-				{{ message( MESSAGE_KEYS.IN_MORE_LANGUAGES ) }}
-			</a>
-		</div>
+		<a
+			class="wikibase-termbox-subsection-switch"
+			:class="{ 'wikibase-termbox-subsection-switch--expanded': isExpanded }"
+			@click.prevent="toggleShowMoreLanguages()"
+			href="#"
+		>
+			<span>{{ message( MESSAGE_KEYS.IN_MORE_LANGUAGES ) }}</span>
+		</a>
 
 		<InMoreLanguages v-if="isExpanded"/>
 	</div>
@@ -29,4 +32,9 @@ export default class InMoreLanguagesExpandable extends ( mixins( Messages ) as V
 </script>
 
 <style lang="scss">
+.wikibase-termbox-in-more-languages{
+	.wikibase-termbox & > .wikibase-termbox-subsection-switch {
+		@include toggle-button($svg-in-more-languages);
+	}
+}
 </style>
