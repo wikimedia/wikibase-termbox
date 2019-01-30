@@ -212,6 +212,10 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			.wikibase-termbox-fingerprint__aliases-wrapper {
 				flex: 1 1 100%;
 			}
+			.wikibase-termbox-fingerprint__description,
+			.wikibase-termbox-fingerprint__aliases {
+				margin-left: 0;
+			}
 			.wikibase-termbox-fingerprint__description-wrapper,
 			.wikibase-termbox-fingerprint__aliases-wrapper {
 				margin-left: 16px;
