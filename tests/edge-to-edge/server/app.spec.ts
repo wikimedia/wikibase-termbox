@@ -8,6 +8,7 @@ import Vue from 'vue';
 import * as messages from '@/mock-data/data/de_messages_data.json';
 import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
 import mwbot from 'mwbot';
+import { MessageKeys } from '@/common/MessageKeys';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -71,34 +72,27 @@ function nockSuccessfulLanguageLoading( inLanguage: string ) {
 		} );
 }
 
-function getMessagesAndKeys() {
-	const mwMessages: Array<{ [key: string]: string }> = [];
-	const messageKeys: string[] = [];
-
-	Object.keys( messages.default ).forEach( ( key: string ) => {
-		mwMessages.push( {
-			'name': key,
-			'normalizedname': key,
-			'*': messages.default[ key ],
-		} );
-		messageKeys.push( key );
-	} );
-	return [ mwMessages, messageKeys ];
+function getApiResponseMessages( keys: string[] ) {
+	return keys.map( ( key ) => ( {
+		'name': key,
+		'normalizedname': key,
+		'*': messages.default[ key ],
+	} ) );
 }
 
 function nockSuccessfulMessagesLoading( inLanguage: string ) {
-	const messageAndKeys = getMessagesAndKeys();
+	const messageKeys = Object.values( MessageKeys );
 	nock( WIKIBASE_TEST_API_HOST )
 		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
 			action: 'query',
 			meta: 'allmessages',
-			ammessages: messageAndKeys[1].join( '|' ),
+			ammessages: messageKeys.join( '|' ),
 			amlang: inLanguage,
 		} )
 		.reply( HttpStatus.OK, {
 			batchcomplete: '',
 			query: {
-				allmessages: messageAndKeys[0],
+				allmessages: getApiResponseMessages( messageKeys ),
 			},
 		} );
 }
