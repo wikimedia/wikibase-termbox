@@ -1,0 +1,13 @@
+{
+	"processors": [
+		"stylelint-processor-html"
+	],
+
+	"rules": {
+		"indentation": "tab",
+		"function-parentheses-space-inside": "always",
+		"block-opening-brace-space-before": "always",
+		"declaration-colon-space-after": "always",
+		"no-eol-whitespace": true
+	}
+}

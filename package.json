@@ -9,7 +9,7 @@
     "build-server": "NODE_ENV=production WEBPACK_TARGET=node vue-cli-service build && tsc -p tsconfig.server.json && rm -rf node_modules/.cache",
     "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
     "test": "npm-run-all test:*",
-    "test:lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json",
+    "test:lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "vue-cli-service test:unit",
     "test:distnodiff": "NODE_ENV=production vue-cli-service build --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.main.js /tmp/dist/wikibase.termbox.main.js"
   },
@@ -53,6 +53,8 @@
     "npm-run-all": "^4.1.5",
     "reset-css": "^4.0.1",
     "sass-loader": "^7.0.1",
+    "stylelint": "^9.10.1",
+    "stylelint-processor-html": "^1.0.0",
     "supertest": "^3.4.1",
     "ts-jest": "^23.10.5",
     "typescript": "^3.2.4",

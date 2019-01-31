@@ -32,7 +32,7 @@ export default class InMoreLanguagesExpandable extends ( mixins( Messages ) as V
 </script>
 
 <style lang="scss">
-.wikibase-termbox-in-more-languages{
+.wikibase-termbox-in-more-languages {
 	.wikibase-termbox & > .wikibase-termbox-subsection-switch {
 		@include toggle-button($svg-in-more-languages);
 	}

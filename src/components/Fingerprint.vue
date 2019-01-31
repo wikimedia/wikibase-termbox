@@ -178,8 +178,8 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		&__aliases {
 			margin-left: 0.5em;
 
-			&--placeholder{
-				height:1.25em;
+			&--placeholder {
+				height: 1.25em;
 			}
 		}
 
