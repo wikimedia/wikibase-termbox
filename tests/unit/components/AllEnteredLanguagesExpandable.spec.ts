@@ -9,6 +9,7 @@ import {
 import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
+import { render } from '@vue/server-test-utils';
 
 describe( 'AllEnteredLanguagesExpandable', () => {
 	const store = createStore();
@@ -41,6 +42,13 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		wrapper.find( '.wikibase-termbox-subsection-switch' ).trigger( 'click' );
 
 		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeTruthy();
+	} );
+
+	it( 'is not shown when rendered on the server', () => {
+		// it returns a cheerio wrapper, not a string as the d.ts claims
+		// https://vue-test-utils.vuejs.org/api/render.html#render
+		const wrapper = render( AllEnteredLanguagesExpandable, { store } ) as any;
+		expect( wrapper.text() ).toBe( '' );
 	} );
 
 } );

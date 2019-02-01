@@ -118,6 +118,11 @@ function expectLabelInLanguage( $fingerprint: Element, language: string, directi
 	expect( $label!.getAttribute( 'dir' ) ).toBe( directionality );
 }
 
+function expectSuccessfulRequest( response: request.Response ) {
+	expect( response.status ).toBe( 200 );
+	expect( logger.log ).not.toBeCalled();
+}
+
 describe( 'Termbox SSR', () => {
 	afterEach( () => {
 		nock.cleanAll();
@@ -325,7 +330,7 @@ describe( 'Termbox SSR', () => {
 				editLink,
 				preferredLanguages: language,
 			} ).then( ( response ) => {
-				expect( response.status ).toBe( HttpStatus.OK );
+				expectSuccessfulRequest( response );
 
 				const $dom = getDomFromMarkup( response.text );
 
@@ -353,8 +358,6 @@ describe( 'Termbox SSR', () => {
 
 				expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
 					.toHaveAttribute( 'href', editLink );
-
-				expect( logger.log ).not.toBeCalled();
 			} );
 		} );
 
@@ -374,7 +377,7 @@ describe( 'Termbox SSR', () => {
 				editLink: '/some/' + entityId,
 				preferredLanguages,
 			} ).then( ( response ) => {
-				expect( response.status ).toBe( HttpStatus.OK );
+				expectSuccessfulRequest( response );
 
 				const $dom = getDomFromMarkup( response.text );
 				const $moreLanguagesFingerprints = $dom.querySelectorAll(
@@ -384,8 +387,27 @@ describe( 'Termbox SSR', () => {
 
 				expectLabelInLanguage( $moreLanguagesFingerprints[ 0 ], secondaryLanguages[ 0 ] );
 				expectLabelInLanguage( $moreLanguagesFingerprints[ 1 ], secondaryLanguages[ 1 ] );
+			} );
+		} );
 
-				expect( logger.log ).not.toBeCalled();
+		it( 'does not render the "all entered languages" button or section', () => {
+			const entity = 'Q64';
+			const language = 'de';
+
+			nockSuccessfulLanguageLoading( language );
+			nockSuccessfulMessagesLoading( language );
+			nockSuccessfulEntityLoading( entity );
+
+			return request( app ).get( '/termbox' ).query( {
+				entity,
+				language,
+				editLink: '/some/' + entity,
+				preferredLanguages: 'de|en|fr',
+			} ).then( ( response: request.Response ) => {
+				expectSuccessfulRequest( response );
+				expect(
+					getDomFromMarkup( response.text ).querySelector( '.wikibase-termbox-all-entered-languages' ),
+				).toBeNull();
 			} );
 		} );
 
