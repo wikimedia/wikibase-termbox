@@ -2,7 +2,10 @@
 	<div class="wikibase-termbox-in-more-languages">
 		<a
 			class="wikibase-termbox-subsection-switch"
-			:class="{ 'wikibase-termbox-subsection-switch--expanded': isExpanded }"
+			:class="{
+				'wikibase-termbox-subsection-switch--expanded': isExpanded,
+				'wikibase-termbox-subsection-switch--unclickable': isServerRendered,
+			}"
 			@click.prevent="toggleShowMoreLanguages()"
 			href="#"
 		>
@@ -25,8 +28,14 @@ import Messages, { MessagesMixin } from '@/components/mixins/Messages';
 export default class InMoreLanguagesExpandable extends ( mixins( Messages ) as VueConstructor<MessagesMixin> ) {
 	public isExpanded = true;
 
+	public isServerRendered = true;
+
 	public toggleShowMoreLanguages() {
 		this.isExpanded = !this.isExpanded;
+	}
+
+	public beforeMount() {
+		this.isServerRendered = false;
 	}
 }
 </script>

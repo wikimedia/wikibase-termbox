@@ -8,6 +8,7 @@ import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { NS_USER } from '@/store/namespaces';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
+import { render } from '@vue/server-test-utils';
 
 describe( 'InMoreLanguagesExpandable', () => {
 
@@ -42,6 +43,26 @@ describe( 'InMoreLanguagesExpandable', () => {
 
 			expect( wrapper.find( InMoreLanguages ).exists() ).toBeFalsy();
 		} );
+	} );
+
+	describe( 'client/server-specific appearance', () => {
+
+		it( 'has an additional class to appear unclickable when rendered on the server-side', () => {
+			const store = createStore();
+			// render returns a cheerio wrapper, not a string as the d.ts claims
+			// https://vue-test-utils.vuejs.org/api/render.html#render
+			const $button = ( render( InMoreLanguagesExpandable, { store } ) as any )
+				.find( '.wikibase-termbox-subsection-switch' );
+			expect( $button.hasClass( 'wikibase-termbox-subsection-switch--unclickable' ) ).toBe( true );
+		} );
+
+		it( 'has no extra class when mounted on the client side', () => {
+			const store = createStore();
+			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
+			expect( wrapper.find( '.wikibase-termbox-subsection-switch' )
+				.classes( 'wikibase-termbox-subsection-switch--unclickable' ) ).toBe( false );
+		} );
+
 	} );
 
 } );
