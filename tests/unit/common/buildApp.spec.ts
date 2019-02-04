@@ -34,7 +34,7 @@ describe( 'buildApp', () => {
 			language: 'en',
 			entityId: 'Q123',
 			editLinkUrl: '/edit/Q123',
-			preferredLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
+			preferredLanguages: [ 'en', 'de', 'fr', 'it', 'pl' ],
 		};
 
 		const mockAsyncData1 = jest.fn();

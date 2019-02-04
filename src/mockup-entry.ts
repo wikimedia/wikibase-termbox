@@ -10,7 +10,7 @@ import { message } from './mock-data/MockMwMessages';
 const language = getOrEnforceUrlParameter( 'language', 'de' );
 const preferredLanguages = getOrEnforceUrlParameter(
 	'preferredLanguages',
-	'en|de|fr|bar|nds|nl|it|es|ru|vmf|tr|gsw|da|hr|ku-latn|el|ksh|pl|hsb|frr|dsb|stq|pfl',
+	'de|en|ar|fr|es|ko',
 );
 
 ( window as MwWindow ).mw = {
