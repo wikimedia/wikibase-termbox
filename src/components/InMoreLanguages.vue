@@ -24,5 +24,4 @@ export default class InMoreLanguages extends Vue {
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

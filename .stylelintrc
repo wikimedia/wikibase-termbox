@@ -3,11 +3,14 @@
 		"stylelint-processor-html"
 	],
 
+	"extends": "stylelint-config-wikimedia",
+
+	"plugins": [
+		"stylelint-scss"
+	],
+
 	"rules": {
-		"indentation": "tab",
-		"function-parentheses-space-inside": "always",
-		"block-opening-brace-space-before": "always",
-		"declaration-colon-space-after": "always",
-		"no-eol-whitespace": true
+		"at-rule-no-unknown": null,
+		"scss/at-rule-no-unknown": true
 	}
 }

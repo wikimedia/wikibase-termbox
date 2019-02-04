@@ -26,7 +26,3 @@ export default class Sectionedit extends Vue {
 	}
 }
 </script>
-
-
-<style lang="scss">
-</style>

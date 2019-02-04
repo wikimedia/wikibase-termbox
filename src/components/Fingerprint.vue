@@ -120,21 +120,22 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 </script>
 
 <style lang="scss">
-.wikibase-termbox-fingerprint {
-	.wikibase-termbox & { // this serves as strong selector to overcome reset.css
-		margin-top: 32px;
-		min-width: 0; // https://css-tricks.com/flexbox-truncated-text/
+.wikibase-termbox .wikibase-termbox-fingerprint {
+	margin-top: 32px;
+	min-width: 0; // https://css-tricks.com/flexbox-truncated-text/
 
-		&:first-child {
-			margin-top: 0;
-		}
+	&:first-child {
+		margin-top: 0;
 	}
+
 	.wikibase-termbox-fingerprint { // for use as a prefix
+
 		&__language {
-			color: $color-dark-azureish-gray;
 			@include fontSize( 13px );
+			color: $color-dark-azureish-gray;
 			font-family: $font-family-sansserif;
 		}
+
 		&__label,
 		&__description-wrapper,
 		&__aliases-wrapper {
@@ -144,6 +145,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			word-wrap: break-word;
 			hyphens: auto;
 		}
+
 		&__label {
 			color: $color-black;
 			line-height: 1.3em;
@@ -156,17 +158,20 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 				font-family: $font-family-sansserif;
 			}
 		}
+
 		&__description {
 			&--missing {
 				color: $color-moderate-red;
 			}
 		}
+
 		&__description-wrapper {
 			margin-top: 0.5rem;
 			color: $color-black;
 			line-height: 1.3em;
 			font-family: $font-family-sansserif;
 		}
+
 		&__aliases-wrapper {
 			margin-top: 0.5rem;
 			color: $color-light-azureish-gray;
@@ -186,18 +191,21 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		&__alias {
 			display: inline;
 		}
-		&__alias:not( :last-child )::after {
+
+		&__alias:not( :last-child ):after {
 			content: attr( data-separator );
 			white-space: nowrap;
 			padding: 0 0.4em;
 		}
 	}
+
 	&--primaryLanguage {
 		.wikibase-termbox-fingerprint__label {
 			@include fontSize( 23px );
 		}
 	}
-	&:not(&--primaryLanguage) {
+
+	&:not( .wikibase-termbox-fingerprint--primaryLanguage ) {
 		@include media-breakpoint-up(md) {
 			.wikibase-termbox-fingerprint__terms {
 				display: flex;
@@ -207,21 +215,25 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			.wikibase-termbox-fingerprint__language {
 				margin-bottom: 8px;
 			}
+
 			.wikibase-termbox-fingerprint__label,
 			.wikibase-termbox-fingerprint__description-wrapper,
 			.wikibase-termbox-fingerprint__aliases-wrapper {
 				flex: 1 1 100%;
 			}
+
 			.wikibase-termbox-fingerprint__description,
 			.wikibase-termbox-fingerprint__aliases {
 				margin-left: 0;
 			}
+
 			.wikibase-termbox-fingerprint__description-wrapper,
 			.wikibase-termbox-fingerprint__aliases-wrapper {
 				margin-left: 16px;
 				margin-top: 0;
 			}
 		}
+
 		@include media-breakpoint-up(lg) {
 			display: flex;
 

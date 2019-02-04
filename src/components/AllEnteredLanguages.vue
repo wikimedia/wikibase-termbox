@@ -36,5 +36,4 @@ export default class AllEnteredLanguages extends ( Vue as VueConstructor<AllEnte
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

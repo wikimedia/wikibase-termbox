@@ -33,7 +33,7 @@ export default class EditPen extends ( mixins( Messages ) as VueConstructor<Mess
 		height: 48px;
 		display: block;
 
-		[dir='rtl'] & {
+		[ dir='rtl' ] & {
 			transform: scaleX( -1 );
 		}
 	}

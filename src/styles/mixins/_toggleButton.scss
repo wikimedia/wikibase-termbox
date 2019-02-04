@@ -21,7 +21,7 @@
 
 	> span {
 		z-index: 1;
-		background: white;
+		background: #fff;
 		color: $color-light-azureish-gray;
 		font-weight: bold;
 		font-family: $font-family-sansserif;
@@ -30,8 +30,7 @@
 	}
 
 	&:after {
-		background: $svg 50% 50% no-repeat;
-		background-color: white;
+		background: #fff $svg 50% 50% no-repeat;
 		width: 32px;
 		height: 32px;
 		content: '';
