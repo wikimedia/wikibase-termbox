@@ -56,20 +56,20 @@ describe( 'App.vue', () => {
 		const entity = 'Q123';
 		const primaryLanguage = 'en';
 		const editLinkUrl = '/edit/term/data/of/Q123';
-		const secondaryLanguages = [ 'de', 'en', 'pl', 'it', 'zh' ];
+		const preferredLanguages = [ 'de', 'en', 'pl', 'it', 'zh' ];
 
 		const store = {
 			dispatch: jest.fn(),
 		};
 
-		const request = new TermboxRequest( primaryLanguage, entity, editLinkUrl, secondaryLanguages );
+		const request = new TermboxRequest( primaryLanguage, entity, editLinkUrl, preferredLanguages );
 
 		return ( App as any ).asyncData( store, request ).then( () => {
 			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LANGUAGE, LANGUAGE_INIT ) );
 			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_ENTITY, ENTITY_INIT ), entity );
 			expect( store.dispatch ).toHaveBeenCalledWith(
 				action( NS_USER, LANGUAGE_PREFERENCE ),
-				{ primaryLanguage, secondaryLanguages },
+				{ primaryLanguage, preferredLanguages },
 			);
 			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LINKS, EDIT_LINK_URL_INIT ), editLinkUrl );
 		} );

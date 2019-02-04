@@ -2,17 +2,17 @@ export default class TermboxRequest {
 	public readonly language: string;
 	public readonly entityId: string;
 	public readonly editLinkUrl: string;
-	public readonly secondaryLanguages: string[];
+	public readonly preferredLanguages: string[];
 
 	constructor(
 		language: string,
 		entityId: string,
 		editLinkUrl: string,
-		secondaryLanguages: string[],
+		preferredLanguages: string[],
 	) {
 		this.language = language;
 		this.entityId = entityId;
 		this.editLinkUrl = editLinkUrl;
-		this.secondaryLanguages = secondaryLanguages;
+		this.preferredLanguages = preferredLanguages;
 	}
 }

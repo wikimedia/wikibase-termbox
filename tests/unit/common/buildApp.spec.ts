@@ -20,7 +20,7 @@ describe( 'buildApp', () => {
 			language: 'en',
 			entityId: 'Q123',
 			editLinkUrl: '/edit/Q123',
-			secondaryLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
+			preferredLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
 		};
 		mockGetChildComponents.mockReturnValue( [] );
 
@@ -34,7 +34,7 @@ describe( 'buildApp', () => {
 			language: 'en',
 			entityId: 'Q123',
 			editLinkUrl: '/edit/Q123',
-			secondaryLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
+			preferredLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
 		};
 
 		const mockAsyncData1 = jest.fn();

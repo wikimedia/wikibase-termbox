@@ -44,7 +44,7 @@ export default class App extends ( Vue as VueConstructor<AppBindings> ) {
 			store.dispatch( action( NS_ENTITY, ENTITY_INIT ), request.entityId ),
 			store.dispatch(
 				action( NS_USER, LANGUAGE_PREFERENCE ),
-				{ primaryLanguage: request.language, secondaryLanguages: request.secondaryLanguages },
+				{ primaryLanguage: request.language, preferredLanguages: request.preferredLanguages },
 			),
 			store.dispatch( action( NS_LINKS, EDIT_LINK_URL_INIT ), request.editLinkUrl ),
 		] );

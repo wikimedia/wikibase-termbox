@@ -8,7 +8,7 @@ function mockMwEnv(
 	entityId: any,
 	namespaces: any = null,
 	title: any = null,
-	secondaryLanguages: any = null,
+	preferredLanguages: any = null,
 ) {
 	( window as MwWindow ).mw = {
 		config: { get( key ) {
@@ -35,7 +35,7 @@ function mockMwEnv(
 			};
 		},
 		uls: {
-			getFrequentLanguageList: secondaryLanguages || jest.fn(),
+			getFrequentLanguageList: preferredLanguages || jest.fn(),
 		},
 	};
 }
@@ -57,9 +57,9 @@ describe( 'client/init', () => {
 		const getUrl = jest.fn();
 		const expectedEditLinkUrl = '/some/url';
 
-		const expectedSecondaryLanguages = [ 'de', 'en', 'fr' ];
+		const expectedPreferredLanguages = [ 'de', 'en', 'fr' ];
 		const ulsGetFrequentLanguagesMock = jest.fn();
-		ulsGetFrequentLanguagesMock.mockReturnValue( expectedSecondaryLanguages );
+		ulsGetFrequentLanguagesMock.mockReturnValue( expectedPreferredLanguages );
 
 		getUrl.mockReturnValue( expectedEditLinkUrl );
 		const titleClass = jest.fn().mockImplementation( () => {
@@ -77,7 +77,7 @@ describe( 'client/init', () => {
 			expect( request.language ).toBe( 'en' );
 			expect( request.entityId ).toBe( 'Q666' );
 			expect( request.editLinkUrl ).toBe( expectedEditLinkUrl );
-			expect( request.secondaryLanguages ).toBe( expectedSecondaryLanguages );
+			expect( request.preferredLanguages ).toBe( expectedPreferredLanguages );
 		} );
 	} );
 } );

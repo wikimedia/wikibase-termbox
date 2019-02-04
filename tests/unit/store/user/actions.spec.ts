@@ -14,7 +14,7 @@ import { action } from '@/store/util';
 
 describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
-		it( 'commits user language as well as the frequent languages and ensures language translations', ( done ) => {
+		it( 'commits user language as well as the secondary languages and ensures language translations', ( done ) => {
 			const primaryLanguage = 'de';
 			const commitMock = jest.fn();
 			const dispatchMock = jest.fn();
@@ -24,10 +24,10 @@ describe( 'user/actions', () => {
 				dispatch: dispatchMock,
 			};
 
-			const secondaryLanguages = [ 'de', 'en', 'fr', 'zh', 'pl' ];
+			const preferredLanguages = [ 'de', 'en', 'fr', 'zh', 'pl' ];
 			const languagePreferenceAction = actions[ LANGUAGE_PREFERENCE ] as any; // TODO
 
-			languagePreferenceAction( context, { primaryLanguage, secondaryLanguages } ).then( () => {
+			languagePreferenceAction( context, { primaryLanguage, preferredLanguages } ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_INIT,
 					primaryLanguage,

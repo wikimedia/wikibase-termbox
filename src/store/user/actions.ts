@@ -17,15 +17,13 @@ export const actions: ActionTree<User, any> = {
 
 	[ LANGUAGE_PREFERENCE ](
 		context: ActionContext<User, any>,
-		{ primaryLanguage, secondaryLanguages },
+		{ primaryLanguage, preferredLanguages },
 	): Promise<[void, void]> {
 		context.commit( LANGUAGE_INIT, primaryLanguage );
 
-		secondaryLanguages = secondaryLanguages.filter( ( languageKey: string ) => {
+		context.commit( SECONDARY_LANGUAGES_INIT, preferredLanguages.filter( ( languageKey: string ) => {
 			return languageKey !== primaryLanguage;
-		} ).splice( 0, 4 );
-
-		context.commit( SECONDARY_LANGUAGES_INIT, secondaryLanguages );
+		} ).splice( 0, 4 ) );
 
 		return Promise.all( [
 			context.dispatch( action( NS_MESSAGES, MESSAGES_INIT ), primaryLanguage, { root: true } ),
