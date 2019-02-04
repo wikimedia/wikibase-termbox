@@ -44,6 +44,15 @@
 		transform: scaleY( 1 );
 	}
 
+	&--unclickable {
+		pointer-events: none;
+		cursor: default;
+
+		&:after {
+			content: none;
+		}
+	}
+
 	@include media-breakpoint-up(md) {
 		justify-content: inherit;
 
