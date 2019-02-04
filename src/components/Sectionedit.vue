@@ -1,5 +1,5 @@
 <template>
-	<wb:sectionedit v-if="isServer">
+	<wb:sectionedit v-if="isServerRendered">
 		<div><!-- the else needs a wrapping element around slot so we add it here, too for identical mark-up -->
 			<slot></slot>
 		</div>
@@ -17,23 +17,12 @@ import Component from 'vue-class-component';
 Vue.config.ignoredElements.push( 'wb:sectionedit' );
 
 @Component( {
-	props: {
-		forceServer: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-	},
 } )
 export default class Sectionedit extends Vue {
-	private forceServer?: boolean;
+	public isServerRendered = true;
 
-	get isServer() {
-		if ( this.forceServer ) {
-			return true;
-		}
-
-		return this.$isServer;
+	public beforeMount() {
+		this.isServerRendered = false;
 	}
 }
 </script>
