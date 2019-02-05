@@ -1,5 +1,5 @@
 <template>
-	<div class="wikibase-termbox-all-entered-languages">
+	<div class="wikibase-termbox-all-entered-languages" v-if="!isServerRendered">
 		<a
 			:href="link"
 			class="wikibase-termbox-subsection-switch"
@@ -28,8 +28,14 @@ export default class AllEnteredLanguagesExpandable extends ( mixins( Messages ) 
 
 	public link = '#';
 
+	public isServerRendered = true;
+
 	public toggleShowAllLanguages() {
 		this.isExpanded = !this.isExpanded;
+	}
+
+	public beforeMount() {
+		this.isServerRendered = false;
 	}
 }
 </script>
