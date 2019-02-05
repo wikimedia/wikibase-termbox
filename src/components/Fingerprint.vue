@@ -4,28 +4,12 @@
 		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }">
 		<LanguageNameInUserLanguage class="wikibase-termbox-fingerprint__language" :language="language"/>
 		<div class="wikibase-termbox-fingerprint__terms">
-			<component
-				:is="isPrimary ? 'h2' : 'div'"
-				class="wikibase-termbox-fingerprint__label"
-				:class="{ 'wikibase-termbox-fingerprint__label--missing': !label }"
-				:lang="language.code"
-				:dir="language.directionality">{{ labelText }}</component>
+			<Label :language="language" :isPrimary="isPrimary" class="wikibase-termbox-fingerprint__label-wrapper" />
 			<div class="wikibase-termbox-fingerprint__description-wrapper">
-				<p class="wikibase-termbox-fingerprint__description"
-				   :class="{ 'wikibase-termbox-fingerprint__description--missing': !description }"
-				   :lang="language.code"
-				   :dir="language.directionality">{{ descriptionText }}</p>
+				<Description :language="language" />
 			</div>
 			<div class="wikibase-termbox-fingerprint__aliases-wrapper">
-				<ul v-if="hasAliases"
-					class="wikibase-termbox-fingerprint__aliases"
-					:lang="language.code"
-					:dir="language.directionality">
-					<li v-for="alias in aliases"
-						class="wikibase-termbox-fingerprint__alias"
-						:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>
-				</ul>
-				<div class="wikibase-termbox-fingerprint__aliases wikibase-termbox-fingerprint__aliases--placeholder" v-else/>
+				<Aliases :language="language" />
 			</div>
 		</div>
 	</div>
@@ -37,24 +21,21 @@ import Component, { mixins } from 'vue-class-component';
 import Messages, { MessagesMixin } from './mixins/Messages';
 import { mapGetters } from 'vuex';
 import {
-	NS_ENTITY,
 	NS_LANGUAGE,
 } from '@/store/namespaces';
-import Term from '@/datamodel/Term';
-import Language from '@/datamodel/Language';
 import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
-interface EntityBindings {
-	entityLabel: ( languageCode: string ) => Term;
-	entityDescription: ( languageCode: string ) => Term;
-	entityAliases: ( languageCode: string ) => Term[];
-}
-interface FingerprintBindings extends Vue, EntityBindings, MessagesMixin {
+import Label from '@/components/Label.vue';
+import Description from '@/components/Description.vue';
+import Aliases from '@/components/Aliases.vue';
+import Language from '@/datamodel/Language';
+
+interface FingerprintBindings extends Vue, MessagesMixin {
 	languageCode: string;
 	isPrimary: boolean;
 	getLanguageByCode( languageCode: string ): Language;
 }
 @Component( {
-	components: { LanguageNameInUserLanguage },
+	components: { Aliases, Description, Label, LanguageNameInUserLanguage },
 	props: {
 		languageCode: {
 			type: String,
@@ -67,51 +48,12 @@ interface FingerprintBindings extends Vue, EntityBindings, MessagesMixin {
 		},
 	},
 	computed: {
-		...mapGetters( NS_ENTITY, {
-			entityLabel: 'getLabelByLanguage',
-			entityDescription: 'getDescriptionByLanguage',
-			entityAliases: 'getAliasesByLanguage',
-		} ),
 		...mapGetters( NS_LANGUAGE, {
 			getLanguageByCode: 'getByCode',
 		} ),
 	},
 } )
 export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<FingerprintBindings> ) {
-
-	get label() {
-		return this.entityLabel( this.language.code );
-	}
-	get labelText() {
-		if ( this.label ) {
-			return this.label.value;
-		}
-
-		return this.message( this.MESSAGE_KEYS.MISSING_LABEL );
-	}
-
-	get description() {
-		return this.entityDescription( this.language.code );
-	}
-	get descriptionText() {
-		if ( this.description ) {
-			return this.description.value;
-		}
-
-		return this.message( this.MESSAGE_KEYS.MISSING_DESCRIPTION );
-	}
-
-	get hasAliases(): boolean {
-		return this.aliases.length > 0;
-	}
-	get aliases(): Term[] {
-		const aliases: Term[] =  this.entityAliases( this.language.code );
-		if ( aliases === null ) {
-			return [];
-		} else {
-			return aliases;
-		}
-	}
 
 	get language(): Language {
 		return this.getLanguageByCode( this.languageCode );
@@ -136,7 +78,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			font-family: $font-family-sansserif;
 		}
 
-		&__label,
+		&__label-wrapper,
 		&__description-wrapper,
 		&__aliases-wrapper {
 			min-width: 260px;
@@ -146,62 +88,10 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			hyphens: auto;
 		}
 
-		&__label {
-			color: $color-black;
-			line-height: 1.3em;
-			font-family: $font-family-serif;
-			font-weight: bold;
-
-			&--missing {
-				color: $color-moderate-red;
-				font-weight: normal;
-				font-family: $font-family-sansserif;
-			}
-		}
-
-		&__description {
-			&--missing {
-				color: $color-moderate-red;
-			}
-		}
-
-		&__description-wrapper {
-			margin-top: 0.5rem;
-			color: $color-black;
-			line-height: 1.3em;
-			font-family: $font-family-sansserif;
-		}
-
-		&__aliases-wrapper {
-			margin-top: 0.5rem;
-			color: $color-light-azureish-gray;
-			line-height: 1.3em;
-			font-family: $font-family-sansserif;
-		}
-
-		&__description,
-		&__aliases {
-			margin-left: 0.5em;
-
-			&--placeholder {
-				height: 1.25em;
-			}
-		}
-
-		&__alias {
-			display: inline;
-		}
-
 		&__alias:not( :last-child ):after {
 			content: attr( data-separator );
 			white-space: nowrap;
 			padding: 0 0.4em;
-		}
-	}
-
-	&--primaryLanguage {
-		.wikibase-termbox-fingerprint__label {
-			@include fontSize( 23px );
 		}
 	}
 
@@ -216,15 +106,10 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 				margin-bottom: 8px;
 			}
 
-			.wikibase-termbox-fingerprint__label,
+			.wikibase-termbox-fingerprint__label-wrapper,
 			.wikibase-termbox-fingerprint__description-wrapper,
 			.wikibase-termbox-fingerprint__aliases-wrapper {
 				flex: 1 1 100%;
-			}
-
-			.wikibase-termbox-fingerprint__description,
-			.wikibase-termbox-fingerprint__aliases {
-				margin-left: 0;
 			}
 
 			.wikibase-termbox-fingerprint__description-wrapper,
