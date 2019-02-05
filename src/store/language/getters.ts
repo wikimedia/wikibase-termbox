@@ -1,18 +1,21 @@
 import { GetterTree } from 'vuex';
 import Language from '@/datamodel/Language';
 import LanguageState from '@/store/language/LanguageState';
+import { NS_USER } from '@/store/namespaces';
+import { InitializedRootState } from '@/store/Root';
 
 export const getters: GetterTree<LanguageState, any> = {
 	getByCode: ( state: LanguageState ) => ( code: string ): Language | null => {
 		return state.languages[ code ] || null;
 	},
 
-	getTranslationByCode: ( state: LanguageState ) =>
-		( code: string, inLanguage: string ): string | null => {
-			const translations = state.translations[ inLanguage ];
+	getTranslationInUserLanguage: ( state: LanguageState, _getters: any, rootState: InitializedRootState ) =>
+		( languageCode: string ): string => {
+			const userLanguageCode = rootState[ NS_USER ].primaryLanguage;
+			const translations = state.translations[ userLanguageCode ];
 			if ( !translations ) {
-				return null;
+				return languageCode;
 			}
-			return translations[ code ] || null;
+			return translations[ languageCode ] || languageCode;
 		},
 };

@@ -1,5 +1,6 @@
 import { getters } from '@/store/language/getters';
 import LanguageState from '@/store/language/LanguageState';
+import { NS_USER } from '@/store/namespaces';
 
 function newMinimalStore(): LanguageState {
 	return {
@@ -8,11 +9,15 @@ function newMinimalStore(): LanguageState {
 				code: 'de',
 				directionality: 'ltr',
 			},
+			en: {
+				code: 'en',
+				directionality: 'ltr',
+			},
 		},
 		translations: {
 			de: {
 				de: 'Deutsch',
-				en: 'Englisch',
+				// en: 'Englisch', // intentionally missing to tests fallback to language code
 			},
 			en: {
 				de: 'German',
@@ -37,24 +42,40 @@ describe( 'language/Getters', () => {
 		} );
 	} );
 
-	describe( 'getTranslationByCode', () => {
+	describe( 'getTranslationInUserLanguage', () => {
 		it( 'returns matching translation if found', () => {
-			expect( getters.getTranslationByCode( newMinimalStore(), getters, null, null )( 'de', 'en' ) )
-				.toBe( 'German' );
-			expect( getters.getTranslationByCode( newMinimalStore(), getters, null, null )( 'en', 'de' ) )
-				.toBe( 'Englisch' );
+			const store = newMinimalStore();
+			const rootStore = {
+				[ NS_USER ]: {
+					'primaryLanguage': 'en',
+				},
+			};
+			expect( getters.getTranslationInUserLanguage( store, getters, rootStore, null )( store.languages.de.code ) )
+				.toBe( store.translations.en.de );
 		} );
 
-		// TODO is this the right behavior anyway?
-		it( 'returns null if language not found', () => {
-			expect( getters.getTranslationByCode( newMinimalStore(), getters, null, null )( 'ru', 'de' ) )
-				.toBeNull();
+		// in actuality the two following scenarios should never happen
+
+		it( 'returns language code if there are no translations (at all) in user language', () => {
+			const store = newMinimalStore();
+			const rootStore = {
+				[ NS_USER ]: {
+					'primaryLanguage': 'ru',
+				},
+			};
+			expect( getters.getTranslationInUserLanguage( store, getters, rootStore, null )( store.languages.de.code ) )
+				.toBe( store.languages.de.code );
 		} );
 
-		it( 'returns null if translation not found', () => {
-			expect( getters.getTranslationByCode( newMinimalStore(), getters, null, null )( 'de', 'ru' ) )
-				.toBeNull();
+		it( 'returns language code if there is no translation (for this language) in user language', () => {
+			const store = newMinimalStore();
+			const rootStore = {
+				[ NS_USER ]: {
+					'primaryLanguage': 'de',
+				},
+			};
+			expect( getters.getTranslationInUserLanguage( store, getters, rootStore, null )( store.languages.en.code ) )
+				.toBe( store.languages.en.code );
 		} );
 	} );
-
 } );
