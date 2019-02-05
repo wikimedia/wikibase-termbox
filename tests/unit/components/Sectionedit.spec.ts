@@ -1,24 +1,21 @@
 import Sectionedit from '@/components/Sectionedit.vue';
 import { shallowMount } from '@vue/test-utils';
+import { render } from '@vue/server-test-utils';
+import 'cheerio';
 
 describe( 'Sectionedit', () => {
 
 	it( 'wraps in proprietary wikibase tag to show/hide depending on editability on server', () => {
 		const content = 'testing';
-		const wrapper = shallowMount( Sectionedit, {
+		const wrapper = render( Sectionedit, {
 			slots: {
 				default: content,
 			},
-			propsData: {
-				// TODO how to test $isServer?
-				// `@jest-environment node` don't work (https://github.com/vuejs/vue-test-utils/issues/427)
-				forceServer: true,
-			},
-		} );
+		} ) as unknown as Cheerio; // https://github.com/vuejs/vue-test-utils/issues/1131
 
-		expect( wrapper.element.getRootNode().nodeName.toLowerCase() )
+		expect( wrapper[0].tagName.toLowerCase() )
 			.toEqual( 'wb:sectionedit' );
-		expect( wrapper.findAll( 'div' ).length ).toBe( 1 );
+		expect( wrapper.find( 'div' ).length ).toBe( 1 );
 		expect( wrapper.text() ).toBe( content );
 	} );
 
