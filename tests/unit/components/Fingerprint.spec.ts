@@ -5,9 +5,11 @@ import Label from '@/components/Label.vue';
 import Description from '@/components/Description.vue';
 import Aliases from '@/components/Aliases.vue';
 import { createStore } from '@/store';
-import { NS_LANGUAGE } from '@/store/namespaces';
+import { NS_LANGUAGE, NS_ENTITY } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { mutation } from '@/store/util';
+import { ENTITY_INIT } from '@/store/entity/mutationTypes';
+import newFingerprintable from '../../newFingerprintable';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
 	const store = createStore();
@@ -21,14 +23,16 @@ function createMinimalStoreWithLanguage( languageCode: string ) {
 describe( 'Fingerprint.vue', () => {
 
 	it( 'renders label, description and aliases in the given language', () => {
+		const entity = newFingerprintable( { labels: { de: 'Kartoffel' } } );
 		const language = { code: 'de', directionality: 'ltr' };
 
 		const store = createStore();
 		store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), entity );
 
 		const wrapper = shallowMount( Fingerprint, { store, propsData: { languageCode: language.code } } );
 
-		expect( wrapper.find( Label ).props( 'language' ) ).toBe( language );
+		expect( wrapper.find( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
 		expect( wrapper.find( Description ).props( 'language' ) ).toBe( language );
 		expect( wrapper.find( Aliases ).props( 'language' ) ).toBe( language );
 	} );

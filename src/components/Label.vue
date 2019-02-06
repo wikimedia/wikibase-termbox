@@ -18,21 +18,20 @@
 import Vue, { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import { mapGetters } from 'vuex';
-import Term from '@/datamodel/Term';
 import Language from '@/datamodel/Language';
-import { NS_ENTITY } from '@/store/namespaces';
+import { NS_LANGUAGE } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
+import Term from '@/datamodel/Term';
 
 interface LabelBindings extends Vue {
-	language: Language;
-	getLabelByLanguage( languageCode: string ): Term;
+	label: Term;
+	getLanguageByCode( languageCode: string ): Language;
 }
 
 @Component( {
 	props: {
-		language: {
+		label: {
 			required: true,
-			type: Object,
 		},
 		isPrimary: {
 			required: false,
@@ -41,13 +40,13 @@ interface LabelBindings extends Vue {
 		},
 	},
 	computed: {
-		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage' ] ),
+		...mapGetters( NS_LANGUAGE, { getLanguageByCode: 'getByCode' } ),
 	},
 } )
 export default class Label extends ( mixins( Messages ) as VueConstructor<LabelBindings> ) {
 
-	get label() {
-		return this.getLabelByLanguage( this.language.code );
+	get language() {
+		return this.getLanguageByCode( this.label.language );
 	}
 
 }

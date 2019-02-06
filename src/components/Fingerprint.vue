@@ -4,7 +4,7 @@
 		:class="{ 'wikibase-termbox-fingerprint--primaryLanguage': isPrimary }">
 		<LanguageNameInUserLanguage class="wikibase-termbox-fingerprint__language" :language="language"/>
 		<div class="wikibase-termbox-fingerprint__terms">
-			<Label :language="language" :isPrimary="isPrimary" class="wikibase-termbox-fingerprint__label-wrapper" />
+			<Label :label="getLabelByLanguage( languageCode )" :isPrimary="isPrimary" class="wikibase-termbox-fingerprint__label-wrapper"/>
 			<div class="wikibase-termbox-fingerprint__description-wrapper">
 				<Description :language="language" />
 			</div>
@@ -21,6 +21,7 @@ import Component, { mixins } from 'vue-class-component';
 import Messages, { MessagesMixin } from './mixins/Messages';
 import { mapGetters } from 'vuex';
 import {
+	NS_ENTITY,
 	NS_LANGUAGE,
 } from '@/store/namespaces';
 import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
@@ -48,6 +49,7 @@ interface FingerprintBindings extends Vue, MessagesMixin {
 		},
 	},
 	computed: {
+		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage' ] ),
 		...mapGetters( NS_LANGUAGE, {
 			getLanguageByCode: 'getByCode',
 		} ),

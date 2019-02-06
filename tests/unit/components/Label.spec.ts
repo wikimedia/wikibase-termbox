@@ -2,16 +2,22 @@ import Label from '@/components/Label.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
-import { NS_ENTITY } from '@/store/namespaces';
-import { ENTITY_INIT } from '@/store/entity/mutationTypes';
-import { NS_MESSAGES, NS_USER } from '@/store/namespaces';
+import { NS_MESSAGES, NS_USER, NS_LANGUAGE } from '@/store/namespaces';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
-import newFingerprintable from '../../newFingerprintable';
+import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 
 const LABEL_SELECTOR = '.wikibase-termbox-fingerprint__label';
+
+function createStoreWithLanguage( language: Language ) {
+	const store = createStore();
+	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
+		[ language.code ]: language,
+	} );
+	return store;
+}
 
 describe( 'Label', () => {
 
@@ -19,13 +25,12 @@ describe( 'Label', () => {
 		const language = 'en';
 		const label = 'hello';
 
-		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
-			labels: { [ language ]: label },
-		} ) );
+		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 		const wrapper = shallowMount( Label, {
-			propsData: { language: { code: language, directionality: 'ltr' } },
+			propsData: {
+				label: { language, value: label },
+			},
 			store,
 		} );
 
@@ -42,7 +47,7 @@ describe( 'Label', () => {
 		} );
 
 		const wrapper = shallowMount( Label, {
-			propsData: { language: { code: language, directionality: 'ltr' } },
+			propsData: { label: null },
 			store,
 		} );
 
@@ -55,12 +60,14 @@ describe( 'Label', () => {
 			[ { code: 'en', directionality: 'ltr' } ],
 			[ { code: 'ar', directionality: 'rtl' } ],
 		] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
-			const store = createStore();
-			store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
-				labels: { [ language.code ]: 'whatevs' },
-			} ) );
+			const store = createStoreWithLanguage( language );
 
-			const $label = shallowMount( Label, { propsData: { language }, store	} ).find( LABEL_SELECTOR );
+			const $label = shallowMount( Label, {
+				propsData: {
+					label: { language: language.code, value: 'meow' },
+				},
+				store,
+			} ).find( LABEL_SELECTOR );
 
 			expect( $label.attributes( 'lang' ) ).toBe( language.code );
 			expect( $label.attributes( 'dir' ) ).toBe( language.directionality );
@@ -72,7 +79,7 @@ describe( 'Label', () => {
 			store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
 
 			const wrapper = shallowMount( Label, {
-				propsData: { language: { code: language, directionality: 'ltr' } },
+				propsData: { label: null },
 				store,
 			} );
 
@@ -83,17 +90,15 @@ describe( 'Label', () => {
 	} );
 
 	it( 'renders the label as a heading if it is the primary language', () => {
-		const language = 'en';
-		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
-			labels: { [ language ]: 'hello' },
-		} ) );
-
+		const store = createStoreWithLanguage( { code: 'en', directionality: 'ltr' } );
 		const wrapper = shallowMount( Label, {
-			propsData: { isPrimary: true, language: { code: 'en', directionality: 'ltr' } },
+			propsData: {
+				isPrimary: true,
+				label: { language: 'en', value: 'meep' },
+			},
 			store,
 		} );
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__label' ).element.tagName ).toBe( 'H2' );
+		expect( wrapper.find( LABEL_SELECTOR ).element.tagName ).toBe( 'H2' );
 	} );
 
 } );
