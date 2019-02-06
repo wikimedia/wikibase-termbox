@@ -4,26 +4,11 @@ import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { NS_ENTITY, NS_MESSAGES, NS_USER } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/mutationTypes';
-import Term from '@/datamodel/Term';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
-
-function stringToTermMap( values: { [ language: string ]: string } ) {
-	const terms: { [ language: string ]: Term } = {};
-
-	Object.entries( values ).forEach( ( [ language, value ] ) =>  {
-		terms[ language ] = { language, value };
-	} );
-
-	return terms;
-}
-
-function newEntityWithDescriptions( descriptions: { [ language: string ]: string } ) {
-	return new FingerprintableEntity( 'Q123', {}, stringToTermMap( descriptions ), {} );
-}
+import newFingerprintable from '../../newFingerprintable';
 
 const DESCRIPTION_SELECTOR = '.wikibase-termbox-fingerprint__description';
 
@@ -34,8 +19,8 @@ describe( 'Description', () => {
 		const description = 'hello';
 
 		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithDescriptions( {
-			[ language ]: description,
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+			descriptions: { [ language ]: description },
 		} ) );
 
 		const wrapper = shallowMount( Description, {
@@ -70,8 +55,8 @@ describe( 'Description', () => {
 			[ { code: 'ar', directionality: 'rtl' } ],
 		] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
 			const store = createStore();
-			store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithDescriptions( {
-				[ language.code ]: 'whatevs',
+			store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+				descriptions: { [ language.code ]: 'whatevs' },
 			} ) );
 
 			const $description = shallowMount( Description, { propsData: { language }, store	} ).find( DESCRIPTION_SELECTOR );

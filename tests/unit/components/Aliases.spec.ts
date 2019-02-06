@@ -4,26 +4,11 @@ import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { ENTITY_INIT } from '@/store/entity/mutationTypes';
 import { NS_ENTITY, NS_MESSAGES, NS_USER } from '@/store/namespaces';
-import Term from '@/datamodel/Term';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import Language from '@/datamodel/Language';
 import { MessageKeys } from '@/common/MessageKeys';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
-
-function stringListToTermListMap( values: { [ language: string ]: string[] } ) {
-	const aliases: { [ language: string ]: Term[] } = {};
-
-	Object.entries( values ).forEach( ( [ language, aliasValues ] ) =>  {
-		aliases[ language ] = aliasValues.map( ( value ) => ( { language, value } ) );
-	} );
-
-	return aliases;
-}
-
-function newEntityWithAliases( aliases: { [ language: string ]: string[] } ) {
-	return new FingerprintableEntity( 'Q123', {}, {}, stringListToTermListMap( aliases ) );
-}
+import newFingerprintable from '../../newFingerprintable';
 
 const ALIASES_SELECTOR = '.wikibase-termbox-fingerprint__aliases';
 const ALIAS_SELECTOR = '.wikibase-termbox-fingerprint__alias';
@@ -35,8 +20,8 @@ describe( 'Aliases', () => {
 		const aliases = [ 'hello', 'hullo' ];
 
 		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithAliases( {
-			[ language ]: aliases,
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+			aliases: { [ language ]: aliases },
 		} ) );
 
 		const wrapper = shallowMount( Aliases, {
@@ -53,8 +38,8 @@ describe( 'Aliases', () => {
 		const separator = '|';
 
 		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithAliases( {
-			[ language ]: [ 'hello' ],
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+			aliases: { [ language ]: [ 'hello' ] },
 		} ) );
 
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
@@ -86,8 +71,8 @@ describe( 'Aliases', () => {
 		[ { code: 'ar', directionality: 'rtl' } ],
 	] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
 		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithAliases( {
-			[ language.code ]: [ 'whatevs' ],
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+			aliases: { [ language.code ]: [ 'whatevs' ] },
 		} ) );
 
 		const $aliases = shallowMount( Aliases, { propsData: { language }, store } ).find( ALIASES_SELECTOR );

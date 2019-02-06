@@ -3,30 +3,15 @@ import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import Term from '@/datamodel/Term';
 import { ENTITY_INIT } from '@/store/entity/mutationTypes';
 import { NS_MESSAGES, NS_USER } from '@/store/namespaces';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
+import newFingerprintable from '../../newFingerprintable';
 
 const LABEL_SELECTOR = '.wikibase-termbox-fingerprint__label';
-
-function stringToTermMap( values: { [ language: string ]: string } ) {
-	const terms: { [ language: string ]: Term } = {};
-
-	Object.entries( values ).forEach( ( [ language, value ] ) =>  {
-		terms[ language ] = { language, value };
-	} );
-
-	return terms;
-}
-
-function newEntityWithLabels( labels: { [ language: string ]: string } ) {
-	return new FingerprintableEntity( 'Q123', stringToTermMap( labels ), {}, {} );
-}
 
 describe( 'Label', () => {
 
@@ -35,8 +20,8 @@ describe( 'Label', () => {
 		const label = 'hello';
 
 		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithLabels( {
-			[ language ]: label,
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+			labels: { [ language ]: label },
 		} ) );
 
 		const wrapper = shallowMount( Label, {
@@ -71,8 +56,8 @@ describe( 'Label', () => {
 			[ { code: 'ar', directionality: 'rtl' } ],
 		] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
 			const store = createStore();
-			store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithLabels( {
-				[ language.code ]: 'whatevs',
+			store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+				labels: { [ language.code ]: 'whatevs' },
 			} ) );
 
 			const $label = shallowMount( Label, { propsData: { language }, store	} ).find( LABEL_SELECTOR );
@@ -100,8 +85,8 @@ describe( 'Label', () => {
 	it( 'renders the label as a heading if it is the primary language', () => {
 		const language = 'en';
 		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newEntityWithLabels( {
-			[ language ]: 'hello',
+		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
+			labels: { [ language ]: 'hello' },
 		} ) );
 
 		const wrapper = shallowMount( Label, {
