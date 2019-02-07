@@ -2,15 +2,22 @@ import Description from '@/components/Description.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
-import { NS_ENTITY, NS_MESSAGES, NS_USER } from '@/store/namespaces';
-import { ENTITY_INIT } from '@/store/entity/mutationTypes';
+import { NS_LANGUAGE, NS_MESSAGES, NS_USER } from '@/store/namespaces';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
+import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
-import newFingerprintable from '../../newFingerprintable';
 
 const DESCRIPTION_SELECTOR = '.wikibase-termbox-fingerprint__description';
+
+function createStoreWithLanguage( language: Language ) {
+	const store = createStore();
+	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
+		[ language.code ]: language,
+	} );
+	return store;
+}
 
 describe( 'Description', () => {
 
@@ -18,13 +25,10 @@ describe( 'Description', () => {
 		const language = 'en';
 		const description = 'hello';
 
-		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
-			descriptions: { [ language ]: description },
-		} ) );
+		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 		const wrapper = shallowMount( Description, {
-			propsData: { language: { code: language, directionality: 'ltr' } },
+			propsData: { description: { language, value: description } },
 			store,
 		} );
 
@@ -41,7 +45,7 @@ describe( 'Description', () => {
 		} );
 
 		const wrapper = shallowMount( Description, {
-			propsData: { language: { code: language, directionality: 'ltr' } },
+			propsData: { description: null },
 			store,
 		} );
 
@@ -54,12 +58,11 @@ describe( 'Description', () => {
 			[ { code: 'en', directionality: 'ltr' } ],
 			[ { code: 'ar', directionality: 'rtl' } ],
 		] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
-			const store = createStore();
-			store.commit( mutation( NS_ENTITY, ENTITY_INIT ), newFingerprintable( {
-				descriptions: { [ language.code ]: 'whatevs' },
-			} ) );
-
-			const $description = shallowMount( Description, { propsData: { language }, store	} ).find( DESCRIPTION_SELECTOR );
+			const store = createStoreWithLanguage( language );
+			const $description = shallowMount( Description, {
+				propsData: { description: { language: language.code, value: 'bla' } },
+				store,
+			} ).find( DESCRIPTION_SELECTOR );
 
 			expect( $description.attributes( 'lang' ) ).toBe( language.code );
 			expect( $description.attributes( 'dir' ) ).toBe( language.directionality );
@@ -71,7 +74,7 @@ describe( 'Description', () => {
 			store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
 
 			const wrapper = shallowMount( Description, {
-				propsData: { language: { code: language, directionality: 'ltr' } },
+				propsData: { description: null },
 				store,
 			} );
 

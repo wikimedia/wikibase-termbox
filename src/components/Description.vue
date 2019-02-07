@@ -16,30 +16,29 @@ import Vue, { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import { mapGetters } from 'vuex';
 import Messages from '@/components/mixins/Messages';
-import { NS_ENTITY } from '@/store/namespaces';
+import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
 
 interface DescriptionBindings extends Vue {
-	language: Language;
-	getDescriptionByLanguage( languageCode: string ): Term;
+	description: Term;
+	getLanguageByCode( languageCode: string ): Language;
 }
 
 @Component( {
 	props: {
-		language: {
+		description: {
 			required: true,
-			type: Object,
 		},
 	},
 	computed: {
-		...mapGetters( NS_ENTITY, [ 'getDescriptionByLanguage' ] ),
+		...mapGetters( NS_LANGUAGE, { getLanguageByCode: 'getByCode' } ),
 	},
 } )
 export default class Description extends ( mixins( Messages ) as VueConstructor<DescriptionBindings> ) {
 
-	get description() {
-		return this.getDescriptionByLanguage( this.language.code );
+	get language() {
+		return this.getLanguageByCode( this.description.language );
 	}
 
 }

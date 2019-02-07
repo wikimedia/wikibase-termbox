@@ -6,7 +6,7 @@
 		<div class="wikibase-termbox-fingerprint__terms">
 			<Label :label="getLabelByLanguage( languageCode )" :isPrimary="isPrimary" class="wikibase-termbox-fingerprint__label-wrapper"/>
 			<div class="wikibase-termbox-fingerprint__description-wrapper">
-				<Description :language="language" />
+				<Description :description="getDescriptionByLanguage( languageCode )" />
 			</div>
 			<div class="wikibase-termbox-fingerprint__aliases-wrapper">
 				<Aliases :language="language" />
@@ -49,7 +49,7 @@ interface FingerprintBindings extends Vue, MessagesMixin {
 		},
 	},
 	computed: {
-		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage' ] ),
+		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage', 'getDescriptionByLanguage' ] ),
 		...mapGetters( NS_LANGUAGE, {
 			getLanguageByCode: 'getByCode',
 		} ),

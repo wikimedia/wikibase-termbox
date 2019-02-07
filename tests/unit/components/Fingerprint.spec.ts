@@ -23,7 +23,10 @@ function createMinimalStoreWithLanguage( languageCode: string ) {
 describe( 'Fingerprint.vue', () => {
 
 	it( 'renders label, description and aliases in the given language', () => {
-		const entity = newFingerprintable( { labels: { de: 'Kartoffel' } } );
+		const entity = newFingerprintable( {
+			labels: { de: 'Kartoffel' },
+			descriptions: { de: 'Art der Gattung Nachtschatten (Solanum)' },
+		} );
 		const language = { code: 'de', directionality: 'ltr' };
 
 		const store = createStore();
@@ -33,7 +36,7 @@ describe( 'Fingerprint.vue', () => {
 		const wrapper = shallowMount( Fingerprint, { store, propsData: { languageCode: language.code } } );
 
 		expect( wrapper.find( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
-		expect( wrapper.find( Description ).props( 'language' ) ).toBe( language );
+		expect( wrapper.find( Description ).props( 'description' ) ).toBe( entity.descriptions[ language.code ] );
 		expect( wrapper.find( Aliases ).props( 'language' ) ).toBe( language );
 	} );
 
