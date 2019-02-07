@@ -6,5 +6,6 @@ module.exports = {
 				'ie 10',
 			],
 		},
+		'postcss-prefixwrap': '.wikibase-entitytermsview', // base selector; see App.vue
 	},
 };

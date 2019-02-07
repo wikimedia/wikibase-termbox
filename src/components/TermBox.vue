@@ -40,19 +40,16 @@ export default class TermBox extends Vue {
 </script>
 
 <style lang="scss">
-.wikibase-termbox { // container - need a strong selector chain to reliably override reset css
+.wikibase-termbox {
+	&__primary {
+		display: flex;
+	}
 
-	.wikibase-termbox { // for use as a prefix
-		&__primary {
-			display: flex;
-		}
-
-		&__actions {
-			margin-left: auto;
-			padding-left: 16px; // minimum horizontal separation between "interaction bar" and other content
-			// TODO: this is only here because the other pens don't have a width of 48px
-			margin-right: -9px;
-		}
+	&__actions {
+		margin-left: auto;
+		padding-left: 16px; // minimum horizontal separation between "interaction bar" and other content
+		// TODO: this is only here because the other pens don't have a width of 48px
+		margin-right: -9px;
 	}
 }
 </style>

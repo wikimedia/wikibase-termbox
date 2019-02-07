@@ -54,7 +54,10 @@ export default class App extends ( Vue as VueConstructor<AppBindings> ) {
 </script>
 
 <style lang="scss">
-.wikibase-entitytermsview {
-	@import '~reset-css/sass/_reset';
-}
+/**
+ * All components' CSS selectors are prefixed by postcss-prefixwrap. This both
+ * * ensures the following reset is restricted to the inside of our application
+ * * allows component styles to overcome this reset
+ */
+@import '~reset-css/sass/_reset';
 </style>

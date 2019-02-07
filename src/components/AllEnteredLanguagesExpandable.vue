@@ -42,7 +42,7 @@ export default class AllEnteredLanguagesExpandable extends ( mixins( Messages ) 
 
 <style lang="scss">
 .wikibase-termbox-all-entered-languages {
-	.wikibase-termbox & > .wikibase-termbox-subsection-switch {
+	& > .wikibase-termbox-subsection-switch { // TODO switch to element selector, e.g. .wikibase-termbox-all-entered-languages__switch
 		@include toggle-button($svg-all-entered-languages);
 	}
 }

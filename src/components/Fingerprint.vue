@@ -64,7 +64,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 </script>
 
 <style lang="scss">
-.wikibase-termbox .wikibase-termbox-fingerprint {
+.wikibase-termbox-fingerprint {
 	margin-top: 32px;
 	min-width: 0; // https://css-tricks.com/flexbox-truncated-text/
 
@@ -72,23 +72,20 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		margin-top: 0;
 	}
 
-	.wikibase-termbox-fingerprint { // for use as a prefix
+	&__language {
+		@include fontSize( 13px );
+		color: $color-dark-azureish-gray;
+		font-family: $font-family-sansserif;
+	}
 
-		&__language {
-			@include fontSize( 13px );
-			color: $color-dark-azureish-gray;
-			font-family: $font-family-sansserif;
-		}
-
-		&__label-wrapper,
-		&__description-wrapper,
-		&__aliases-wrapper {
-			min-width: 260px;
-			max-width: 420px;
-			overflow-wrap: break-word;
-			word-wrap: break-word;
-			hyphens: auto;
-		}
+	&__label-wrapper,
+	&__description-wrapper,
+	&__aliases-wrapper {
+		min-width: 260px;
+		max-width: 420px;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		hyphens: auto;
 	}
 
 	&:not( .wikibase-termbox-fingerprint--primaryLanguage ) {

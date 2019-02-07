@@ -26,7 +26,7 @@ export default class EditPen extends ( mixins( Messages ) as VueConstructor<Mess
 </script>
 
 <style lang="scss">
-.wikibase-termbox { // for use as a prefix
+.wikibase-termbox { // TODO rename Block per component
 	&__edit-action a {
 		background: $svg-pen 50% 50% no-repeat;
 		width: 48px;
