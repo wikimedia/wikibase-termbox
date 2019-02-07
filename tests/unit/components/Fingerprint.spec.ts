@@ -26,6 +26,7 @@ describe( 'Fingerprint.vue', () => {
 		const entity = newFingerprintable( {
 			labels: { de: 'Kartoffel' },
 			descriptions: { de: 'Art der Gattung Nachtschatten (Solanum)' },
+			aliases: { de: [ 'Erdapfel', 'Solanum tuberosum' ] },
 		} );
 		const language = { code: 'de', directionality: 'ltr' };
 
@@ -37,7 +38,7 @@ describe( 'Fingerprint.vue', () => {
 
 		expect( wrapper.find( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
 		expect( wrapper.find( Description ).props( 'description' ) ).toBe( entity.descriptions[ language.code ] );
-		expect( wrapper.find( Aliases ).props( 'language' ) ).toBe( language );
+		expect( wrapper.find( Aliases ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
 	} );
 
 	describe( 'primary Fingerprint', () => {

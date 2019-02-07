@@ -9,7 +9,7 @@
 				<Description :description="getDescriptionByLanguage( languageCode )" />
 			</div>
 			<div class="wikibase-termbox-fingerprint__aliases-wrapper">
-				<Aliases :language="language" />
+				<Aliases :aliases="getAliasesByLanguage( languageCode )" />
 			</div>
 		</div>
 	</div>
@@ -49,7 +49,7 @@ interface FingerprintBindings extends Vue, MessagesMixin {
 		},
 	},
 	computed: {
-		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage', 'getDescriptionByLanguage' ] ),
+		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage', 'getDescriptionByLanguage', 'getAliasesByLanguage' ] ),
 		...mapGetters( NS_LANGUAGE, {
 			getLanguageByCode: 'getByCode',
 		} ),

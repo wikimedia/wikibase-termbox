@@ -1,5 +1,5 @@
 <template>
-	<ul v-if="aliases"
+	<ul v-if="aliases && aliases.length > 0"
 		class="wikibase-termbox-fingerprint__aliases"
 		:lang="language.code"
 		:dir="language.directionality">
@@ -14,31 +14,30 @@
 import Vue, { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import { mapGetters } from 'vuex';
-import { NS_ENTITY } from '@/store/namespaces';
-import TermList from '@/datamodel/TermList';
+import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
+import Term from '@/datamodel/Term';
 import Messages from '@/components/mixins/Messages';
 
 interface AliasesBindings extends Vue {
-	language: Language;
-	getAliasesByLanguage( language: string ): TermList;
+	aliases: Term[];
+	getLanguageByCode( language: string ): Language;
 }
 
 @Component( {
 	props: {
-		language: {
+		aliases: {
 			required: true,
-			type: Object,
 		},
 	},
 	computed: {
-		...mapGetters( NS_ENTITY, [ 'getAliasesByLanguage' ] ),
+		...mapGetters( NS_LANGUAGE, { getLanguageByCode: 'getByCode' } ),
 	},
 } )
 export default class Aliases extends ( mixins( Messages ) as VueConstructor<AliasesBindings> ) {
 
-	get aliases() {
-		return this.getAliasesByLanguage( this.language.code );
+	get language() {
+		return this.getLanguageByCode( this.aliases[ 0 ].language );
 	}
 
 }
