@@ -75,19 +75,21 @@ describe( 'Aliases', () => {
 		expect( wrapper.find( '.wb-ui-aliases--placeholder' ).isEmpty() ).toBeTruthy();
 	} );
 
-	it.each( [
-		[ { code: 'en', directionality: 'ltr' } ],
-		[ { code: 'ar', directionality: 'rtl' } ],
-	] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
+	it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
+		const language = { code: 'en', directionality: 'ltr' };
+		const inlanguageDirective = jest.fn();
 		const store = createStoreWithLanguage( language );
 
-		const $aliases = shallowMount( Aliases, {
+		shallowMount( Aliases, {
 			propsData: { aliases: [ { language: language.code, value: 'hello' } ] },
 			store,
-		} ).find( ALIASES_SELECTOR );
+			directives: {
+				inlanguage: inlanguageDirective,
+			},
+		} );
 
-		expect( $aliases.attributes( 'lang' ) ).toBe( language.code );
-		expect( $aliases.attributes( 'dir' ) ).toBe( language.directionality );
+		expect( inlanguageDirective ).toBeCalledTimes( 1 );
+		expect( inlanguageDirective.mock.calls[0][1].value ).toBe( language );
 	} );
 
 } );

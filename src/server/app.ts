@@ -8,13 +8,19 @@ import HttpStatus from 'http-status-codes';
 import BundleBoundaryPassingException, { ErrorReason } from './exceptions/BundleBoundaryPassingException';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import BundleRendererContextBuilder from './bundle-renderer/BundleRendererContextBuilder';
+import inlanguage from './directives/inlanguage';
 
 export default ( services: BundleRendererServices ) => {
 
 	const app = express();
 	const renderer = createBundleRenderer(
 		resolve( './serverDist/vue-ssr-server-bundle.json' ),
-		{ runInNewContext: false },
+		{
+			runInNewContext: false,
+			directives: {
+				inlanguage,
+			},
+		},
 	);
 	const contextBuilder = new BundleRendererContextBuilder( services );
 

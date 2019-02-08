@@ -10,9 +10,12 @@ import EntityRepository from '@/client/data-access/EntityRepository';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKeys } from '@/common/MessageKeys';
+import inlanguage from '@/client/directives/inlanguage';
 
 Vue.config.productionTip = false;
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
+
+Vue.directive( 'inlanguage', inlanguage );
 
 factory.setLanguageTranslationRepository(
 	new UlsLanguageTranslationRepository(

@@ -54,30 +54,35 @@ describe( 'Description', () => {
 
 	describe( 'directionality and language code', () => {
 
-		it.each( [
-			[ { code: 'en', directionality: 'ltr' } ],
-			[ { code: 'ar', directionality: 'rtl' } ],
-		] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
+		it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
+			const language = { code: 'ar', directionality: 'rtl' };
+			const inlanguageDirective = jest.fn();
 			const store = createStoreWithLanguage( language );
-			const $description = shallowMount( Description, {
+			shallowMount( Description, {
 				propsData: { description: { language: language.code, value: 'bla' } },
 				store,
-			} ).find( DESCRIPTION_SELECTOR );
+				directives: {
+					inlanguage: inlanguageDirective,
+				},
+			} );
 
-			expect( $description.attributes( 'lang' ) ).toBe( language.code );
-			expect( $description.attributes( 'dir' ) ).toBe( language.directionality );
+			expect( inlanguageDirective ).toBeCalledTimes( 1 );
+			expect( inlanguageDirective.mock.calls[0][1].value ).toBe( language );
 		} );
 
 		it( 'does not add directionality markup for missing description', () => {
+			const inlanguageDirective = jest.fn();
 			const store = createStore();
 
-			const wrapper = shallowMount( Description, {
+			shallowMount( Description, {
 				propsData: { description: null },
 				store,
+				directives: {
+					inlanguage: inlanguageDirective,
+				},
 			} );
 
-			expect( wrapper.find( DESCRIPTION_SELECTOR ).attributes( 'lang' ) ).toBeFalsy();
-			expect( wrapper.find( DESCRIPTION_SELECTOR ).attributes( 'dir' ) ).toBeFalsy();
+			expect( inlanguageDirective ).not.toBeCalled();
 		} );
 
 	} );
