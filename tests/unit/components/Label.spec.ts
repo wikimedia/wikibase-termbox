@@ -74,9 +74,7 @@ describe( 'Label', () => {
 		} );
 
 		it( 'does not add directionality markup for missing labels', () => {
-			const language = 'en';
 			const store = createStore();
-			store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
 
 			const wrapper = shallowMount( Label, {
 				propsData: { label: null },

@@ -69,9 +69,7 @@ describe( 'Description', () => {
 		} );
 
 		it( 'does not add directionality markup for missing description', () => {
-			const language = 'en';
 			const store = createStore();
-			store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
 
 			const wrapper = shallowMount( Description, {
 				propsData: { description: null },
