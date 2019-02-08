@@ -89,12 +89,6 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			word-wrap: break-word;
 			hyphens: auto;
 		}
-
-		&__alias:not( :last-child ):after {
-			content: attr( data-separator );
-			white-space: nowrap;
-			padding: 0 0.4em;
-		}
 	}
 
 	&:not( .wikibase-termbox-fingerprint--primaryLanguage ) {
