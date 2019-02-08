@@ -1,10 +1,10 @@
 <template>
-	<div class="wikibase-termbox-in-more-languages">
+	<div class="wb-ui-in-more-languages-expandable">
 		<a
-			class="wikibase-termbox-subsection-switch"
+			class="wb-ui-in-more-languages-expandable__switch"
 			:class="{
-				'wikibase-termbox-subsection-switch--expanded': isExpanded,
-				'wikibase-termbox-subsection-switch--unclickable': isServerRendered,
+				'wb-ui-in-more-languages-expandable__switch--expanded': isExpanded,
+				'wb-ui-in-more-languages-expandable__switch--unclickable': isServerRendered,
 			}"
 			@click.prevent="toggleShowMoreLanguages()"
 			href="#"
@@ -41,8 +41,8 @@ export default class InMoreLanguagesExpandable extends ( mixins( Messages ) as V
 </script>
 
 <style lang="scss">
-.wikibase-termbox-in-more-languages {
-	& > .wikibase-termbox-subsection-switch { // TODO switch to element selector, e.g. .wikibase-termbox-in-more-languages__switch
+.wb-ui-in-more-languages-expandable {
+	&__switch {
 		@include toggle-button($svg-in-more-languages);
 		margin-top: 32px;
 	}

@@ -1,13 +1,13 @@
 <template>
 	<ul v-if="aliases && aliases.length > 0"
-		class="wikibase-termbox-fingerprint__aliases"
+		class="wb-ui-aliases"
 		:lang="language.code"
 		:dir="language.directionality">
 		<li v-for="alias in aliases"
-			class="wikibase-termbox-fingerprint__alias"
+			class="wb-ui-aliases__alias"
 			:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>
 	</ul>
-	<div class="wikibase-termbox-fingerprint__aliases wikibase-termbox-fingerprint__aliases--placeholder" v-else/>
+	<div class="wb-ui-aliases wb-ui-aliases--placeholder" v-else/>
 </template>
 
 <script lang="ts">
@@ -44,12 +44,12 @@ export default class Aliases extends ( mixins( Messages ) as VueConstructor<Alia
 </script>
 
 <style lang="scss">
-.wikibase-termbox-fingerprint .wikibase-termbox-fingerprint__aliases {
+.wb-ui-aliases {
 	color: $color-light-azureish-gray;
 	line-height: 1.3em;
 	font-family: $font-family-sansserif;
 
-	.wikibase-termbox-fingerprint__alias {
+	&__alias {
 		display: inline;
 
 		&:not( :last-child ):after {

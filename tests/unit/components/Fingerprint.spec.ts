@@ -55,7 +55,7 @@ describe( 'Fingerprint.vue', () => {
 					},
 				},
 			);
-			expect( wrapper.classes( 'wikibase-termbox-fingerprint--primaryLanguage' ) ).toBeTruthy();
+			expect( wrapper.classes( 'wb-ui-fingerprint--primaryLanguage' ) ).toBeTruthy();
 			expect( wrapper.find( Label ).props() ).toHaveProperty( 'isPrimary', true );
 		} );
 
@@ -72,7 +72,7 @@ describe( 'Fingerprint.vue', () => {
 					},
 				},
 			);
-			expect( wrapper.classes() ).toEqual( [ 'wikibase-termbox-fingerprint' ] );
+			expect( wrapper.classes() ).toEqual( [ 'wb-ui-fingerprint' ] );
 			expect( wrapper.find( Label ).props() ).toHaveProperty( 'isPrimary', false );
 		} );
 	} );
@@ -92,7 +92,7 @@ describe( 'Fingerprint.vue', () => {
 			},
 		);
 
-		const languageNameInUserLanguage = wrapper.find( '.wikibase-termbox-fingerprint__language' );
+		const languageNameInUserLanguage = wrapper.find( '.wb-ui-fingerprint__language' );
 
 		expect( languageNameInUserLanguage.is( LanguageNameInUserLanguage ) ).toBeTruthy();
 		expect( languageNameInUserLanguage.props( 'language' ) ).toBe( language );

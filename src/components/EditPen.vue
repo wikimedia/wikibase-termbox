@@ -1,8 +1,8 @@
 <template>
 	<Sectionedit>
-		<div class="wikibase-termbox__edit-action">
-			<a :href="href" :title="message( MESSAGE_KEYS.EDIT )">
-				<span class="wikibase-termbox__edit-action-text">{{ message( MESSAGE_KEYS.EDIT ) }}</span>
+		<div class="wb-ui-edit-pen">
+			<a class="wb-ui-edit-pen__link" :href="href" :title="message( MESSAGE_KEYS.EDIT )">
+				<span class="wb-ui-edit-pen__text">{{ message( MESSAGE_KEYS.EDIT ) }}</span>
 			</a>
 		</div>
 	</Sectionedit>
@@ -26,8 +26,8 @@ export default class EditPen extends ( mixins( Messages ) as VueConstructor<Mess
 </script>
 
 <style lang="scss">
-.wikibase-termbox { // TODO rename Block per component
-	&__edit-action a {
+.wb-ui-edit-pen {
+	&__link {
 		background: $svg-pen 50% 50% no-repeat;
 		width: 48px;
 		height: 48px;
@@ -38,7 +38,7 @@ export default class EditPen extends ( mixins( Messages ) as VueConstructor<Mess
 		}
 	}
 
-	&__edit-action-text {
+	&__text {
 		@include sr-only();
 	}
 }

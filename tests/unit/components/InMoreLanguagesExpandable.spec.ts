@@ -33,13 +33,13 @@ describe( 'InMoreLanguagesExpandable', () => {
 
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 
-			expect( wrapper.find( '.wikibase-termbox-subsection-switch span' ).text() ).toBe( expectedLinkText );
+			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch span' ).text() ).toBe( expectedLinkText );
 		} );
 
 		it( 'toggle collapses/expands the user\'s preferred languages on click', () => {
 			const store = createStore();
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
-			wrapper.find( '.wikibase-termbox-subsection-switch' ).trigger( 'click' );
+			wrapper.find( '.wb-ui-in-more-languages-expandable__switch' ).trigger( 'click' );
 
 			expect( wrapper.find( InMoreLanguages ).exists() ).toBeFalsy();
 		} );
@@ -52,15 +52,15 @@ describe( 'InMoreLanguagesExpandable', () => {
 			// render returns a cheerio wrapper, not a string as the d.ts claims
 			// https://vue-test-utils.vuejs.org/api/render.html#render
 			const $button = ( render( InMoreLanguagesExpandable, { store } ) as any )
-				.find( '.wikibase-termbox-subsection-switch' );
-			expect( $button.hasClass( 'wikibase-termbox-subsection-switch--unclickable' ) ).toBe( true );
+				.find( '.wb-ui-in-more-languages-expandable__switch' );
+			expect( $button.hasClass( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( true );
 		} );
 
 		it( 'has no extra class when mounted on the client side', () => {
 			const store = createStore();
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
-			expect( wrapper.find( '.wikibase-termbox-subsection-switch' )
-				.classes( 'wikibase-termbox-subsection-switch--unclickable' ) ).toBe( false );
+			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch' )
+				.classes( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( false );
 		} );
 
 	} );

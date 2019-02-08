@@ -29,7 +29,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 	it( 'has a toggle button', () => {
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, { store } );
 
-		expect( wrapper.find( '.wikibase-termbox-subsection-switch > span' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.wb-ui-all-entered-languages-expandable__switch > span' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'does not expand all entered languages by default', () => {
@@ -39,7 +39,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 
 	it( 'expands all entered languages on click', () => {
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, { store } );
-		wrapper.find( '.wikibase-termbox-subsection-switch' ).trigger( 'click' );
+		wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
 
 		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeTruthy();
 	} );

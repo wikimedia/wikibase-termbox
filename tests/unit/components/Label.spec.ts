@@ -9,7 +9,7 @@ import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 
-const LABEL_SELECTOR = '.wikibase-termbox-fingerprint__label';
+const LABEL_SELECTOR = '.wb-ui-label';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();

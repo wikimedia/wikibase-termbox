@@ -1,9 +1,9 @@
 <template>
-	<div class="wikibase-termbox-all-entered-languages" v-if="!isServerRendered">
+	<div v-if="!isServerRendered">
 		<a
 			:href="link"
-			class="wikibase-termbox-subsection-switch"
-			:class="{ 'wikibase-termbox-subsection-switch--expanded': isExpanded }"
+			class="wb-ui-all-entered-languages-expandable__switch"
+			:class="{ 'wb-ui-all-entered-languages-expandable__switch--expanded': isExpanded }"
 			@click.prevent="toggleShowAllLanguages()"
 		>
 			<span>{{ message( MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
@@ -41,8 +41,8 @@ export default class AllEnteredLanguagesExpandable extends ( mixins( Messages ) 
 </script>
 
 <style lang="scss">
-.wikibase-termbox-all-entered-languages {
-	& > .wikibase-termbox-subsection-switch { // TODO switch to element selector, e.g. .wikibase-termbox-all-entered-languages__switch
+.wb-ui-all-entered-languages-expandable {
+	&__switch {
 		@include toggle-button($svg-all-entered-languages);
 	}
 }

@@ -9,7 +9,7 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
 
-const DESCRIPTION_SELECTOR = '.wikibase-termbox-fingerprint__description';
+const DESCRIPTION_SELECTOR = '.wb-ui-description';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();

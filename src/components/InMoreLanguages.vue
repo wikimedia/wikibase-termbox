@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wb-ui-in-more-languages">
 		<Fingerprint v-for="language in secondaryLanguages" :languageCode="language" :key="language"/>
 		<AllEnteredLanguagesExpandable/>
 	</div>

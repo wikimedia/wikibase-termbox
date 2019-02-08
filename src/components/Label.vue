@@ -2,14 +2,14 @@
 	<component
 		v-if="label"
 		:is="isPrimary ? 'h2' : 'div'"
-		class="wikibase-termbox-fingerprint__label"
-		:class="{ 'wikibase-termbox-fingerprint__label--primary': isPrimary }"
+		class="wb-ui-label"
+		:class="{ 'wb-ui-label--primary': isPrimary }"
 		:lang="language.code"
 		:dir="language.directionality">{{ label.value }}</component>
 	<div
 		v-else
-		class="wikibase-termbox-fingerprint__label wikibase-termbox-fingerprint__label--missing"
-		:class="{ 'wikibase-termbox-fingerprint__label--primary': isPrimary }">
+		class="wb-ui-label wb-ui-label--missing"
+		:class="{ 'wb-ui-label--primary': isPrimary }">
 		{{ message( MESSAGE_KEYS.MISSING_LABEL ) }}
 	</div>
 </template>
@@ -53,7 +53,7 @@ export default class Label extends ( mixins( Messages ) as VueConstructor<LabelB
 </script>
 
 <style lang="scss">
-.wikibase-termbox-fingerprint .wikibase-termbox-fingerprint__label {
+.wb-ui-label {
 	color: $color-black;
 	line-height: 1.3em;
 	font-family: $font-family-serif;

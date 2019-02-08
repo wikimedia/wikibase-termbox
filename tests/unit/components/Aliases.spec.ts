@@ -17,8 +17,8 @@ function createStoreWithLanguage( language: Language ) {
 	return store;
 }
 
-const ALIASES_SELECTOR = '.wikibase-termbox-fingerprint__aliases';
-const ALIAS_SELECTOR = '.wikibase-termbox-fingerprint__alias';
+const ALIASES_SELECTOR = '.wb-ui-aliases';
+const ALIAS_SELECTOR = '.wb-ui-aliases__alias';
 
 describe( 'Aliases', () => {
 
@@ -72,7 +72,7 @@ describe( 'Aliases', () => {
 			store,
 		} );
 
-		expect( wrapper.find( '.wikibase-termbox-fingerprint__aliases--placeholder' ).isEmpty() ).toBeTruthy();
+		expect( wrapper.find( '.wb-ui-aliases--placeholder' ).isEmpty() ).toBeTruthy();
 	} );
 
 	it.each( [

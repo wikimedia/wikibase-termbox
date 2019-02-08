@@ -1,12 +1,12 @@
 <template>
 	<p
 		v-if="description"
-		class="wikibase-termbox-fingerprint__description"
+		class="wb-ui-description"
 		:lang="language.code"
 		:dir="language.directionality">{{ description.value }}</p>
 	<p
 		v-else
-		class="wikibase-termbox-fingerprint__description wikibase-termbox-fingerprint__description--missing">
+		class="wb-ui-description wb-ui-description--missing">
 		{{ message( MESSAGE_KEYS.MISSING_DESCRIPTION ) }}
 	</p>
 </template>
@@ -45,7 +45,7 @@ export default class Description extends ( mixins( Messages ) as VueConstructor<
 </script>
 
 <style lang="scss">
-.wikibase-termbox-fingerprint .wikibase-termbox-fingerprint__description {
+.wb-ui-description {
 	color: $color-black;
 	line-height: 1.3em;
 	font-family: $font-family-sansserif;

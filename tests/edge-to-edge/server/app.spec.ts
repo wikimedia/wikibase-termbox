@@ -111,7 +111,7 @@ function nockSuccessfulEntityLoading( entityId: string ) {
 }
 
 function expectLabelInLanguage( $fingerprint: Element, language: string, directionality = 'ltr' ) {
-	const $label = $fingerprint.querySelector( '.wikibase-termbox-fingerprint__label' );
+	const $label = $fingerprint.querySelector( '.wb-ui-label' );
 	expect( $label ).toHaveTextContent( mockQ64.labels[ language ].value );
 	expect( $label ).toBeInstanceOf( Element );
 	expect( $label!.getAttribute( 'lang' ) ).toBe( language );
@@ -334,29 +334,29 @@ describe( 'Termbox SSR', () => {
 
 				const $dom = getDomFromMarkup( response.text );
 
-				expect( $dom.querySelectorAll( '.wikibase-termbox' ).length ).toBe( 1 );
+				expect( $dom.querySelectorAll( '.wb-ui-termbox' ).length ).toBe( 1 );
 
 				const $primaryLanguageFingerprint = $dom
-					.querySelector( '.wikibase-termbox-fingerprint--primaryLanguage' );
+					.querySelector( '.wb-ui-fingerprint--primaryLanguage' );
 				expect( $primaryLanguageFingerprint )
 					.toBeVisible();
 
-				const $language = $dom.querySelector( '.wikibase-termbox-fingerprint__language' );
+				const $language = $dom.querySelector( '.wb-ui-fingerprint__language' );
 				expect( $language ).toHaveTextContent( germanInGerman );
 
 				expectLabelInLanguage( $primaryLanguageFingerprint!, language );
 
-				const $description = $dom.querySelector( '.wikibase-termbox-fingerprint__description' );
+				const $description = $dom.querySelector( '.wb-ui-description' );
 				expect( $description ).toHaveTextContent( mockQ64.descriptions.de.value );
 				expect( $description!.getAttribute( 'lang' ) ).toBe( language );
 				expect( $description!.getAttribute( 'dir' ) ).toBe( 'ltr' );
 
-				const $aliases = $dom.querySelector( '.wikibase-termbox-fingerprint__aliases' );
+				const $aliases = $dom.querySelector( '.wb-ui-aliases' );
 				expect( $aliases!.getAttribute( 'lang' ) ).toBe( language );
 				expect( $aliases!.getAttribute( 'dir' ) ).toBe( 'ltr' );
 				expect( $aliases!.querySelectorAll( 'li' ) ).toHaveLength( mockQ64.aliases.de.length );
 
-				expect( $dom.querySelector( '.wikibase-termbox__edit-action a' ) )
+				expect( $dom.querySelector( '.wb-ui-edit-pen a' ) )
 					.toHaveAttribute( 'href', editLink );
 			} );
 		} );
@@ -381,7 +381,7 @@ describe( 'Termbox SSR', () => {
 
 				const $dom = getDomFromMarkup( response.text );
 				const $moreLanguagesFingerprints = $dom.querySelectorAll(
-					'.wikibase-termbox-in-more-languages .wikibase-termbox-fingerprint',
+					'.wb-ui-in-more-languages .wb-ui-fingerprint',
 				);
 				expect( $moreLanguagesFingerprints ).toHaveLength( secondaryLanguages.length );
 
@@ -406,7 +406,7 @@ describe( 'Termbox SSR', () => {
 			} ).then( ( response: request.Response ) => {
 				expectSuccessfulRequest( response );
 				expect(
-					getDomFromMarkup( response.text ).querySelector( '.wikibase-termbox-all-entered-languages' ),
+					getDomFromMarkup( response.text ).querySelector( '.wb-ui-all-entered-languages' ),
 				).toBeNull();
 			} );
 		} );

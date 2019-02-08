@@ -1,8 +1,8 @@
 <template>
-	<div class="wikibase-termbox">
-		<div class="wikibase-termbox__primary">
+	<div class="wb-ui-termbox">
+		<div class="wb-ui-termbox__primary">
 			<Fingerprint :languageCode="primaryLanguage" :isPrimary="true" />
-			<div class="wikibase-termbox__actions">
+			<div class="wb-ui-termbox__actions">
 				<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
 			</div>
 		</div>
@@ -40,7 +40,7 @@ export default class TermBox extends Vue {
 </script>
 
 <style lang="scss">
-.wikibase-termbox {
+.wb-ui-termbox {
 	&__primary {
 		display: flex;
 	}
