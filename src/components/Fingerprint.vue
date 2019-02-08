@@ -6,10 +6,10 @@
 		<div class="wikibase-termbox-fingerprint__terms">
 			<Label :label="getLabelByLanguage( languageCode )" :isPrimary="isPrimary" class="wikibase-termbox-fingerprint__label-wrapper"/>
 			<div class="wikibase-termbox-fingerprint__description-wrapper">
-				<Description :description="getDescriptionByLanguage( languageCode )" />
+				<Description :description="getDescriptionByLanguage( languageCode )" class="wikibase-termbox-fingerprint__description-inner" />
 			</div>
 			<div class="wikibase-termbox-fingerprint__aliases-wrapper">
-				<Aliases :aliases="getAliasesByLanguage( languageCode )" />
+				<Aliases :aliases="getAliasesByLanguage( languageCode )" class="wikibase-termbox-fingerprint__description-inner" />
 			</div>
 		</div>
 	</div>
@@ -66,6 +66,7 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 <style lang="scss">
 .wikibase-termbox-fingerprint {
 	margin-top: 32px;
+	margin-right: 64px;
 	min-width: 0; // https://css-tricks.com/flexbox-truncated-text/
 
 	&:first-child {
@@ -88,6 +89,12 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 		hyphens: auto;
 	}
 
+	&__description-inner,
+	&__aliases-inner { // margin and min-width need to be of different elements for width calculation
+		margin-left: 0.5em;
+		margin-top: 0.5rem;
+	}
+
 	&:not( .wikibase-termbox-fingerprint--primaryLanguage ) {
 		@include media-breakpoint-up(md) {
 			.wikibase-termbox-fingerprint__terms {
@@ -108,6 +115,11 @@ export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<
 			.wikibase-termbox-fingerprint__description-wrapper,
 			.wikibase-termbox-fingerprint__aliases-wrapper {
 				margin-left: 16px;
+			}
+
+			.wikibase-termbox-fingerprint__description-inner,
+			.wikibase-termbox-fingerprint__aliases-inner {
+				margin-left: 0;
 				margin-top: 0;
 			}
 		}

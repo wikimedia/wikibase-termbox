@@ -45,8 +45,6 @@ export default class Aliases extends ( mixins( Messages ) as VueConstructor<Alia
 
 <style lang="scss">
 .wikibase-termbox-fingerprint .wikibase-termbox-fingerprint__aliases {
-	margin-left: 0.5em;
-	margin-top: 0.5rem;
 	color: $color-light-azureish-gray;
 	line-height: 1.3em;
 	font-family: $font-family-sansserif;
@@ -63,10 +61,6 @@ export default class Aliases extends ( mixins( Messages ) as VueConstructor<Alia
 
 	&--placeholder {
 		height: 1.25em;
-	}
-
-	@include media-breakpoint-up(md) {
-		margin-left: 0;
 	}
 }
 </style>

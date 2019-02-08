@@ -46,18 +46,12 @@ export default class Description extends ( mixins( Messages ) as VueConstructor<
 
 <style lang="scss">
 .wikibase-termbox-fingerprint .wikibase-termbox-fingerprint__description {
-	margin-left: 0.5em;
-	margin-top: 0.5rem;
 	color: $color-black;
 	line-height: 1.3em;
 	font-family: $font-family-sansserif;
 
 	&--missing {
 		color: $color-moderate-red;
-	}
-
-	@include media-breakpoint-up(md) {
-		margin-left: 0;
 	}
 }
 </style>
