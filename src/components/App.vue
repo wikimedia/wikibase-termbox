@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import TermBox from './TermBox.vue';
-import { mapGetters, mapState, Store } from 'vuex';
-import { NS_ENTITY, NS_USER, NS_LANGUAGE, NS_LINKS } from '@/store/namespaces';
+import { Store } from 'vuex';
+import { NS_ENTITY, NS_LANGUAGE, NS_LINKS, NS_USER } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/actionTypes';
 import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
 import TermboxRequest from '@/common/TermboxRequest';
@@ -17,26 +17,14 @@ import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
 import Language from '@/datamodel/Language';
 import { action } from '@/store/util';
-
-interface AppBindings extends Vue {
-	primaryLanguage: string;
-	getLanguageByCode: ( code: string ) => Language;
-}
+import { namespace } from 'vuex-class';
 
 @Component( {
 	components: {
 		TermBox,
 	},
-	computed: {
-		...mapState( NS_USER, [ 'primaryLanguage' ] ),
-		...mapGetters( NS_LANGUAGE, { getLanguageByCode: 'getByCode' } ),
-	},
 } )
-export default class App extends ( Vue as VueConstructor<AppBindings> ) {
-
-	get directionality() {
-		return this.getLanguageByCode( this.primaryLanguage ).directionality;
-	}
+export default class App extends Vue {
 
 	public static asyncData( store: Store<any>, request: TermboxRequest ): Promise<any> {
 		return Promise.all( [
@@ -48,6 +36,16 @@ export default class App extends ( Vue as VueConstructor<AppBindings> ) {
 			),
 			store.dispatch( action( NS_LINKS, EDIT_LINK_URL_INIT ), request.editLinkUrl ),
 		] );
+	}
+
+	@namespace( NS_USER ).State( 'primaryLanguage' )
+	public primaryLanguage!: string;
+
+	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
+	public getLanguageByCode!: ( code: string ) => Language;
+
+	get directionality() {
+		return this.getLanguageByCode( this.primaryLanguage ).directionality;
 	}
 
 }

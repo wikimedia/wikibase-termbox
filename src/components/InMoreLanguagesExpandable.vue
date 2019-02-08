@@ -17,15 +17,14 @@
 </template>
 
 <script lang="ts">
-import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import InMoreLanguages from '@/components/InMoreLanguages.vue';
-import Messages, { MessagesMixin } from '@/components/mixins/Messages';
+import Messages from '@/components/mixins/Messages';
 
 @Component( {
 	components: { InMoreLanguages },
 } )
-export default class InMoreLanguagesExpandable extends ( mixins( Messages ) as VueConstructor<MessagesMixin> ) {
+export default class InMoreLanguagesExpandable extends mixins( Messages ) {
 	public isExpanded = true;
 
 	public isServerRendered = true;

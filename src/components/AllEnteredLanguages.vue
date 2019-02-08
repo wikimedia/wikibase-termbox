@@ -9,24 +9,21 @@ import Vue, { VueConstructor } from 'vue';
 import Component from 'vue-class-component';
 import Fingerprint from '@/components/Fingerprint.vue';
 import { NS_ENTITY, NS_USER } from '@/store/namespaces';
-import { mapGetters, mapState } from 'vuex';
-
-interface AllEnteredLanguagesBinding extends Vue {
-
-	primaryLanguage: string;
-	secondaryLanguages: string[];
-	getAllEnteredLanguageCodes: string[];
-
-}
+import { namespace } from 'vuex-class';
 
 @Component( {
 	components: { Fingerprint },
-	computed: {
-		...mapState( NS_USER, [ 'primaryLanguage', 'secondaryLanguages' ] ),
-		...mapGetters( NS_ENTITY, [ 'getAllEnteredLanguageCodes' ] ),
-	},
 } )
-export default class AllEnteredLanguages extends ( Vue as VueConstructor<AllEnteredLanguagesBinding> ) {
+export default class AllEnteredLanguages extends ( Vue as VueConstructor ) {
+
+	@namespace( NS_ENTITY ).Getter( 'getAllEnteredLanguageCodes' )
+	public getAllEnteredLanguageCodes!: string[];
+
+	@namespace( NS_USER ).State( 'primaryLanguage' )
+	public primaryLanguage!: string;
+
+	@namespace( NS_USER ).State( 'secondaryLanguages' )
+	public secondaryLanguages!: string[];
 
 	get allEnteredLanguagesWithoutUserLanguages() {
 		return this.getAllEnteredLanguageCodes.filter( ( languageKey ) => {

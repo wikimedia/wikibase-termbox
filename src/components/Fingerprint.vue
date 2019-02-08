@@ -16,46 +16,34 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
-import Messages, { MessagesMixin } from './mixins/Messages';
+import Messages from './mixins/Messages';
 import { mapGetters } from 'vuex';
-import {
-	NS_ENTITY,
-	NS_LANGUAGE,
-} from '@/store/namespaces';
+import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
 import Label from '@/components/Label.vue';
 import Description from '@/components/Description.vue';
 import Aliases from '@/components/Aliases.vue';
 import Language from '@/datamodel/Language';
+import { namespace } from 'vuex-class';
+import { Prop } from 'vue-property-decorator';
 
-interface FingerprintBindings extends Vue, MessagesMixin {
-	languageCode: string;
-	isPrimary: boolean;
-	getLanguageByCode( languageCode: string ): Language;
-}
 @Component( {
 	components: { Aliases, Description, Label, LanguageNameInUserLanguage },
-	props: {
-		languageCode: {
-			type: String,
-			required: true,
-		},
-		isPrimary: {
-			type: Boolean,
-			default: false,
-			required: false,
-		},
-	},
 	computed: {
 		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage', 'getDescriptionByLanguage', 'getAliasesByLanguage' ] ),
-		...mapGetters( NS_LANGUAGE, {
-			getLanguageByCode: 'getByCode',
-		} ),
 	},
 } )
-export default class Fingerprint extends ( mixins( Messages ) as VueConstructor<FingerprintBindings> ) {
+export default class Fingerprint extends mixins( Messages ) {
+
+	@Prop( { required: true, type: String } )
+	public languageCode!: string;
+
+	@Prop( { required: false, default: false, type: Boolean } )
+	public isPrimary!: boolean;
+
+	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
+	public getLanguageByCode!: ( languageCode: string ) => Language;
 
 	get language(): Language {
 		return this.getLanguageByCode( this.languageCode );

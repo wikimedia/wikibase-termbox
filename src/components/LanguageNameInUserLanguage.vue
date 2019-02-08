@@ -3,44 +3,27 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
-import {
-	mapState,
-	mapGetters,
-} from 'vuex';
-import {
-	NS_LANGUAGE,
-	NS_USER,
-} from '@/store/namespaces';
+import Vue from 'vue';
+import { NS_LANGUAGE, NS_USER } from '@/store/namespaces';
 import Component from 'vue-class-component';
 import Language from '@/datamodel/Language';
+import { Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
-interface LanguageNameInUserLanguageBindings extends Vue {
-	userLanguageCode: string;
-	language: Language;
+@Component
+export default class LanguageNameInUserLanguage extends Vue {
+	@Prop( { required: true, type: Object } )
+	public language!: Language;
 
-	getLanguageTranslation( language: string, inLanguage: string ): string;
-	getLanguageByCode( languageCode: string ): Language;
-}
+	@namespace( NS_USER ).State( 'primaryLanguage' )
+	public userLanguageCode!: string;
 
-@Component( {
-	props: {
-		language: {
-			type: Object,
-			required: true,
-		},
-	},
-	computed: {
-		...mapState( NS_USER, {
-			userLanguageCode: 'primaryLanguage',
-		} ),
-		...mapGetters( NS_LANGUAGE, {
-			getLanguageTranslation: 'getTranslationByCode',
-			getLanguageByCode: 'getByCode',
-		} ),
-	},
-} )
-export default class LanguageNameInUserLanguage extends ( Vue as VueConstructor<LanguageNameInUserLanguageBindings> ) {
+	@namespace( NS_LANGUAGE ).Getter( 'getTranslationByCode' )
+	public getLanguageTranslation!: ( language: string, inLanguage: string ) => string;
+
+	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
+	public getLanguageByCode!: ( languageCode: string ) => Language;
+
 	get languageName(): string {
 		const name = this.getLanguageTranslation( this.language.code, this.userLanguageCode );
 		if ( name === null ) {
