@@ -53,6 +53,12 @@ export default class Aliases extends ( mixins( Messages ) as VueConstructor<Alia
 
 	.wikibase-termbox-fingerprint__alias {
 		display: inline;
+
+		&:not( :last-child ):after {
+			content: attr( data-separator );
+			white-space: nowrap;
+			padding: 0 0.4em;
+		}
 	}
 
 	&--placeholder {
