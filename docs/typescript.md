@@ -11,3 +11,5 @@ The fact that different parts of this project are built for different target arc
 The configuration of the `src/` files is such that code to be executed…
 * **in the client** can make use of all files but the ones in`src/server` and use all types but the ones defined in `src/types/server`
 * **on the server** can make use of all files but the ones in`src/client` and use all types but the ones defined in `src/types/client`
+
+We decided to reflect the fact that the project has to be build for either target architecture in the way [dependencies](/package.json) are modeled. Only packages truly needed to run the server are (production) "dependencies", all other packages - needed at build time only - are "dev dependencies".
