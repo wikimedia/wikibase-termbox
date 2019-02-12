@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import express, { Request, Response } from 'express';
+import compression from 'compression';
 import { createBundleRenderer } from 'vue-server-renderer';
 import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import QueryValidator from './route-handler/termbox/QueryValidator';
@@ -12,6 +13,9 @@ import BundleRendererContextBuilder from './bundle-renderer/BundleRendererContex
 export default ( services: BundleRendererServices ) => {
 
 	const app = express();
+
+	app.use( compression() );
+
 	const renderer = createBundleRenderer(
 		resolve( './serverDist/vue-ssr-server-bundle.json' ),
 		{ runInNewContext: false },
