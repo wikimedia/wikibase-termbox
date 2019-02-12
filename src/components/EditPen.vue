@@ -10,9 +10,8 @@
 
 <script lang="ts">
 import Sectionedit from './Sectionedit.vue';
-import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
-import Messages, { MessagesMixin } from './mixins/Messages';
+import Messages from './mixins/Messages';
 
 @Component( {
 	components: {
@@ -22,7 +21,7 @@ import Messages, { MessagesMixin } from './mixins/Messages';
 		href: String,
 	},
 } )
-export default class EditPen extends ( mixins( Messages ) as VueConstructor<MessagesMixin> ) {}
+export default class EditPen extends mixins( Messages ) {}
 </script>
 
 <style lang="scss">

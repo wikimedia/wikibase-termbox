@@ -1,30 +1,18 @@
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { MessageKeys } from '@/common/MessageKeys';
-import {
-	NS_USER,
-	NS_MESSAGES,
-} from '@/store/namespaces';
-import {
-	mapState,
-	mapGetters,
-} from 'vuex';
+import { NS_MESSAGES, NS_USER } from '@/store/namespaces';
+import { namespace } from 'vuex-class';
 
-export interface MessagesMixin extends Vue {
-	getMessageInLanguage: ( inLanguage: string, messageKey: string ) => string | null;
-	primaryLanguage: string;
-	MESSAGE_KEYS: typeof MessageKeys;
-	message( messageKey: string ): string;
-}
-
-@Component( {
-	computed: {
-		...mapGetters( NS_MESSAGES, { getMessageInLanguage: 'getMessageInLanguage' } ),
-		...mapState( NS_USER, [ 'primaryLanguage' ] ),
-	},
-} )
-export default class Messages extends ( Vue as VueConstructor<MessagesMixin> ) {
+@Component
+export default class Messages extends Vue {
 	public readonly MESSAGE_KEYS = MessageKeys;
+
+	@namespace( NS_MESSAGES ).Getter( 'getMessageInLanguage' )
+	public getMessageInLanguage!: ( inLanguage: string, messageKey: string ) => string | null;
+
+	@namespace( NS_USER ).State( 'primaryLanguage' )
+	public primaryLanguage!: string;
 
 	public message( messageKey: string ): string {
 		const messageContent = this.getMessageInLanguage(

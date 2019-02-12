@@ -15,35 +15,25 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
-import { mapGetters } from 'vuex';
-import Language from '@/datamodel/Language';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import Term from '@/datamodel/Term';
+import { Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import Language from '@/datamodel/Language';
 
-interface LabelBindings extends Vue {
-	label: Term;
-	getLanguageByCode( languageCode: string ): Language;
-}
+@Component
+export default class Label extends ( mixins( Messages ) as VueConstructor ) {
+	@Prop( { required: true } )
+	public label!: Term;
 
-@Component( {
-	props: {
-		label: {
-			required: true,
-		},
-		isPrimary: {
-			required: false,
-			default: false,
-			type: Boolean,
-		},
-	},
-	computed: {
-		...mapGetters( NS_LANGUAGE, { getLanguageByCode: 'getByCode' } ),
-	},
-} )
-export default class Label extends ( mixins( Messages ) as VueConstructor<LabelBindings> ) {
+	@Prop( { required: false, default: false, type: Boolean } )
+	public isPrimary!: boolean;
+
+	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
+	public getLanguageByCode!: ( language: string ) => Language;
 
 	get language() {
 		return this.getLanguageByCode( this.label.language );

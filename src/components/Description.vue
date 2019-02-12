@@ -12,30 +12,23 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
-import { mapGetters } from 'vuex';
 import Messages from '@/components/mixins/Messages';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
+import { namespace } from 'vuex-class';
+import { Prop } from 'vue-property-decorator';
 
-interface DescriptionBindings extends Vue {
-	description: Term;
-	getLanguageByCode( languageCode: string ): Language;
-}
+@Component
+export default class Description extends ( mixins( Messages ) as VueConstructor ) {
 
-@Component( {
-	props: {
-		description: {
-			required: true,
-		},
-	},
-	computed: {
-		...mapGetters( NS_LANGUAGE, { getLanguageByCode: 'getByCode' } ),
-	},
-} )
-export default class Description extends ( mixins( Messages ) as VueConstructor<DescriptionBindings> ) {
+	@Prop( { required: true } )
+	public description!: Term;
+
+	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
+	public getLanguageByCode!: ( language: string ) => Language;
 
 	get language() {
 		return this.getLanguageByCode( this.description.language );

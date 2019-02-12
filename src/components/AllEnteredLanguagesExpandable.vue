@@ -14,15 +14,14 @@
 </template>
 
 <script lang="ts">
-import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
-import Messages, { MessagesMixin } from './mixins/Messages';
+import Messages from './mixins/Messages';
 import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
 
 @Component( {
 	components: { AllEnteredLanguages },
 } )
-export default class AllEnteredLanguagesExpandable extends ( mixins( Messages ) as VueConstructor<MessagesMixin> ) {
+export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
 
 	public isExpanded = false;
 

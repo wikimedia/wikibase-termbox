@@ -11,30 +11,23 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
-import { mapGetters } from 'vuex';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
 import Messages from '@/components/mixins/Messages';
+import { namespace } from 'vuex-class';
+import { Prop } from 'vue-property-decorator';
 
-interface AliasesBindings extends Vue {
-	aliases: Term[];
-	getLanguageByCode( language: string ): Language;
-}
+@Component
+export default class Aliases extends ( mixins( Messages ) as VueConstructor ) {
 
-@Component( {
-	props: {
-		aliases: {
-			required: true,
-		},
-	},
-	computed: {
-		...mapGetters( NS_LANGUAGE, { getLanguageByCode: 'getByCode' } ),
-	},
-} )
-export default class Aliases extends ( mixins( Messages ) as VueConstructor<AliasesBindings> ) {
+	@Prop( { required: true } )
+	public aliases!: Term[];
+
+	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
+	public getLanguageByCode!: ( languageCode: string ) => Language;
 
 	get language() {
 		return this.getLanguageByCode( this.aliases[ 0 ].language );
