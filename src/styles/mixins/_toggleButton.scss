@@ -55,7 +55,13 @@
 		justify-content: inherit;
 
 		> span {
-			margin-left: 134px;
+			margin-left: 56px;
+		}
+	}
+
+	@include media-breakpoint-up(lg) {
+		> span {
+			margin-left: 202px;
 		}
 	}
 }
