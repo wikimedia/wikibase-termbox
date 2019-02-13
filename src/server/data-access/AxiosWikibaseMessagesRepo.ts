@@ -3,7 +3,8 @@ import MessageNotFound from '@/common/data-access/error/MessageNotFound';
 import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 import MessageCollection from '@/datamodel/MessageCollection';
 import MessagesRepository from '@/common/data-access/MessagesRepository';
-import mwbot from 'mwbot';
+import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 
 interface ResponseMessageSuccess {
 	name: string;
@@ -18,43 +19,45 @@ interface ResponseMessageMissing {
 
 type AllMessagesResponseMessage = ResponseMessageSuccess | ResponseMessageMissing;
 
-export default class MwBotWikibaseMessagesRepo implements MessagesRepository {
-	private bot: mwbot;
+export default class AxiosWikibaseMessagesRepo implements MessagesRepository {
+	private axios: AxiosInstance;
 	private messageKeys: string[];
 
-	public constructor( bot: mwbot, messageKeys: string[] ) {
-		this.bot = bot;
+	public constructor( axios: AxiosInstance, messageKeys: string[] ) {
+		this.axios = axios;
 		this.messageKeys = messageKeys;
 	}
 
 	public getMessagesInLanguage( inLanguage: string ): Promise<MessageTranslationCollection> {
 		return new Promise( ( resolve, reject ) => {
-			this.bot.request( {
+			this.axios.get( MEDIAWIKI_API_SCRIPT, { params: {
 				action: 'query',
 				meta: 'allmessages',
 				ammessages: this.messageKeys.join( '|' ),
 				amlang: inLanguage,
-			} )
-				.then( ( response: any ) => {
-					if ( !( 'query' in response ) ) {
+			} } )
+				.then( ( response: AxiosResponse ) => {
+					const data = response.data;
+
+					if ( typeof data !== 'object' || !( 'query' in data ) ) {
 						reject( new TechnicalProblem( 'allmessages result not well formed.' ) );
 						return;
 					}
 
-					if ( !( 'allmessages' in response.query ) ) {
+					if ( !( 'allmessages' in data.query ) ) {
 						reject( new TechnicalProblem( 'allmessages result not well formed.' ) );
 						return;
 					}
 
 					try {
-						resolve( this.getMessageTranslationCollection( inLanguage, response.query.allmessages ) );
+						resolve( this.getMessageTranslationCollection( inLanguage, data.query.allmessages ) );
 					} catch ( error ) {
 						reject( error );
 						return;
 					}
 				} )
-				.catch( ( reason: string ) => {
-					reject( new TechnicalProblem( reason ) );
+				.catch( ( error: AxiosError ) => {
+					reject( new TechnicalProblem( error.toString() ) );
 				} );
 		} );
 	}

@@ -1,45 +1,35 @@
 import EntityInitializer from '@/common/EntityInitializer';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import MwBotWikibaseFingerprintableEntityRepo from '@/server/data-access/MwBotWikibaseFingerprintableEntityRepo';
+import AxiosWikibaseFingerprintableEntityRepo from '@/server/data-access/AxiosWikibaseFingerprintableEntityRepo';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
-import mwbot from 'mwbot';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
+import HttpStatus from 'http-status-codes';
 
-function newMwBotWikibaseFingerprintableEntityRepo( bot: any, initializer?: any ) {
-	return new MwBotWikibaseFingerprintableEntityRepo(
-		bot,
+const axiosMock = new MockAdapter( axios );
+
+function newAxiosWikibaseFingerprintableEntityRepo( initializer?: any ) {
+	return new AxiosWikibaseFingerprintableEntityRepo(
+		axios,
 		initializer || {},
 	);
 }
 
-describe( 'MwBotWikibaseFingerprintableEntityRepo', () => {
+describe( 'AxiosWikibaseFingerprintableEntityRepo', () => {
 
-	it( 'can be constructed with mwbot', () => {
-		expect( newMwBotWikibaseFingerprintableEntityRepo( new mwbot( {} ) ) )
-			.toBeInstanceOf( MwBotWikibaseFingerprintableEntityRepo );
+	beforeEach( () => {
+		axiosMock.reset();
+	} );
+
+	it( 'can be constructed with axios', () => {
+		expect( newAxiosWikibaseFingerprintableEntityRepo() )
+			.toBeInstanceOf( AxiosWikibaseFingerprintableEntityRepo );
 	} );
 
 	describe( 'getFingerprintableEntity', () => {
-		it( 'creates a well-formed wbgetentities query', ( done ) => {
-			const entityId = 'Q42';
-			const bot = {
-				request: ( params: object ) => {
-					expect( params ).toEqual( {
-						ids: entityId,
-						action: 'wbgetentities',
-					} );
-
-					return Promise.reject( 'This test focuses on the request.' );
-				},
-			};
-
-			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
-			repo.getFingerprintableEntity( entityId ).catch( () => {
-				done();
-			} );
-		} );
-
-		it( 'resolves to an Entity on success', ( done ) => {
+		it( 'with well-formed wbgetentities query resolves to an Entity on success', ( done ) => {
 			const entityId = 'Q3';
 			const entity = {
 				pageid: 3,
@@ -70,13 +60,13 @@ describe( 'MwBotWikibaseFingerprintableEntityRepo', () => {
 					Q3: entity,
 				},
 			};
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( results );
-				},
-			};
 
-			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot, new EntityInitializer() );
+			axiosMock.onGet( MEDIAWIKI_API_SCRIPT, { params: {
+				ids: entityId,
+				action: 'wbgetentities',
+			} } ).reply( HttpStatus.OK, results );
+
+			const repo = newAxiosWikibaseFingerprintableEntityRepo( new EntityInitializer() );
 			repo.getFingerprintableEntity( entityId ).then( ( result: FingerprintableEntity ) => {
 				expect( result ).toBeInstanceOf( FingerprintableEntity );
 				expect( result.id ).toEqual( entity.id );
@@ -87,14 +77,23 @@ describe( 'MwBotWikibaseFingerprintableEntityRepo', () => {
 			} );
 		} );
 
+		it( 'rejects on result that does not contain an object', ( done ) => {
+			const entityId = 'Q3';
+			axiosMock.onGet().reply( HttpStatus.OK, '<some><random><html>' );
+
+			const repo = newAxiosWikibaseFingerprintableEntityRepo();
+			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
+				expect( reason ).toBeInstanceOf( TechnicalProblem );
+				expect( reason.message ).toEqual( 'wbgetentities result not well formed.' );
+				done();
+			} );
+		} );
+
 		it( 'rejects on result missing entities key', ( done ) => {
 			const entityId = 'Q3';
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( {} );
-				},
-			};
-			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
+			axiosMock.onGet().reply( HttpStatus.OK, {} );
+
+			const repo = newAxiosWikibaseFingerprintableEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'wbgetentities result not well formed.' );
@@ -105,18 +104,15 @@ describe( 'MwBotWikibaseFingerprintableEntityRepo', () => {
 		it( 'rejects on result missing relevant entity in entities', ( done ) => {
 			// this maybe is not really a thing as wbgetentities returns the entity with a 'missing' key
 			const entityId = 'Q3';
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( {
-						entities: {
-							Q4: {
-								irrelevant: 'value',
-							},
-						},
-					} );
+			axiosMock.onGet().reply( HttpStatus.OK, {
+				entities: {
+					Q4: {
+						irrelevant: 'value',
+					},
 				},
-			};
-			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
+			} );
+
+			const repo = newAxiosWikibaseFingerprintableEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
 				expect( reason.message ).toEqual( 'wbgetentities result does not contain relevant entity.' );
@@ -126,18 +122,15 @@ describe( 'MwBotWikibaseFingerprintableEntityRepo', () => {
 
 		it( 'rejects on result indicating relevant entity as missing in entities', ( done ) => {
 			const entityId = 'Q3';
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( {
-						entities: {
-							Q3: {
-								missing: '',
-							},
-						},
-					} );
+			axiosMock.onGet().reply( HttpStatus.OK, {
+				entities: {
+					Q3: {
+						missing: '',
+					},
 				},
-			};
-			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
+			} );
+
+			const repo = newAxiosWikibaseFingerprintableEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
 				expect( reason.message ).toEqual( 'Entity flagged missing in response.' );
@@ -147,38 +140,32 @@ describe( 'MwBotWikibaseFingerprintableEntityRepo', () => {
 
 		it( 'rejects stating the reason in case of API problems', ( done ) => {
 			const entityId = 'Q3';
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.reject( new Error( 'invalidjson: No valid JSON response' ) );
-				},
-			};
-			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot );
+			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR, 'API problem' );
+
+			const repo = newAxiosWikibaseFingerprintableEntityRepo();
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
-				expect( reason.message ).toEqual( 'Error: invalidjson: No valid JSON response' );
+				expect( reason.message ).toEqual( 'Error: Request failed with status code 500' );
 				done();
 			} );
 		} );
 
 		it( 'rejects stating the technical reason in case of entity initialization problem', ( done ) => {
 			const entityId = 'Q3';
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( {
-						entities: {
-							Q3: {
-								id: 'Q3',
-							},
-						},
-					} );
+			axiosMock.onGet().reply( HttpStatus.OK, {
+				entities: {
+					Q3: {
+						id: 'Q3',
+					},
 				},
-			};
+			} );
+
 			const initializer = {
 				newFromSerialization: () => {
 					throw new Error( 'initializer sad' );
 				},
 			};
-			const repo = newMwBotWikibaseFingerprintableEntityRepo( bot, initializer );
+			const repo = newAxiosWikibaseFingerprintableEntityRepo( initializer );
 			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'initializer sad' );

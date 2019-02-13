@@ -10,11 +10,11 @@ jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
 	default: ( termboxRequest: TermboxRequest ) => mockBuildApp( termboxRequest ),
 } ) );
-const getMediawikiBot = jest.fn();
+const getAxios = jest.fn();
 function getMockBundleRendererServices() {
 	const services = {} as BundleRendererServices;
-	Object.defineProperty( services, 'mediawikiBot', {
-		get: getMediawikiBot,
+	Object.defineProperty( services, 'axios', {
+		get: getAxios,
 	} );
 	return services;
 }
@@ -37,14 +37,14 @@ describe( 'server-entry', () => {
 		} );
 	} );
 
-	it( 'uses mwbot from services', ( done ) => {
+	it( 'uses axios from services', ( done ) => {
 		const ssrContext = new BundleRendererContext(
 			getMockBundleRendererServices(),
 			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
 		);
 
 		serverEntry( ssrContext ).then( () => {
-			expect( getMediawikiBot ).toBeCalledTimes( 2 );
+			expect( getAxios ).toBeCalledTimes( 2 );
 			done();
 		} );
 	} );

@@ -7,8 +7,14 @@ import HttpStatus from 'http-status-codes';
 import Vue from 'vue';
 import * as messages from '@/mock-data/data/de_messages_data.json';
 import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
-import mwbot from 'mwbot';
+import axios from 'axios';
+import httpAdapter from 'axios/lib/adapters/http';
 import { MessageKeys } from '@/common/MessageKeys';
+/**
+ * arguably we could not add GLOBAL_REQUEST_PARAMS to neither axios (building the request)
+ * nor nock (mocking the response) but this way it is closer to reality (cf. server.ts)
+ */
+import { MEDIAWIKI_API_SCRIPT, GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -18,16 +24,20 @@ import { MessageKeys } from '@/common/MessageKeys';
  */
 Vue.config.productionTip = false;
 
-const WIKIBASE_TEST_API_HOST = 'http://mw.testonly.localhost';
-const WIKIBASE_TEST_API_PATH = '/mediawiki/api.php';
+const WIKIBASE_TEST_HOST = 'http://mw.testonly.localhost';
+const WIKIBASE_TEST_API_PATH = '/' + MEDIAWIKI_API_SCRIPT;
 
 const logger = {
 	log: jest.fn(),
 };
 
 const services = new BundleRendererServices(
-	new mwbot( {
-		apiUrl: WIKIBASE_TEST_API_HOST + WIKIBASE_TEST_API_PATH,
+	axios.create( {
+		baseURL: WIKIBASE_TEST_HOST,
+		adapter: httpAdapter, // https://github.com/axios/axios/issues/305#issuecomment-272162405
+		params: {
+			...GLOBAL_REQUEST_PARAMS,
+		},
 	} ),
 	logger,
 );
@@ -43,13 +53,15 @@ function getDomFromMarkup( markup: string ): HTMLElement {
 }
 
 function nockSuccessfulLanguageLoading( inLanguage: string ) {
-	nock( WIKIBASE_TEST_API_HOST )
-		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+	nock( WIKIBASE_TEST_HOST )
+		.get( WIKIBASE_TEST_API_PATH )
+		.query( {
 			action: 'query',
 			meta: 'wbcontentlanguages',
 			wbclcontext: 'term',
 			wbclprop: 'code|name',
 			uselang: inLanguage,
+			...GLOBAL_REQUEST_PARAMS,
 		} )
 		.reply( HttpStatus.OK, {
 			batchcomplete: '',
@@ -82,12 +94,14 @@ function getApiResponseMessages( keys: string[] ) {
 
 function nockSuccessfulMessagesLoading( inLanguage: string ) {
 	const messageKeys = Object.values( MessageKeys );
-	nock( WIKIBASE_TEST_API_HOST )
-		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+	nock( WIKIBASE_TEST_HOST )
+		.get( WIKIBASE_TEST_API_PATH )
+		.query( {
 			action: 'query',
 			meta: 'allmessages',
 			ammessages: messageKeys.join( '|' ),
 			amlang: inLanguage,
+			...GLOBAL_REQUEST_PARAMS,
 		} )
 		.reply( HttpStatus.OK, {
 			batchcomplete: '',
@@ -98,10 +112,12 @@ function nockSuccessfulMessagesLoading( inLanguage: string ) {
 }
 
 function nockSuccessfulEntityLoading( entityId: string ) {
-	nock( WIKIBASE_TEST_API_HOST )
-		.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+	nock( WIKIBASE_TEST_HOST )
+		.get( WIKIBASE_TEST_API_PATH )
+		.query( {
 			ids: entityId,
 			action: 'wbgetentities',
+			...GLOBAL_REQUEST_PARAMS,
 		} )
 		.reply( HttpStatus.OK, {
 			entities: {
@@ -139,10 +155,12 @@ describe( 'Termbox SSR', () => {
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
-		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_API_PATH )
+			.query( {
 				ids: entityId,
 				action: 'wbgetentities',
+				...GLOBAL_REQUEST_PARAMS,
 			} )
 			.reply( HttpStatus.OK, {
 				malformed: 'yes',
@@ -172,10 +190,12 @@ describe( 'Termbox SSR', () => {
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
-		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_API_PATH )
+			.query( {
 				ids: entityId,
 				action: 'wbgetentities',
+				...GLOBAL_REQUEST_PARAMS,
 			} )
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 
@@ -189,7 +209,7 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: invalidjson: No valid JSON response' );
+			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: Request failed with status code 500' );
 
 			done();
 		} );
@@ -201,13 +221,15 @@ describe( 'Termbox SSR', () => {
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
-		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_API_PATH )
+			.query( {
 				action: 'query',
 				meta: 'wbcontentlanguages',
 				wbclcontext: 'term',
 				wbclprop: 'code|name',
 				uselang: language,
+				...GLOBAL_REQUEST_PARAMS,
 			} )
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 		nockSuccessfulMessagesLoading( language );
@@ -223,7 +245,7 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: invalidjson: No valid JSON response' );
+			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: Request failed with status code 500' );
 
 			done();
 		} );
@@ -245,13 +267,15 @@ describe( 'Termbox SSR', () => {
 
 		nockSuccessfulEntityLoading( entityId );
 		nockSuccessfulMessagesLoading( language );
-		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', {
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_API_PATH )
+			.query( {
 				action: 'query',
 				meta: 'wbcontentlanguages',
 				wbclcontext: 'term',
 				wbclprop: 'code|name',
 				uselang: language,
+				...GLOBAL_REQUEST_PARAMS,
 			} )
 			.reply( HttpStatus.OK, {
 				batchcomplete: '',
@@ -290,8 +314,13 @@ describe( 'Termbox SSR', () => {
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
-		nock( WIKIBASE_TEST_API_HOST )
-			.post( WIKIBASE_TEST_API_PATH + '?format=json', 'ids=Q63&action=wbgetentities' )
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_API_PATH )
+			.query( {
+				ids: 'Q63',
+				action: 'wbgetentities',
+				...GLOBAL_REQUEST_PARAMS,
+			} )
 			.reply( HttpStatus.OK, {
 				entities: {
 					[ entityId ]: {

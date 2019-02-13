@@ -1,8 +1,7 @@
 import LanguageCollection from '@/datamodel/LanguageCollection';
-import MwBotWikibaseContentLanguagesRepo from '@/server/data-access/MwBotWikibaseContentLanguagesRepo';
-import mwbot from 'mwbot';
 import ContentLanguagesLanguageRepo from '@/server/data-access/ContentLanguagesLanguageRepo';
 import RtlDetectLib from 'rtl-detect';
+import WikibaseContentLanguagesRepo from '@/server/data-access/WikibaseContentLanguagesRepo';
 
 function newWikibaseContentLanguagesRepository( contentLanguagesRepo: any ) {
 	return new ContentLanguagesLanguageRepo(
@@ -12,9 +11,10 @@ function newWikibaseContentLanguagesRepository( contentLanguagesRepo: any ) {
 
 describe( 'ContentLanguagesLanguageRepo', () => {
 
-	it( 'can be constructed with MwBotWikibaseContentLanguagesRepo', () => {
-		expect( newWikibaseContentLanguagesRepository( new MwBotWikibaseContentLanguagesRepo( {} as mwbot ) ) )
-			.toBeInstanceOf( ContentLanguagesLanguageRepo );
+	it( 'can be constructed with a WikibaseContentLanguagesRepo', () => {
+		expect( newWikibaseContentLanguagesRepository( {
+			getContentLanguages: jest.fn(),
+		} as WikibaseContentLanguagesRepo ) ).toBeInstanceOf( ContentLanguagesLanguageRepo );
 	} );
 
 	describe( 'getLanguages', () => {

@@ -1,16 +1,17 @@
 import EntityRepository from '@/common/data-access/EntityRepository';
-import mwbot from 'mwbot';
+import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityInitializer from '@/common/EntityInitializer';
+import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 
-export default class MwBotWikibaseFingerprintableEntityRepo implements EntityRepository {
-	private bot: mwbot;
+export default class AxiosWikibaseFingerprintableEntityRepo implements EntityRepository {
+	private axios: AxiosInstance;
 	private entityInitializer: EntityInitializer;
 
-	public constructor( bot: mwbot, entityInitializer: EntityInitializer ) {
-		this.bot = bot;
+	public constructor( axios: AxiosInstance, entityInitializer: EntityInitializer ) {
+		this.axios = axios;
 		this.entityInitializer = entityInitializer;
 	}
 
@@ -32,20 +33,22 @@ export default class MwBotWikibaseFingerprintableEntityRepo implements EntityRep
 
 	private getEntity( id: string ): Promise<any> {
 		return new Promise( ( resolve, reject ) => {
-			this.bot.request( {
+			this.axios.get( MEDIAWIKI_API_SCRIPT, { params: {
 				ids: id,
 				action: 'wbgetentities',
-			} )
-				.then( ( response: any ) => {
-					if ( !( 'entities' in response ) ) {
+			} } )
+				.then( ( response: AxiosResponse ) => {
+					const data = response.data;
+
+					if ( typeof data !== 'object' || !( 'entities' in data ) ) {
 						reject( new TechnicalProblem( 'wbgetentities result not well formed.' ) );
 					}
 
-					if ( !( id in response.entities ) ) {
+					if ( !( id in data.entities ) ) {
 						reject( new EntityNotFound( 'wbgetentities result does not contain relevant entity.' ) );
 					}
 
-					const entity = response.entities[ id ];
+					const entity = data.entities[ id ];
 
 					if ( 'missing' in entity ) {
 						reject( new EntityNotFound( 'Entity flagged missing in response.' ) );
@@ -53,8 +56,8 @@ export default class MwBotWikibaseFingerprintableEntityRepo implements EntityRep
 
 					resolve( entity );
 				} )
-				.catch( ( reason: string ) => {
-					reject( new TechnicalProblem( reason ) );
+				.catch( ( error: AxiosError ) => {
+					reject( new TechnicalProblem( error.toString() ) );
 				} );
 		} );
 	}
