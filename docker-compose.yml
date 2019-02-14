@@ -12,6 +12,7 @@ services:
     working_dir: /app
     environment:
       - NODE_ENV
+      - NODE_DEBUG
 
   csr:
     extends:
