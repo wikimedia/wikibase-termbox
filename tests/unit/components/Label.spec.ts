@@ -56,33 +56,37 @@ describe( 'Label', () => {
 
 	describe( 'directionality and language code', () => {
 
-		it.each( [
-			[ { code: 'en', directionality: 'ltr' } ],
-			[ { code: 'ar', directionality: 'rtl' } ],
-		] )( 'sets dir and lang attributes for %o', ( language: Language ) => {
+		it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
+			const language = { code: 'en', directionality: 'ltr' };
+			const inlanguageDirective = jest.fn();
 			const store = createStoreWithLanguage( language );
-
-			const $label = shallowMount( Label, {
+			shallowMount( Label, {
 				propsData: {
-					label: { language: language.code, value: 'meow' },
+					label: { language: 'en', value: 'meep' },
 				},
 				store,
-			} ).find( LABEL_SELECTOR );
-
-			expect( $label.attributes( 'lang' ) ).toBe( language.code );
-			expect( $label.attributes( 'dir' ) ).toBe( language.directionality );
-		} );
-
-		it( 'does not add directionality markup for missing labels', () => {
-			const store = createStore();
-
-			const wrapper = shallowMount( Label, {
-				propsData: { label: null },
-				store,
+				directives: {
+					inlanguage: inlanguageDirective,
+				},
 			} );
 
-			expect( wrapper.find( LABEL_SELECTOR ).attributes( 'lang' ) ).toBeFalsy();
-			expect( wrapper.find( LABEL_SELECTOR ).attributes( 'dir' ) ).toBeFalsy();
+			expect( inlanguageDirective ).toBeCalledTimes( 1 );
+			expect( inlanguageDirective.mock.calls[0][1].value ).toBe( language );
+		} );
+
+		it( 'does not add language markup for missing labels', () => {
+			const inlanguageDirective = jest.fn();
+			const store = createStore();
+
+			shallowMount( Label, {
+				propsData: { label: null },
+				store,
+				directives: {
+					inlanguage: inlanguageDirective,
+				},
+			} );
+
+			expect( inlanguageDirective ).not.toBeCalled();
 		} );
 
 	} );

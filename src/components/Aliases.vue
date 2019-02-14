@@ -1,8 +1,7 @@
 <template>
 	<ul v-if="aliases && aliases.length > 0"
 		class="wb-ui-aliases"
-		:lang="language.code"
-		:dir="language.directionality">
+		v-inlanguage="language">
 		<li v-for="alias in aliases"
 			class="wb-ui-aliases__alias"
 			:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>

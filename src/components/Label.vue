@@ -4,8 +4,7 @@
 		:is="isPrimary ? 'h2' : 'div'"
 		class="wb-ui-label"
 		:class="{ 'wb-ui-label--primary': isPrimary }"
-		:lang="language.code"
-		:dir="language.directionality">{{ label.value }}</component>
+		v-inlanguage="language">{{ label.value }}</component>
 	<div
 		v-else
 		class="wb-ui-label wb-ui-label--missing"

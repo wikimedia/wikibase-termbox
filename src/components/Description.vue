@@ -2,8 +2,7 @@
 	<p
 		v-if="description"
 		class="wb-ui-description"
-		:lang="language.code"
-		:dir="language.directionality">{{ description.value }}</p>
+		v-inlanguage="language">{{ description.value }}</p>
 	<p
 		v-else
 		class="wb-ui-description wb-ui-description--missing">

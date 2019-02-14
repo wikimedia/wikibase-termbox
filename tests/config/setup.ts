@@ -1,3 +1,6 @@
+import Vue from 'vue';
+import inlanguage from '@/client/directives/inlanguage';
+
 beforeEach( () => {
 	expect.hasAssertions();
 } );
@@ -13,3 +16,5 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 	// Avoid memory leak by adding too many listeners
 	process.env.LISTENING_TO_UNHANDLED_REJECTION = 'yes';
 }
+
+Vue.directive( 'inlanguage', inlanguage );
