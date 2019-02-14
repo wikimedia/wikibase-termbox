@@ -1,4 +1,4 @@
-import EntityInitializer from '../../../src/common/EntityInitializer';
+import EntityInitializer from '@/common/EntityInitializer';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
 function newEntityInitializer() {
