@@ -72,6 +72,7 @@ export default class Fingerprint extends mixins( Messages ) {
 	&__aliases-wrapper {
 		min-width: 260px;
 		max-width: 420px;
+		margin-top: 0.5rem;
 		overflow-wrap: break-word;
 		word-wrap: break-word;
 		hyphens: auto;
@@ -80,7 +81,6 @@ export default class Fingerprint extends mixins( Messages ) {
 	&__description-inner,
 	&__aliases-inner { // margin and min-width need to be of different elements for width calculation
 		margin-left: 0.5em;
-		margin-top: 0.5rem;
 	}
 
 	&:not( .wb-ui-fingerprint--primaryLanguage ) {
@@ -88,10 +88,6 @@ export default class Fingerprint extends mixins( Messages ) {
 			.wb-ui-fingerprint__terms {
 				display: flex;
 				flex: 1 1 0;
-			}
-
-			.wb-ui-fingerprint__language {
-				margin-bottom: 8px;
 			}
 
 			.wb-ui-fingerprint__label-wrapper,
@@ -108,17 +104,21 @@ export default class Fingerprint extends mixins( Messages ) {
 			.wb-ui-fingerprint__description-inner,
 			.wb-ui-fingerprint__aliases-inner {
 				margin-left: 0;
-				margin-top: 0;
 			}
 		}
 
 		@include media-breakpoint-up(lg) {
 			display: flex;
 
+			.wb-ui-fingerprint__label-wrapper,
+			.wb-ui-fingerprint__description-wrapper,
+			.wb-ui-fingerprint__aliases-wrapper {
+				margin-top: 0;
+			}
+
 			.wb-ui-fingerprint__language {
 				flex-basis: 128px;
 				margin-right: 16px;
-				margin-bottom: 0;
 			}
 		}
 	}
