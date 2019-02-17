@@ -22,12 +22,12 @@ export default class AllEnteredLanguages extends ( Vue as VueConstructor ) {
 	@namespace( NS_USER ).State( 'primaryLanguage' )
 	public primaryLanguage!: string;
 
-	@namespace( NS_USER ).State( 'secondaryLanguages' )
-	public secondaryLanguages!: string[];
+	@namespace( NS_USER ).Getter( 'topSecondaryLanguages' )
+	public topSecondaryLanguages!: string[];
 
 	get allEnteredLanguagesWithoutUserLanguages() {
 		return this.getAllEnteredLanguageCodes.filter( ( languageKey ) => {
-			return languageKey !== this.primaryLanguage && this.secondaryLanguages.indexOf( languageKey ) === -1;
+			return languageKey !== this.primaryLanguage && this.topSecondaryLanguages.indexOf( languageKey ) === -1;
 		} );
 	}
 }

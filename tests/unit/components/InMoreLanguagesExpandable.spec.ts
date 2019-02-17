@@ -12,7 +12,7 @@ import { render } from '@vue/server-test-utils';
 
 describe( 'InMoreLanguagesExpandable', () => {
 
-	it( 'should show the user\'s preferred languages by default', () => {
+	it( 'should show the user\'s secondary languages by default', () => {
 		const store = createStore();
 		const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 		expect( wrapper.find( InMoreLanguages ).exists() ).toBeTruthy();
@@ -36,7 +36,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch span' ).text() ).toBe( expectedLinkText );
 		} );
 
-		it( 'toggle collapses/expands the user\'s preferred languages on click', () => {
+		it( 'toggle collapses/expands the user\'s secondary languages on click', () => {
 			const store = createStore();
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 			wrapper.find( '.wb-ui-in-more-languages-expandable__switch' ).trigger( 'click' );
