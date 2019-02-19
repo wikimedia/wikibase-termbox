@@ -70,7 +70,7 @@ export default class Fingerprint extends mixins( Messages ) {
 	&__label-wrapper,
 	&__description-wrapper,
 	&__aliases-wrapper {
-		min-width: 260px;
+		min-width: 244px;
 		max-width: 420px;
 		margin-top: 0.5rem;
 		overflow-wrap: break-word;
