@@ -49,6 +49,10 @@ const app = createApp( services );
 
 const germanInGerman = 'Deutsch';
 
+// there is no magic behind these (request and response mocked); tries to reduce magic numbers, improve readability
+const REVISION_MATCHING_ENTITY = 4711;
+const REVISION_NOT_MATCHING_ENTITY = 815;
+
 function getDomFromMarkup( markup: string ): HTMLElement {
 	const newNode = document.createElement( 'div' );
 	newNode.innerHTML = markup;
@@ -114,11 +118,12 @@ function nockSuccessfulMessagesLoading( inLanguage: string ) {
 		} );
 }
 
-function nockSuccessfulEntityLoading( entityId: string ) {
+function nockSuccessfulEntityLoading( entityId: string, revision: number ) {
 	nock( WIKIBASE_TEST_HOST )
 		.get( WIKIBASE_TEST_INDEX_PATH )
 		.query( {
 			id: entityId,
+			revision,
 			title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 			...GLOBAL_REQUEST_PARAMS,
 		} )
@@ -152,6 +157,7 @@ describe( 'Termbox SSR', () => {
 
 	it( 'renders Server Error when requesting /termbox and entity backend emits malformed response', ( done ) => {
 		const entityId = 'Q64';
+		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'de';
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
@@ -162,6 +168,7 @@ describe( 'Termbox SSR', () => {
 			.get( WIKIBASE_TEST_INDEX_PATH )
 			.query( {
 				id: entityId,
+				revision,
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
@@ -171,6 +178,7 @@ describe( 'Termbox SSR', () => {
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
+			revision,
 			language,
 			editLink,
 			preferredLanguages,
@@ -187,6 +195,7 @@ describe( 'Termbox SSR', () => {
 
 	it( 'renders Server Error when requesting /termbox and entity backend request fails', ( done ) => {
 		const entityId = 'Q64';
+		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'de';
 		const editLink = '/some';
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
@@ -197,6 +206,7 @@ describe( 'Termbox SSR', () => {
 			.get( WIKIBASE_TEST_INDEX_PATH )
 			.query( {
 				id: entityId,
+				revision,
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
@@ -204,6 +214,7 @@ describe( 'Termbox SSR', () => {
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
+			revision,
 			language,
 			editLink,
 			preferredLanguages,
@@ -220,6 +231,7 @@ describe( 'Termbox SSR', () => {
 
 	it( 'renders Server Error when requesting /termbox and language translation backend request fails', ( done ) => {
 		const entityId = 'Q64';
+		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'de';
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
@@ -236,10 +248,11 @@ describe( 'Termbox SSR', () => {
 			} )
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
 		nockSuccessfulMessagesLoading( language );
-		nockSuccessfulEntityLoading( entityId );
+		nockSuccessfulEntityLoading( entityId, revision );
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
+			revision,
 			language,
 			editLink,
 			preferredLanguages,
@@ -263,12 +276,13 @@ describe( 'Termbox SSR', () => {
 	} );
 
 	it( 'renders Bad request when requesting /termbox with well-formed query for unknown language', ( done ) => {
-		const entityId = 'Q63';
+		const entityId = 'Q64';
+		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'ylq';
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
-		nockSuccessfulEntityLoading( entityId );
+		nockSuccessfulEntityLoading( entityId, revision );
 		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_HOST )
 			.get( WIKIBASE_TEST_API_PATH )
@@ -298,6 +312,7 @@ describe( 'Termbox SSR', () => {
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
+			revision,
 			language,
 			editLink,
 			preferredLanguages,
@@ -311,6 +326,7 @@ describe( 'Termbox SSR', () => {
 
 	it( 'renders Not found when requesting /termbox with well-formed query for unknown entity', ( done ) => {
 		const entityId = 'Q63';
+		const revision = REVISION_NOT_MATCHING_ENTITY;
 		const language = 'de';
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
@@ -320,7 +336,8 @@ describe( 'Termbox SSR', () => {
 		nock( WIKIBASE_TEST_HOST )
 			.get( WIKIBASE_TEST_INDEX_PATH )
 			.query( {
-				id: 'Q63',
+				id: entityId,
+				revision,
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
@@ -328,6 +345,43 @@ describe( 'Termbox SSR', () => {
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
+			revision,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
+			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
+			expect( response.text ).toContain( 'Entity not found' );
+			expect( logger.log ).not.toBeCalled();
+			done();
+		} );
+	} );
+
+	it( 'renders Not found when requesting /termbox with well-formed query for revision not matching entity', ( done ) => {
+		const entityId = 'Q64';
+		const revision = REVISION_NOT_MATCHING_ENTITY;
+		const language = 'de';
+		const editLink = '/some/' + entityId;
+		const preferredLanguages = 'de|en';
+
+		nockSuccessfulLanguageLoading( language );
+		nockSuccessfulMessagesLoading( language );
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_INDEX_PATH )
+			.query( {
+				id: entityId,
+				revision,
+				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
+				...GLOBAL_REQUEST_PARAMS,
+			} )
+			.reply(
+				HttpStatus.NOT_FOUND,
+				`<h1>Not Found</h1><p>Can't show revision ${revision} of entity ${entityId}.</p>`,
+			);
+
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			revision,
 			language,
 			editLink,
 			preferredLanguages,
@@ -343,15 +397,17 @@ describe( 'Termbox SSR', () => {
 
 		it( 'renders the primary Fingerprint component in the requested language', () => {
 			const entityId = 'Q64';
+			const revision = REVISION_MATCHING_ENTITY;
 			const language = 'de';
 			const editLink = '/some/' + entityId;
 
 			nockSuccessfulLanguageLoading( language );
 			nockSuccessfulMessagesLoading( language );
-			nockSuccessfulEntityLoading( entityId );
+			nockSuccessfulEntityLoading( entityId, revision );
 
 			return request( app ).get( '/termbox' ).query( {
 				entity: entityId,
+				revision,
 				language,
 				editLink,
 				preferredLanguages: language,
@@ -389,16 +445,18 @@ describe( 'Termbox SSR', () => {
 
 		it( 'renders the "in more languages" section for other preferred languages', () => {
 			const entityId = 'Q64';
+			const revision = REVISION_MATCHING_ENTITY;
 			const language = 'de';
 			const preferredLanguages = 'de|en|fr';
 			const secondaryLanguages = [ 'en', 'fr' ];
 
 			nockSuccessfulLanguageLoading( language );
 			nockSuccessfulMessagesLoading( language );
-			nockSuccessfulEntityLoading( entityId );
+			nockSuccessfulEntityLoading( entityId, revision );
 
 			return request( app ).get( '/termbox' ).query( {
 				entity: entityId,
+				revision,
 				language,
 				editLink: '/some/' + entityId,
 				preferredLanguages,
@@ -418,14 +476,16 @@ describe( 'Termbox SSR', () => {
 
 		it( 'does not render the "all entered languages" button or section', () => {
 			const entity = 'Q64';
+			const revision = REVISION_MATCHING_ENTITY;
 			const language = 'de';
 
 			nockSuccessfulLanguageLoading( language );
 			nockSuccessfulMessagesLoading( language );
-			nockSuccessfulEntityLoading( entity );
+			nockSuccessfulEntityLoading( entity, revision );
 
 			return request( app ).get( '/termbox' ).query( {
 				entity,
+				revision,
 				language,
 				editLink: '/some/' + entity,
 				preferredLanguages: 'de|en|fr',

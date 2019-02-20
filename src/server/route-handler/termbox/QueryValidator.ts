@@ -28,6 +28,13 @@ export default class QueryValidator {
 				},
 			},
 		},
+		revision: {
+			presence: true,
+			numericality: {
+				onlyInteger: true,
+				greaterThan: 0,
+			},
+		},
 		preferredLanguages: {
 			presence: true,
 			format: {

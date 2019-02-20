@@ -18,9 +18,9 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 		this.entityInitializer = entityInitializer;
 	}
 
-	public getFingerprintableEntity( id: string ): Promise<FingerprintableEntity> {
+	public getFingerprintableEntity( id: string, revision: number ): Promise<FingerprintableEntity> {
 		return new Promise( ( resolve, reject ) => {
-			this.getEntity( id )
+			this.getEntity( id, revision )
 				.then( ( entity: any ) => {
 					try {
 						resolve ( this.entityInitializer.newFromSerialization( entity ) );
@@ -34,12 +34,12 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 		} );
 	}
 
-	private getEntity( id: string ): Promise<any> {
+	private getEntity( id: string, revision: number ): Promise<any> {
 		return new Promise( ( resolve, reject ) => {
 			this.axios.get( MEDIAWIKI_INDEX_SCRIPT, { params: {
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				id,
-				// revision: 798248942,
+				revision,
 			} } )
 				.then( ( response: AxiosResponse ) => {
 					const data = response.data;

@@ -9,6 +9,7 @@ export default () => {
 		resolve( new TermboxRequest(
 			config.get( 'wgUserLanguage' ),
 			entityId,
+			config.get( 'wgRevisionId' ),
 			( new ( window as MwWindow ).mw.Title(
 				`SetLabelDescriptionAliases/${entityId}`,
 				config.get( 'wgNamespaceIds' ).special,

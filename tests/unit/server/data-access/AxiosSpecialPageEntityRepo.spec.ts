@@ -17,6 +17,9 @@ function newAxiosSpecialPageEntityRepo( initializer?: any ) {
 	);
 }
 
+const REVISION_MATCHING_ENTITY = 4711;
+const REVISION_NOT_MATCHING_ENTITY = 815;
+
 describe( 'AxiosSpecialPageEntityRepo', () => {
 
 	beforeEach( () => {
@@ -31,6 +34,7 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 	describe( 'getFingerprintableEntity', () => {
 		it( 'with well-formed request resolves to an Entity on success', ( done ) => {
 			const entityId = 'Q3';
+			const revision = REVISION_MATCHING_ENTITY;
 			const entity = {
 				pageid: 3,
 				ns: 120,
@@ -63,10 +67,11 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 			axiosMock.onGet( MEDIAWIKI_INDEX_SCRIPT, { params: {
 				title: 'Special:EntityData',
 				id: entityId,
+				revision,
 			} } ).reply( HttpStatus.OK, results );
 
 			const repo = newAxiosSpecialPageEntityRepo( new EntityInitializer() );
-			repo.getFingerprintableEntity( entityId ).then( ( result: FingerprintableEntity ) => {
+			repo.getFingerprintableEntity( entityId, revision ).then( ( result: FingerprintableEntity ) => {
 				expect( result ).toBeInstanceOf( FingerprintableEntity );
 				expect( result.id ).toEqual( entity.id );
 				expect( result.labels ).toEqual( entity.labels );
@@ -78,10 +83,11 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 
 		it( 'rejects on result that does not contain an object', ( done ) => {
 			const entityId = 'Q3';
+			const revision = REVISION_MATCHING_ENTITY;
 			axiosMock.onGet().reply( HttpStatus.OK, '<some><random><html>' );
 
 			const repo = newAxiosSpecialPageEntityRepo();
-			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
+			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'result not well formed.' );
 				done();
@@ -90,10 +96,11 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 
 		it( 'rejects on result missing entities key', ( done ) => {
 			const entityId = 'Q3';
+			const revision = REVISION_MATCHING_ENTITY;
 			axiosMock.onGet().reply( HttpStatus.OK, {} );
 
 			const repo = newAxiosSpecialPageEntityRepo();
-			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
+			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'result not well formed.' );
 				done();
@@ -102,6 +109,7 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 
 		it( 'rejects on result missing relevant entity in entities', ( done ) => {
 			const entityId = 'Q3';
+			const revision = REVISION_MATCHING_ENTITY;
 			axiosMock.onGet().reply( HttpStatus.OK, {
 				entities: {
 					Q4: {
@@ -110,7 +118,7 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 				},
 			} );
 			const repo = newAxiosSpecialPageEntityRepo();
-			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
+			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
 				expect( reason.message ).toEqual( 'result does not contain relevant entity.' );
 				done();
@@ -119,9 +127,29 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 
 		it( 'rejects on result indicating relevant entity as missing', ( done ) => {
 			const entityId = 'Q3';
+			const revision = REVISION_MATCHING_ENTITY;
 			axiosMock.onGet().reply( HttpStatus.NOT_FOUND, 'something something <h1>Not Found</h1> something' );
 			const repo = newAxiosSpecialPageEntityRepo();
-			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
+			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
+				expect( reason ).toBeInstanceOf( EntityNotFound );
+				expect( reason.message ).toEqual( 'Entity flagged missing in response.' );
+				done();
+			} );
+		} );
+
+		/**
+		 * Consider having a dedicated exception for this scenario to return Bad Request
+		 * rather than Not Found which is kind of a false statement
+		 */
+		it( 'rejects on result indicating revision does not belong to entity', ( done ) => {
+			const entityId = 'Q3';
+			const revision = REVISION_NOT_MATCHING_ENTITY;
+			axiosMock.onGet().reply(
+				404,
+				`<h1>Not Found</h1><p>Can't show revision ${revision} of entity ${entityId}.</p>`,
+			);
+			const repo = newAxiosSpecialPageEntityRepo();
+			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( EntityNotFound );
 				expect( reason.message ).toEqual( 'Entity flagged missing in response.' );
 				done();
@@ -130,9 +158,10 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 
 		it( 'rejects stating the reason in case of API problems', ( done ) => {
 			const entityId = 'Q3';
+			const revision = REVISION_MATCHING_ENTITY;
 			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR );
 			const repo = newAxiosSpecialPageEntityRepo();
-			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
+			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'Error: Request failed with status code 500' );
 				done();
@@ -141,6 +170,7 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 
 		it( 'rejects stating the technical reason in case of entity initialization problem', ( done ) => {
 			const entityId = 'Q3';
+			const revision = REVISION_MATCHING_ENTITY;
 			axiosMock.onGet().reply( HttpStatus.OK, {
 				entities: {
 					Q3: {
@@ -154,7 +184,7 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 				},
 			};
 			const repo = newAxiosSpecialPageEntityRepo( initializer );
-			repo.getFingerprintableEntity( entityId ).catch( ( reason: Error ) => {
+			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'initializer sad' );
 				done();
