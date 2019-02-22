@@ -3,24 +3,87 @@ import QueryValidator from '@/server/route-handler/termbox/QueryValidator';
 describe( 'QueryValidator', () => {
 	describe( 'validate', () => {
 		test.each( [
-			[ { entity: 'Q3', preferredLanguages: 'de|fe|zh|tw' } ], // language missing
-			[ { language: 'de', preferredLanguages: 'de|fe|zh|tw' } ], // entity missing
-			[ { entity: 'Q1', language: 'de' } ], // preferredLanguages missing
-			[ { entity: '', language: '', preferredLanguages: '' } ], // empty strings
-			[ { entity: '  ', language: '      ', preferredLanguages: '	' } ], // evil strings
-			[ { entity: [ 'off', 'type' ], language: 'de', preferredLanguages: 'de|fe|zh|tw' } ], // off-type value
-			[ { entity: 'randomstring', language: 'de', preferredLanguages: 'de|fe|zh|tw' } ], // random entity
-			[ { entity: 'Q0', language: 'de', preferredLanguages: 'de|fe|zh|tw' } ], // crafted entity
-		] )(
-			'rejects invalid request #%# (%o)',
-			( query: object ) => {
-				const queryValidator = new QueryValidator();
-				expect( queryValidator.validate( query ) ).toBe( false );
-				expect( queryValidator.getErrors() ).not.toEqual( [] );
-			},
-		);
-
-		test.each( [ // TODO migrate previous tests to avoid false positives
+			[
+				{
+					entity: 'Q3',
+					revision: 31510,
+					preferredLanguages: 'de|fe|zh|tw',
+					editLink: '/somewhere/Q2',
+				},
+				{ language: [ 'Language can\'t be blank' ] },
+			],
+			[
+				{
+					revision: 31510,
+					language: 'de',
+					preferredLanguages: 'de|fe|zh|tw',
+					editLink: '/somewhere/Q2',
+				},
+				{ entity: [ 'Entity can\'t be blank' ] },
+			],
+			[
+				{
+					entity: 'Q3',
+					revision: 31510,
+					language: 'de',
+					editLink: '/somewhere/Q2',
+				},
+				{ preferredLanguages: [ 'Preferred languages can\'t be blank' ] },
+			],
+			[
+				{ // empty strings
+					entity: '',
+					revision: '',
+					language: '',
+					preferredLanguages: '',
+					editLink: '',
+				},
+				{
+					entity: [ '"" is not a valid entity id' ],
+					revision: [ 'Revision is not a number' ],
+					language: [ '"" is not a valid language code' ],
+					preferredLanguages: [ '"" is not a valid preferred language chain' ],
+				},
+			],
+			[
+				{ // evil strings
+					entity: ' ',
+					revision: '  ',
+					language: '      ',
+					preferredLanguages: '	',
+					editLink: '',
+				},
+				{
+					entity: [ '" " is not a valid entity id' ],
+					revision: [ 'Revision is not a number' ],
+					language: [ '"      " is not a valid language code' ],
+					preferredLanguages: [ '"	" is not a valid preferred language chain' ],
+				},
+			],
+			[
+				{
+					entity: [ 'bad', 'value' ], // off-type value
+					revision: 31510,
+					language: 'de',
+					editLink: '/somewhere/Q2',
+					preferredLanguages: 'de|en',
+				},
+				{
+					entity: [ '"bad,value" is not a valid entity id' ],
+				},
+			],
+			[
+				{
+					entity: 'Q0', // crafted entity
+					revision: 31510,
+					language: 'de',
+					editLink: '/somewhere/Q2',
+					preferredLanguages: 'de|en',
+				},
+				{
+					entity: [ '"Q0" is not a valid entity id' ],
+				},
+			],
 			[
 				{ entity: 'Q2', language: 'de', editLink: '/somewhere/Q2', preferredLanguages: 'de|en' },
 				{ revision: [ 'Revision can\'t be blank' ] },
@@ -30,7 +93,7 @@ describe( 'QueryValidator', () => {
 				{ revision: [ 'Revision is not a number' ] },
 			],
 		] )(
-			'rejects invalid request #%# (%o) for known reason (%o)',
+			'rejects invalid request #%# (%o) for known reasons (%o)',
 			( query: object, reason: object ) => {
 				const queryValidator = new QueryValidator();
 				expect( queryValidator.validate( query ) ).toBe( false );
