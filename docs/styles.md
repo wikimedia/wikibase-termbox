@@ -1,6 +1,6 @@
 This project uses SCSS which is specified in the styles section on the individual [Single File Components](https://vuejs.org/v2/guide/single-file-components.html)
 
-Shared configuration (e.g. colors) and some utility (e.g. mixins) can be found in [src/styles](/src/styles).
+Shared configuration (e.g. colors) and some utility (e.g. mixins) can be found in [src/styles](../src/styles).
 
 We follow the [BEM](http://getbem.com/) (Block, Element, Modifier) approach to create self-sufficient, portable components. Component styles are generally named as follows.
 
