@@ -49,7 +49,7 @@ describe( 'TermBox.vue', () => {
 		} );
 	} );
 
-	it( 'shows a list of the user\'s preferred languages', () => {
+	it( 'shows a list of the user\'s top secondary languages', () => {
 		const store = createStore();
 		const wrapper = shallowMount( TermBox, { store } );
 

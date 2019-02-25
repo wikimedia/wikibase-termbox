@@ -15,7 +15,7 @@ export const mutations: MutationTree<User> = {
 		state.primaryLanguage = language;
 	},
 
-	[ SECONDARY_LANGUAGES_INIT ] ( state: User, secondaryLanguages ): void {
+	[ SECONDARY_LANGUAGES_INIT ] ( state: User, secondaryLanguages: string[] ): void {
 		if ( !Array.isArray( secondaryLanguages ) ) {
 			throw new InvalidLanguageValueException( 'Invalid secondary languages.' );
 		}

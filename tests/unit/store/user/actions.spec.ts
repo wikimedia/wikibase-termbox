@@ -24,7 +24,7 @@ describe( 'user/actions', () => {
 				dispatch: dispatchMock,
 			};
 
-			const preferredLanguages = [ 'de', 'en', 'fr', 'zh', 'pl' ];
+			const preferredLanguages = [ 'de', 'en', 'fr', 'zh', 'pl', 'hu' ];
 			const languagePreferenceAction = actions[ LANGUAGE_PREFERENCE ] as any; // TODO
 
 			languagePreferenceAction( context, { primaryLanguage, preferredLanguages } ).then( () => {
@@ -35,7 +35,7 @@ describe( 'user/actions', () => {
 
 				expect( commitMock ).toBeCalledWith(
 					SECONDARY_LANGUAGES_INIT,
-					[ 'en', 'fr', 'zh', 'pl' ],
+					[ 'en', 'fr', 'zh', 'pl', 'hu' ],
 				);
 
 				expect( dispatchMock ).toBeCalledWith(

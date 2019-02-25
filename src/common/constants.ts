@@ -1,0 +1,1 @@
+export const USER_TOP_SECONDARY_LANGUAGES_LIMIT = 4;

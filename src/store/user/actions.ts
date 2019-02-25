@@ -23,7 +23,7 @@ export const actions: ActionTree<User, any> = {
 
 		context.commit( SECONDARY_LANGUAGES_INIT, preferredLanguages.filter( ( languageKey: string ) => {
 			return languageKey !== primaryLanguage;
-		} ).splice( 0, 4 ) );
+		} ) );
 
 		return Promise.all( [
 			context.dispatch( action( NS_MESSAGES, MESSAGES_INIT ), primaryLanguage, { root: true } ),

@@ -18,7 +18,7 @@ export const emptyUserModule: Module<User, any> = {
 
 state = {
 	primaryLanguage: 'de',
-	secondaryLanguages: [ 'en', 'fr', 'it', 'zh' ],
+	secondaryLanguages: [ 'en', 'fr', 'it', 'zh', 'hu', 'dk' ],
 };
 
 export const filledUserType: User = state;
