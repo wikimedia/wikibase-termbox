@@ -4,6 +4,25 @@ User interface for managing terms in Wikibase.
 This file can be considered a quick setup guide.
 To dive into the development documentation please refer to the [docs folder](./docs).
 
+## How this connects to Wikibase
+This code can be found as a git submodule of Wikibase at the following relative path:
+```
+extensions/Wikibase/view/lib/wikibase-termbox/
+```
+
+This is because the client-side JS and styling needs to be served by Wikibase. It is served by a component of MediaWiki
+called [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader). The configuration for this can be seen in
+[resources.php](../resources.php)
+
+The commit of this submodule on Wikibase master may not be the latest development version of this code
+so to get the latest development version you may need to run:
+```
+git checkout master
+```
+
+Since the Wikidata runs a weekly snapshot of Wikibase master we can be explicit about which version of termbox we run by
+changing the commit of the submodule rather than always having to use master of termbox.
+
 ## Installation
 ```
 # ensure the node user uses your user id, so you own generated files
