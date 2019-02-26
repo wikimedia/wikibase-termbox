@@ -1,6 +1,6 @@
 import buildApp from '@/common/buildApp';
 import { factory } from './common/TermboxFactory';
-import AxiosWikibaseFingerprintableEntityRepo from './server/data-access/AxiosWikibaseFingerprintableEntityRepo';
+import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
 import EntityInitializer from './common/EntityInitializer';
 import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
@@ -39,7 +39,7 @@ export default ( context: BundleRendererContext ) => {
 	);
 
 	factory.setEntityRepository(
-		new AxiosWikibaseFingerprintableEntityRepo(
+		new AxiosSpecialPageEntityRepo(
 			axios,
 			new EntityInitializer(),
 		),

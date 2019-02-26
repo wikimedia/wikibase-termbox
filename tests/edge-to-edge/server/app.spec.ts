@@ -14,7 +14,8 @@ import { MessageKeys } from '@/common/MessageKeys';
  * arguably we could not add GLOBAL_REQUEST_PARAMS to neither axios (building the request)
  * nor nock (mocking the response) but this way it is closer to reality (cf. server.ts)
  */
-import { MEDIAWIKI_API_SCRIPT, GLOBAL_REQUEST_PARAMS } from '@/common/constants';
+import { MEDIAWIKI_API_SCRIPT, MEDIAWIKI_INDEX_SCRIPT, GLOBAL_REQUEST_PARAMS } from '@/common/constants';
+import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEntityRepo';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -26,6 +27,7 @@ Vue.config.productionTip = false;
 
 const WIKIBASE_TEST_HOST = 'http://mw.testonly.localhost';
 const WIKIBASE_TEST_API_PATH = '/' + MEDIAWIKI_API_SCRIPT;
+const WIKIBASE_TEST_INDEX_PATH = '/' + MEDIAWIKI_INDEX_SCRIPT;
 
 const logger = {
 	log: jest.fn(),
@@ -113,10 +115,10 @@ function nockSuccessfulMessagesLoading( inLanguage: string ) {
 
 function nockSuccessfulEntityLoading( entityId: string ) {
 	nock( WIKIBASE_TEST_HOST )
-		.get( WIKIBASE_TEST_API_PATH )
+		.get( WIKIBASE_TEST_INDEX_PATH )
 		.query( {
-			ids: entityId,
-			action: 'wbgetentities',
+			id: entityId,
+			title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 			...GLOBAL_REQUEST_PARAMS,
 		} )
 		.reply( HttpStatus.OK, {
@@ -156,10 +158,10 @@ describe( 'Termbox SSR', () => {
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_HOST )
-			.get( WIKIBASE_TEST_API_PATH )
+			.get( WIKIBASE_TEST_INDEX_PATH )
 			.query( {
-				ids: entityId,
-				action: 'wbgetentities',
+				id: entityId,
+				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
 			.reply( HttpStatus.OK, {
@@ -176,7 +178,7 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: wbgetentities result not well formed.' );
+			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: result not well formed.' );
 
 			done();
 		} );
@@ -191,10 +193,10 @@ describe( 'Termbox SSR', () => {
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_HOST )
-			.get( WIKIBASE_TEST_API_PATH )
+			.get( WIKIBASE_TEST_INDEX_PATH )
 			.query( {
-				ids: entityId,
-				action: 'wbgetentities',
+				id: entityId,
+				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
 			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
@@ -315,19 +317,13 @@ describe( 'Termbox SSR', () => {
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
 		nock( WIKIBASE_TEST_HOST )
-			.get( WIKIBASE_TEST_API_PATH )
+			.get( WIKIBASE_TEST_INDEX_PATH )
 			.query( {
-				ids: 'Q63',
-				action: 'wbgetentities',
+				id: 'Q63',
+				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.OK, {
-				entities: {
-					[ entityId ]: {
-						missing: '',
-					},
-				},
-			} );
+			.reply( HttpStatus.NOT_FOUND, '<html><body><h1>Not Found</h1></body></html>' );
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
