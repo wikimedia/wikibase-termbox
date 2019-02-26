@@ -41,11 +41,11 @@ docker-compose run --rm node npm install
 
     Recommendation is to use this in conjunction with [addshore/mediawiki-docker-dev](https://github.com/addshore/mediawiki-docker-dev/).
 
-    The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file>, in turn the SSR services retrieves some information from <WIKIBASE_REPO_API>.
+    The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file>, in turn the SSR services retrieves some information from the <WIKIBASE_REPO>.
     > ⚠ Some versions of `docker-compose` insist this network exists. Make sure to set this value to an existing docker network (either created by another `docker-compose` project or you manually) - check via `docker network ls`
   * `CSR_PORT` is the port at which you can reach the development server
   * `NODE_ENV` is the environment to set for node.js
-  * `WIKIBASE_REPO_API` is the wikibase installation used as information authority (e.g. to load entity information)
+  * `WIKIBASE_REPO` is the wikibase installation used as information authority (e.g. to load entity information), including the path (where both `index.php` and `api.php` are located)
 
 ## Building
 * `docker-compose run --rm node npm run build` builds the frontend code
@@ -80,10 +80,10 @@ docker run --rm wmde/wikibase-termbox-test
 
 ### Running for production
 
-E.g. with production wikidata configured as the backend (`WIKIBASE_REPO_API`).
+E.g. with production wikidata configured as the backend (`WIKIBASE_REPO`).
 
 ```
 blubber .pipeline/blubber.yaml production > Dockerfile
 docker build -t wmde/wikibase-termbox-production .
-docker run --rm -p "3030:3030" -e WIKIBASE_REPO_API=https://www.wikidata.org/w/api.php -e SSR_PORT=3030 wmde/wikibase-termbox-production
+docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e SSR_PORT=3030 wmde/wikibase-termbox-production
 ```

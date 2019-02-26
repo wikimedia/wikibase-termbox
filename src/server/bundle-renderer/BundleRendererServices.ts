@@ -1,15 +1,15 @@
-import mwbot from 'mwbot';
+import { AxiosInstance } from 'axios';
 
 interface Logger {
 	log( ...things: any[] ): void;
 }
 
 export default class BundleRendererServices {
-	public readonly mediawikiBot: mwbot;
+	public readonly axios: AxiosInstance;
 	public readonly logger: Logger;
 
-	public constructor( mediawikiBot: mwbot, logger: Logger ) {
-		this.mediawikiBot = mediawikiBot;
+	public constructor( axios: AxiosInstance, logger: Logger ) {
+		this.axios = axios;
 		this.logger = logger;
 	}
 }

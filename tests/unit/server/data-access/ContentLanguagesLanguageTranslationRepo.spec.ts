@@ -1,9 +1,8 @@
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
-import MwBotWikibaseContentLanguagesRepo from '@/server/data-access/MwBotWikibaseContentLanguagesRepo';
-import mwbot from 'mwbot';
 import ContentLanguagesLanguageTranslationRepo from '@/server/data-access/ContentLanguagesLanguageTranslationRepo';
 import { WikibaseApiContentLanguages } from '@/server/data-access/WikibaseContentLanguagesRepo';
+import WikibaseContentLanguagesRepo from '@/server/data-access/WikibaseContentLanguagesRepo';
 
 function newWikibaseContentLanguagesRepository( contentLanguagesRepo: any ) {
 	return new ContentLanguagesLanguageTranslationRepo(
@@ -13,9 +12,10 @@ function newWikibaseContentLanguagesRepository( contentLanguagesRepo: any ) {
 
 describe( 'ContentLanguagesLanguageTranslationRepo', () => {
 
-	it( 'can be constructed with MwBotWikibaseContentLanguagesRepo', () => {
-		expect( newWikibaseContentLanguagesRepository( new MwBotWikibaseContentLanguagesRepo( {} as mwbot ) ) )
-			.toBeInstanceOf( ContentLanguagesLanguageTranslationRepo );
+	it( 'can be constructed with WikibaseContentLanguagesRepo', () => {
+		expect( newWikibaseContentLanguagesRepository( {
+			getContentLanguages: jest.fn(),
+		} as WikibaseContentLanguagesRepo ) ).toBeInstanceOf( ContentLanguagesLanguageTranslationRepo );
 	} );
 
 	describe( 'getLanguagesInLanguage', () => {

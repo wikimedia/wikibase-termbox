@@ -2,7 +2,7 @@ import BundleRendererContextBuilder from '@/server/bundle-renderer/BundleRendere
 import TermboxRequest from '@/common/TermboxRequest';
 import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
 import BundleRendererContext from '@/server/bundle-renderer/BundleRendererContext';
-import mwbot from 'mwbot';
+import axios from 'axios';
 
 function newBundleRendererContextBuilder( services: any ) {
 	return new BundleRendererContextBuilder( services );
@@ -12,9 +12,7 @@ describe( 'BundleRendererContextBuilder', () => {
 	describe( 'passRequest', () => {
 		it( 'returns BundleRendererContext with correct values', () => {
 			const services = new BundleRendererServices(
-				new mwbot( {
-					apiUrl: 'http://mywiki.com/api.php',
-				} ),
+				axios,
 				{ log: () => {} },
 			);
 			const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] );

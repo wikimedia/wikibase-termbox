@@ -1,25 +1,25 @@
 import buildApp from '@/common/buildApp';
 import { factory } from './common/TermboxFactory';
-import MwBotWikibaseFingerprintableEntityRepo from './server/data-access/MwBotWikibaseFingerprintableEntityRepo';
+import AxiosWikibaseFingerprintableEntityRepo from './server/data-access/AxiosWikibaseFingerprintableEntityRepo';
 import EntityInitializer from './common/EntityInitializer';
 import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
-import MwBotWikibaseContentLanguagesRepo from './server/data-access/MwBotWikibaseContentLanguagesRepo';
+import AxiosWikibaseContentLanguagesRepo from './server/data-access/AxiosWikibaseContentLanguagesRepo';
 import TranslationLanguageNotFound from './common/data-access/error/TranslationLanguageNotFound';
 import ContentLanguagesLanguageTranslationRepo from './server/data-access/ContentLanguagesLanguageTranslationRepo';
 import ContentLanguagesLanguageRepo from './server/data-access/ContentLanguagesLanguageRepo';
-import MwBotWikibaseMessagesRepo from './server/data-access/MwBotWikibaseMessagesRepo';
+import AxiosWikibaseMessagesRepo from './server/data-access/AxiosWikibaseMessagesRepo';
 import WaitingForLanguageWikibaseContentLanguagesRepo
 	from './server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
 import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
 import { MessageKeys } from '@/common/MessageKeys';
 
 export default ( context: BundleRendererContext ) => {
-	const apiBot = context.services.mediawikiBot;
+	const axios = context.services.axios;
 
 	const languageRepo = new WaitingForLanguageWikibaseContentLanguagesRepo(
-		new MwBotWikibaseContentLanguagesRepo(
-			apiBot,
+		new AxiosWikibaseContentLanguagesRepo(
+			axios,
 		),
 	);
 
@@ -32,15 +32,15 @@ export default ( context: BundleRendererContext ) => {
 	);
 
 	factory.setMessagesRepository(
-		new MwBotWikibaseMessagesRepo(
-			apiBot,
+		new AxiosWikibaseMessagesRepo(
+			axios,
 			Object.values( MessageKeys ),
 		),
 	);
 
 	factory.setEntityRepository(
-		new MwBotWikibaseFingerprintableEntityRepo(
-			apiBot,
+		new AxiosWikibaseFingerprintableEntityRepo(
+			axios,
 			new EntityInitializer(),
 		),
 	);

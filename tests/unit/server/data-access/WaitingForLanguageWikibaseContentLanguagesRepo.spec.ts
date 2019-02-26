@@ -1,10 +1,8 @@
-import MwBotWikibaseContentLanguagesRepo from '@/server/data-access/MwBotWikibaseContentLanguagesRepo';
 import WikibaseContentLanguagesRepo, {
 	WikibaseApiContentLanguages,
 } from '@/server/data-access/WikibaseContentLanguagesRepo';
 import WaitingForLanguageWikibaseContentLanguagesRepo
 	from '@/server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
-import mwbot from 'mwbot';
 
 function newWaitingForLanguageWikibaseContentLanguagesRepo( contentLanguagesRepo: any ) {
 	return new WaitingForLanguageWikibaseContentLanguagesRepo(
@@ -14,9 +12,10 @@ function newWaitingForLanguageWikibaseContentLanguagesRepo( contentLanguagesRepo
 
 describe( 'WaitingForLanguageWikibaseContentLanguagesRepo', () => {
 
-	it( 'can be constructed with MwBotWikibaseContentLanguagesRepo', () => {
-		expect( newWaitingForLanguageWikibaseContentLanguagesRepo( new MwBotWikibaseContentLanguagesRepo( {} as mwbot ) ) )
-			.toBeInstanceOf( WaitingForLanguageWikibaseContentLanguagesRepo );
+	it( 'can be constructed with WikibaseContentLanguagesRepo', () => {
+		expect( newWaitingForLanguageWikibaseContentLanguagesRepo( {
+			getContentLanguages: jest.fn(),
+		} as WikibaseContentLanguagesRepo ) ).toBeInstanceOf( WaitingForLanguageWikibaseContentLanguagesRepo );
 	} );
 
 	describe( 'getContentLanguages', () => {

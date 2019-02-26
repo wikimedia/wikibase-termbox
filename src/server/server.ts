@@ -1,7 +1,8 @@
 import 'module-alias/register';
 import createApp from './app';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
-import mwbot from 'mwbot';
+import axios from 'axios';
+import { GLOBAL_REQUEST_PARAMS } from '../common/constants';
 
 function verifyAndReportSetting( name: string, value: any ) {
 	if ( typeof value === 'undefined' ) {
@@ -12,12 +13,13 @@ function verifyAndReportSetting( name: string, value: any ) {
 	console.info( `Set ${name} env to ${value}` );
 }
 
-verifyAndReportSetting( 'WIKIBASE_REPO_API', process.env.WIKIBASE_REPO_API );
+verifyAndReportSetting( 'WIKIBASE_REPO', process.env.WIKIBASE_REPO );
 verifyAndReportSetting( 'SSR_PORT', process.env.SSR_PORT );
 
 const services = new BundleRendererServices(
-	new mwbot( {
-		apiUrl: process.env.WIKIBASE_REPO_API,
+	axios.create( {
+		baseURL: process.env.WIKIBASE_REPO,
+		params: GLOBAL_REQUEST_PARAMS,
 	} ),
 	console,
 );

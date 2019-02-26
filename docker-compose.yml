@@ -36,7 +36,7 @@ services:
       default: ~
     environment:
       - SSR_PORT
-      - WIKIBASE_REPO_API
+      - WIKIBASE_REPO
 
 networks:
   mediawiki_dev_network:

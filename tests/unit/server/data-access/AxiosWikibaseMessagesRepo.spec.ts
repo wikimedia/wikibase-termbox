@@ -1,52 +1,42 @@
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import MessagesNotFound from '@/common/data-access/error/MessageNotFound';
-import MwBotWikibaseMessagesRepo from '@/server/data-access/MwBotWikibaseMessagesRepo';
-import mwbot from 'mwbot';
+import AxiosWikibaseMessagesRepo from '@/server/data-access/AxiosWikibaseMessagesRepo';
 import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 import { MessageKeys } from '@/common/MessageKeys';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
+import HttpStatus from 'http-status-codes';
 
-function newMwBotWikibaseMessagesRepo( bot: any, messageKeys: string[] ) {
-	return new MwBotWikibaseMessagesRepo(
-		bot,
+const axiosMock = new MockAdapter( axios );
+
+function newAxiosWikibaseMessagesRepo( messageKeys: string[] ) {
+	return new AxiosWikibaseMessagesRepo(
+		axios,
 		messageKeys,
 	);
 }
 
-describe( 'MwBotWikibaseMessagesRepo', () => {
+describe( 'AxiosWikibaseMessagesRepo', () => {
 
-	it( 'can be constructed with mwbot', () => {
-		expect( newMwBotWikibaseMessagesRepo( new mwbot( {} ), Object.values( MessageKeys ) ) )
-			.toBeInstanceOf( MwBotWikibaseMessagesRepo );
+	beforeEach( () => {
+		axiosMock.reset();
+	} );
+
+	it( 'can be constructed with axios', () => {
+		expect( newAxiosWikibaseMessagesRepo( Object.values( MessageKeys ) ) )
+			.toBeInstanceOf( AxiosWikibaseMessagesRepo );
 	} );
 
 	describe( 'getMessagesInLanguage', () => {
-		it( 'creates a well-formed allmessages query with amlang', ( done ) => {
+		it( 'with well-formed allmessages query resolves to messages on success', ( done ) => {
 			const inLanguage = 'de';
-			const messageKeys = Object.values( MessageKeys );
-			const bot = {
-				request: ( params: object ) => {
-					expect( params ).toEqual( {
-						action: 'query',
-						meta: 'allmessages',
-						ammessages: messageKeys.join( '|' ),
-						amlang: inLanguage,
-					} );
+			const messageKeys = [ 'wikibase-edit', 'wikibase-save' ];
 
-					return Promise.reject( 'This test focuses on the request.' );
-				},
-			};
-
-			const repo = newMwBotWikibaseMessagesRepo( bot, messageKeys );
-			repo.getMessagesInLanguage( inLanguage ).catch( () => {
-				done();
-			} );
-		} );
-
-		it( 'resolves to messages on success', ( done ) => {
-			const inLanguage = 'de';
 			const messages: MessageTranslationCollection = {
 				de: {
 					'wikibase-edit': 'bearbeiten',
+					'wikibase-save': 'speichern',
 				},
 			};
 			const results = {
@@ -56,16 +46,22 @@ describe( 'MwBotWikibaseMessagesRepo', () => {
 						'name': 'wikibase-edit',
 						'normalizedname': 'wikibase-edit',
 						'*': 'bearbeiten',
-					} ],
+					},
+					{
+						'name': 'wikibase-save',
+						'normalizedname': 'wikibase-save',
+						'*': 'speichern',
+					}] ,
 				},
 			};
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( results );
-				},
-			};
+			axiosMock.onGet( MEDIAWIKI_API_SCRIPT, { params: {
+				action: 'query',
+				meta: 'allmessages',
+				ammessages: messageKeys.join( '|' ),
+				amlang: inLanguage,
+			} } ).reply( HttpStatus.OK, results );
 
-			const repo = newMwBotWikibaseMessagesRepo( bot, [ 'wikibase-edit' ] );
+			const repo = newAxiosWikibaseMessagesRepo( messageKeys );
 			repo.getMessagesInLanguage( inLanguage ).then( ( resultMessages: any ) => {
 				expect( resultMessages ).toStrictEqual( messages );
 				done();
@@ -88,16 +84,24 @@ describe( 'MwBotWikibaseMessagesRepo', () => {
 				},
 			};
 
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( results );
-				},
-			};
+			axiosMock.onGet().reply( HttpStatus.OK, results );
 
-			const repo = newMwBotWikibaseMessagesRepo( bot, [ 'wikibase-edit', 'foo' ] );
+			const repo = newAxiosWikibaseMessagesRepo( [ 'wikibase-edit', 'foo' ] );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( MessagesNotFound );
 				expect( reason.message ).toEqual( 'foo is not a valid message-key.' );
+				done();
+			} );
+		} );
+
+		it( 'rejects on result that does not contain an object', ( done ) => {
+			const inLanguage = 'de';
+			axiosMock.onGet().reply( HttpStatus.OK, '<some><random><html>' );
+
+			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKeys ) );
+			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
+				expect( reason ).toBeInstanceOf( TechnicalProblem );
+				expect( reason.message ).toEqual( 'allmessages result not well formed.' );
 				done();
 			} );
 		} );
@@ -107,13 +111,9 @@ describe( 'MwBotWikibaseMessagesRepo', () => {
 			const results = {
 				strangebody: 'yes',
 			};
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( results );
-				},
-			};
+			axiosMock.onGet().reply( HttpStatus.OK, results );
 
-			const repo = newMwBotWikibaseMessagesRepo( bot, Object.values( MessageKeys ) );
+			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKeys ) );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'allmessages result not well formed.' );
@@ -129,13 +129,9 @@ describe( 'MwBotWikibaseMessagesRepo', () => {
 					strangeprop: 'yes',
 				},
 			};
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.resolve( results );
-				},
-			};
+			axiosMock.onGet().reply( HttpStatus.OK, results );
 
-			const repo = newMwBotWikibaseMessagesRepo( bot, Object.values( MessageKeys ) );
+			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKeys ) );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
 				expect( reason.message ).toEqual( 'allmessages result not well formed.' );
@@ -145,15 +141,12 @@ describe( 'MwBotWikibaseMessagesRepo', () => {
 
 		it( 'rejects stating the reason in case of API problems', ( done ) => {
 			const inLanguage = 'de';
-			const bot = {
-				request: ( params: object ) => {
-					return Promise.reject( new Error( 'invalidjson: No valid JSON response.' ) );
-				},
-			};
-			const repo = newMwBotWikibaseMessagesRepo( bot, Object.values( MessageKeys ) );
+			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR, 'API problem' );
+
+			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKeys ) );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( TechnicalProblem );
-				expect( reason.message ).toEqual( 'Error: invalidjson: No valid JSON response.' );
+				expect( reason.message ).toEqual( 'Error: Request failed with status code 500' );
 				done();
 			} );
 		} );
