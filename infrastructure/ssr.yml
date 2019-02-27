@@ -1,0 +1,19 @@
+- hosts: ssr
+  name: Run the SSR service based on the blubbler production variant
+  tasks:
+    - name: Copy service config
+      template:
+        src: templates/termbox.service.j2
+        dest: "/lib/systemd/system/termbox.service"
+        owner: "root"
+        group: "root"
+        mode: 0644
+
+    - name: Ensure systemd re-reads configs
+      systemd:
+        daemon_reload: yes
+
+    - name: Make sure the termbox service is running with the latest config
+      systemd:
+        state: restarted
+        name: termbox
