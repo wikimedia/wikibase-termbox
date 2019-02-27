@@ -47,6 +47,10 @@ docker-compose run --rm node npm install
   * `NODE_ENV` is the environment to set for node.js
   * `WIKIBASE_REPO` is the wikibase installation used as information authority (e.g. to load entity information), including the path (where both `index.php` and `api.php` are located)
 
+### Configuring Wikibase
+In order to have this termbox displayed in Wikibase entity pages Wikibase need to be configured.
+For details see: [options.wiki](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/docs/options.wiki)
+
 ## Building
 * `docker-compose run --rm node npm run build` builds the frontend code
 * `docker-compose run --rm node npm run build-server` builds the server-side manifest and the node entry point
