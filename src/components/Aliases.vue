@@ -42,7 +42,7 @@ export default class Aliases extends ( mixins( Messages ) as VueConstructor ) {
 	font-family: $font-family-sansserif;
 
 	&__alias {
-		display: inline;
+		display: inline-block; // see https://phabricator.wikimedia.org/T217244 why not inline
 
 		&:not( :last-child ):after {
 			content: attr( data-separator );

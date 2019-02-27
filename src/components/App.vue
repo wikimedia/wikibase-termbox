@@ -58,4 +58,11 @@ export default class App extends Vue {
  * * allows component styles to overcome this reset
  */
 @import '~reset-css/sass/_reset';
+
+ul,
+ol { // overcome very strong selector, e.g. .content ul li
+	li {
+		margin: 0;
+	}
+}
 </style>
