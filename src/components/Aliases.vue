@@ -6,7 +6,7 @@
 			class="wb-ui-aliases__alias"
 			:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>
 	</ul>
-	<div class="wb-ui-aliases wb-ui-aliases--placeholder" v-else/>
+	<div class="wb-ui-aliases wb-ui-aliases--placeholder" v-else></div>
 </template>
 
 <script lang="ts">
