@@ -24,6 +24,7 @@ import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEnt
  * makes no sense to show it during tests
  */
 Vue.config.productionTip = false;
+Vue.config.devtools = false;
 
 const WIKIBASE_TEST_HOST = 'http://mw.testonly.localhost';
 const WIKIBASE_TEST_API_PATH = '/' + MEDIAWIKI_API_SCRIPT;
