@@ -15,6 +15,8 @@ lives:
 variants:
   build:
     base: docker-registry.wikimedia.org/nodejs10-devel
+    apt:
+      packages: [ git ] #needed for npm packages from git
     node:
       requirements: [ package.json, package-lock.json ]
   build-server:
@@ -28,6 +30,8 @@ variants:
     entrypoint: [ npm, test ]
   install-prod:
     base: docker-registry.wikimedia.org/nodejs10-devel
+    apt:
+      packages: [ git ] #needed for npm packages from git
     node:
       env: production
       requirements: [ package.json, package-lock.json ]
@@ -45,4 +49,4 @@ variants:
     lives:
       in: /srv/service
     node: { env: production }
-    entrypoint: [ node, "serverBuild/server/server.js" ]
+    entrypoint: [ node, "./serverBuild/server/service-runner-entrypoint.js" ]
