@@ -1,6 +1,49 @@
 - hosts: ssr
   name: Run the SSR service based on the blubbler production variant
   tasks:
+    - name: install git
+      package:
+          name: git
+          state: present
+
+    - name: install docker
+      package:
+          name: docker-ce
+          state: present
+
+    - name: install blubber
+      package:
+          name: blubber
+          state: present
+
+    - name: Create project directory
+      file:
+          path: "{{ PATH }}"
+          state: directory
+
+    - name: Init checkout
+      git:
+        repo: https://gerrit.wikimedia.org/r/wikibase/termbox
+        dest: "{{ PATH }}/git"
+        update: no
+        version: "{{ BRANCH }}"
+
+    - name: Copy updater
+      template:
+          src: templates/updater.sh.j2
+          dest: "{{ PATH }}/updater.sh"
+          owner: "root"
+          group: "root"
+          mode: 0744
+
+    - name: Add updater to crontab
+      cron:
+          name: Termbox updater
+          job: "{{ PATH }}/updater.sh"
+          minute: "*/{{ UPDATE_DURATION }}"
+          user: root
+          state: present
+
     - name: Copy service config
       template:
         src: templates/termbox.service.j2
