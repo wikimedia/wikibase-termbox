@@ -13,6 +13,7 @@ services:
     environment:
       - NODE_ENV
       - NODE_DEBUG
+      - DEBUG
 
   csr:
     extends:
