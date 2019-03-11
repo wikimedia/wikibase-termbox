@@ -52,9 +52,7 @@ describe( 'TermboxFactory', () => {
 		it( 'can set and get an entityEditabilityResolver', () => {
 			const factory = newTermboxFactory();
 			const mockEntityEditabilityResolver = {
-				isEditable() {
-					return Promise.resolve( true );
-				},
+				isEditable: () => Promise.resolve( true ),
 			};
 
 			factory.setEntityEditabilityResolver( mockEntityEditabilityResolver );
