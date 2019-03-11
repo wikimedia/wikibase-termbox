@@ -15,9 +15,7 @@ describe( 'messages/actions', () => {
 			};
 
 			factory.setMessagesRepository( {
-				getMessagesInLanguage: ( inLanguage: string ) => {
-					return Promise.resolve( mockMessages );
-				},
+				getMessagesInLanguage: ( inLanguage: string ) => Promise.resolve( mockMessages ),
 			} );
 
 			const context = {
