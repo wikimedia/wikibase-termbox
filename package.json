@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "WEBPACK_TARGET=dev vue-cli-service serve",
-    "dev-server": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon serverBuild/server/server.js\"",
+    "dev-server": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon serverBuild/server/node-entrypoint.js\"",
     "build": "NODE_ENV=production vue-cli-service build",
     "build-server": "NODE_ENV=production WEBPACK_TARGET=node vue-cli-service build && tsc -p tsconfig.server.json && rm -rf node_modules/.cache",
     "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
@@ -23,6 +23,7 @@
     "http-status-codes": "^1.3.0",
     "module-alias": "^2.2.0",
     "rtl-detect": "^1.0.2",
+    "service-runner": "^2.6.10",
     "ts-deferred": "^1.0.4",
     "tslib": "^1.9.3",
     "validate.js": "^0.12.0",

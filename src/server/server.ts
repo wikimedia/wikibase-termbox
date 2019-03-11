@@ -3,6 +3,7 @@ import createApp from './app';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import axios from 'axios';
 import { GLOBAL_REQUEST_PARAMS } from '../common/constants';
+import ServiceRunnerOptions from './ServiceRunnerOptions';
 
 function verifyAndReportSetting( name: string, value: any ) {
 	if ( typeof value === 'undefined' ) {
@@ -13,23 +14,27 @@ function verifyAndReportSetting( name: string, value: any ) {
 	console.info( `Set ${name} env to ${value}` );
 }
 
-verifyAndReportSetting( 'WIKIBASE_REPO', process.env.WIKIBASE_REPO );
-verifyAndReportSetting( 'SSR_PORT', process.env.SSR_PORT );
+export default ( options: ServiceRunnerOptions ) => {
+	const wikibaseRepo = options.config.WIKIBASE_REPO;
+	const ssrPort = options.config.SSR_PORT;
+	verifyAndReportSetting( 'WIKIBASE_REPO', wikibaseRepo );
+	verifyAndReportSetting( 'SSR_PORT', ssrPort );
 
-const services = new BundleRendererServices(
-	axios.create( {
-		baseURL: process.env.WIKIBASE_REPO,
-		params: GLOBAL_REQUEST_PARAMS,
-	} ),
-	console,
-);
+	const services = new BundleRendererServices(
+		axios.create( {
+			baseURL: wikibaseRepo,
+			params: GLOBAL_REQUEST_PARAMS,
+		} ),
+		console,
+	);
 
-createApp( services )
-	.listen( process.env.SSR_PORT, () => {
-		console.info( `server is now running...` );
+	createApp( services )
+		.listen( ssrPort, () => {
+			console.info( `server is now running...` );
+		} );
+
+	process.on( 'SIGINT', () => {
+		console.info( 'Process received SIGINT' );
+		process.exit( 0 );
 	} );
-
-process.on( 'SIGINT', () => {
-	console.info( 'Process received SIGINT' );
-	process.exit( 0 );
-} );
+};
