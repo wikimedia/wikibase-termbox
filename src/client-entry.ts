@@ -44,7 +44,9 @@ factory.setEntityRepository( new EntityRepository(
 factory.setEntityEditabilityResolver( {
 	isEditable() {
 		return Promise.resolve(
-			( window as MwWindow ).mw.config.get( 'wgIsProbablyEditable' ),
+				( window as MwWindow ).mw.config.get( 'wbIsEditView' )
+			&&
+				( window as MwWindow ).mw.config.get( 'wgRelevantPageIsProbablyEditable' ),
 		);
 	},
 } );
