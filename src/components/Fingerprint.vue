@@ -55,7 +55,7 @@ export default class Fingerprint extends mixins( Messages ) {
 .wb-ui-fingerprint {
 	margin-top: 32px;
 	margin-right: 64px;
-	min-width: 0; // https://css-tricks.com/flexbox-truncated-text/
+	min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
 
 	&:first-child {
 		margin-top: 0;
@@ -79,7 +79,7 @@ export default class Fingerprint extends mixins( Messages ) {
 	}
 
 	&__description-inner,
-	&__aliases-inner { // margin and min-width need to be of different elements for width calculation
+	&__aliases-inner { // margin and min-width need to be on different elements for width calculation
 		margin-left: 0.5em;
 	}
 
@@ -94,6 +94,7 @@ export default class Fingerprint extends mixins( Messages ) {
 			.wb-ui-fingerprint__description-wrapper,
 			.wb-ui-fingerprint__aliases-wrapper {
 				flex: 1 1 100%;
+				min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
 			}
 
 			.wb-ui-fingerprint__description-wrapper,
