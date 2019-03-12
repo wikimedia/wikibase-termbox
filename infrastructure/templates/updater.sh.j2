@@ -1,0 +1,11 @@
+set -e
+
+cd {{ PATH }}/git
+git checkout -- package-lock.json
+git pull
+
+blubber .pipeline/blubber.yaml production > Dockerfile
+docker build -t wmde/wikibase-termbox-production .
+
+sudo systemctl restart termbox
+
