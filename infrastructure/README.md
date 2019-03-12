@@ -10,3 +10,14 @@ You need to be in possession of an SSH private key for which there is a associat
 ```
 # assuming your shell is inside this folder (infrastructure)
 ansible-playbook -b -i servers.ini ssr.yml
+```
+
+## Development
+
+### Linting
+
+Playbooks can be checked for notorious problems and oversights using the handy [ansible-lint](https://hub.docker.com/r/particlekit/ansible-lint) command - it helps us write concise, consistent configuration.
+
+```
+ansible-lint ssr.yml
+```
