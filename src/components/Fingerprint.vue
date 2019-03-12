@@ -9,7 +9,7 @@
 				<Description :description="getDescriptionByLanguage( languageCode )" class="wb-ui-fingerprint__description-inner" />
 			</div>
 			<div class="wb-ui-fingerprint__aliases-wrapper">
-				<Aliases :aliases="getAliasesByLanguage( languageCode )" class="wb-ui-fingerprint__description-inner" />
+				<Aliases :aliases="getAliasesByLanguage( languageCode )" class="wb-ui-fingerprint__aliases-inner" />
 			</div>
 		</div>
 	</div>
