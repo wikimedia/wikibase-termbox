@@ -55,7 +55,6 @@ export default class Fingerprint extends mixins( Messages ) {
 .wb-ui-fingerprint {
 	margin-top: 32px;
 	margin-right: 64px;
-	min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
 
 	&:first-child {
 		margin-top: 0;
@@ -94,7 +93,8 @@ export default class Fingerprint extends mixins( Messages ) {
 			.wb-ui-fingerprint__description-wrapper,
 			.wb-ui-fingerprint__aliases-wrapper {
 				flex: 1 1 100%;
-				min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+
+				@include shrinking-flex-element();
 			}
 
 			.wb-ui-fingerprint__description-wrapper,

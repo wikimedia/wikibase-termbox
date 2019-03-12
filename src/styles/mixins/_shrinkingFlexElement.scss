@@ -1,0 +1,7 @@
+@mixin shrinking-flex-element() {
+	/**
+	 * Work around the fact that flex items by default are no smaller than the size of their content
+	 * @see https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+	 */
+	min-width: 0;
+}

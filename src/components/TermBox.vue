@@ -1,7 +1,7 @@
 <template>
 	<div class="wb-ui-termbox">
 		<div class="wb-ui-termbox__primary">
-			<Fingerprint :languageCode="primaryLanguage" :isPrimary="true" />
+			<Fingerprint class="wb-ui-termbox__primary-inner" :languageCode="primaryLanguage" :isPrimary="true" />
 			<div class="wb-ui-termbox__actions">
 				<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
 			</div>
@@ -43,6 +43,10 @@ export default class TermBox extends Vue {
 .wb-ui-termbox {
 	&__primary {
 		display: flex;
+	}
+
+	&__primary-inner {
+		@include shrinking-flex-element();
 	}
 
 	&__actions {
