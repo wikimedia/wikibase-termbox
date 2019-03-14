@@ -5,10 +5,7 @@ This file can be considered a quick setup guide.
 To dive into the development documentation please refer to the [docs folder](./docs).
 
 ## How this connects to Wikibase
-This code can be found as a git submodule of Wikibase at the following relative path:
-```
-extensions/Wikibase/view/lib/wikibase-termbox/
-```
+This code can be found as a git submodule of Wikibase at the following relative path: `extensions/Wikibase/view/lib/wikibase-termbox/`
 
 This is because the client-side JS and styling needs to be served by Wikibase. It is served by a component of MediaWiki
 called [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader). The configuration for this can be seen in
@@ -16,7 +13,7 @@ called [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader). The conf
 
 The commit of this submodule on Wikibase master may not be the latest development version of this code
 so to get the latest development version you may need to run:
-```
+```sh
 git checkout master
 ```
 
@@ -24,15 +21,13 @@ Since the Wikidata runs a weekly snapshot of Wikibase master we can be explicit 
 changing the commit of the submodule rather than always having to use master of termbox.
 
 ## Installation
-```
+```sh
 # ensure the node user uses your user id, so you own generated files
 docker-compose build --build-arg UID=$(id -u) --build-arg GID=$(id -g) node
-```
 
-```
 # install npm dependencies
 docker-compose run --rm node npm install
-  ```
+```
 
 ## Configuring
 
@@ -90,7 +85,7 @@ This project can be build with [blubber](https://wikitech.wikimedia.org/wiki/Blu
 Instructions above will gradually be migrated to use blubber.
 
 ### Running tests
-```
+```sh
 blubber .pipeline/blubber.yaml test > Dockerfile
 docker build -t wmde/wikibase-termbox-test .
 docker run --rm wmde/wikibase-termbox-test
@@ -100,7 +95,7 @@ docker run --rm wmde/wikibase-termbox-test
 
 E.g. with production wikidata configured as the backend (`WIKIBASE_REPO`).
 
-```
+```sh
 blubber .pipeline/blubber.yaml production > Dockerfile
 docker build -t wmde/wikibase-termbox-production .
 docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e SSR_PORT=3030 wmde/wikibase-termbox-production
