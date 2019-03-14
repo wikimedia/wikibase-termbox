@@ -13,16 +13,11 @@ export interface MwMessage {
 
 export type MwMessages = ( key: string, ...params: string[] ) => MwMessage;
 
-export interface MwULS {
-	getFrequentLanguageList: () => string[];
-}
-
 interface MediaWiki {
 	hook: ( key: Hooks ) => HookHandler;
 	config: MwConfig;
 	Title: MwTitle;
 	message: MwMessages;
-	uls: MwULS;
 }
 
 export interface WikibaseContentLanguages {
@@ -31,6 +26,7 @@ export interface WikibaseContentLanguages {
 
 interface Wikibase {
 	WikibaseContentLanguages: new() => WikibaseContentLanguages;
+	getUserLanguages: () => string[];
 }
 
 export interface UlsData {

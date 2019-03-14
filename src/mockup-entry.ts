@@ -10,7 +10,7 @@ import { message } from './mock-data/MockMwMessages';
 const language = getOrEnforceUrlParameter( 'language', 'de' );
 const preferredLanguages = getOrEnforceUrlParameter(
 	'preferredLanguages',
-	'de|en|ar|fr|es|ko',
+	'de|en|ar|fr|es',
 );
 
 ( window as MwWindow ).mw = {
@@ -18,13 +18,11 @@ const preferredLanguages = getOrEnforceUrlParameter(
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
 	Title: class Title { public getUrl() { return '/edit/' + entity.id; } },
 	message,
-	uls: {
-		getFrequentLanguageList: () => preferredLanguages.split( '|' ),
-	},
 };
 
 ( window as MwWindow ).wb = {
 	WikibaseContentLanguages: MockupWikibaseContentLanguages,
+	getUserLanguages: () => preferredLanguages.split( '|' ),
 };
 
 ( window as MwWindow ).$ = {

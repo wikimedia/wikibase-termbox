@@ -1,6 +1,6 @@
 <template>
 	<div class="wb-ui-in-more-languages">
-		<Fingerprint v-for="language in topSecondaryLanguages" :languageCode="language" :key="language"/>
+		<Fingerprint v-for="language in secondaryLanguages" :languageCode="language" :key="language"/>
 		<AllEnteredLanguagesExpandable/>
 	</div>
 </template>
@@ -17,9 +17,8 @@ import AllEnteredLanguagesExpandable from '@/components/AllEnteredLanguagesExpan
 	components: { AllEnteredLanguagesExpandable, Fingerprint },
 } )
 export default class InMoreLanguages extends Vue {
-	@namespace( NS_USER ).Getter( 'topSecondaryLanguages' )
-	public topSecondaryLanguages!: string[];
-
+	@namespace( NS_USER ).State( 'secondaryLanguages' )
+	public secondaryLanguages!: string[];
 }
 </script>
 

@@ -8,7 +8,7 @@ function mockMwEnv(
 	entityId: any,
 	namespaces: any = null,
 	title: any = null,
-	preferredLanguages: any = null,
+	getUserLanguages: any = null,
 ) {
 	( window as MwWindow ).mw = {
 		config: { get( key ) {
@@ -34,9 +34,11 @@ function mockMwEnv(
 				text: () => '',
 			};
 		},
-		uls: {
-			getFrequentLanguageList: preferredLanguages || jest.fn(),
-		},
+	};
+
+	( window as MwWindow ).wb = {
+		WikibaseContentLanguages: {} as any,
+		getUserLanguages: getUserLanguages || jest.fn(),
 	};
 }
 
@@ -58,8 +60,8 @@ describe( 'client/init', () => {
 		const expectedEditLinkUrl = '/some/url';
 
 		const expectedPreferredLanguages = [ 'de', 'en', 'fr' ];
-		const ulsGetFrequentLanguagesMock = jest.fn();
-		ulsGetFrequentLanguagesMock.mockReturnValue( expectedPreferredLanguages );
+		const wbGetUserLanguages = jest.fn();
+		wbGetUserLanguages.mockReturnValue( expectedPreferredLanguages );
 
 		getUrl.mockReturnValue( expectedEditLinkUrl );
 		const titleClass = jest.fn().mockImplementation( () => {
@@ -68,11 +70,11 @@ describe( 'client/init', () => {
 			};
 		} );
 
-		mockMwEnv( 'en', 'Q666', namespaces, titleClass, ulsGetFrequentLanguagesMock );
+		mockMwEnv( 'en', 'Q666', namespaces, titleClass, wbGetUserLanguages );
 
 		return init().then( ( request ) => {
 			expect( titleClass ).toHaveBeenCalledWith( 'SetLabelDescriptionAliases/Q666', namespaces.special );
-			expect( ulsGetFrequentLanguagesMock ).toHaveBeenCalled();
+			expect( wbGetUserLanguages ).toHaveBeenCalled();
 
 			expect( request.language ).toBe( 'en' );
 			expect( request.entityId ).toBe( 'Q666' );

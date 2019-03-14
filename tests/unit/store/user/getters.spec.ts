@@ -13,15 +13,4 @@ describe( '/store/user/getters.ts', () => {
 				.toMatch( state.primaryLanguage );
 		} );
 	} );
-
-	describe( 'topSecondaryLanguages', () => {
-		it( 'returns first 4 of the secondary languages', () => {
-			const state: User = {
-				primaryLanguage: 'de',
-				secondaryLanguages: [ 'en', 'fr', 'it', 'zh', 'ko', 'hu' ],
-			};
-			expect( getters.topSecondaryLanguages( state, null, null, null ) )
-				.toEqual( [ 'en', 'fr', 'it', 'zh' ] );
-		} );
-	} );
 } );
