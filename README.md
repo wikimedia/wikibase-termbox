@@ -35,21 +35,35 @@ docker-compose run --rm node npm install
   ```
 
 ## Configuring
-* set the server-specific environment variables: `cp .env.example .env` and modify `.env` accordingly
-  * `SSR_PORT` is the port at which you can reach the node server performing server-side vue rendering
-  * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network the SSR service should also be attached to in order to make it available to wikibase and vice-versa.
 
-    Recommendation is to use this in conjunction with [addshore/mediawiki-docker-dev](https://github.com/addshore/mediawiki-docker-dev/).
+As this project only comes to full fruition in integration with wikibase some configuration is required to make them collaborate.
+Set the user-specific environment variables: `cp .env.example .env` and modify `.env` according to your setup.
 
-    The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file>, in turn the SSR services retrieves some information from the <WIKIBASE_REPO>.
-    > ⚠ Some versions of `docker-compose` insist this network exists. Make sure to set this value to an existing docker network (either created by another `docker-compose` project or you manually) - check via `docker network ls`
-  * `CSR_PORT` is the port at which you can reach the development server
-  * `NODE_ENV` is the environment to set for node.js
+These environment variables can be distinguished in two groups - some are relevant configuring how the SSR service works ("production level"), some add to this for the development context ("development level"). **Set all of them** to reasonable values per the example file to get a working setup.
+
+* **Production level** environment variables
+  * `SSR_PORT` is the port at which the node server performing server-side vue rendering can be reached (by mediawiki to render entity pages, or your browser to try it in isolation)
   * `WIKIBASE_REPO` is the wikibase installation used as information authority (e.g. to load entity information), including the path (where both `index.php` and `api.php` are located)
+
+* **Development level** environment variables
+  * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network of **your mediawiki development setup**. The SSR service will attach itself to it in order to make it available to wikibase and vice-versa.
+
+    Recommendation is to use termbox in conjunction with [addshore/mediawiki-docker-dev](https://github.com/addshore/mediawiki-docker-dev/).
+
+    Check via `docker network ls` for the name, [by default](https://docs.docker.com/compose/networking/) it is derived from your mediawiki development project, e.g. `addshoremediawikidockerdev_default`.
+
+    The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file> to get HTML, in turn the SSR services calls <WIKIBASE_REPO> to [get essential information](./src/server/data-access).
+
+  * `CSR_PORT` is the port at which you can reach the development server to live-preview your changes
+  * `NODE_ENV` is the environment to set for node.js
 
 ### Configuring Wikibase
 In order to have this termbox displayed in Wikibase entity pages Wikibase need to be configured.
-For details see: [options.wiki](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/docs/options.wiki)
+For details see: [options.wiki](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/docs/options.wiki) (search for "termbox")
+
+For development in particular set
+
+* `ssrServerUrl` to http://node-ssr:<SSR_PORT from your .env file> as explained in the Development level environment variables section.
 
 ## Building
 * `docker-compose run --rm node npm run build` builds the frontend code
