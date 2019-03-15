@@ -60,6 +60,14 @@ For development in particular set
 
 * `ssrServerUrl` to http://node-ssr:<SSR_PORT from your .env file> as explained in the Development level environment variables section.
 
+Right now the new termbox is also only visible with the MinervaNeue skin enabled which requires MobileFrontend. Hence you may need to clone and enable these in LocalSettings.php e.g.:
+
+
+```php
+wfLoadExtension( 'MobileFrontend' );
+wfLoadSkin( 'MinervaNeue' );
+```
+
 ## Building
 * `docker-compose run --rm node npm run build` builds the frontend code
 * `docker-compose run --rm node npm run build-server` builds the server-side manifest and the node entry point
