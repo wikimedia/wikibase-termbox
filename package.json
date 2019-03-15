@@ -8,6 +8,7 @@
     "build": "NODE_ENV=production vue-cli-service build",
     "build-server": "NODE_ENV=production WEBPACK_TARGET=node vue-cli-service build && tsc -p tsconfig.server.json && rm -rf node_modules/.cache",
     "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
+    "postinstall": "node build/wikimedia-ui-base.js",
     "test": "npm-run-all test:*",
     "test:lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "vue-cli-service test:unit",
@@ -48,6 +49,7 @@
     "babel-core": "7.0.0-bridge.0",
     "bootstrap": "^4.3.1",
     "concurrently": "^4.1.0",
+    "css-scss": "^0.1.1",
     "jest-dom": "^2.1.1",
     "nock": "^10.0.6",
     "node-sass": "^4.11.0",
@@ -69,6 +71,7 @@
     "vue-property-decorator": "^7.3.0",
     "vue-template-compiler": "^2.6.8",
     "vuex": "^3.1.0",
-    "vuex-class": "^0.3.1"
+    "vuex-class": "^0.3.1",
+    "wikimedia-ui-base": "^0.13.0"
   }
 }

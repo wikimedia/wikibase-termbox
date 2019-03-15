@@ -18,7 +18,7 @@ variants:
     apt:
       packages: [ git ] #needed for npm packages from git
     node:
-      requirements: [ package.json, package-lock.json ]
+      requirements: [ package.json, package-lock.json, build/ ]
   build-server:
     includes: [ build ]
     builder:

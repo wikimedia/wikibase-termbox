@@ -1,7 +1,9 @@
+@import '~wikimedia-ui-base/wikimedia-ui-base';
+
 $base-font-size: 16px;
 
-$color-light-azureish-gray: #72777d;
-$color-dark-azureish-gray: #54595d;
+$color-light-azureish-gray: $wmui-color-base30;
+$color-dark-azureish-gray: $wmui-color-base20;
 $color-light-gray: #dfdfdf;
 $color-black: #000;
 $color-moderate-red: #a55858;
