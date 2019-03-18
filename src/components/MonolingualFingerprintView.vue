@@ -1,15 +1,15 @@
 <template>
 	<div
-		class="wb-ui-fingerprint"
-		:class="{ 'wb-ui-fingerprint--primaryLanguage': isPrimary }">
-		<LanguageNameInUserLanguage class="wb-ui-fingerprint__language" :language="language"/>
-		<div class="wb-ui-fingerprint__terms">
-			<Label :label="getLabelByLanguage( languageCode )" :isPrimary="isPrimary" class="wb-ui-fingerprint__label-wrapper"/>
-			<div class="wb-ui-fingerprint__description-wrapper">
-				<Description :description="getDescriptionByLanguage( languageCode )" class="wb-ui-fingerprint__description-inner" />
+		class="wb-ui-monolingualfingerprintview"
+		:class="{ 'wb-ui-monolingualfingerprintview--primaryLanguage': isPrimary }">
+		<LanguageNameInUserLanguage class="wb-ui-monolingualfingerprintview__language" :language="language"/>
+		<div class="wb-ui-monolingualfingerprintview__terms">
+			<Label :label="getLabelByLanguage( languageCode )" :isPrimary="isPrimary" class="wb-ui-monolingualfingerprintview__label-wrapper"/>
+			<div class="wb-ui-monolingualfingerprintview__description-wrapper">
+				<Description :description="getDescriptionByLanguage( languageCode )" class="wb-ui-monolingualfingerprintview__description-inner" />
 			</div>
-			<div class="wb-ui-fingerprint__aliases-wrapper">
-				<Aliases :aliases="getAliasesByLanguage( languageCode )" class="wb-ui-fingerprint__aliases-inner" />
+			<div class="wb-ui-monolingualfingerprintview__aliases-wrapper">
+				<Aliases :aliases="getAliasesByLanguage( languageCode )" class="wb-ui-monolingualfingerprintview__aliases-inner" />
 			</div>
 		</div>
 	</div>
@@ -34,7 +34,7 @@ import { Prop } from 'vue-property-decorator';
 		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage', 'getDescriptionByLanguage', 'getAliasesByLanguage' ] ),
 	},
 } )
-export default class Fingerprint extends mixins( Messages ) {
+export default class MonolingualFingerprintView extends mixins( Messages ) {
 
 	@Prop( { required: true, type: String } )
 	public languageCode!: string;
@@ -52,7 +52,7 @@ export default class Fingerprint extends mixins( Messages ) {
 </script>
 
 <style lang="scss">
-.wb-ui-fingerprint {
+.wb-ui-monolingualfingerprintview {
 	margin-top: 32px;
 	margin-right: 64px;
 
@@ -82,28 +82,28 @@ export default class Fingerprint extends mixins( Messages ) {
 		margin-left: 0.5em;
 	}
 
-	&:not( .wb-ui-fingerprint--primaryLanguage ) {
+	&:not( .wb-ui-monolingualfingerprintview--primaryLanguage ) {
 		@include media-breakpoint-up(md) {
-			.wb-ui-fingerprint__terms {
+			.wb-ui-monolingualfingerprintview__terms {
 				display: flex;
 				flex: 1 1 0;
 			}
 
-			.wb-ui-fingerprint__label-wrapper,
-			.wb-ui-fingerprint__description-wrapper,
-			.wb-ui-fingerprint__aliases-wrapper {
+			.wb-ui-monolingualfingerprintview__label-wrapper,
+			.wb-ui-monolingualfingerprintview__description-wrapper,
+			.wb-ui-monolingualfingerprintview__aliases-wrapper {
 				flex: 1 1 100%;
 
 				@include shrinking-flex-element();
 			}
 
-			.wb-ui-fingerprint__description-wrapper,
-			.wb-ui-fingerprint__aliases-wrapper {
+			.wb-ui-monolingualfingerprintview__description-wrapper,
+			.wb-ui-monolingualfingerprintview__aliases-wrapper {
 				margin-left: 16px;
 			}
 
-			.wb-ui-fingerprint__description-inner,
-			.wb-ui-fingerprint__aliases-inner {
+			.wb-ui-monolingualfingerprintview__description-inner,
+			.wb-ui-monolingualfingerprintview__aliases-inner {
 				margin-left: 0;
 			}
 		}
@@ -111,13 +111,13 @@ export default class Fingerprint extends mixins( Messages ) {
 		@include media-breakpoint-up(lg) {
 			display: flex;
 
-			.wb-ui-fingerprint__label-wrapper,
-			.wb-ui-fingerprint__description-wrapper,
-			.wb-ui-fingerprint__aliases-wrapper {
+			.wb-ui-monolingualfingerprintview__label-wrapper,
+			.wb-ui-monolingualfingerprintview__description-wrapper,
+			.wb-ui-monolingualfingerprintview__aliases-wrapper {
 				margin-top: 0;
 			}
 
-			.wb-ui-fingerprint__language {
+			.wb-ui-monolingualfingerprintview__language {
 				flex-basis: 128px;
 				margin-right: 16px;
 			}

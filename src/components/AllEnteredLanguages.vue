@@ -1,18 +1,18 @@
 <template>
 	<div class="wb-ui-all-entered-languages">
-		<Fingerprint v-for="language in allEnteredLanguagesWithoutUserLanguages" :languageCode="language" :key="language"/>
+		<MonolingualFingerprintView v-for="language in allEnteredLanguagesWithoutUserLanguages" :languageCode="language" :key="language"/>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 import Component from 'vue-class-component';
-import Fingerprint from '@/components/Fingerprint.vue';
+import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import { NS_ENTITY, NS_USER } from '@/store/namespaces';
 import { namespace } from 'vuex-class';
 
 @Component( {
-	components: { Fingerprint },
+	components: { MonolingualFingerprintView },
 } )
 export default class AllEnteredLanguages extends ( Vue as VueConstructor ) {
 

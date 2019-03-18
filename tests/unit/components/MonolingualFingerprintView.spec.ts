@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import Fingerprint from '@/components/Fingerprint.vue';
+import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
 import Label from '@/components/Label.vue';
 import Description from '@/components/Description.vue';
@@ -20,7 +20,7 @@ function createMinimalStoreWithLanguage( languageCode: string ) {
 	return store;
 }
 
-describe( 'Fingerprint.vue', () => {
+describe( 'MonolingualFingerprintView.vue', () => {
 
 	it( 'renders label, description and aliases in the given language', () => {
 		const entity = newFingerprintable( {
@@ -34,7 +34,7 @@ describe( 'Fingerprint.vue', () => {
 		store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
 		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), entity );
 
-		const wrapper = shallowMount( Fingerprint, { store, propsData: { languageCode: language.code } } );
+		const wrapper = shallowMount( MonolingualFingerprintView, { store, propsData: { languageCode: language.code } } );
 
 		expect( wrapper.find( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
 		expect( wrapper.find( Description ).props( 'description' ) ).toBe( entity.descriptions[ language.code ] );
@@ -46,7 +46,7 @@ describe( 'Fingerprint.vue', () => {
 			const languageCode = 'en';
 			const store = createMinimalStoreWithLanguage( languageCode );
 			const wrapper = shallowMount(
-				Fingerprint,
+				MonolingualFingerprintView,
 				{
 					store,
 					propsData: {
@@ -55,7 +55,7 @@ describe( 'Fingerprint.vue', () => {
 					},
 				},
 			);
-			expect( wrapper.classes( 'wb-ui-fingerprint--primaryLanguage' ) ).toBeTruthy();
+			expect( wrapper.classes( 'wb-ui-monolingualfingerprintview--primaryLanguage' ) ).toBeTruthy();
 			expect( wrapper.find( Label ).props() ).toHaveProperty( 'isPrimary', true );
 		} );
 
@@ -63,7 +63,7 @@ describe( 'Fingerprint.vue', () => {
 			const languageCode = 'en';
 			const store = createMinimalStoreWithLanguage( languageCode );
 			const wrapper = shallowMount(
-				Fingerprint,
+				MonolingualFingerprintView,
 				{
 					store,
 					propsData: {
@@ -72,7 +72,7 @@ describe( 'Fingerprint.vue', () => {
 					},
 				},
 			);
-			expect( wrapper.classes() ).toEqual( [ 'wb-ui-fingerprint' ] );
+			expect( wrapper.classes() ).toEqual( [ 'wb-ui-monolingualfingerprintview' ] );
 			expect( wrapper.find( Label ).props() ).toHaveProperty( 'isPrimary', false );
 		} );
 	} );
@@ -83,7 +83,7 @@ describe( 'Fingerprint.vue', () => {
 		const store = createStore();
 		store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
 		const wrapper = shallowMount(
-			Fingerprint,
+			MonolingualFingerprintView,
 			{
 				store,
 				propsData: {
@@ -92,7 +92,7 @@ describe( 'Fingerprint.vue', () => {
 			},
 		);
 
-		const languageNameInUserLanguage = wrapper.find( '.wb-ui-fingerprint__language' );
+		const languageNameInUserLanguage = wrapper.find( '.wb-ui-monolingualfingerprintview__language' );
 
 		expect( languageNameInUserLanguage.is( LanguageNameInUserLanguage ) ).toBeTruthy();
 		expect( languageNameInUserLanguage.props( 'language' ) ).toBe( language );

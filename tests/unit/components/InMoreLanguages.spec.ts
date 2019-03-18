@@ -1,5 +1,5 @@
 import InMoreLanguages from '@/components/InMoreLanguages.vue';
-import Fingerprint from '@/components/Fingerprint.vue';
+import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import AllEnteredLanguagesExpandable from '@/components/AllEnteredLanguagesExpandable.vue';
 import { shallowMount, WrapperArray } from '@vue/test-utils';
 import { SECONDARY_LANGUAGES_INIT } from '@/store/user/mutationTypes';
@@ -9,14 +9,14 @@ import { NS_USER } from '@/store/namespaces';
 
 describe( 'InMoreLanguages', () => {
 
-	it( 'shows a list of Fingerprints in the user\'s top secondary languages', () => {
+	it( 'shows a list of MonolingualFingerprintViews in the user\'s top secondary languages', () => {
 		const secondaryLanguages = [ 'en', 'fr', 'jp' ];
 		const store = createStore();
 
 		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), secondaryLanguages );
 
 		const wrapper = shallowMount( InMoreLanguages, { store } );
-		const fingerprints: WrapperArray<Fingerprint> = wrapper.findAll( Fingerprint );
+		const fingerprints: WrapperArray<MonolingualFingerprintView> = wrapper.findAll( MonolingualFingerprintView );
 
 		expect( fingerprints ).toHaveLength( 3 );
 

@@ -395,7 +395,7 @@ describe( 'Termbox SSR', () => {
 
 	describe( 'successful /termbox request for a known entity', () => {
 
-		it( 'renders the primary Fingerprint component in the requested language', () => {
+		it( 'renders the primary MonolingualFingerprintView component in the requested language', () => {
 			const entityId = 'Q64';
 			const revision = REVISION_MATCHING_ENTITY;
 			const language = 'de';
@@ -418,15 +418,15 @@ describe( 'Termbox SSR', () => {
 
 				expect( $dom.querySelectorAll( '.wb-ui-termbox' ).length ).toBe( 1 );
 
-				const $primaryLanguageFingerprint = $dom
-					.querySelector( '.wb-ui-fingerprint--primaryLanguage' );
-				expect( $primaryLanguageFingerprint )
+				const $primaryLanguageMonolingualFingerprintView = $dom
+					.querySelector( '.wb-ui-monolingualfingerprintview--primaryLanguage' );
+				expect( $primaryLanguageMonolingualFingerprintView )
 					.toBeVisible();
 
-				const $language = $dom.querySelector( '.wb-ui-fingerprint__language' );
+				const $language = $dom.querySelector( '.wb-ui-monolingualfingerprintview__language' );
 				expect( $language ).toHaveTextContent( germanInGerman );
 
-				expectLabelInLanguage( $primaryLanguageFingerprint!, language );
+				expectLabelInLanguage( $primaryLanguageMonolingualFingerprintView!, language );
 
 				const $description = $dom.querySelector( '.wb-ui-description' );
 				expect( $description ).toHaveTextContent( mockQ64.descriptions.de.value );
@@ -464,13 +464,13 @@ describe( 'Termbox SSR', () => {
 				expectSuccessfulRequest( response );
 
 				const $dom = getDomFromMarkup( response.text );
-				const $moreLanguagesFingerprints = $dom.querySelectorAll(
-					'.wb-ui-in-more-languages .wb-ui-fingerprint',
+				const $moreLanguagesMonolingualFingerprintViews = $dom.querySelectorAll(
+					'.wb-ui-in-more-languages .wb-ui-monolingualfingerprintview',
 				);
-				expect( $moreLanguagesFingerprints ).toHaveLength( secondaryLanguages.length );
+				expect( $moreLanguagesMonolingualFingerprintViews ).toHaveLength( secondaryLanguages.length );
 
-				expectLabelInLanguage( $moreLanguagesFingerprints[ 0 ], secondaryLanguages[ 0 ] );
-				expectLabelInLanguage( $moreLanguagesFingerprints[ 1 ], secondaryLanguages[ 1 ] );
+				expectLabelInLanguage( $moreLanguagesMonolingualFingerprintViews[ 0 ], secondaryLanguages[ 0 ] );
+				expectLabelInLanguage( $moreLanguagesMonolingualFingerprintViews[ 1 ], secondaryLanguages[ 1 ] );
 			} );
 		} );
 

@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
-import Fingerprint from '@/components/Fingerprint.vue';
+import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import { createStore } from '@/store';
 import {
 	NS_USER,
@@ -13,7 +13,7 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
 describe( 'AllEnteredLanguages', () => {
 
-	it( 'passes language prop to Fingerprint', () => {
+	it( 'passes language prop to MonolingualFingerprintView', () => {
 		const language = 'de';
 		const store = createStore();
 		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), new FingerprintableEntity(
@@ -25,7 +25,7 @@ describe( 'AllEnteredLanguages', () => {
 
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
-		expect( wrapper.find( Fingerprint ).props( 'languageCode' ) ).toBe( language );
+		expect( wrapper.find( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( language );
 	} );
 
 	it( 'does not contain the primary user language', () => {
@@ -44,8 +44,8 @@ describe( 'AllEnteredLanguages', () => {
 
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
-		expect( wrapper.findAll( Fingerprint ).length ).toBe( 1 );
-		expect( wrapper.find( Fingerprint ).props( 'languageCode' ) ).toBe( 'en' );
+		expect( wrapper.findAll( MonolingualFingerprintView ).length ).toBe( 1 );
+		expect( wrapper.find( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'en' );
 	} );
 
 	it( 'does not contain the secondary user languages', () => {
@@ -65,8 +65,8 @@ describe( 'AllEnteredLanguages', () => {
 
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
-		expect( wrapper.findAll( Fingerprint ).length ).toBe( 1 );
-		expect( wrapper.find( Fingerprint ).props( 'languageCode' ) ).toBe( 'de' );
+		expect( wrapper.findAll( MonolingualFingerprintView ).length ).toBe( 1 );
+		expect( wrapper.find( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'de' );
 	} );
 
 } );

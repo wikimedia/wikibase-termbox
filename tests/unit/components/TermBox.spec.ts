@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import TermBox from '@/components/TermBox.vue';
 import EditPen from '@/components/EditPen.vue';
-import Fingerprint from '@/components/Fingerprint.vue';
+import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { createStore } from '@/store';
 import {
@@ -16,15 +16,15 @@ import { mutation } from '@/store/util';
 
 describe( 'TermBox.vue', () => {
 
-	it( 'contains a Fingerprint of the user\'s primary language', () => {
+	it( 'contains a MonolingualFingerprintView of the user\'s primary language', () => {
 		const store = createStore();
 		const userLanguage = 'en';
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
 		const wrapper = shallowMount( TermBox, { store } );
 
-		expect( wrapper.find( Fingerprint ).props() )
+		expect( wrapper.find( MonolingualFingerprintView ).props() )
 			.toHaveProperty( 'languageCode', userLanguage );
-		expect( wrapper.find( Fingerprint ).props() )
+		expect( wrapper.find( MonolingualFingerprintView ).props() )
 			.toHaveProperty( 'isPrimary', true );
 	} );
 
