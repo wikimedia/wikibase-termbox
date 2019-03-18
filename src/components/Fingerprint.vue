@@ -63,7 +63,7 @@ export default class Fingerprint extends mixins( Messages ) {
 	&__language {
 		@include fontSize( 13px );
 		color: $color-dark-azureish-gray;
-		font-family: $font-family-sansserif;
+		font-family: $font-family-sans;
 	}
 
 	&__label-wrapper,

@@ -39,7 +39,7 @@ export default class Aliases extends ( mixins( Messages ) as VueConstructor ) {
 .wb-ui-aliases {
 	color: $color-light-azureish-gray;
 	line-height: 1.3em;
-	font-family: $font-family-sansserif;
+	font-family: $font-family-sans;
 
 	&__alias {
 		display: inline;

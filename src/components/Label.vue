@@ -55,7 +55,7 @@ export default class Label extends ( mixins( Messages ) as VueConstructor ) {
 	&--missing {
 		color: $color-moderate-red;
 		font-weight: normal;
-		font-family: $font-family-sansserif;
+		font-family: $font-family-sans;
 	}
 }
 </style>

@@ -40,7 +40,7 @@ export default class Description extends ( mixins( Messages ) as VueConstructor 
 .wb-ui-description {
 	color: $color-black;
 	line-height: 1.3em;
-	font-family: $font-family-sansserif;
+	font-family: $font-family-sans;
 
 	&--missing {
 		color: $color-moderate-red;
