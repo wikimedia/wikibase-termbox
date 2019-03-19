@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import inlanguage from '@/client/directives/inlanguage';
+import { Wrapper } from '@vue/test-utils';
 
 beforeEach( () => {
 	expect.hasAssertions();
@@ -18,3 +19,12 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 }
 
 Vue.directive( 'inlanguage', inlanguage );
+
+expect.extend( {
+	toHaveSlotWithContent( container: Wrapper<Vue>, slot: string, component: Wrapper<Vue> ) {
+		return {
+			pass: container.vm.$slots![ slot ]![ 0 ] === component.vm.$vnode,
+			message: () => 'Failed asserting that the \'component\' resides in \'slot\' of \'container\'.',
+		};
+	},
+} );

@@ -1,6 +1,7 @@
 {
 	"messages": [
 		"wikibase-edit",
+		"wikibase-publish",
 		"wikibase-aliases-separator",
 		"wikibase-entitytermsforlanguagelistview-more",
 		"wikibase-entitytermsview-entitytermsforlanguagelistview-toggler",

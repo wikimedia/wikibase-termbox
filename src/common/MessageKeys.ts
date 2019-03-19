@@ -1,5 +1,6 @@
 export enum MessageKeys {
 	EDIT = 'wikibase-edit',
+	PUBLISH = 'wikibase-publish',
 	ALIAS_SEPARATOR = 'wikibase-aliases-separator',
 	ALL_LANGUAGES = 'wikibase-entitytermsforlanguagelistview-more',
 	IN_MORE_LANGUAGES = 'wikibase-entitytermsview-entitytermsforlanguagelistview-toggler',

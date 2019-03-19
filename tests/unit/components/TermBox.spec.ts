@@ -1,6 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
 import TermBox from '@/components/TermBox.vue';
+import EditTools from '@/components/EditTools.vue';
 import EditPen from '@/components/EditPen.vue';
+import Publish from '@/components/Publish.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { createStore } from '@/store';
@@ -28,24 +30,51 @@ describe( 'TermBox.vue', () => {
 			.toHaveProperty( 'isPrimary', true );
 	} );
 
-	describe( 'edit pen', () => {
-		it( 'is there given the entity is editable', () => {
-			const store = createStore();
-			const editLinkUrl = '/edit/Q42';
-			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-			store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
-			const wrapper = shallowMount( TermBox, { store } );
+	describe( 'EditTools', () => {
+		describe( 'given the entity is editable', () => {
+			it( 'are there', () => {
+				const store = createStore();
+				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+				const wrapper = shallowMount( TermBox, { store } );
 
-			expect( wrapper.find( EditPen ).props() )
-				.toHaveProperty( 'href', editLinkUrl );
+				expect( wrapper.find( EditTools ).exists() ).toBeTruthy();
+			} );
+
+			it( 'have EditPen with correct link', () => {
+				const store = createStore();
+				const editLinkUrl = '/edit/Q42';
+				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+				store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
+				const wrapper = shallowMount( TermBox, { store } );
+
+				const editTools = wrapper.find( EditTools );
+				const editPen = editTools.find( EditPen );
+
+				expect( editPen.exists() ).toBeTruthy();
+				expect( editTools ).toHaveSlotWithContent( 'edit', editPen );
+				expect( editPen.props() )
+					.toHaveProperty( 'href', editLinkUrl );
+			} );
+
+			it( 'have Publish', () => {
+				const store = createStore();
+				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+				const wrapper = shallowMount( TermBox, { store } );
+
+				const editTools = wrapper.find( EditTools );
+				const publish = editTools.find( Publish );
+
+				expect( publish.exists() ).toBeTruthy();
+				expect( editTools ).toHaveSlotWithContent( 'publish', publish );
+			} );
 		} );
 
-		it( 'is not there given the entity is not editable', () => {
+		it( 'given the entity is not editable are not there', () => {
 			const store = createStore();
 			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), false );
 			const wrapper = shallowMount( TermBox, { store } );
 
-			expect( wrapper.find( EditPen ).exists() ).toBeFalsy();
+			expect( wrapper.find( EditTools ).exists() ).toBeFalsy();
 		} );
 	} );
 

@@ -3,7 +3,10 @@
 		<div class="wb-ui-termbox__primary">
 			<MonolingualFingerprintView class="wb-ui-termbox__primary-inner" :languageCode="primaryLanguage" :isPrimary="true" />
 			<div class="wb-ui-termbox__actions">
-				<EditPen :href="editLinkUrl" v-if="isEditable"></EditPen>
+				<EditTools v-if="isEditable">
+					<EditPen :href="editLinkUrl" slot="edit" />
+					<Publish slot="publish" />
+				</EditTools>
 			</div>
 		</div>
 
@@ -22,12 +25,14 @@ import {
 	NS_LINKS,
 	NS_USER,
 } from '@/store/namespaces';
+import EditTools from '@/components/EditTools.vue';
 import EditPen from '@/components/EditPen.vue';
+import Publish from '@/components/Publish.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 
 @Component( {
-	components: { InMoreLanguagesExpandable, MonolingualFingerprintView, EditPen },
+	components: { InMoreLanguagesExpandable, MonolingualFingerprintView, EditTools, EditPen, Publish },
 	computed: {
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
