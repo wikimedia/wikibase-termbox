@@ -8,7 +8,7 @@
     "build": "NODE_ENV=production vue-cli-service build",
     "build-server": "NODE_ENV=production WEBPACK_TARGET=node vue-cli-service build && tsc -p tsconfig.server.json && rm -rf node_modules/.cache",
     "fix": "tslint --format codeFrame --fix --project tsconfig.all.json -c tslint.json",
-    "postinstall": "node build/wikimedia-ui-base.js",
+    "prepare": "node build/wikimedia-ui-base.js",
     "test": "npm-run-all test:*",
     "test:lint": "tslint --format codeFrame --project tsconfig.all.json -c tslint.json && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "vue-cli-service test:unit",
