@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Axios from 'axios';
 import init from '@/client/init';
 import buildApp from '@/common/buildApp';
 import TermboxRequest from '@/common/TermboxRequest';
@@ -11,6 +12,10 @@ import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKeys } from '@/common/MessageKeys';
 import inlanguage from '@/client/directives/inlanguage';
+import { GLOBAL_REQUEST_PARAMS } from '@/common/constants';
+import formDataRequestTransformation from '@/client/axios/formDataRequestTransformation';
+import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
+import editTokenRequestInterceptor from '@/client/axios/editTokenRequestInterceptor';
 
 Vue.config.productionTip = false;
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
@@ -50,6 +55,17 @@ factory.setEntityEditabilityResolver( {
 		);
 	},
 } );
+
+const repoConfig = ( window as MwWindow ).mw.config.get( 'wbRepo' );
+const axios = Axios.create( {
+	baseURL: repoConfig.url + repoConfig.scriptPath,
+	params: GLOBAL_REQUEST_PARAMS,
+	transformRequest: formDataRequestTransformation,
+} );
+
+axios.interceptors.request.use( editTokenRequestInterceptor( axios ) );
+
+factory.setWritingEntityRepository( new AxiosWritingEntityRepository( axios ) );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
 	buildApp( termboxRequest ).then( ( app ) => {

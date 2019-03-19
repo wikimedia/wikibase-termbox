@@ -60,4 +60,20 @@ describe( 'TermboxFactory', () => {
 		} );
 	} );
 
+	describe( 'writingEntityRepository', () => {
+		it( 'throws an error if it is not set', () => {
+			expect( () => newTermboxFactory().getWritingEntityRepository() ).toThrow();
+		} );
+
+		it( 'can set and get an writingEntityRepository', () => {
+			const factory = newTermboxFactory();
+			const mockRepository = {
+				saveEntity: () => Promise.resolve(),
+			};
+
+			factory.setWritingEntityRepository( mockRepository );
+			expect( factory.getWritingEntityRepository() ).toBe( mockRepository );
+		} );
+	} );
+
 } );

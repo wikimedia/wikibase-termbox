@@ -3,6 +3,7 @@ import EntityRepository from '@/common/data-access/EntityRepository';
 import LanguageRepository from '@/common/data-access/LanguageRepository';
 import MessagesRepository from '@/common/data-access/MessagesRepository';
 import EntityEditabilityResolver from '@/common/data-access/EntityEditabilityResolver';
+import WritingEntityRepository from '@/common/data-access/WritingEntityRepository';
 
 export default class TermboxFactory {
 	private languageTranslationRepository?: LanguageTranslationRepository;
@@ -10,6 +11,7 @@ export default class TermboxFactory {
 	private entityRepository?: EntityRepository;
 	private messagesRepository?: MessagesRepository;
 	private entityEditabilityResolver?: EntityEditabilityResolver;
+	private writingEntityRepository?: WritingEntityRepository;
 
 	public setLanguageTranslationRepository( lookup: LanguageTranslationRepository ) {
 		this.languageTranslationRepository = lookup;
@@ -68,6 +70,18 @@ export default class TermboxFactory {
 			return this.entityEditabilityResolver;
 		} else {
 			throw new Error( 'entityEditabilityResolver is undefined' );
+		}
+	}
+
+	public setWritingEntityRepository( writingEntityRepository: WritingEntityRepository ) {
+		this.writingEntityRepository = writingEntityRepository;
+	}
+
+	public getWritingEntityRepository() {
+		if ( this.writingEntityRepository ) {
+			return this.writingEntityRepository;
+		} else {
+			throw new Error( 'writingEntityRepository is undefined' );
 		}
 	}
 

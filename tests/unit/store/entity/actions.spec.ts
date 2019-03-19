@@ -1,11 +1,12 @@
 import { actions } from '@/store/entity/actions';
-import { ENTITY_INIT } from '@/store/entity/actionTypes';
+import { ENTITY_INIT, SAVE } from '@/store/entity/actionTypes';
 import { ENTITY_INIT as ENTITY_INIT_MUTATION } from '@/store/entity/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
 import newMockStore from '../newMockStore';
+import newFingerprintable from '../../../newFingerprintable';
 
 describe( 'entity/actions', () => {
 	describe( ENTITY_INIT, () => {
@@ -74,6 +75,32 @@ describe( 'entity/actions', () => {
 			actions[ ENTITY_INIT ]( newMockStore( {} ), { entity: entityId, revision } ).catch( ( thisError: Error ) => {
 				expect( thisError ).toBe( error );
 				done();
+			} );
+		} );
+	} );
+
+	describe( SAVE, () => {
+		it( 'saves the entity', () => {
+			const entity = newFingerprintable( {
+				id: 'Q16587531',
+				labels: { en: 'potato', de: 'Kartoffel' },
+				descriptions: { en: 'root vegetable' },
+				aliases: { de: [ 'Erdapfel', 'Grundbirne' ] },
+			} );
+			const state = {
+				id: entity.id,
+				labels: entity.labels,
+				descriptions: entity.descriptions,
+				aliases: entity.aliases,
+			};
+			const writingRepository = {
+				saveEntity: jest.fn(),
+			};
+			writingRepository.saveEntity.mockReturnValue( Promise.resolve() );
+			factory.setWritingEntityRepository( writingRepository );
+
+			return actions[ SAVE ]( newMockStore( { state } ) ).then( () => {
+				expect( writingRepository.saveEntity ).toBeCalledWith( entity, /* TODO */ 0 );
 			} );
 		} );
 	} );
