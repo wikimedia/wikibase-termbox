@@ -29,12 +29,9 @@ variants:
     includes: [ build-server ]
     entrypoint: [ npm, test ]
   install-prod:
-    base: docker-registry.wikimedia.org/nodejs10-devel
-    apt:
-      packages: [ git ] #needed for npm packages from git
+    includes: [ build ]
     node:
       env: production
-      requirements: [ package.json, package-lock.json ]
   production:
     artifacts:
       - from: install-prod
