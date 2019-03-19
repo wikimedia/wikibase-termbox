@@ -1,7 +1,6 @@
 import { Module } from 'vuex';
 import User from '@/store/user/User';
 import { actions } from '@/store/user/actions';
-import { getters } from '@/store/user/getters';
 import { mutations } from '@/store/user/mutations';
 
 export default function (): Module<User, any> {
@@ -16,7 +15,6 @@ export default function (): Module<User, any> {
 		namespaced,
 		state,
 		actions,
-		getters,
 		mutations,
 	};
 }
