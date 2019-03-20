@@ -1,34 +1,34 @@
 - hosts: ssr
   name: Run the SSR service based on the blubbler production variant
   tasks:
-    - name: install git
+    - name: Ensure git is installed
       package:
           name: git
           state: present
 
-    - name: install docker
+    - name: Ensure docker is installed
       package:
           name: docker-ce
           state: present
 
-    - name: install blubber
+    - name: Ensure blubber is installed
       package:
           name: blubber
           state: present
 
-    - name: Create project directory
+    - name: Ensure project directory exists
       file:
           path: "{{ PATH }}"
           state: directory
 
-    - name: Init checkout
+    - name: Ensure project directory contains checkout
       git:
         repo: https://gerrit.wikimedia.org/r/wikibase/termbox
         dest: "{{ PATH }}/git"
         update: no
         version: "{{ BRANCH }}"
 
-    - name: Copy updater
+    - name: Ensure updater is in place
       template:
           src: templates/updater.sh.j2
           dest: "{{ PATH }}/updater.sh"
@@ -36,7 +36,7 @@
           group: "root"
           mode: 0744
 
-    - name: Add updater to crontab
+    - name: Ensure updater is configured in crontab
       cron:
           name: Termbox updater
           job: "{{ PATH }}/updater.sh"
@@ -44,7 +44,7 @@
           user: root
           state: present
 
-    - name: Copy service config
+    - name: Ensure service is configured
       template:
         src: templates/termbox.service.j2
         dest: "/lib/systemd/system/termbox.service"
@@ -52,11 +52,11 @@
         group: "root"
         mode: 0644
 
-    - name: Ensure systemd re-reads configs
+    - name: Ensure systemd is using latest config
       systemd:
         daemon_reload: yes
 
-    - name: Make sure the termbox service is running with the latest config
+    - name: Ensure the termbox service is running with the latest config
       systemd:
         state: restarted
         name: termbox
