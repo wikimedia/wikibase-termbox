@@ -21,11 +21,13 @@ describe( 'entity/actions', () => {
 
 		it( `commits to ${ENTITY_INIT_MUTATION} on successful FingerprintableEntity lookup`, ( done ) => {
 			const entityId = 'Q42';
+			const revision = 4711;
 
 			const entity = new FingerprintableEntity( entityId, {}, {}, {} );
 			factory.setEntityRepository( {
-				getFingerprintableEntity: ( thisEntityId: string ) => {
+				getFingerprintableEntity: ( thisEntityId: string, thisRevision: number ) => {
 					expect( thisEntityId ).toBe( entityId );
+					expect( thisRevision ).toBe( revision );
 					return Promise.resolve( entity );
 				},
 			} );
@@ -34,7 +36,7 @@ describe( 'entity/actions', () => {
 			};
 			const action = actions[ ENTITY_INIT ] as any;
 
-			action( context, entityId ).then( () => {
+			action( context, { entity: entityId, revision } ).then( () => {
 				expect( context.commit ).toBeCalledWith(
 					ENTITY_INIT_MUTATION,
 					entity,
@@ -60,6 +62,7 @@ describe( 'entity/actions', () => {
 
 		it( `propagates lookup rejection`, ( done ) => {
 			const entityId = 'Q1';
+			const revision = 4711;
 			const error = new EntityNotFound( 'Entity not found' );
 			factory.setEntityRepository( {
 				getFingerprintableEntity: ( thisEntityId: string ) => {
@@ -69,7 +72,7 @@ describe( 'entity/actions', () => {
 			} );
 			const action = actions[ ENTITY_INIT ] as any; // TODO
 
-			action( {}, entityId ).catch( ( thisError: Error ) => {
+			action( {}, { entity: entityId, revision } ).catch( ( thisError: Error ) => {
 				expect( thisError ).toBe( error );
 				done();
 			} );

@@ -19,6 +19,7 @@ describe( 'buildApp', () => {
 		const request = {
 			language: 'en',
 			entityId: 'Q123',
+			revision: 31510,
 			editLinkUrl: '/edit/Q123',
 			preferredLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
 		};
@@ -33,6 +34,7 @@ describe( 'buildApp', () => {
 		const request = {
 			language: 'en',
 			entityId: 'Q123',
+			revision: 31510,
 			editLinkUrl: '/edit/Q123',
 			preferredLanguages: [ 'en', 'de', 'fr', 'it', 'pl' ],
 		};

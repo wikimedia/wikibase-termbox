@@ -24,6 +24,7 @@ export default class TermboxHandler {
 				new TermboxRequest(
 					query.language,
 					query.entity,
+					query.revision,
 					query.editLink,
 					query.preferredLanguages.split( '|' ),
 				),

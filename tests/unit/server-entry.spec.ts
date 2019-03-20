@@ -19,14 +19,17 @@ function getMockBundleRendererServices() {
 	return services;
 }
 
+function newFineBundleRendererContext() {
+	return new BundleRendererContext(
+		getMockBundleRendererServices(),
+		new TermboxRequest( 'en', 'Q4711', 31510, '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
+	);
+}
+
 describe( 'server-entry', () => {
 	it( 'passes TermboxRequest to buildApp and resolves to HTML', ( done ) => {
 		const result = 'hello';
-
-		const ssrContext = new BundleRendererContext(
-			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
-		);
+		const ssrContext = newFineBundleRendererContext();
 
 		mockBuildApp.mockResolvedValue( 'hello' );
 
@@ -38,10 +41,7 @@ describe( 'server-entry', () => {
 	} );
 
 	it( 'uses axios from services', ( done ) => {
-		const ssrContext = new BundleRendererContext(
-			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
-		);
+		const ssrContext = newFineBundleRendererContext();
 
 		serverEntry( ssrContext ).then( () => {
 			expect( getAxios ).toBeCalledTimes( 2 );
@@ -50,10 +50,7 @@ describe( 'server-entry', () => {
 	} );
 
 	it( 'converts bundle internal EntityNotFound exception to DTO', ( done ) => {
-		const ssrContext = new BundleRendererContext(
-			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
-		);
+		const ssrContext = newFineBundleRendererContext();
 
 		mockBuildApp.mockReturnValue( Promise.reject( new EntityNotFound( 'bad entity id' ) ) );
 
@@ -65,10 +62,7 @@ describe( 'server-entry', () => {
 	} );
 
 	it( 'rethrows exceptions without custom propagation handling', ( done ) => {
-		const ssrContext = new BundleRendererContext(
-			getMockBundleRendererServices(),
-			new TermboxRequest( 'en', 'Q4711', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
-		);
+		const ssrContext = newFineBundleRendererContext();
 		const someException = new Error( 'mine' );
 
 		mockBuildApp.mockReturnValue( Promise.reject( someException ) );

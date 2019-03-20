@@ -29,7 +29,10 @@ export default class App extends Vue {
 	public static asyncData( store: Store<any>, request: TermboxRequest ): Promise<any> {
 		return Promise.all( [
 			store.dispatch( action( NS_LANGUAGE, LANGUAGE_INIT ) ),
-			store.dispatch( action( NS_ENTITY, ENTITY_INIT ), request.entityId ),
+			store.dispatch(
+				action( NS_ENTITY, ENTITY_INIT ),
+				{ entity: request.entityId, revision: request.revision },
+			),
 			store.dispatch(
 				action( NS_USER, LANGUAGE_PREFERENCE ),
 				{ primaryLanguage: request.language, preferredLanguages: request.preferredLanguages },

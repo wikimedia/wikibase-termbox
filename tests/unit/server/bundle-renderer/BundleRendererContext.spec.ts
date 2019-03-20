@@ -9,7 +9,7 @@ describe( 'BundleRendererContext', () => {
 			axios,
 			{ log: () => {} },
 		);
-		const request = new TermboxRequest( 'Q71', 'de', '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] );
+		const request = new TermboxRequest( 'Q71', 'de', 31510, '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] );
 
 		const context = new BundleRendererContext(
 			services,
