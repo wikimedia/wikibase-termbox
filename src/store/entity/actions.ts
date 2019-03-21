@@ -3,10 +3,16 @@ import Entity from '@/store/entity/Entity';
 import { factory } from '@/common/TermboxFactory';
 import {
 	ENTITY_INIT,
+	ENTITY_LABEL_EDIT,
 	ENTITY_SAVE,
 } from '@/store/entity/actionTypes';
-import { EDITABILITY_UPDATE, ENTITY_INIT as ENTITY_INIT_MUTATION } from '@/store/entity/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import {
+	EDITABILITY_UPDATE,
+	ENTITY_INIT as ENTITY_INIT_MUTATION,
+	ENTITY_SET_LABEL as SET_ENTITY_LABEL_MUTATION,
+} from '@/store/entity/mutationTypes';
+import Term from '@/datamodel/Term';
 
 export const actions = {
 
@@ -27,6 +33,11 @@ export const actions = {
 			context.state.descriptions,
 			context.state.aliases,
 		), /* TODO */ 0 );
+	},
+
+	[ ENTITY_LABEL_EDIT ]( context: ActionContext<Entity, any>, payload: { language: string, value: string } ): void {
+		const labelTerm: Term = { language: payload.language, value: payload.value };
+		context.commit( SET_ENTITY_LABEL_MUTATION, labelTerm );
 	},
 
 };

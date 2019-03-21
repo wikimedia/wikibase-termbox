@@ -1,6 +1,13 @@
 import { actions } from '@/store/entity/actions';
-import { ENTITY_INIT, ENTITY_SAVE } from '@/store/entity/actionTypes';
-import { ENTITY_INIT as ENTITY_INIT_MUTATION } from '@/store/entity/mutationTypes';
+import {
+	ENTITY_INIT,
+	ENTITY_LABEL_EDIT,
+	ENTITY_SAVE,
+} from '@/store/entity/actionTypes';
+import {
+	ENTITY_INIT as ENTITY_INIT_MUTATION,
+	ENTITY_SET_LABEL as ENTITY_SET_LABEL_MUTATION,
+} from '@/store/entity/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
@@ -102,6 +109,22 @@ describe( 'entity/actions', () => {
 			return actions[ ENTITY_SAVE ]( newMockStore( { state } ) ).then( () => {
 				expect( writingRepository.saveEntity ).toBeCalledWith( entity, /* TODO */ 0 );
 			} );
+		} );
+	} );
+
+	describe( ENTITY_LABEL_EDIT, () => {
+		it( `commits to ${ENTITY_SET_LABEL_MUTATION} on label update action`, () => {
+			const commitMock = jest.fn();
+			const context = newMockStore( {
+				commit: commitMock,
+			} );
+
+			const newTerm = { language: 'en', value: 'goat' };
+			actions[ ENTITY_LABEL_EDIT ]( context, newTerm );
+			expect( commitMock ).toHaveBeenLastCalledWith(
+				ENTITY_SET_LABEL_MUTATION,
+				newTerm,
+			);
 		} );
 	} );
 

@@ -2,6 +2,7 @@ import { mutations } from '@/store/entity/mutations';
 import {
 	ENTITY_INIT,
 	EDITABILITY_UPDATE,
+	ENTITY_SET_LABEL,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import Entity from '@/store/entity/Entity';
@@ -65,6 +66,35 @@ describe( 'entity/mutations', () => {
 
 		mutations[ EDITABILITY_UPDATE ]( state, false );
 		expect( state.isEditable ).toBe( false );
+	} );
+
+	describe( ENTITY_SET_LABEL, () => {
+		it( 'creates a new label in a language if none exists', () => {
+			const language = 'de';
+			const newLabel = 'freizeit';
+			const store = newEntityState();
+
+			const newTerm = { language, value: newLabel };
+			mutations[ ENTITY_SET_LABEL ]( store, newTerm );
+			expect( store.labels[language] ).toBe( newTerm );
+		} );
+
+		it( 'overwrites a label in a language if one exists', () => {
+			const language = 'de';
+			const newLabel = 'Freizeit';
+			const store = newEntityState( {
+				labels: {
+					[ language ]: {
+						language,
+						value: 'Arbeit',
+					},
+				},
+			} );
+
+			const newTerm = { language, value: newLabel };
+			mutations[ ENTITY_SET_LABEL ]( store, newTerm );
+			expect( store.labels[language] ).toBe( newTerm );
+		} );
 	} );
 
 } );
