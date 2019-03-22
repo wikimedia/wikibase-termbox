@@ -7,6 +7,7 @@ import {
 import { factory } from '@/common/TermboxFactory';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
 import LanguageCollection from '@/datamodel/LanguageCollection';
+import newMockStore from '../newMockStore';
 
 describe( 'language/actions', () => {
 	describe( LANGUAGE_INIT, () => {
@@ -31,12 +32,11 @@ describe( 'language/actions', () => {
 				getLanguages: getLanguagesMock,
 			} );
 			const commitMock = jest.fn();
-			const context = {
+			const context = newMockStore( {
 				commit: commitMock,
-			};
-			const action = actions[ LANGUAGE_INIT ] as any; // TODO
+			} );
 
-			action( context ).then( () => {
+			actions[ LANGUAGE_INIT ]( context ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_UPDATE,
 					languages,
@@ -62,12 +62,11 @@ describe( 'language/actions', () => {
 				},
 			} );
 			const commitMock = jest.fn();
-			const context = {
+			const context = newMockStore( {
 				commit: commitMock,
-			};
-			const action = actions[ ENSURE_AVAILABLE_IN_LANGUAGE ] as any; // TODO
+			} );
 
-			action( context, inLanguage ).then( () => {
+			actions[ ENSURE_AVAILABLE_IN_LANGUAGE ]( context, inLanguage ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_TRANSLATION_UPDATE,
 					translations,

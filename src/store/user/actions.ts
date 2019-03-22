@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree } from 'vuex';
+import { ActionContext } from 'vuex';
 import { LANGUAGE_PREFERENCE } from './actionTypes';
 import {
 	LANGUAGE_INIT,
@@ -13,11 +13,11 @@ import {
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import { action } from '@/store/util';
 
-export const actions: ActionTree<User, any> = {
+export const actions = {
 
 	[ LANGUAGE_PREFERENCE ](
 		context: ActionContext<User, any>,
-		{ primaryLanguage, preferredLanguages },
+		{ primaryLanguage, preferredLanguages }: { primaryLanguage: string, preferredLanguages: string[] },
 	): Promise<[void, void]> {
 		context.commit( LANGUAGE_INIT, primaryLanguage );
 

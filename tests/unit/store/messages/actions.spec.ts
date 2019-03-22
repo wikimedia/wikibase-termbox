@@ -2,6 +2,7 @@ import { actions } from '@/store/messages/actions';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
+import newMockStore from '../newMockStore';
 
 describe( 'messages/actions', () => {
 	describe( MESSAGES_INIT, () => {
@@ -18,13 +19,11 @@ describe( 'messages/actions', () => {
 				getMessagesInLanguage: ( inLanguage: string ) => Promise.resolve( mockMessages ),
 			} );
 
-			const context = {
+			const context = newMockStore( {
 				commit: jest.fn(),
-			};
+			} );
 
-			const action = actions[ MESSAGES_INIT ] as any;
-
-			action( context, 'de' ).then( () => {
+			actions[ MESSAGES_INIT ]( context, 'de' ).then( () => {
 				expect( context.commit ).toBeCalledWith(
 					MESSAGES_INIT_MUTATION,
 					mockMessages,
