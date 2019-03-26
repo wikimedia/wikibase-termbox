@@ -3,6 +3,7 @@ import {
 	ENTITY_INIT,
 	EDITABILITY_UPDATE,
 	ENTITY_SET_LABEL,
+	ENTITY_SET_ALIASES,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import Entity from '@/store/entity/Entity';
@@ -94,6 +95,33 @@ describe( 'entity/mutations', () => {
 			const newTerm = { language, value: newLabel };
 			mutations[ ENTITY_SET_LABEL ]( store, newTerm );
 			expect( store.labels[language] ).toBe( newTerm );
+		} );
+	} );
+
+	describe( ENTITY_SET_ALIASES, () => {
+		it( 'creates a new entry if there are no aliases in the language', () => {
+			const state = newEntityState( );
+			const language = 'en';
+			const terms = [ { language, value: 'hat' } ];
+
+			mutations[ ENTITY_SET_ALIASES ]( state, { language, terms } );
+			expect( state.aliases[ language ] ).toBe( terms );
+		} );
+
+		it( 'overwrites the existing aliases in the language', () => {
+			const language = 'en';
+			const state = newEntityState( {
+				aliases: {
+					en: [
+						{ language, value: 'red' },
+					],
+				},
+			} );
+
+			const newTerms = [ { language, value: 'hat' } ];
+
+			mutations[ ENTITY_SET_ALIASES ]( state, { language, terms: newTerms } );
+			expect( state.aliases[ language ] ).toBe( newTerms );
 		} );
 	} );
 

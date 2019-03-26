@@ -1,12 +1,14 @@
 import { actions } from '@/store/entity/actions';
 import {
 	ENTITY_INIT,
+	ENTITY_ALIASES_EDIT,
 	ENTITY_LABEL_EDIT,
 	ENTITY_SAVE,
 } from '@/store/entity/actionTypes';
 import {
 	ENTITY_INIT as ENTITY_INIT_MUTATION,
 	ENTITY_SET_LABEL as ENTITY_SET_LABEL_MUTATION,
+	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 } from '@/store/entity/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -125,6 +127,25 @@ describe( 'entity/actions', () => {
 				ENTITY_SET_LABEL_MUTATION,
 				newTerm,
 			);
+		} );
+	} );
+
+	describe( ENTITY_ALIASES_EDIT , () => {
+		it( `commits to ${ ENTITY_ALIASES_EDIT_MUTATION }`, () => {
+			const context = newMockStore( {
+				commit: jest.fn(),
+			} );
+
+			const language = 'en';
+			const termString1 = 'potato';
+			const termString2 = 'spud';
+			const expectedTerms = [ { language, value: termString1 }, { language, value: termString2 } ];
+
+			( actions[ ENTITY_ALIASES_EDIT ] )(
+				context,
+				{language, aliasValues: [ termString1, termString2 ] },
+				);
+			expect( context.commit ).toHaveBeenCalledWith( ENTITY_ALIASES_EDIT_MUTATION, { language, terms: expectedTerms } );
 		} );
 	} );
 
