@@ -4,6 +4,7 @@ import {
 	EDITABILITY_UPDATE,
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
+	ENTITY_SET_DESCRIPTION,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import Entity from '@/store/entity/Entity';
@@ -91,10 +92,38 @@ describe( 'entity/mutations', () => {
 					},
 				},
 			} );
-
 			const newTerm = { language, value: newLabel };
 			mutations[ ENTITY_SET_LABEL ]( store, newTerm );
 			expect( store.labels[language] ).toBe( newTerm );
+		} );
+	} );
+
+	describe( ENTITY_SET_DESCRIPTION, () => {
+		it( 'creates a new description in a language if none exists', () => {
+			const language = 'fr';
+			const newDescription = 'a new thing';
+			const state = newEntityState();
+
+			const newTerm = { language, value: newDescription };
+			mutations[ ENTITY_SET_DESCRIPTION ]( state, newTerm );
+			expect( state.descriptions[language] ).toBe( newTerm );
+		} );
+
+		it( 'overwrites a description in a language if one exists', () => {
+			const language = 'en';
+			const newDescription = 'a new thing';
+			const state = newEntityState( {
+				descriptions: {
+					[ language ]: {
+						language,
+						value: 'an old thing',
+					},
+				},
+			} );
+
+			const newTerm = { language, value: newDescription };
+			mutations[ ENTITY_SET_DESCRIPTION ]( state, newTerm );
+			expect( state.descriptions[language] ).toBe( newTerm );
 		} );
 	} );
 
@@ -122,6 +151,7 @@ describe( 'entity/mutations', () => {
 
 			mutations[ ENTITY_SET_ALIASES ]( state, { language, terms: newTerms } );
 			expect( state.aliases[ language ] ).toBe( newTerms );
+
 		} );
 	} );
 

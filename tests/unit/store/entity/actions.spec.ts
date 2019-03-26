@@ -2,6 +2,7 @@ import { actions } from '@/store/entity/actions';
 import {
 	ENTITY_INIT,
 	ENTITY_ALIASES_EDIT,
+	ENTITY_DESCRIPTION_EDIT,
 	ENTITY_LABEL_EDIT,
 	ENTITY_SAVE,
 } from '@/store/entity/actionTypes';
@@ -9,6 +10,7 @@ import {
 	ENTITY_INIT as ENTITY_INIT_MUTATION,
 	ENTITY_SET_LABEL as ENTITY_SET_LABEL_MUTATION,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
+	ENTITY_SET_DESCRIPTION as ENTITY_SET_DESCRIPTION_MUTATION,
 } from '@/store/entity/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -125,6 +127,22 @@ describe( 'entity/actions', () => {
 			actions[ ENTITY_LABEL_EDIT ]( context, newTerm );
 			expect( commitMock ).toHaveBeenLastCalledWith(
 				ENTITY_SET_LABEL_MUTATION,
+				newTerm,
+			);
+		} );
+	} );
+
+	describe( ENTITY_DESCRIPTION_EDIT, () => {
+		it( `commits to ${ENTITY_SET_DESCRIPTION_MUTATION} on label update action`, () => {
+			const commitMock = jest.fn();
+			const context =  newMockStore( {
+				commit: commitMock,
+			} );
+
+			const newTerm = { language: 'en', value: 'domesticated mammal raised primarily for its milk' };
+			actions[ ENTITY_DESCRIPTION_EDIT ]( context, newTerm );
+			expect( commitMock ).toHaveBeenLastCalledWith(
+				ENTITY_SET_DESCRIPTION_MUTATION,
 				newTerm,
 			);
 		} );

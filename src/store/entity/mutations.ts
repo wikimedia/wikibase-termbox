@@ -5,6 +5,7 @@ import {
 	ENTITY_INIT,
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
+	ENTITY_SET_DESCRIPTION,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -32,6 +33,10 @@ export const mutations: MutationTree<Entity> = {
 
 	[ ENTITY_SET_ALIASES ]( state: Entity, { language, terms }: { language: string, terms: Term[] } ) {
 		state.aliases[language] = terms;
+	},
+
+	[ ENTITY_SET_DESCRIPTION ]( state: Entity, descriptionTerm: Term ) {
+		state.descriptions[ descriptionTerm.language ] = descriptionTerm;
 	},
 
 };

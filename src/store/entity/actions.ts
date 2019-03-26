@@ -5,6 +5,7 @@ import {
 	ENTITY_INIT,
 	ENTITY_LABEL_EDIT,
 	ENTITY_ALIASES_EDIT,
+	ENTITY_DESCRIPTION_EDIT,
 	ENTITY_SAVE,
 } from '@/store/entity/actionTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -13,7 +14,9 @@ import {
 	ENTITY_INIT as ENTITY_INIT_MUTATION,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 	ENTITY_SET_LABEL as SET_ENTITY_LABEL_MUTATION,
+	ENTITY_SET_DESCRIPTION as SET_ENTITY_DESCRIPTION_MUTATION,
 } from '@/store/entity/mutationTypes';
+
 import Term from '@/datamodel/Term';
 
 export const actions = {
@@ -48,6 +51,14 @@ export const actions = {
 	): void {
 		const terms: Term[] = aliasValues.map( ( alias ) => ( { language, value: alias } ) );
 		context.commit( ENTITY_ALIASES_EDIT_MUTATION, { language, terms } );
+	},
+
+	[ ENTITY_DESCRIPTION_EDIT ](
+		context: ActionContext<Entity, any>,
+		{ language, value }: { language: string, value: string },
+	): void {
+		const descriptionTerm: Term = { language, value };
+		context.commit( SET_ENTITY_DESCRIPTION_MUTATION, descriptionTerm );
 	},
 
 };
