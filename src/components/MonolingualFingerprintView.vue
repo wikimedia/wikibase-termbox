@@ -4,12 +4,29 @@
 		:class="{ 'wb-ui-monolingualfingerprintview--primaryLanguage': isPrimary }">
 		<LanguageNameInUserLanguage class="wb-ui-monolingualfingerprintview__language" :language="language"/>
 		<div class="wb-ui-monolingualfingerprintview__terms">
-			<Label :label="getLabelByLanguage( languageCode )" :isPrimary="isPrimary" class="wb-ui-monolingualfingerprintview__label-wrapper"/>
+			<component
+				:is="editMode ? 'LabelEdit' : 'Label'"
+				:label="getLabelByLanguage( languageCode )"
+				:isPrimary="isPrimary"
+				:languageCode="languageCode"
+				class="wb-ui-monolingualfingerprintview__label-wrapper"
+			/>
 			<div class="wb-ui-monolingualfingerprintview__description-wrapper">
-				<Description :description="getDescriptionByLanguage( languageCode )" class="wb-ui-monolingualfingerprintview__description-inner" />
+				<component
+					:is="editMode ? 'DescriptionEdit' : 'Description'"
+					:description="getDescriptionByLanguage( languageCode )"
+					:languageCode="languageCode"
+					class="wb-ui-monolingualfingerprintview__description-inner"
+				/>
 			</div>
 			<div class="wb-ui-monolingualfingerprintview__aliases-wrapper">
-				<Aliases :aliases="getAliasesByLanguage( languageCode )" class="wb-ui-monolingualfingerprintview__aliases-inner" />
+				<!-- alias editing pending https://phabricator.wikimedia.org/T218690 -->
+				<component
+					:is="'Aliases'"
+					:aliases="getAliasesByLanguage( languageCode )"
+					:languageCode="languageCode"
+					class="wb-ui-monolingualfingerprintview__aliases-inner"
+				/>
 			</div>
 		</div>
 	</div>
@@ -18,20 +35,39 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import Messages from './mixins/Messages';
-import { mapGetters } from 'vuex';
+import {
+	mapState,
+	mapGetters,
+} from 'vuex';
 import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
 import Label from '@/components/Label.vue';
+import LabelEdit from '@/components/LabelEdit.vue';
 import Description from '@/components/Description.vue';
+import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import Aliases from '@/components/Aliases.vue';
+import AliasesEdit from '@/components/AliasesEdit.vue';
 import Language from '@/datamodel/Language';
 import { namespace } from 'vuex-class';
 import { Prop } from 'vue-property-decorator';
 
 @Component( {
-	components: { Aliases, Description, Label, LanguageNameInUserLanguage },
+	components: {
+		Label,
+		LabelEdit,
+		Description,
+		DescriptionEdit,
+		Aliases,
+		AliasesEdit,
+		LanguageNameInUserLanguage,
+	},
 	computed: {
-		...mapGetters( NS_ENTITY, [ 'getLabelByLanguage', 'getDescriptionByLanguage', 'getAliasesByLanguage' ] ),
+		...mapState( [ 'editMode' ] ),
+		...mapGetters( NS_ENTITY, [
+			'getLabelByLanguage',
+			'getDescriptionByLanguage',
+			'getAliasesByLanguage',
+		] ),
 	},
 } )
 export default class MonolingualFingerprintView extends mixins( Messages ) {

@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts">
-import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
@@ -24,7 +23,7 @@ import { namespace } from 'vuex-class';
 import Language from '@/datamodel/Language';
 
 @Component
-export default class Label extends ( mixins( Messages ) as VueConstructor ) {
+export default class Label extends mixins( Messages ) {
 	@Prop( { required: true } )
 	public label!: Term;
 

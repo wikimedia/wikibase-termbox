@@ -2,13 +2,16 @@ import { shallowMount } from '@vue/test-utils';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
 import Label from '@/components/Label.vue';
+import LabelEdit from '@/components/LabelEdit.vue';
 import Description from '@/components/Description.vue';
+import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import Aliases from '@/components/Aliases.vue';
 import { createStore } from '@/store';
 import { NS_LANGUAGE, NS_ENTITY } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { mutation } from '@/store/util';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
+import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
@@ -17,28 +20,69 @@ function createMinimalStoreWithLanguage( languageCode: string ) {
 		[ languageCode ]: { code: languageCode, directionality: 'ltr' },
 	} );
 
+	store.commit( EDITMODE_SET, false );
+
 	return store;
 }
 
 describe( 'MonolingualFingerprintView.vue', () => {
 
-	it( 'renders label, description and aliases in the given language', () => {
-		const entity = newFingerprintable( {
-			labels: { de: 'Kartoffel' },
-			descriptions: { de: 'Art der Gattung Nachtschatten (Solanum)' },
-			aliases: { de: [ 'Erdapfel', 'Solanum tuberosum' ] },
+	describe( 'label, description and aliases in the given language', () => {
+
+		it( 'rendered in readmode', () => {
+			const entity = newFingerprintable( {
+				labels: { de: 'Kartoffel' },
+				descriptions: { de: 'Art der Gattung Nachtschatten (Solanum)' },
+				aliases: { de: [ 'Erdapfel', 'Solanum tuberosum' ] },
+			} );
+
+			const language = { code: 'de', directionality: 'ltr' };
+
+			const store = createStore();
+			store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
+			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
+			store.commit( EDITMODE_SET, false );
+
+			const wrapper = shallowMount( MonolingualFingerprintView, { store, propsData: { languageCode: language.code } } );
+
+			expect( wrapper.find( Label ).exists() ).toBeTruthy();
+			expect( wrapper.find( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
+
+			expect( wrapper.find( Description ).exists() ).toBeTruthy();
+			expect( wrapper.find( Description ).props( 'description' ) ).toBe( entity.descriptions[ language.code ] );
+
+			expect( wrapper.find( Aliases ).exists() ).toBeTruthy();
+			expect( wrapper.find( Aliases ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
 		} );
-		const language = { code: 'de', directionality: 'ltr' };
 
-		const store = createStore();
-		store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
-		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
+		it( 'renders in editmode', () => {
+			const entity = newFingerprintable( {
+				labels: { de: 'Kartoffel' },
+				descriptions: { de: 'Art der Gattung Nachtschatten (Solanum)' },
+				aliases: { de: [ 'Erdapfel', 'Solanum tuberosum' ] },
+			} );
 
-		const wrapper = shallowMount( MonolingualFingerprintView, { store, propsData: { languageCode: language.code } } );
+			const languageCode = 'de';
+			const language = { code: languageCode, directionality: 'ltr' };
 
-		expect( wrapper.find( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
-		expect( wrapper.find( Description ).props( 'description' ) ).toBe( entity.descriptions[ language.code ] );
-		expect( wrapper.find( Aliases ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
+			const store = createStore();
+			store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
+			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
+			store.commit( EDITMODE_SET, true );
+
+			const wrapper = shallowMount( MonolingualFingerprintView, { store, propsData: { languageCode: language.code } } );
+
+			expect( wrapper.find( LabelEdit ).exists() ).toBeTruthy();
+			expect( wrapper.find( LabelEdit ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
+			expect( wrapper.find( LabelEdit ).props( 'languageCode' ) ).toBe( languageCode );
+
+			expect( wrapper.find( DescriptionEdit ).exists() ).toBeTruthy();
+			expect( wrapper.find( DescriptionEdit ).props( 'description' ) ).toBe( entity.descriptions[ language.code ] );
+			expect( wrapper.find( DescriptionEdit ).props( 'languageCode' ) ).toBe( languageCode );
+
+			expect( wrapper.find( Aliases ).exists() ).toBeTruthy();
+			expect( wrapper.find( Aliases ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
+		} );
 	} );
 
 	describe( 'primary Fingerprint', () => {

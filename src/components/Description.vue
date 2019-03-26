@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts">
-import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
 import { NS_LANGUAGE } from '@/store/namespaces';
@@ -21,7 +20,7 @@ import { namespace } from 'vuex-class';
 import { Prop } from 'vue-property-decorator';
 
 @Component
-export default class Description extends ( mixins( Messages ) as VueConstructor ) {
+export default class Description extends mixins( Messages ) {
 
 	@Prop( { required: true } )
 	public description!: Term;

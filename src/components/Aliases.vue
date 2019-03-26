@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts">
-import { VueConstructor } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
@@ -20,7 +19,7 @@ import { namespace } from 'vuex-class';
 import { Prop } from 'vue-property-decorator';
 
 @Component
-export default class Aliases extends ( mixins( Messages ) as VueConstructor ) {
+export default class Aliases extends mixins( Messages ) {
 
 	@Prop( { required: true } )
 	public aliases!: Term[];
