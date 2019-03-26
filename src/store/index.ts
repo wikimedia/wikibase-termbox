@@ -5,11 +5,21 @@ import createUser from './user';
 import createLanguage from './language';
 import createLinks from './links';
 import createMessages from './messages';
+import Root from './Root';
+import { mutations } from './mutations';
+import { actions } from './actions';
 
 Vue.use( Vuex );
 
 export function createStore () {
-	const storeBundle: StoreOptions<any> = {
+	const state: Root = {
+		editMode: false,
+	};
+
+	const storeBundle: StoreOptions<Root> = {
+		state,
+		mutations,
+		actions,
 		modules: {
 			entity: createEntity(),
 			user: createUser(),
@@ -17,7 +27,7 @@ export function createStore () {
 			links: createLinks(),
 			messages: createMessages(),
 		},
-		strict: process.env.NODE_ENV !== 'production',
+		strict: process.env.NODE_ENV  !== 'production',
 	};
 
 	return new Vuex.Store<any>( storeBundle );
