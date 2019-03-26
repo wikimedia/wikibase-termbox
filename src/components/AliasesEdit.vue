@@ -46,3 +46,10 @@ export default class AliasesEdit extends mixins( Messages ) {
 
 }
 </script>
+
+<style lang="scss">
+.wb-ui-aliases-edit {
+	@include aliasesFont();
+	@include termInput();
+}
+</style>

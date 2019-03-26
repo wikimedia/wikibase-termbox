@@ -74,6 +74,7 @@ describe( 'LabelEdit', () => {
 		} );
 
 		expect( wrapper.props() ).toHaveProperty( 'isPrimary', true );
+		expect( wrapper.classes() ).toContain( 'wb-ui-label-edit--primary' );
 	} );
 
 	describe( 'directionality and language code', () => {

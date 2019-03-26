@@ -47,3 +47,13 @@ export default class DescriptionEdit extends mixins( Messages ) {
 	}
 }
 </script>
+
+<style lang="scss">
+.wb-ui-description-edit {
+	width: 100%;
+	font-size: inherit;
+
+	@include descriptionFont();
+	@include termInput();
+}
+</style>

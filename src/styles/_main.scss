@@ -3,5 +3,9 @@
 @import './mixins/_hyphens';
 @import './mixins/_toggleButton';
 @import './mixins/_shrinkingFlexElement';
+@import './mixins/_termInput';
+@import './mixins/_labelFont';
+@import './mixins/_descriptionFont';
+@import './mixins/_aliasesFont';
 @import '~bootstrap/scss/mixins/_screen-reader';
 @import '~bootstrap/scss/mixins/_breakpoints';

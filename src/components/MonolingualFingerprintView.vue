@@ -1,7 +1,10 @@
 <template>
 	<div
 		class="wb-ui-monolingualfingerprintview"
-		:class="{ 'wb-ui-monolingualfingerprintview--primaryLanguage': isPrimary }">
+		:class="{
+			'wb-ui-monolingualfingerprintview--primaryLanguage': isPrimary,
+			'wb-ui-monolingualfingerprintview--editing': editMode,
+		}">
 		<LanguageNameInUserLanguage class="wb-ui-monolingualfingerprintview__language" :language="language"/>
 		<div class="wb-ui-monolingualfingerprintview__terms">
 			<component
@@ -110,12 +113,15 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 		margin-top: 0.5rem;
 	}
 
-	&__description-inner,
-	&__aliases-inner { // margin and min-width need to be on different elements for width calculation
-		margin-left: 0.5em;
+	&:not( &--editing ) {
+		.wb-ui-monolingualfingerprintview__description-inner,
+		.wb-ui-monolingualfingerprintview__aliases-inner {
+			// margin and min-width need to be on different elements for width calculation
+			margin-left: 0.5em;
+		}
 	}
 
-	&:not( .wb-ui-monolingualfingerprintview--primaryLanguage ) {
+	&:not( &--primaryLanguage ) {
 		@include media-breakpoint-up(md) {
 			.wb-ui-monolingualfingerprintview__terms {
 				display: flex;

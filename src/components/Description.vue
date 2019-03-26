@@ -37,10 +37,7 @@ export default class Description extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-description {
-	color: $color-black;
-	line-height: 1.3em;
-	font-family: $font-family-sans;
-
+	@include descriptionFont();
 	@include hyphens();
 
 	&--missing {

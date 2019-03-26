@@ -1,0 +1,8 @@
+@mixin termInput() {
+	border: 1px solid $border-color-base;
+	border-radius: 2px;
+	min-height: 48px;
+	padding: 0.5rem;
+	box-sizing: border-box;
+	resize: none;
+}

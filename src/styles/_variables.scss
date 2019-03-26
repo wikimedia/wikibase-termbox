@@ -8,6 +8,8 @@ $color-light-gray: #dfdfdf;
 $color-black: #000;
 $color-moderate-red: #a55858;
 
+$border-color-base: $wmui-color-base50; // defined by wikimedia-ui-base, but lost in less -> scss translation
+
 $svg-pen: url( ../../assets/pen.svg );
 $svg-publish: url( ../../assets/white_checkmark_on_blue_circle.svg );
 $svg-in-more-languages: url( ../../assets/arrow_in_circle_grey_up.svg );

@@ -1,0 +1,5 @@
+@mixin descriptionFont() {
+	color: $color-black;
+	line-height: 1.3em;
+	font-family: $font-family-sans;
+}

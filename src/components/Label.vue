@@ -42,16 +42,8 @@ export default class Label extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-label {
-	color: $color-black;
-	line-height: 1.3em;
-	font-family: $font-family-serif;
-	font-weight: bold;
-
+	@include labelFont( #{&}--primary );
 	@include hyphens();
-
-	&--primary {
-		@include fontSize( 23px );
-	}
 
 	&--missing {
 		color: $color-moderate-red;

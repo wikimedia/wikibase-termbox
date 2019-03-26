@@ -1,11 +1,12 @@
 <template>
-	<div>
-		<textarea
-			class="wb-ui-label-edit"
-			v-inlanguage="language"
-			v-model="value"
-		></textarea>
-	</div>
+	<textarea
+		class="wb-ui-label-edit"
+		:class="{
+			'wb-ui-label-edit--primary': isPrimary,
+		}"
+		v-inlanguage="language"
+		v-model="value"
+	></textarea>
 </template>
 
 <script lang="ts">
@@ -52,3 +53,13 @@ export default class LabelEdit extends mixins( Messages ) {
 	}
 }
 </script>
+
+<style lang="scss">
+.wb-ui-label-edit {
+	width: 100%;
+	font-size: inherit;
+
+	@include labelFont( #{&}--primary );
+	@include termInput();
+}
+</style>

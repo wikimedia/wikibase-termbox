@@ -36,10 +36,7 @@ export default class Aliases extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-aliases {
-	color: $color-light-azureish-gray;
-	line-height: 1.3em;
-	font-family: $font-family-sans;
-
+	@include aliasesFont();
 	@include hyphens();
 
 	&__alias {
