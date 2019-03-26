@@ -8,6 +8,10 @@ const target = TARGET_NODE
 	? 'server'
 	: 'client';
 
+if ( DEV_MODE ) {
+	process.env.VUE_APP_WIKIBASE_REPO = process.env.DEV_WIKIBASE_REPO;
+}
+
 module.exports = {
 	outputDir: TARGET_NODE ? 'serverDist' : 'dist',
 	configureWebpack: () => ( {

@@ -13,6 +13,10 @@ export default class MWConfig {
 			wgNamespaceIds: { special: -1 },
 			wgRelevantPageIsProbablyEditable: true,
 			wbIsEditView: true,
+			wbRepo: {
+				url: process.env.VUE_APP_WIKIBASE_REPO,
+				scriptPath: '', // contained in the above
+			},
 		};
 
 		return config[ key ];
