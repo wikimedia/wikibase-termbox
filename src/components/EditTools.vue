@@ -17,7 +17,7 @@ import { Prop } from 'vue-property-decorator';
 	},
 } )
 export default class EditTools extends Vue {
-	@Prop( { required: false, default: false, type: Boolean } )
+	@Prop( { required: true, type: Boolean } )
 	public editMode!: boolean;
 }
 </script>

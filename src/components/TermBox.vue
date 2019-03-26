@@ -7,9 +7,9 @@
 				:isPrimary="true"
 				/>
 			<div class="wb-ui-termbox__actions">
-				<EditTools v-if="isEditable">
-					<EditPen :href="editLinkUrl" slot="edit" />
-					<Publish slot="publish" />
+				<EditTools v-if="isEditable" :editMode="editMode">
+					<EditPen :href="editLinkUrl" slot="edit" @edit="activateEditMode" />
+					<Publish slot="publish" @publish="publish" />
 				</EditTools>
 			</div>
 		</div>
@@ -34,16 +34,36 @@ import EditPen from '@/components/EditPen.vue';
 import Publish from '@/components/Publish.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
+import { Action, namespace } from 'vuex-class';
+import { ENTITY_SAVE } from '@/store/entity/actionTypes';
+import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
 
 @Component( {
 	components: { InMoreLanguagesExpandable, MonolingualFingerprintView, EditTools, EditPen, Publish },
 	computed: {
+		...mapState( [ 'editMode' ] ),
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
 		...mapState( NS_ENTITY, [ 'isEditable' ] ),
 	},
 } )
 export default class TermBox extends Vue {
+
+	@Action( EDITMODE_ACTIVATE )
+	public activateEditMode!: () => Promise<void>;
+
+	@Action( EDITMODE_DEACTIVATE )
+	public deactivateEditMode!: () => Promise<void>;
+
+	@namespace( NS_ENTITY ).Action( ENTITY_SAVE )
+	public saveEntity!: () => Promise<void>;
+
+	public publish(): void {
+		this.saveEntity()
+			.then( () => {
+				this.deactivateEditMode();
+			} );
+	}
 
 }
 </script>

@@ -1,6 +1,11 @@
 <template>
 	<div class="wb-ui-edit-pen">
-		<a class="wb-ui-edit-pen__link" :href="href" :title="message( MESSAGE_KEYS.EDIT )">
+		<a
+			class="wb-ui-edit-pen__link"
+			:href="href"
+			:title="message( MESSAGE_KEYS.EDIT )"
+			@click.prevent="$emit( 'edit' )"
+		>
 			<span class="wb-ui-edit-pen__text">{{ message( MESSAGE_KEYS.EDIT ) }}</span>
 		</a>
 	</div>

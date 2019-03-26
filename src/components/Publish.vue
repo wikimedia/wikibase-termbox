@@ -1,6 +1,11 @@
 <template>
 	<div class="wb-ui-publish">
-		<a class="wb-ui-publish__link" href="#" :title="message( MESSAGE_KEYS.PUBLISH )">
+		<a
+			class="wb-ui-publish__link"
+			href="#"
+			:title="message( MESSAGE_KEYS.PUBLISH )"
+			@click.prevent="$emit( 'publish' )"
+		>
 			<span class="wb-ui-publish__text">{{ message( MESSAGE_KEYS.PUBLISH ) }}</span>
 		</a>
 	</div>

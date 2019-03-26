@@ -6,6 +6,9 @@ describe( 'EditTools', () => {
 
 	it( 'Wraps content in Sectionedit to ensure mediawiki can control visibility on a per-user level', () => {
 		const wrapper = mount( EditTools, {
+			propsData: {
+				editMode: true,
+			},
 		} );
 
 		const sectionEdit = wrapper.find( Sectionedit );

@@ -6,6 +6,8 @@ import Publish from '@/components/Publish.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { createStore } from '@/store';
+import createEntityStoreModule from '@/store/entity';
+import { actions as rootStoreActions } from '@/store/actions';
 import {
 	NS_ENTITY,
 	NS_LINKS,
@@ -15,6 +17,13 @@ import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
 import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
+import {
+	EDITMODE_ACTIVATE,
+	EDITMODE_DEACTIVATE,
+} from '@/store/actionTypes';
+import {
+	ENTITY_SAVE,
+} from '@/store/entity/actionTypes';
 
 describe( 'TermBox.vue', () => {
 
@@ -40,32 +49,97 @@ describe( 'TermBox.vue', () => {
 				expect( wrapper.find( EditTools ).exists() ).toBeTruthy();
 			} );
 
-			it( 'have EditPen with correct link', () => {
-				const store = createStore();
-				const editLinkUrl = '/edit/Q42';
-				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-				store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
-				const wrapper = shallowMount( TermBox, { store } );
+			describe( 'EditPen', () => {
+				it( 'is there with correct link', () => {
+					const store = createStore();
+					const editLinkUrl = '/edit/Q42';
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+					store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
+					const wrapper = shallowMount( TermBox, { store } );
 
-				const editTools = wrapper.find( EditTools );
-				const editPen = editTools.find( EditPen );
+					const editTools = wrapper.find( EditTools );
+					const editPen = editTools.find( EditPen );
 
-				expect( editPen.exists() ).toBeTruthy();
-				expect( editTools ).toHaveSlotWithContent( 'edit', editPen );
-				expect( editPen.props() )
-					.toHaveProperty( 'href', editLinkUrl );
+					expect( editPen.exists() ).toBeTruthy();
+					expect( editTools ).toHaveSlotWithContent( 'edit', editPen );
+					expect( editPen.props() )
+						.toHaveProperty( 'href', editLinkUrl );
+				} );
+
+				it( 'emitted edit event puts store into editMode', async () => {
+					const store = createStore();
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+
+					const wrapper = shallowMount( TermBox, {
+						store,
+						stubs: {
+							EditPen,
+						},
+					} );
+
+					const mockActivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
+					store.hotUpdate( {
+						actions: {
+							...rootStoreActions,
+							[ EDITMODE_ACTIVATE ]: mockActivateEditMode,
+						},
+					} );
+
+					await wrapper.find( EditPen ).vm.$emit( 'edit' );
+
+					expect( mockActivateEditMode ).toHaveBeenCalled();
+				} );
 			} );
 
-			it( 'have Publish', () => {
-				const store = createStore();
-				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-				const wrapper = shallowMount( TermBox, { store } );
+			describe( 'Publish', () => {
+				it( 'is there', () => {
+					const store = createStore();
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+					const wrapper = shallowMount( TermBox, { store } );
 
-				const editTools = wrapper.find( EditTools );
-				const publish = editTools.find( Publish );
+					const editTools = wrapper.find( EditTools );
+					const publish = editTools.find( Publish );
 
-				expect( publish.exists() ).toBeTruthy();
-				expect( editTools ).toHaveSlotWithContent( 'publish', publish );
+					expect( publish.exists() ).toBeTruthy();
+					expect( editTools ).toHaveSlotWithContent( 'publish', publish );
+				} );
+
+				it( 'emitted publish event triggers entity save and deactivates edit mode', async () => {
+					const store = createStore();
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+
+					const wrapper = shallowMount( TermBox, {
+						store,
+						stubs: {
+							Publish,
+						},
+					} );
+
+					const entitySavePromise = Promise.resolve();
+					const mockEntitySave = jest.fn().mockReturnValue( entitySavePromise );
+					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
+					store.hotUpdate( {
+						modules: {
+							[ NS_ENTITY ]: {
+								...createEntityStoreModule(),
+								actions: {
+									[ ENTITY_SAVE ]: mockEntitySave,
+								},
+							},
+						},
+						actions: {
+							...rootStoreActions,
+							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
+						},
+					} );
+
+					await wrapper.find( Publish ).vm.$emit( 'publish' );
+
+					expect( mockEntitySave ).toHaveBeenCalled();
+					entitySavePromise.then( () => {
+						expect( mockDeactivateEditMode ).toHaveBeenCalled();
+					} );
+				} );
 			} );
 		} );
 
