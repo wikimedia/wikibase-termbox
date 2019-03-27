@@ -66,15 +66,15 @@ describe( 'language/mutations', () => {
 		/*
 		it.skip( 'throws an error if an invalid object is given', () => {
 			expect( () => {
-				mutations[ LANGUAGE_TRANSLATION_UPDATE ]( newMinimalStore(), '' );
+				mutations[ LANGUAGE_TRANSLATION_UPDATE ]( newMockStore(), '' );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ LANGUAGE_TRANSLATION_UPDATE ]( newMinimalStore(), [] );
+				mutations[ LANGUAGE_TRANSLATION_UPDATE ]( newMockStore(), [] );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ LANGUAGE_TRANSLATION_UPDATE ]( newMinimalStore(), { id: 'whatever' } );
+				mutations[ LANGUAGE_TRANSLATION_UPDATE ]( newMockStore(), { id: 'whatever' } );
 			} ).toThrow( InvalidEntityException );
 		} );
 		*/

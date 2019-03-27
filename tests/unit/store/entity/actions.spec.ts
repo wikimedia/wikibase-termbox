@@ -5,6 +5,7 @@ import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
+import newMockStore from '../newMockStore';
 
 describe( 'entity/actions', () => {
 	describe( ENTITY_INIT, () => {
@@ -31,12 +32,11 @@ describe( 'entity/actions', () => {
 					return Promise.resolve( entity );
 				},
 			} );
-			const context = {
+			const context = newMockStore( {
 				commit: jest.fn(),
-			};
-			const action = actions[ ENTITY_INIT ] as any;
+			} );
 
-			action( context, { entity: entityId, revision } ).then( () => {
+			actions[ ENTITY_INIT ]( context, { entity: entityId, revision } ).then( () => {
 				expect( context.commit ).toBeCalledWith(
 					ENTITY_INIT_MUTATION,
 					entity,
@@ -51,11 +51,11 @@ describe( 'entity/actions', () => {
 				isEditable: () => Promise.resolve( isEditable ),
 			} );
 
-			const context = {
+			const context = newMockStore( {
 				commit: jest.fn(),
-			};
+			} );
 
-			return ( actions[ ENTITY_INIT ] as any )( context, 'Q1' ).then( () => {
+			return actions[ ENTITY_INIT ]( context, { entity: 'Q123', revision: 4711 } ).then( () => {
 				expect( context.commit ).toHaveBeenCalledWith( EDITABILITY_UPDATE, isEditable );
 			} );
 		} );
@@ -70,9 +70,8 @@ describe( 'entity/actions', () => {
 					return Promise.reject( error );
 				},
 			} );
-			const action = actions[ ENTITY_INIT ] as any; // TODO
 
-			action( {}, { entity: entityId, revision } ).catch( ( thisError: Error ) => {
+			actions[ ENTITY_INIT ]( newMockStore( {} ), { entity: entityId, revision } ).catch( ( thisError: Error ) => {
 				expect( thisError ).toBe( error );
 				done();
 			} );

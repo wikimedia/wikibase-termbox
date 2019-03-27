@@ -11,6 +11,7 @@ import {
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { action } from '@/store/util';
+import newMockStore from '../newMockStore';
 
 describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
@@ -19,15 +20,14 @@ describe( 'user/actions', () => {
 			const commitMock = jest.fn();
 			const dispatchMock = jest.fn();
 			dispatchMock.mockResolvedValue( Promise.resolve() );
-			const context = {
+			const context = newMockStore( {
 				commit: commitMock,
 				dispatch: dispatchMock,
-			};
+			} );
 
 			const preferredLanguages = [ 'de', 'en', 'fr', 'zh', 'pl', 'hu' ];
-			const languagePreferenceAction = actions[ LANGUAGE_PREFERENCE ] as any; // TODO
 
-			languagePreferenceAction( context, { primaryLanguage, preferredLanguages } ).then( () => {
+			actions[ LANGUAGE_PREFERENCE ]( context, { primaryLanguage, preferredLanguages } ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_INIT,
 					primaryLanguage,

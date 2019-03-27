@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree } from 'vuex';
+import { ActionContext } from 'vuex';
 import { LANGUAGE_INIT, ENSURE_AVAILABLE_IN_LANGUAGE } from './actionTypes';
 import {
 	LANGUAGE_TRANSLATION_UPDATE,
@@ -9,7 +9,7 @@ import LanguageState from '@/store/language/LanguageState';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
 import LanguageCollection from '@/datamodel/LanguageCollection';
 
-export const actions: ActionTree<LanguageState, any> = {
+export const actions = {
 
 	[ LANGUAGE_INIT ]( context: ActionContext<LanguageState, any> ): Promise<void> {
 		return factory.getLanguageRepository()
