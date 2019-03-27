@@ -7,7 +7,7 @@ import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityExcep
 import Entity from '@/store/entity/Entity';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
-function newMinimalStore( entity: any = {} ): Entity {
+function newEntityState( entity: any = {} ): Entity {
 	return {
 		id: 'Q1',
 		labels: {},
@@ -25,20 +25,20 @@ describe( 'entity/mutations', () => {
 
 		it( 'throws an error if an invalid object is given', () => {
 			expect( () => {
-				mutations[ENTITY_INIT]( newMinimalStore(), '' );
+				mutations[ENTITY_INIT]( newEntityState(), '' );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ENTITY_INIT]( newMinimalStore(), [] );
+				mutations[ENTITY_INIT]( newEntityState(), [] );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ENTITY_INIT]( newMinimalStore(), { id: 'whatever' } );
+				mutations[ENTITY_INIT]( newEntityState(), { id: 'whatever' } );
 			} ).toThrow( InvalidEntityException );
 		} );
 
 		it( 'contains entity data after initialization', () => {
-			const store: Entity = newMinimalStore();
+			const state: Entity = newEntityState();
 			const entity = new FingerprintableEntity(
 				'Q123',
 				{ en: { language: 'en', value: 'foo' } },
@@ -46,25 +46,25 @@ describe( 'entity/mutations', () => {
 				{ en: [ { language: 'en', value: 'f00bar' } ] },
 			);
 
-			mutations[ENTITY_INIT]( store, entity );
+			mutations[ENTITY_INIT]( state, entity );
 
-			expect( store.labels ).toBe( entity.labels );
-			expect( store.id ).toBe( entity.id );
-			expect( store.labels ).toBe( entity.labels );
-			expect( store.descriptions ).toBe( entity.descriptions );
-			expect( store.aliases ).toBe( entity.aliases );
+			expect( state.labels ).toBe( entity.labels );
+			expect( state.id ).toBe( entity.id );
+			expect( state.labels ).toBe( entity.labels );
+			expect( state.descriptions ).toBe( entity.descriptions );
+			expect( state.aliases ).toBe( entity.aliases );
 		} );
 
 	} );
 
 	it( EDITABILITY_UPDATE, () => {
-		const store = newMinimalStore( { isEditable: false } );
+		const state = newEntityState( { isEditable: false } );
 
-		mutations[ EDITABILITY_UPDATE ]( store, true );
-		expect( store.isEditable ).toBe( true );
+		mutations[ EDITABILITY_UPDATE ]( state, true );
+		expect( state.isEditable ).toBe( true );
 
-		mutations[ EDITABILITY_UPDATE ]( store, false );
-		expect( store.isEditable ).toBe( false );
+		mutations[ EDITABILITY_UPDATE ]( state, false );
+		expect( state.isEditable ).toBe( false );
 	} );
 
 } );

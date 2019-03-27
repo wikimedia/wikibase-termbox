@@ -6,7 +6,7 @@ import {
 import InvalidLanguageValueException from '@/store/user/exceptions/InvalidLanguageValueException';
 import User from '@/store/user/User';
 
-function newInitialUserState(): User {
+function newUserState(): User {
 	return {
 		primaryLanguage: '',
 		secondaryLanguages: [],
@@ -16,17 +16,17 @@ function newInitialUserState(): User {
 describe( '/store/user/mutations.ts', () => {
 	it( 'throws a exceptions if the given type is invalid during initialisation', () => {
 		expect( () => {
-			mutations[ LANGUAGE_INIT ]( newInitialUserState(), {} );
+			mutations[ LANGUAGE_INIT ]( newUserState(), {} );
 		} ).toThrow( InvalidLanguageValueException );
 
 		expect( () => {
-			mutations[ LANGUAGE_INIT ]( newInitialUserState(), 'e' );
+			mutations[ LANGUAGE_INIT ]( newUserState(), 'e' );
 		} ).toThrow( InvalidLanguageValueException );
 	} );
 
 	it( 'contains the primary language', () => {
 		const primaryLanguage = 'de';
-		const userState = newInitialUserState();
+		const userState = newUserState();
 
 		mutations[ LANGUAGE_INIT ]( userState, primaryLanguage );
 
@@ -36,16 +36,16 @@ describe( '/store/user/mutations.ts', () => {
 	it( 'throws a exceptions if the given type is invalid during initialisation of secondary languages', () => {
 		const primaryLanguage = 'de';
 		expect( () => {
-			mutations[ SECONDARY_LANGUAGES_INIT ]( newInitialUserState(), { primaryLanguage, secondaryLanguages: {} } );
+			mutations[ SECONDARY_LANGUAGES_INIT ]( newUserState(), { primaryLanguage, secondaryLanguages: {} } );
 		} ).toThrow( InvalidLanguageValueException );
 
 		expect( () => {
-			mutations[ SECONDARY_LANGUAGES_INIT ]( newInitialUserState(), { primaryLanguage, secondaryLanguages: [] } );
+			mutations[ SECONDARY_LANGUAGES_INIT ]( newUserState(), { primaryLanguage, secondaryLanguages: [] } );
 		} ).toThrow( InvalidLanguageValueException );
 	} );
 
 	it( 'contains data the secondary languages', () => {
-		const userState = newInitialUserState();
+		const userState = newUserState();
 		const secondaryLanguages = [ 'de', 'en', 'it', 'zh', 'ug', 'ar', 'kl' ];
 		mutations[ SECONDARY_LANGUAGES_INIT ]( userState, secondaryLanguages );
 		expect( userState.secondaryLanguages ).toStrictEqual( secondaryLanguages );

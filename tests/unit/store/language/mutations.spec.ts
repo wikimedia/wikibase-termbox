@@ -7,7 +7,7 @@ import LanguageTranslations from '@/datamodel/LanguageTranslations';
 import LanguageState from '@/store/language/LanguageState';
 import LanguageCollection from '@/datamodel/LanguageCollection';
 
-function newMinimalStore(): LanguageState {
+function newLanguageState(): LanguageState {
 	return {
 		translations: {},
 		languages: {},
@@ -17,7 +17,7 @@ function newMinimalStore(): LanguageState {
 describe( 'language/mutations', () => {
 	describe( LANGUAGE_UPDATE, () => {
 		it( 'contains languages after initialization', () => {
-			const store = newMinimalStore();
+			const state = newLanguageState();
 			const languages: LanguageCollection = {
 				de: {
 					code: 'de',
@@ -29,19 +29,19 @@ describe( 'language/mutations', () => {
 				},
 			};
 
-			mutations[ LANGUAGE_UPDATE ]( store, languages );
+			mutations[ LANGUAGE_UPDATE ]( state, languages );
 
-			expect( store.languages.de ).toBe( languages.de );
-			expect( store.languages.en ).toBe( languages.en );
+			expect( state.languages.de ).toBe( languages.de );
+			expect( state.languages.en ).toBe( languages.en );
 		} );
 
 		it( 'appends new languages to pre-existing ones', () => {
-			const store = newMinimalStore();
+			const state = newLanguageState();
 			const originalDe = {
 				code: 'de',
 				directionality: 'ltr',
 			};
-			store.languages.de = originalDe;
+			state.languages.de = originalDe;
 			const languages: LanguageCollection = {
 				en: {
 					code: 'en',
@@ -53,11 +53,11 @@ describe( 'language/mutations', () => {
 				},
 			};
 
-			mutations[ LANGUAGE_UPDATE ]( store, languages );
+			mutations[ LANGUAGE_UPDATE ]( state, languages );
 
-			expect( store.languages.de ).toBe( originalDe );
-			expect( store.languages.en ).toBe( languages.en );
-			expect( store.languages.ar ).toBe( languages.ar );
+			expect( state.languages.de ).toBe( originalDe );
+			expect( state.languages.en ).toBe( languages.en );
+			expect( state.languages.ar ).toBe( languages.ar );
 		} );
 	} );
 
@@ -80,7 +80,7 @@ describe( 'language/mutations', () => {
 		*/
 
 		it( 'contains entity data after initialization', () => {
-			const store = newMinimalStore();
+			const state = newLanguageState();
 			const translations: LanguageTranslations = {
 				de: {
 					de: 'Deutsch',
@@ -92,10 +92,10 @@ describe( 'language/mutations', () => {
 				},
 			};
 
-			mutations[ LANGUAGE_TRANSLATION_UPDATE ]( store, translations );
+			mutations[ LANGUAGE_TRANSLATION_UPDATE ]( state, translations );
 
-			expect( store.translations.de ).toBe( translations.de );
-			expect( store.translations.ar ).toBe( translations.ar );
+			expect( state.translations.de ).toBe( translations.de );
+			expect( state.translations.ar ).toBe( translations.ar );
 		} );
 	} );
 } );

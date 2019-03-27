@@ -8,7 +8,7 @@ describe( 'messages/mutations', () => {
 
 	describe( MESSAGES_INIT, () => {
 		it( 'contains messages after initialization', () => {
-			const store: Messages = { messages: {} };
+			const state: Messages = { messages: {} };
 			const messages = {
 				de: {
 					test: 'test',
@@ -17,9 +17,9 @@ describe( 'messages/mutations', () => {
 				},
 			};
 
-			mutations[ MESSAGES_INIT ]( store, messages );
+			mutations[ MESSAGES_INIT ]( state, messages );
 
-			expect( store.messages.de ).toEqual( messages.de );
+			expect( state.messages.de ).toEqual( messages.de );
 		} );
 	} );
 } );
