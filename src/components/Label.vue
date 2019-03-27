@@ -48,6 +48,8 @@ export default class Label extends ( mixins( Messages ) as VueConstructor ) {
 	font-family: $font-family-serif;
 	font-weight: bold;
 
+	@include hyphens();
+
 	&--primary {
 		@include fontSize( 23px );
 	}

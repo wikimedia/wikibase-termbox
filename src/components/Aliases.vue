@@ -41,6 +41,8 @@ export default class Aliases extends ( mixins( Messages ) as VueConstructor ) {
 	line-height: 1.3em;
 	font-family: $font-family-sans;
 
+	@include hyphens();
+
 	&__alias {
 		display: inline;
 
