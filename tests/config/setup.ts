@@ -28,3 +28,7 @@ expect.extend( {
 		};
 	},
 } );
+
+jest.spyOn( global.console, 'error' ).mockImplementation( ( ...args: any[] ) => {
+	expect( args ).toBeUndefined(); // i.e. this should not have been called
+} );
