@@ -7,15 +7,16 @@ import {
 	ENTITY_SAVE,
 } from '@/store/entity/actionTypes';
 import {
+	EDITABILITY_UPDATE,
 	ENTITY_INIT as ENTITY_INIT_MUTATION,
 	ENTITY_SET_LABEL as ENTITY_SET_LABEL_MUTATION,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 	ENTITY_SET_DESCRIPTION as ENTITY_SET_DESCRIPTION_MUTATION,
+	ENTITY_REVISION_UPDATE,
 } from '@/store/entity/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
-import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
 import newMockStore from '../newMockStore';
 import newFingerprintable from '../../../newFingerprintable';
 
@@ -69,6 +70,17 @@ describe( 'entity/actions', () => {
 
 			return actions[ ENTITY_INIT ]( context, { entity: 'Q123', revision: 4711 } ).then( () => {
 				expect( context.commit ).toHaveBeenCalledWith( EDITABILITY_UPDATE, isEditable );
+			} );
+		} );
+
+		it( `commits to ${ENTITY_REVISION_UPDATE} on successful entity lookup`, () => {
+			const revision = 4711;
+			const context = newMockStore( {
+				commit: jest.fn(),
+			} );
+
+			return actions[ ENTITY_INIT ]( context, { entity: 'Q123', revision } ).then( () => {
+				expect( context.commit ).toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, revision );
 			} );
 		} );
 

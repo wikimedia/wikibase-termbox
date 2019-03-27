@@ -12,6 +12,7 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import {
 	EDITABILITY_UPDATE,
 	ENTITY_INIT as ENTITY_INIT_MUTATION,
+	ENTITY_REVISION_UPDATE,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 	ENTITY_SET_LABEL as SET_ENTITY_LABEL_MUTATION,
 	ENTITY_SET_DESCRIPTION as SET_ENTITY_DESCRIPTION_MUTATION,
@@ -26,6 +27,7 @@ export const actions = {
 			factory.getEntityRepository().getFingerprintableEntity( payload.entity, payload.revision ),
 			factory.getEntityEditabilityResolver().isEditable( payload.entity ),
 		] ).then( ( [ entity, isEditable ] ) => {
+			context.commit( ENTITY_REVISION_UPDATE, payload.revision );
 			context.commit( ENTITY_INIT_MUTATION, entity );
 			context.commit( EDITABILITY_UPDATE, isEditable );
 		} );

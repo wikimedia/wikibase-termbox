@@ -5,6 +5,7 @@ import {
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
 	ENTITY_SET_DESCRIPTION,
+	ENTITY_REVISION_UPDATE,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import Entity from '@/store/entity/Entity';
@@ -13,6 +14,7 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 function newEntityState( entity: any = {} ): Entity {
 	return {
 		id: 'Q1',
+		baseRevision: 0,
 		labels: {},
 		descriptions: {},
 		aliases: {},
@@ -153,6 +155,13 @@ describe( 'entity/mutations', () => {
 			expect( state.aliases[ language ] ).toBe( newTerms );
 
 		} );
+
+	} );
+	it( ENTITY_REVISION_UPDATE, () => {
+		const state = newEntityState( { revision: 0 } );
+		const revision = 4711;
+		mutations[ ENTITY_REVISION_UPDATE ]( state, revision );
+		expect( state.baseRevision ).toBe( revision );
 	} );
 
 } );

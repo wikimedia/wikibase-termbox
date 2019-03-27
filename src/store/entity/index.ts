@@ -7,6 +7,7 @@ import { actions } from '@/store/entity/actions';
 export default function (): Module<Entity, any> {
 	const state: Entity = {
 		id: '',
+		baseRevision: 0,
 		labels: {},
 		descriptions: {},
 		aliases: {},

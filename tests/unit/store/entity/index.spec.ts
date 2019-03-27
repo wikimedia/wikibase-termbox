@@ -5,6 +5,8 @@ describe( 'store/entity/index', () => {
 		const module = createEntity();
 		expect( module.state ).toEqual( {
 			id: '',
+			baseRevision: 0,
+
 			labels: {},
 			descriptions: {},
 			aliases: {},
