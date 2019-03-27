@@ -5,12 +5,28 @@ import axios from 'axios';
 import HttpStatus from 'http-status-codes';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
+import EntityRevision from '@/datamodel/EntityRevision';
+import EntityInitializer from '@/common/EntityInitializer';
 
 const axiosMock = new MockAdapter( axios );
 
-function newAxiosWritingEntityRepository() {
-	return new AxiosWritingEntityRepository( axios );
+function newAxiosWritingEntityRepository( entityInitializer?: any ) {
+	return new AxiosWritingEntityRepository(
+		axios,
+		entityInitializer || { newFromSerialization: jest.fn() } as any as EntityInitializer,
+	);
 }
+
+const wbeditentitySuccessResponse = {
+	success: 1,
+	entity: {
+		id: 'Q123',
+		labels: {},
+		descriptions: {},
+		aliases: {},
+		lastrevid: 0,
+	},
+};
 
 describe( 'AxiosWritingEntityRepository', () => {
 
@@ -26,24 +42,49 @@ describe( 'AxiosWritingEntityRepository', () => {
 			descriptions: { en: 'root vegetable' },
 			aliases: { de: [ 'Erdapfel', 'Grundbirne' ] },
 		} );
+		const baseRevisionId = 123;
 
 		axiosMock.onPost( MEDIAWIKI_API_SCRIPT, {
 			action: 'wbeditentity',
 			id: entity.id,
+			baserevid: baseRevisionId,
 			data: JSON.stringify( {
 				labels: entity.labels,
 				descriptions: entity.descriptions,
 				aliases: entity.aliases,
 			} ),
-		} ).reply( HttpStatus.OK, {
+		} ).reply( HttpStatus.OK, wbeditentitySuccessResponse );
+
+		return repository.saveEntity( entity, baseRevisionId ).then( ( entityRevision: EntityRevision ) => {
+			expect( axiosMock.history.post ).toHaveLength( 1 );
+		} );
+	} );
+
+	it( 'returns an entity revision from a successful response', () => {
+		const entityInitializer = {
+			newFromSerialization: jest.fn(),
+		};
+		const repository = newAxiosWritingEntityRepository( entityInitializer );
+		const entity = newFingerprintable( { labels: { en: 'hello' } } );
+		const newRevisionId = 777;
+		const responseEntity = {
+			id: entity.id,
+			labels: entity.labels,
+			descriptions: entity.descriptions,
+			aliases: entity.aliases,
+			lastrevid: newRevisionId,
+		};
+
+		entityInitializer.newFromSerialization.mockReturnValue( entity );
+		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK, {
 			success: 1,
-			entity: {
-				// ...
-			},
+			entity: responseEntity,
 		} );
 
-		return repository.saveEntity( entity, /* TODO */ 0 ).then( () => {
-			expect( axiosMock.history.post ).toHaveLength( 1 );
+		return repository.saveEntity( entity, 123 ).then( ( entityRevision: EntityRevision ) => {
+			expect( entityInitializer.newFromSerialization ).toHaveBeenCalledWith( responseEntity );
+			expect( entityRevision.entity ).toBe( entity );
+			expect( entityRevision.revisionId ).toBe( newRevisionId );
 		} );
 	} );
 

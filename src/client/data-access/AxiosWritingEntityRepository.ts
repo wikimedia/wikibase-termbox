@@ -3,20 +3,24 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
+import EntityRevision from '@/datamodel/EntityRevision';
+import EntityInitializer from '@/common/EntityInitializer';
 
 export default class AxiosWritingEntityRepository implements WritingEntityRepository {
 	private axios: AxiosInstance;
+	private entityInitializer: EntityInitializer;
 
-	public constructor( axios: AxiosInstance ) {
+	public constructor( axios: AxiosInstance, entityInitializer: EntityInitializer ) {
 		this.axios = axios;
+		this.entityInitializer = entityInitializer;
 	}
 
-	public saveEntity( entity: FingerprintableEntity, baseRevId: number ): Promise<void> {
+	public saveEntity( entity: FingerprintableEntity, baseRevId: number ): Promise<EntityRevision> {
 		return new Promise( ( resolve, reject ) => {
 			this.axios.post( MEDIAWIKI_API_SCRIPT, {
 				action: 'wbeditentity',
 				id: entity.id,
-				// baserevid: baseRevId,
+				baserevid: baseRevId,
 				data: JSON.stringify( {
 					labels: entity.labels,
 					descriptions: entity.descriptions,
@@ -27,7 +31,14 @@ export default class AxiosWritingEntityRepository implements WritingEntityReposi
 					reject( new TechnicalProblem( response.data ) );
 				}
 
-				resolve(); // TODO resolve with latest entity revision
+				try {
+					resolve( new EntityRevision(
+						this.entityInitializer.newFromSerialization( response.data.entity ),
+						response.data.entity.lastrevid,
+					) );
+				} catch ( e ) {
+					reject( new TechnicalProblem( e.toString() ) );
+				}
 			} ).catch( ( error: AxiosError ) => {
 				reject( new TechnicalProblem( error.toString() ) );
 			} );

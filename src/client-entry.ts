@@ -16,6 +16,7 @@ import { GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 import formDataRequestTransformation from '@/client/axios/formDataRequestTransformation';
 import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
 import editTokenRequestInterceptor from '@/client/axios/editTokenRequestInterceptor';
+import EntityInitializer from '@/common/EntityInitializer';
 
 Vue.config.productionTip = false;
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
@@ -65,7 +66,7 @@ const axios = Axios.create( {
 
 axios.interceptors.request.use( editTokenRequestInterceptor( axios ) );
 
-factory.setWritingEntityRepository( new AxiosWritingEntityRepository( axios ) );
+factory.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, new EntityInitializer() ) );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
 	buildApp( termboxRequest ).then( ( app ) => {

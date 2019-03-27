@@ -19,6 +19,7 @@ import {
 } from '@/store/entity/mutationTypes';
 
 import Term from '@/datamodel/Term';
+import EntityRevision from '@/datamodel/EntityRevision';
 
 export const actions = {
 
@@ -33,7 +34,7 @@ export const actions = {
 		} );
 	},
 
-	[ ENTITY_SAVE ]( context: ActionContext<Entity, any> ): Promise<void> {
+	[ ENTITY_SAVE ]( context: ActionContext<Entity, any> ): Promise<EntityRevision> {
 		return factory.getWritingEntityRepository().saveEntity( new FingerprintableEntity(
 			context.state.id,
 			context.state.labels,

@@ -67,9 +67,7 @@ describe( 'TermboxFactory', () => {
 
 		it( 'can set and get an writingEntityRepository', () => {
 			const factory = newTermboxFactory();
-			const mockRepository = {
-				saveEntity: () => Promise.resolve(),
-			};
+			const mockRepository = new ( jest.fn() )();
 
 			factory.setWritingEntityRepository( mockRepository );
 			expect( factory.getWritingEntityRepository() ).toBe( mockRepository );
