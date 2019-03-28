@@ -1,6 +1,6 @@
 import { mutations } from '@/store/entity/mutations';
 import {
-	ENTITY_INIT,
+	ENTITY_UPDATE,
 	EDITABILITY_UPDATE,
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
@@ -26,19 +26,19 @@ function newEntityState( entity: any = {} ): Entity {
 
 describe( 'entity/mutations', () => {
 
-	describe( ENTITY_INIT, () => {
+	describe( ENTITY_UPDATE, () => {
 
 		it( 'throws an error if an invalid object is given', () => {
 			expect( () => {
-				mutations[ENTITY_INIT]( newEntityState(), '' );
+				mutations[ENTITY_UPDATE]( newEntityState(), '' );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ENTITY_INIT]( newEntityState(), [] );
+				mutations[ENTITY_UPDATE]( newEntityState(), [] );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ENTITY_INIT]( newEntityState(), { id: 'whatever' } );
+				mutations[ENTITY_UPDATE]( newEntityState(), { id: 'whatever' } );
 			} ).toThrow( InvalidEntityException );
 		} );
 
@@ -51,7 +51,7 @@ describe( 'entity/mutations', () => {
 				{ en: [ { language: 'en', value: 'f00bar' } ] },
 			);
 
-			mutations[ENTITY_INIT]( state, entity );
+			mutations[ENTITY_UPDATE]( state, entity );
 
 			expect( state.labels ).toBe( entity.labels );
 			expect( state.id ).toBe( entity.id );

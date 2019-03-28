@@ -8,7 +8,7 @@ import { createStore } from '@/store';
 import { NS_LANGUAGE, NS_ENTITY } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { mutation } from '@/store/util';
-import { ENTITY_INIT } from '@/store/entity/mutationTypes';
+import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
@@ -32,7 +32,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 
 		const store = createStore();
 		store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), entity );
+		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
 
 		const wrapper = shallowMount( MonolingualFingerprintView, { store, propsData: { languageCode: language.code } } );
 

@@ -8,7 +8,7 @@ import {
 import { LANGUAGE_INIT, SECONDARY_LANGUAGES_INIT } from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
-import { ENTITY_INIT } from '@/store/entity/mutationTypes';
+import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
 describe( 'AllEnteredLanguages', () => {
@@ -16,7 +16,7 @@ describe( 'AllEnteredLanguages', () => {
 	it( 'passes language prop to MonolingualFingerprintView', () => {
 		const language = 'de';
 		const store = createStore();
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), new FingerprintableEntity(
+		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), new FingerprintableEntity(
 			'Q42',
 			{ [ language ]: { language, value: 'kartoffel' } },
 			{},
@@ -32,7 +32,7 @@ describe( 'AllEnteredLanguages', () => {
 		const store = createStore();
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
 
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), new FingerprintableEntity(
+		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), new FingerprintableEntity(
 			'Q42',
 			{
 				de: { language: 'de', value: 'kartoffel' },
@@ -52,7 +52,7 @@ describe( 'AllEnteredLanguages', () => {
 		const store = createStore();
 		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), [ 'en', 'fr' ] );
 
-		store.commit( mutation( NS_ENTITY, ENTITY_INIT ), new FingerprintableEntity(
+		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), new FingerprintableEntity(
 			'Q42',
 			{
 				de: { language: 'de', value: 'kartoffel' },

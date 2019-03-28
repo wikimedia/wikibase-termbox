@@ -11,7 +11,7 @@ import {
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import {
 	EDITABILITY_UPDATE,
-	ENTITY_INIT as ENTITY_INIT_MUTATION,
+	ENTITY_UPDATE,
 	ENTITY_REVISION_UPDATE,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 	ENTITY_SET_LABEL as SET_ENTITY_LABEL_MUTATION,
@@ -29,7 +29,7 @@ export const actions = {
 			factory.getEntityEditabilityResolver().isEditable( payload.entity ),
 		] ).then( ( [ entity, isEditable ] ) => {
 			context.commit( ENTITY_REVISION_UPDATE, payload.revision );
-			context.commit( ENTITY_INIT_MUTATION, entity );
+			context.commit( ENTITY_UPDATE, entity );
 			context.commit( EDITABILITY_UPDATE, isEditable );
 		} );
 	},
@@ -40,7 +40,12 @@ export const actions = {
 			context.state.labels,
 			context.state.descriptions,
 			context.state.aliases,
-		), /* TODO */ 0 );
+		), context.state.baseRevision ).then( ( entityRevision: EntityRevision ) => {
+			context.commit( ENTITY_REVISION_UPDATE, entityRevision.revisionId );
+			context.commit( ENTITY_UPDATE, entityRevision.entity );
+
+			return entityRevision;
+		} );
 	},
 
 	[ ENTITY_LABEL_EDIT ]( context: ActionContext<Entity, any>, payload: { language: string, value: string } ): void {

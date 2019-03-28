@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex';
 import Entity from '@/store/entity/Entity';
 import {
 	EDITABILITY_UPDATE,
-	ENTITY_INIT,
+	ENTITY_UPDATE,
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
 	ENTITY_SET_DESCRIPTION,
@@ -13,7 +13,7 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import Term from '@/datamodel/Term';
 
 export const mutations: MutationTree<Entity> = {
-	[ ENTITY_INIT ] ( state: Entity, entity: FingerprintableEntity ): void {
+	[ ENTITY_UPDATE ] ( state: Entity, entity: FingerprintableEntity ): void {
 		if ( !( entity instanceof FingerprintableEntity ) ) {
 			throw new InvalidEntityException( JSON.stringify( entity ) );
 		}

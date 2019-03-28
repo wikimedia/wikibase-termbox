@@ -8,7 +8,7 @@ import {
 } from '@/store/entity/actionTypes';
 import {
 	EDITABILITY_UPDATE,
-	ENTITY_INIT as ENTITY_INIT_MUTATION,
+	ENTITY_UPDATE,
 	ENTITY_SET_LABEL as ENTITY_SET_LABEL_MUTATION,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 	ENTITY_SET_DESCRIPTION as ENTITY_SET_DESCRIPTION_MUTATION,
@@ -19,6 +19,7 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import newMockStore from '../newMockStore';
 import newFingerprintable from '../../../newFingerprintable';
+import EntityRevision from '@/datamodel/EntityRevision';
 
 describe( 'entity/actions', () => {
 	describe( ENTITY_INIT, () => {
@@ -33,7 +34,7 @@ describe( 'entity/actions', () => {
 			} );
 		} );
 
-		it( `commits to ${ENTITY_INIT_MUTATION} on successful FingerprintableEntity lookup`, ( done ) => {
+		it( `commits to ${ENTITY_UPDATE} on successful FingerprintableEntity lookup`, ( done ) => {
 			const entityId = 'Q42';
 			const revision = 4711;
 
@@ -51,7 +52,7 @@ describe( 'entity/actions', () => {
 
 			actions[ ENTITY_INIT ]( context, { entity: entityId, revision } ).then( () => {
 				expect( context.commit ).toBeCalledWith(
-					ENTITY_INIT_MUTATION,
+					ENTITY_UPDATE,
 					entity,
 				);
 				done();
@@ -110,20 +111,38 @@ describe( 'entity/actions', () => {
 				descriptions: { en: 'root vegetable' },
 				aliases: { de: [ 'Erdapfel', 'Grundbirne' ] },
 			} );
+			const baseRevision = 4711;
 			const state = {
 				id: entity.id,
+				baseRevision,
 				labels: entity.labels,
 				descriptions: entity.descriptions,
 				aliases: entity.aliases,
 			};
 			const writingRepository = {
-				saveEntity: jest.fn(),
+				saveEntity: jest.fn().mockResolvedValue( new ( jest.fn() )() ),
 			};
-			writingRepository.saveEntity.mockReturnValue( Promise.resolve() );
 			factory.setWritingEntityRepository( writingRepository );
 
 			return actions[ ENTITY_SAVE ]( newMockStore( { state } ) ).then( () => {
-				expect( writingRepository.saveEntity ).toBeCalledWith( entity, /* TODO */ 0 );
+				expect( writingRepository.saveEntity ).toBeCalledWith( entity, baseRevision );
+			} );
+		} );
+
+		it( 'updates the entity with latest data and revision after saving', () => {
+			const responseEntityRevision = new EntityRevision(
+				newFingerprintable( { id: 'Q123', labels: { en: 'potato', de: 'Kartoffel' } } ),
+				321,
+			);
+			const writingRepository = {
+				saveEntity: jest.fn().mockResolvedValue( responseEntityRevision ),
+			};
+			factory.setWritingEntityRepository( writingRepository );
+			const store = { commit: jest.fn() };
+
+			return actions[ ENTITY_SAVE ]( newMockStore( store ) ).then( () => {
+				expect( store.commit ).toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, responseEntityRevision.revisionId );
+				expect( store.commit ).toHaveBeenCalledWith( ENTITY_UPDATE, responseEntityRevision.entity );
 			} );
 		} );
 	} );
