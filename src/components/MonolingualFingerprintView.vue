@@ -72,9 +72,6 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 		min-width: 244px;
 		max-width: 420px;
 		margin-top: 0.5rem;
-		overflow-wrap: break-word;
-		word-wrap: break-word;
-		hyphens: auto;
 	}
 
 	&__description-inner,

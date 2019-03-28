@@ -42,6 +42,8 @@ export default class Description extends ( mixins( Messages ) as VueConstructor 
 	line-height: 1.3em;
 	font-family: $font-family-sans;
 
+	@include hyphens();
+
 	&--missing {
 		color: $color-moderate-red;
 	}
