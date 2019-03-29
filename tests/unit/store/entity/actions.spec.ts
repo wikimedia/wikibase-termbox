@@ -1,5 +1,5 @@
 import { actions } from '@/store/entity/actions';
-import { ENTITY_INIT, SAVE } from '@/store/entity/actionTypes';
+import { ENTITY_INIT, ENTITY_SAVE } from '@/store/entity/actionTypes';
 import { ENTITY_INIT as ENTITY_INIT_MUTATION } from '@/store/entity/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -79,7 +79,7 @@ describe( 'entity/actions', () => {
 		} );
 	} );
 
-	describe( SAVE, () => {
+	describe( ENTITY_SAVE, () => {
 		it( 'saves the entity', () => {
 			const entity = newFingerprintable( {
 				id: 'Q16587531',
@@ -99,7 +99,7 @@ describe( 'entity/actions', () => {
 			writingRepository.saveEntity.mockReturnValue( Promise.resolve() );
 			factory.setWritingEntityRepository( writingRepository );
 
-			return actions[ SAVE ]( newMockStore( { state } ) ).then( () => {
+			return actions[ ENTITY_SAVE ]( newMockStore( { state } ) ).then( () => {
 				expect( writingRepository.saveEntity ).toBeCalledWith( entity, /* TODO */ 0 );
 			} );
 		} );

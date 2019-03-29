@@ -1,2 +1,2 @@
 export const ENTITY_INIT = 'entityInit';
-export const SAVE = 'entitySave';
+export const ENTITY_SAVE = 'entitySave';
