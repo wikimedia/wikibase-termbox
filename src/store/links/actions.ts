@@ -4,8 +4,7 @@ import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
 import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
 
 export const actions = {
-	[ EDIT_LINK_URL_INIT ]( store: ActionContext<LinksState, any>, editLinkUrl: string ): Promise<void> {
+	[ EDIT_LINK_URL_INIT ]( store: ActionContext<LinksState, any>, editLinkUrl: string ): void {
 		store.commit( EDIT_LINK_URL_UPDATE, editLinkUrl );
-		return Promise.resolve();
 	},
 };

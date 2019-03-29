@@ -5,16 +5,14 @@ import newMockStore from '../newMockStore';
 
 describe( 'links/actions', () => {
 	describe( EDIT_LINK_URL_INIT, () => {
-		it( 'commits the url provided and returns a resolved promise', ( done ) => {
+		it( 'commits the url provided and returns a resolved promise', () => {
 			const url = '/link/to/edit/Q42';
 			const store = newMockStore( {
 				commit: jest.fn(),
 			} );
 
-			actions[ EDIT_LINK_URL_INIT ]( store, url ).then( () => {
-				expect( store.commit ).toHaveBeenCalledWith( EDIT_LINK_URL_UPDATE, url );
-				done();
-			} );
+			actions[ EDIT_LINK_URL_INIT ]( store, url );
+			expect( store.commit ).toHaveBeenCalledWith( EDIT_LINK_URL_UPDATE, url );
 		} );
 	} );
 

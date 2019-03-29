@@ -8,38 +8,32 @@ import newMockStore from './newMockStore';
 
 describe( 'root/actions', () => {
 	describe( EDITMODE_ACTIVATE, () => {
-		it( `commits to ${ EDITMODE_SET }`, ( done ) => {
+		it( `commits to ${ EDITMODE_SET }`, () => {
 
 			const context = newMockStore( {
 				commit: jest.fn(),
 			} );
 
-			actions[ EDITMODE_ACTIVATE ]( context ).then( () => {
-				expect( context.commit ).toBeCalledWith(
-					EDITMODE_SET,
-					true,
-				);
-
-				done();
-			} );
+			actions[ EDITMODE_ACTIVATE ]( context );
+			expect( context.commit ).toBeCalledWith(
+				EDITMODE_SET,
+				true,
+			);
 		} );
 	} );
 
 	describe( EDITMODE_DEACTIVATE, () => {
-		it( `commits to ${ EDITMODE_SET }`, ( done ) => {
+		it( `commits to ${ EDITMODE_SET }`, () => {
 
 			const context = newMockStore( {
 				commit: jest.fn(),
 			} );
 
-			actions[ EDITMODE_DEACTIVATE ]( context ).then( () => {
-				expect( context.commit ).toBeCalledWith(
-					EDITMODE_SET,
-					false,
-				);
-
-				done();
-			} );
+			actions[ EDITMODE_DEACTIVATE ]( context );
+			expect( context.commit ).toBeCalledWith(
+				EDITMODE_SET,
+				false,
+			);
 		} );
 	} );
 
