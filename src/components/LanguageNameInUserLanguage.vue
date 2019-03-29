@@ -35,5 +35,4 @@ export default class LanguageNameInUserLanguage extends Vue {
 }
 </script>
 
-
 <style lang="scss"></style>

@@ -1,3 +1,5 @@
-export default interface Root {
+interface Root {
 	editMode: boolean;
 }
+
+export default Root;

@@ -8,7 +8,7 @@ describe( 'MessagesRepository', () => {
 			edit: 'bearbeiten',
 		};
 
-		const mwMessages = ( key: string, ...params: string[] ): MwMessage => {
+		const mwMessages = ( key: string ): MwMessage => {
 			return {
 				text: () => translations[ key ],
 			};

@@ -14,7 +14,7 @@ export default class ContentLanguagesLanguageRepo implements LanguageRepository 
 		return this.languagesRepo.getContentLanguages( null )
 			.then( ( contentLanguages: WikibaseApiContentLanguages ) => {
 				const languages: LanguageCollection = {};
-				Object.entries( contentLanguages ).forEach( ( [ languageCode, language ] ) => {
+				Object.entries( contentLanguages ).forEach( ( [ languageCode ] ) => {
 					languages[ languageCode ] = {
 						code: languageCode,
 						// this does not do full justice to the directionality question

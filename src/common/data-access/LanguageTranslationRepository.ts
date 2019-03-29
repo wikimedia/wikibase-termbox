@@ -1,7 +1,9 @@
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
 
-export default interface LanguageTranslationRepository {
+interface LanguageTranslationRepository {
 
 	getLanguagesInLanguage( inLanguage: string ): Promise<LanguageTranslations>;
 
 }
+
+export default LanguageTranslationRepository;

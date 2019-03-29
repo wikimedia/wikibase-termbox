@@ -61,7 +61,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 			} );
 		} );
 
-		it( 'with well-formed wbcontentlanguages query without uselang resolves to en languages on success', ( done ) => {
+		it( 'with well-formed wbcontentlanguages query without uselang resolves to en languages', ( done ) => {
 			const languages: WikibaseApiContentLanguages = {
 				en: {
 					code: 'en',

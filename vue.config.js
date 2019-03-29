@@ -62,13 +62,12 @@ module.exports = {
 			.tap( options =>
 				Object.assign( options, {
 					optimizeSSR: false,
-				} ),
-			);
+				} ) );
 	},
 	css: {
 		loaderOptions: {
 			sass: {
-				data: `@import "@/styles/_main.scss";`,
+				data: '@import "@/styles/_main.scss";',
 			},
 		},
 	},

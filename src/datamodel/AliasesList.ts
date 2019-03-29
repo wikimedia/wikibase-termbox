@@ -1,5 +1,7 @@
 import Term from '@/datamodel/Term';
 
-export default interface AliasesList {
+interface AliasesList {
 	[language: string]: Term[];
 }
+
+export default AliasesList;

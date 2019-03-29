@@ -6,7 +6,7 @@ import {
 import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 
 export const mutations: MutationTree<Messages> = {
-	[ MESSAGES_INIT ] ( state: Messages, messages: MessageTranslationCollection ): void {
+	[ MESSAGES_INIT ]( state: Messages, messages: MessageTranslationCollection ): void {
 		state.messages = {};
 		Object.entries( messages ).forEach( ( [ inLanguage, translations ] ) => {
 			state.messages[ inLanguage ] = translations;

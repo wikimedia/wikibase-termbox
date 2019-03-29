@@ -12,7 +12,7 @@ export default class UlsLanguageTranslationRepository implements LanguageTransla
 	public getLanguagesInLanguage( inLanguage: string ): Promise<LanguageTranslations> {
 		return new Promise<LanguageTranslations>( ( resolve ) => {
 			resolve( {
-				[inLanguage]: this.getLanguagesNames(),
+				[ inLanguage ]: this.getLanguagesNames(),
 			} );
 		} );
 	}

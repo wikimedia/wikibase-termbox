@@ -1,5 +1,7 @@
 import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 
-export default interface Messages {
+interface Messages {
 	messages: MessageTranslationCollection;
 }
+
+export default Messages;

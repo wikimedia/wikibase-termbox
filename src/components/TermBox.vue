@@ -1,7 +1,11 @@
 <template>
 	<div class="wb-ui-termbox">
 		<div class="wb-ui-termbox__primary">
-			<MonolingualFingerprintView class="wb-ui-termbox__primary-inner" :languageCode="primaryLanguage" :isPrimary="true" />
+			<MonolingualFingerprintView
+				class="wb-ui-termbox__primary-inner"
+				:languageCode="primaryLanguage"
+				:isPrimary="true"
+				/>
 			<div class="wb-ui-termbox__actions">
 				<EditTools v-if="isEditable">
 					<EditPen :href="editLinkUrl" slot="edit" />

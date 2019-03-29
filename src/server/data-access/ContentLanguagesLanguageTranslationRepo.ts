@@ -13,13 +13,13 @@ export default class ContentLanguagesLanguageTranslationRepo implements Language
 	public getLanguagesInLanguage( inLanguage: string ): Promise<LanguageTranslations> {
 		return this.languagesRepo.getContentLanguages( inLanguage )
 			.then( ( contentLanguages: WikibaseApiContentLanguages ) => {
-				const translations: LanguageTranslations = { [inLanguage]: {} };
+				const translations: LanguageTranslations = { [ inLanguage ]: {} };
 				Object.entries( contentLanguages ).forEach( ( [ languageCode, language ] ) => {
 					if ( !( 'name' in language ) ) {
 						throw new TechnicalProblem( 'Name for a language not given.' );
 					}
 
-					translations[inLanguage][languageCode] = ( language as any ).name as string;
+					translations[ inLanguage ][ languageCode ] = ( language as any ).name as string;
 				} );
 
 				return translations;

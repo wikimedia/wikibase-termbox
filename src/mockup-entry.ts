@@ -34,6 +34,7 @@ const preferredLanguages = getOrEnforceUrlParameter(
 	},
 };
 
+// eslint-disable-next-line no-console
 console.info(
 	'mockup-entry.ts overwrote Axios.create() to allow CORS in dev.',
 	'See https://www.mediawiki.org/wiki/Manual:CORS',

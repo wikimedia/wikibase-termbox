@@ -47,7 +47,7 @@ describe( 'messages/Getters', () => {
 
 			expect( getters.getMessageInLanguage(
 				messages, null, null, null,
-			)( 'de' , 'toefften' ) ).toBe( messages.messages.de.toefften );
+			)( 'de', 'toefften' ) ).toBe( messages.messages.de.toefften );
 		} );
 
 		it( 'returns null if no message for the messageKey exists', () => {

@@ -1,4 +1,6 @@
-export default interface Term {
+interface Term {
 	language: string;
 	value: string;
 }
+
+export default Term;

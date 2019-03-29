@@ -19,7 +19,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		mutation( NS_MESSAGES, MESSAGES_INIT ),
 		{
 			fr: {
-				'wikibase-entitytermsforlanguagelistview-more':	frAllShowMessages,
+				'wikibase-entitytermsforlanguagelistview-more': frAllShowMessages,
 			},
 		},
 	);

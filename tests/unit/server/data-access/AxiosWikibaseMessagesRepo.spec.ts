@@ -51,7 +51,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 						'name': 'wikibase-save',
 						'normalizedname': 'wikibase-save',
 						'*': 'speichern',
-					}] ,
+					} ],
 				},
 			};
 			axiosMock.onGet( MEDIAWIKI_API_SCRIPT, { params: {
@@ -80,7 +80,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 					}, {
 						name: 'foo',
 						missing: '',
-					}],
+					} ],
 				},
 			};
 

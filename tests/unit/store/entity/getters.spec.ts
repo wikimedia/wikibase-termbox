@@ -112,7 +112,7 @@ describe( 'entity/Getters', () => {
 
 		it( 'returns null if no aliases for the language exists', () => {
 			const aliases = {
-				en: [{ language: 'en', value: 'Solanum tuberosum' }],
+				en: [ { language: 'en', value: 'Solanum tuberosum' } ],
 			};
 			expect( getters.getAliasesByLanguage(
 				newMinimalStore( { aliases } ), null, null, null,
@@ -142,7 +142,7 @@ describe( 'entity/Getters', () => {
 
 			expect( getters.getAllEnteredLanguageCodes(
 				newMinimalStore( { labels, descriptions, aliases } ), null, null, null,
-			) ).toStrictEqual( [ 'de', 'de-au', 'de-sb', 'en', 'fr', 'it', 'pl', 'zh', 'zh-hk', 'zh-tw'] );
+			) ).toStrictEqual( [ 'de', 'de-au', 'de-sb', 'en', 'fr', 'it', 'pl', 'zh', 'zh-hk', 'zh-tw' ] );
 		} );
 	} );
 } );

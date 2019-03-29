@@ -11,7 +11,7 @@ import { actions } from './actions';
 
 Vue.use( Vuex );
 
-export function createStore () {
+export function createStore() {
 	const state: Root = {
 		editMode: false,
 	};
@@ -27,7 +27,7 @@ export function createStore () {
 			links: createLinks(),
 			messages: createMessages(),
 		},
-		strict: process.env.NODE_ENV  !== 'production',
+		strict: process.env.NODE_ENV !== 'production',
 	};
 
 	return new Vuex.Store<any>( storeBundle );

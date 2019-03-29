@@ -1,5 +1,7 @@
 import Language from './Language';
 
-export default interface LanguageCollection {
+interface LanguageCollection {
 	[code: string]: Language;
 }
+
+export default LanguageCollection;

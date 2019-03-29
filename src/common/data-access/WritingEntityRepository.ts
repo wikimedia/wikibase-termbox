@@ -1,7 +1,7 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityRevision from '@/datamodel/EntityRevision';
 
-export default interface WritingEntityRepository {
+interface WritingEntityRepository {
 
 	/**
 	 * Rejects to TechnicalProblem or EntityNotFound errors in case of problems
@@ -9,3 +9,5 @@ export default interface WritingEntityRepository {
 	saveEntity( entity: FingerprintableEntity, baseRevId: number ): Promise<EntityRevision>;
 
 }
+
+export default WritingEntityRepository;

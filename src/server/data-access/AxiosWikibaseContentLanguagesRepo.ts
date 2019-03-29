@@ -41,7 +41,9 @@ export default class AxiosWikibaseContentLanguagesRepo implements WikibaseConten
 					}
 
 					if ( inLanguage && !( inLanguage in data.query.wbcontentlanguages ) ) {
-						reject( new TranslationLanguageNotFound( 'Asked for data in a language that itself is not existing.' ) );
+						reject( new TranslationLanguageNotFound(
+							'Asked for data in a language that itself is not existing.',
+						) );
 						return;
 					}
 

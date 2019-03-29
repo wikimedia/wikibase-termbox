@@ -13,7 +13,7 @@ describe( 'Sectionedit', () => {
 			},
 		} ) as unknown as Cheerio; // https://github.com/vuejs/vue-test-utils/issues/1131
 
-		expect( wrapper[0].tagName.toLowerCase() )
+		expect( wrapper[ 0 ].tagName.toLowerCase() )
 			.toEqual( 'wb:sectionedit' );
 		expect( wrapper.find( 'div' ).length ).toBe( 1 );
 		expect( wrapper.text() ).toBe( content );

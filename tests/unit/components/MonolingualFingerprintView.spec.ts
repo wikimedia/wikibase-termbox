@@ -43,7 +43,10 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
 			store.commit( EDITMODE_SET, false );
 
-			const wrapper = shallowMount( MonolingualFingerprintView, { store, propsData: { languageCode: language.code } } );
+			const wrapper = shallowMount(
+				MonolingualFingerprintView,
+				{ store, propsData: { languageCode: language.code } },
+			);
 
 			expect( wrapper.find( Label ).exists() ).toBeTruthy();
 			expect( wrapper.find( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
@@ -70,14 +73,18 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
 			store.commit( EDITMODE_SET, true );
 
-			const wrapper = shallowMount( MonolingualFingerprintView, { store, propsData: { languageCode: language.code } } );
+			const wrapper = shallowMount( MonolingualFingerprintView, {
+				store,
+				propsData: { languageCode: language.code },
+			} );
 
 			expect( wrapper.find( LabelEdit ).exists() ).toBeTruthy();
 			expect( wrapper.find( LabelEdit ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
 			expect( wrapper.find( LabelEdit ).props( 'languageCode' ) ).toBe( languageCode );
 
 			expect( wrapper.find( DescriptionEdit ).exists() ).toBeTruthy();
-			expect( wrapper.find( DescriptionEdit ).props( 'description' ) ).toBe( entity.descriptions[ language.code ] );
+			expect( wrapper.find( DescriptionEdit ).props( 'description' ) )
+				.toBe( entity.descriptions[ language.code ] );
 			expect( wrapper.find( DescriptionEdit ).props( 'languageCode' ) ).toBe( languageCode );
 
 			expect( wrapper.find( Aliases ).exists() ).toBeTruthy();

@@ -1,3 +1,5 @@
-export default interface MessageCollection {
+interface MessageCollection {
 	[messageKey: string]: string;
 }
+
+export default MessageCollection;
