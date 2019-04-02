@@ -2,18 +2,19 @@
 	<textarea
 		class="wb-ui-description-edit"
 		v-inlanguage="language"
-		:value="value"
+		v-model="value"
 	></textarea>
 </template>
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
-import { NS_LANGUAGE } from '@/store/namespaces';
+import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
+import { ENTITY_DESCRIPTION_EDIT } from '@/store/entity/actionTypes';
 
 @Component
 export default class DescriptionEdit extends mixins( Messages ) {
@@ -26,6 +27,9 @@ export default class DescriptionEdit extends mixins( Messages ) {
 	@Prop( { required: true, type: String } )
 	public languageCode!: string;
 
+	@namespace( NS_ENTITY ).Action( ENTITY_DESCRIPTION_EDIT )
+	public editDescription!: ( value: Term ) => void;
+
 	get language() {
 		return this.getLanguageByCode( this.languageCode );
 	}
@@ -36,6 +40,10 @@ export default class DescriptionEdit extends mixins( Messages ) {
 		} else {
 			return this.description.value;
 		}
+	}
+
+	set value( value ) {
+		this.editDescription( { language: this.languageCode, value } );
 	}
 }
 </script>

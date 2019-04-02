@@ -5,6 +5,9 @@ import { mutation } from '@/store/util';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
+import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
+import { action } from '@/store/util';
+import { NS_ENTITY } from '@/store/namespaces';
 
 const LABEL_SELECTOR = '.wb-ui-label-edit';
 
@@ -18,7 +21,7 @@ function createStoreWithLanguage( language: Language ) {
 
 describe( 'LabelEdit', () => {
 
-	it( 'makes the given label in the given language editable', () => {
+	it( 'shows the label in the given language', () => {
 		const language = 'en';
 		const label = 'hello';
 
@@ -35,6 +38,29 @@ describe( 'LabelEdit', () => {
 		const editSection = wrapper.find( LABEL_SELECTOR ).element as HTMLTextAreaElement;
 		expect( editSection.value ).toBe( label );
 
+	} );
+
+	it( `triggers ${ENTITY_LABEL_EDIT} when the label is edited`, () => {
+		const language = 'en';
+
+		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
+		store.dispatch = jest.fn();
+		const wrapper = shallowMount( LabelEdit, {
+			propsData: {
+				label: { language, value: 'hi' },
+				languageCode: language,
+			},
+			store,
+		} );
+		const textarea = wrapper.find( LABEL_SELECTOR );
+		const newLabel = 'hello';
+		( textarea.element as HTMLTextAreaElement ).value = newLabel;
+		textarea.trigger( 'input' );
+
+		expect( store.dispatch ).toHaveBeenCalledWith(
+			action( NS_ENTITY, ENTITY_LABEL_EDIT ),
+			{ language, value: newLabel },
+		);
 	} );
 
 	describe( 'directionality and language code', () => {
