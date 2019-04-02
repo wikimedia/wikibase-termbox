@@ -51,9 +51,8 @@ export const actions = {
 		} );
 	},
 
-	[ ENTITY_LABEL_EDIT ]( context: ActionContext<Entity, any>, payload: { language: string, value: string } ): void {
-		const labelTerm: Term = { language: payload.language, value: payload.value };
-		context.commit( SET_ENTITY_LABEL_MUTATION, labelTerm );
+	[ ENTITY_LABEL_EDIT ]( context: ActionContext<Entity, any>, label: Term ): void {
+		context.commit( SET_ENTITY_LABEL_MUTATION, label );
 	},
 
 	[ ENTITY_ALIASES_EDIT ](
@@ -64,12 +63,8 @@ export const actions = {
 		context.commit( ENTITY_ALIASES_EDIT_MUTATION, { language, terms } );
 	},
 
-	[ ENTITY_DESCRIPTION_EDIT ](
-		context: ActionContext<Entity, any>,
-		{ language, value }: { language: string, value: string },
-	): void {
-		const descriptionTerm: Term = { language, value };
-		context.commit( SET_ENTITY_DESCRIPTION_MUTATION, descriptionTerm );
+	[ ENTITY_DESCRIPTION_EDIT ]( context: ActionContext<Entity, any>, description: Term ): void {
+		context.commit( SET_ENTITY_DESCRIPTION_MUTATION, description );
 	},
 
 };
