@@ -30,15 +30,15 @@ describe( 'entity/mutations', () => {
 
 		it( 'throws an error if an invalid object is given', () => {
 			expect( () => {
-				mutations[ENTITY_UPDATE]( newEntityState(), '' );
+				mutations[ ENTITY_UPDATE ]( newEntityState(), '' );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ENTITY_UPDATE]( newEntityState(), [] );
+				mutations[ ENTITY_UPDATE ]( newEntityState(), [] );
 			} ).toThrow( InvalidEntityException );
 
 			expect( () => {
-				mutations[ENTITY_UPDATE]( newEntityState(), { id: 'whatever' } );
+				mutations[ ENTITY_UPDATE ]( newEntityState(), { id: 'whatever' } );
 			} ).toThrow( InvalidEntityException );
 		} );
 
@@ -51,7 +51,7 @@ describe( 'entity/mutations', () => {
 				{ en: [ { language: 'en', value: 'f00bar' } ] },
 			);
 
-			mutations[ENTITY_UPDATE]( state, entity );
+			mutations[ ENTITY_UPDATE ]( state, entity );
 
 			expect( state.labels ).toBe( entity.labels );
 			expect( state.id ).toBe( entity.id );
@@ -80,7 +80,7 @@ describe( 'entity/mutations', () => {
 
 			const newTerm = { language, value: newLabel };
 			mutations[ ENTITY_SET_LABEL ]( store, newTerm );
-			expect( store.labels[language] ).toBe( newTerm );
+			expect( store.labels[ language ] ).toBe( newTerm );
 		} );
 
 		it( 'overwrites a label in a language if one exists', () => {
@@ -96,7 +96,7 @@ describe( 'entity/mutations', () => {
 			} );
 			const newTerm = { language, value: newLabel };
 			mutations[ ENTITY_SET_LABEL ]( store, newTerm );
-			expect( store.labels[language] ).toBe( newTerm );
+			expect( store.labels[ language ] ).toBe( newTerm );
 		} );
 	} );
 
@@ -108,7 +108,7 @@ describe( 'entity/mutations', () => {
 
 			const newTerm = { language, value: newDescription };
 			mutations[ ENTITY_SET_DESCRIPTION ]( state, newTerm );
-			expect( state.descriptions[language] ).toBe( newTerm );
+			expect( state.descriptions[ language ] ).toBe( newTerm );
 		} );
 
 		it( 'overwrites a description in a language if one exists', () => {
@@ -125,13 +125,13 @@ describe( 'entity/mutations', () => {
 
 			const newTerm = { language, value: newDescription };
 			mutations[ ENTITY_SET_DESCRIPTION ]( state, newTerm );
-			expect( state.descriptions[language] ).toBe( newTerm );
+			expect( state.descriptions[ language ] ).toBe( newTerm );
 		} );
 	} );
 
 	describe( ENTITY_SET_ALIASES, () => {
 		it( 'creates a new entry if there are no aliases in the language', () => {
-			const state = newEntityState( );
+			const state = newEntityState();
 			const language = 'en';
 			const terms = [ { language, value: 'hat' } ];
 

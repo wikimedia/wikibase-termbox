@@ -33,7 +33,8 @@ describe( 'InMoreLanguagesExpandable', () => {
 
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 
-			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch span' ).text() ).toBe( expectedLinkText );
+			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch span' ).text() )
+				.toBe( expectedLinkText );
 		} );
 
 		it( 'toggle collapses/expands the user\'s secondary languages on click', () => {

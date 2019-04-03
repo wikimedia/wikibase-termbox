@@ -16,7 +16,7 @@ describe( 'messages/actions', () => {
 			};
 
 			factory.setMessagesRepository( {
-				getMessagesInLanguage: ( inLanguage: string ) => Promise.resolve( mockMessages ),
+				getMessagesInLanguage: () => Promise.resolve( mockMessages ),
 			} );
 
 			const context = newMockStore( {

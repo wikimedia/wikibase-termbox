@@ -15,8 +15,8 @@ function getComponentsRecursively( root: any ) {
 	const directChildren = root.options.components || {};
 
 	for ( const componentIndex in directChildren ) {
-		if ( directChildren[componentIndex].options ) {
-			const componentIdentifier = getComponentIdentifier( directChildren[componentIndex] );
+		if ( directChildren[ componentIndex ].options ) {
+			const componentIdentifier = getComponentIdentifier( directChildren[ componentIndex ] );
 			if ( !( componentIdentifier in components ) ) {
 				components = {
 					[ componentIdentifier ]: directChildren[ componentIndex ],

@@ -50,14 +50,16 @@ describe( 'QueryValidator', () => {
 					entity: ' ',
 					revision: '  ',
 					language: '      ',
-					preferredLanguages: '	',
+					preferredLanguages: '	', // eslint-disable-line no-tabs
 					editLink: '',
 				},
 				{
 					entity: [ '" " is not a valid entity id' ],
 					revision: [ 'Revision is not a number' ],
 					language: [ '"      " is not a valid language code' ],
-					preferredLanguages: [ '"	" is not a valid preferred language chain' ],
+					preferredLanguages: [
+						'"	" is not a valid preferred language chain', // eslint-disable-line no-tabs
+					],
 				},
 			],
 			[
@@ -89,7 +91,13 @@ describe( 'QueryValidator', () => {
 				{ revision: [ 'Revision can\'t be blank' ] },
 			],
 			[
-				{ entity: 'Q2', revision: 'foo', language: 'de', editLink: '/somewhere/Q2', preferredLanguages: 'de|en' },
+				{
+					entity: 'Q2',
+					revision: 'foo',
+					language: 'de',
+					editLink: '/somewhere/Q2',
+					preferredLanguages: 'de|en',
+				},
 				{ revision: [ 'Revision is not a number' ] },
 			],
 		] )(
@@ -149,7 +157,7 @@ describe( 'QueryValidator', () => {
 				revision: 4711,
 				language: 'zh',
 				strayvalue: 'ignored',
-				editLink: '/somewhere/Q2' ,
+				editLink: '/somewhere/Q2',
 				preferredLanguages: 'de|fe|zh|tw',
 			} ],
 		] )(

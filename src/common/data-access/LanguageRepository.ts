@@ -1,5 +1,7 @@
 import LanguageCollection from '@/datamodel/LanguageCollection';
 
-export default interface LanguageRepository {
+interface LanguageRepository {
 	getLanguages(): Promise<LanguageCollection>;
 }
+
+export default LanguageRepository;

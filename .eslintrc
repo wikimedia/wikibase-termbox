@@ -1,0 +1,38 @@
+{
+	"extends": [
+		"wikimedia"
+	],
+	"plugins": [
+		"@typescript-eslint"
+	],
+	"env": {
+		"es6": true,
+
+		// todo override in respective dirs?
+		"jest": true,
+		"node": true,
+		"browser": true
+	},
+	"parser": "vue-eslint-parser",
+	"parserOptions": {
+		"parser": "@typescript-eslint/parser",
+		"sourceType": "module"
+	},
+	"rules": {
+		"function-paren-newline": [ "error", "consistent" ],
+		"@typescript-eslint/type-annotation-spacing": [ "error" ],
+
+		// problematic in TypeScript / ES6
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": [ "error", { "argsIgnorePattern": "^_" } ],
+		"one-var": "off",
+		"no-undef": "off",
+
+		// diverging from Wikimedia rule set
+		"max-len": [ "error", 120 ],
+		"comma-dangle": [ "error", "always-multiline" ],
+		"operator-linebreak": "off",
+		"quote-props": "off",
+		"valid-jsdoc": "off"
+	}
+}

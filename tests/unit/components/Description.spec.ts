@@ -67,7 +67,7 @@ describe( 'Description', () => {
 			} );
 
 			expect( inlanguageDirective ).toBeCalledTimes( 1 );
-			expect( inlanguageDirective.mock.calls[0][1].value ).toBe( language );
+			expect( inlanguageDirective.mock.calls[ 0 ][ 1 ].value ).toBe( language );
 		} );
 
 		it( 'does not add directionality markup for missing description', () => {

@@ -5,6 +5,8 @@ export interface WikibaseApiContentLanguages {
 	};
 }
 
-export default interface WikibaseContentLanguagesRepo {
+interface WikibaseContentLanguagesRepo {
 	getContentLanguages( inLanguage: string|null ): Promise<WikibaseApiContentLanguages>;
 }
+
+export default WikibaseContentLanguagesRepo;

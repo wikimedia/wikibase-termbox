@@ -187,7 +187,7 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: result not well formed.' );
+			expect( logger.log.mock.calls[ 0 ][ 0 ].toString() ).toEqual( 'Error: result not well formed.' );
 
 			done();
 		} );
@@ -223,7 +223,8 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: Request failed with status code 500' );
+			expect( logger.log.mock.calls[ 0 ][ 0 ].toString() )
+				.toEqual( 'Error: Error: Request failed with status code 500' );
 
 			done();
 		} );
@@ -261,7 +262,8 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[0][0].toString() ).toEqual( 'Error: Error: Request failed with status code 500' );
+			expect( logger.log.mock.calls[ 0 ][ 0 ].toString() )
+				.toEqual( 'Error: Error: Request failed with status code 500' );
 
 			done();
 		} );
@@ -357,7 +359,7 @@ describe( 'Termbox SSR', () => {
 		} );
 	} );
 
-	it( 'renders Not found when requesting /termbox with well-formed query for revision not matching entity', ( done ) => {
+	it( 'renders Not found when requesting /termbox with well-formed query for revision not matching entity', () => {
 		const entityId = 'Q64';
 		const revision = REVISION_NOT_MATCHING_ENTITY;
 		const language = 'de';
@@ -379,7 +381,7 @@ describe( 'Termbox SSR', () => {
 				`<h1>Not Found</h1><p>Can't show revision ${revision} of entity ${entityId}.</p>`,
 			);
 
-		request( app ).get( '/termbox' ).query( {
+		return request( app ).get( '/termbox' ).query( {
 			entity: entityId,
 			revision,
 			language,
@@ -389,7 +391,6 @@ describe( 'Termbox SSR', () => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
 			expect( logger.log ).not.toBeCalled();
-			done();
 		} );
 	} );
 

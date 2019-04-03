@@ -1,3 +1,5 @@
 export interface StringTMap<T> { [key: string]: T; }
 
-export default interface LanguageTranslations extends StringTMap<StringTMap<string>> {}
+interface LanguageTranslations extends StringTMap<StringTMap<string>> {}
+
+export default LanguageTranslations;

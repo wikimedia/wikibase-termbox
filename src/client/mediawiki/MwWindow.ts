@@ -41,8 +41,10 @@ interface JQuery {
 	uls: JQUls;
 }
 
-export default interface MwWindow extends Window {
+interface MwWindow extends Window {
 	mw: MediaWiki;
 	wb: Wikibase;
 	$: JQuery;
 }
+
+export default MwWindow;

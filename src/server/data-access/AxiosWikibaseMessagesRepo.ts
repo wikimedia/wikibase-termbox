@@ -77,7 +77,7 @@ export default class AxiosWikibaseMessagesRepo implements MessagesRepository {
 			if ( 'missing' in value ) {
 				throw new MessageNotFound( `${ value.name } is not a valid message-key.` );
 			} else {
-				messageList[ value.name ] = ( value as ResponseMessageSuccess )['*'];
+				messageList[ value.name ] = ( value as ResponseMessageSuccess )[ '*' ];
 			}
 		} );
 		return messageList;

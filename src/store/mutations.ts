@@ -5,7 +5,7 @@ import {
 } from '@/store/mutationTypes';
 
 export const mutations: MutationTree<Root> = {
-	[ EDITMODE_SET ] ( state: Root, isEditible: boolean ): void {
+	[ EDITMODE_SET ]( state: Root, isEditible: boolean ): void {
 		state.editMode = isEditible;
 	},
 };

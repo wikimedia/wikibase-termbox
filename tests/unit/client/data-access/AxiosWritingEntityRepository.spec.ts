@@ -55,7 +55,7 @@ describe( 'AxiosWritingEntityRepository', () => {
 			} ),
 		} ).reply( HttpStatus.OK, wbeditentitySuccessResponse );
 
-		return repository.saveEntity( entity, baseRevisionId ).then( ( entityRevision: EntityRevision ) => {
+		return repository.saveEntity( entity, baseRevisionId ).then( () => {
 			expect( axiosMock.history.post ).toHaveLength( 1 );
 		} );
 	} );

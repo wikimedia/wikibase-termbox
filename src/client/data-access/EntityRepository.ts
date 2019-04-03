@@ -11,7 +11,7 @@ export default class EntityRepository implements EntityRepositoryInterface {
 		this.entityLoadedHook = entityLoadedHook;
 	}
 
-	public getFingerprintableEntity( id: string, revision: number ): Promise<FingerprintableEntity> {
+	public getFingerprintableEntity( _id: string, _revision: number ): Promise<FingerprintableEntity> {
 		return new Promise( ( resolve ) => {
 			this.entityLoadedHook.add( ( entity: any ) => {
 				resolve( ( new EntityInitializer() ).newFromSerialization( entity ) );

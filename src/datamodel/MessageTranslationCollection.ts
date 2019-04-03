@@ -1,5 +1,7 @@
 import MessageCollection from '@/datamodel/MessageCollection';
 
-export default interface MessageTranslationCollection {
+interface MessageTranslationCollection {
 	[languageCode: string]: MessageCollection;
 }
+
+export default MessageTranslationCollection;

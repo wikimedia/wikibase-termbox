@@ -5,6 +5,8 @@ import axios from 'axios';
 import { GLOBAL_REQUEST_PARAMS } from '../common/constants';
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 
+/* eslint-disable no-console */
+
 function verifyAndReportSetting( name: string, value: any ) {
 	if ( typeof value === 'undefined' ) {
 		console.warn( `${name} env must be configured to a meaningful value. Exiting.` );
@@ -30,7 +32,7 @@ export default ( options: ServiceRunnerOptions ) => {
 
 	createApp( services )
 		.listen( ssrPort, () => {
-			console.info( `server is now running...` );
+			console.info( 'server is now running...' );
 		} );
 
 	process.on( 'SIGINT', () => {

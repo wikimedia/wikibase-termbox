@@ -23,7 +23,10 @@ import EntityRevision from '@/datamodel/EntityRevision';
 
 export const actions = {
 
-	[ ENTITY_INIT ]( context: ActionContext<Entity, any>, payload: { entity: string, revision: number } ): Promise<void> {
+	[ ENTITY_INIT ](
+		context: ActionContext<Entity, any>,
+		payload: { entity: string, revision: number },
+	): Promise<void> {
 		return Promise.all( [
 			factory.getEntityRepository().getFingerprintableEntity( payload.entity, payload.revision ),
 			factory.getEntityEditabilityResolver().isEditable( payload.entity ),
@@ -53,7 +56,7 @@ export const actions = {
 		context.commit( SET_ENTITY_LABEL_MUTATION, labelTerm );
 	},
 
-	[ENTITY_ALIASES_EDIT](
+	[ ENTITY_ALIASES_EDIT ](
 		context: ActionContext<Entity, any>,
 		{ language, aliasValues }: { language: string, aliasValues: string[] },
 	): void {

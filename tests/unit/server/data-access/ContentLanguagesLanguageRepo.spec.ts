@@ -70,7 +70,7 @@ describe( 'ContentLanguagesLanguageRepo', () => {
 			};
 			const repo = newWikibaseContentLanguagesRepository( contentLanguagesRepo );
 
-			repo.getLanguages().then( ( languages: LanguageCollection ) => {
+			repo.getLanguages().then( () => {
 				expect( spyGetLangDir ).toBeCalledTimes( 2 );
 				expect( spyGetLangDir ).toBeCalledWith( 'en' );
 				expect( spyGetLangDir ).toBeCalledWith( 'ar' );

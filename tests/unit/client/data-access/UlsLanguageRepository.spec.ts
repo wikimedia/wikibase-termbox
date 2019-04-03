@@ -11,10 +11,9 @@ describe( 'UlsLanguageRepository', () => {
 		const directionalities = {
 			getDir: ( code: string ) => langDirs[ code ],
 		};
-		return (
-			new UlsLanguageRepository(
-				translator,
-				directionalities,
+		return ( new UlsLanguageRepository(
+			translator,
+			directionalities,
 		) ).getLanguages().then( ( languages ) => {
 			expect( languages ).toEqual( {
 				en: {

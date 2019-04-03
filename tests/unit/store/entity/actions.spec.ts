@@ -85,7 +85,7 @@ describe( 'entity/actions', () => {
 			} );
 		} );
 
-		it( `propagates lookup rejection`, ( done ) => {
+		it( 'propagates lookup rejection', ( done ) => {
 			const entityId = 'Q1';
 			const revision = 4711;
 			const error = new EntityNotFound( 'Entity not found' );
@@ -96,10 +96,11 @@ describe( 'entity/actions', () => {
 				},
 			} );
 
-			actions[ ENTITY_INIT ]( newMockStore( {} ), { entity: entityId, revision } ).catch( ( thisError: Error ) => {
-				expect( thisError ).toBe( error );
-				done();
-			} );
+			actions[ ENTITY_INIT ]( newMockStore( {} ), { entity: entityId, revision } )
+				.catch( ( thisError: Error ) => {
+					expect( thisError ).toBe( error );
+					done();
+				} );
 		} );
 	} );
 
@@ -141,7 +142,8 @@ describe( 'entity/actions', () => {
 			const store = { commit: jest.fn() };
 
 			return actions[ ENTITY_SAVE ]( newMockStore( store ) ).then( () => {
-				expect( store.commit ).toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, responseEntityRevision.revisionId );
+				expect( store.commit )
+					.toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, responseEntityRevision.revisionId );
 				expect( store.commit ).toHaveBeenCalledWith( ENTITY_UPDATE, responseEntityRevision.entity );
 			} );
 		} );
@@ -166,7 +168,7 @@ describe( 'entity/actions', () => {
 	describe( ENTITY_DESCRIPTION_EDIT, () => {
 		it( `commits to ${ENTITY_SET_DESCRIPTION_MUTATION} on label update action`, () => {
 			const commitMock = jest.fn();
-			const context =  newMockStore( {
+			const context = newMockStore( {
 				commit: commitMock,
 			} );
 
@@ -179,7 +181,7 @@ describe( 'entity/actions', () => {
 		} );
 	} );
 
-	describe( ENTITY_ALIASES_EDIT , () => {
+	describe( ENTITY_ALIASES_EDIT, () => {
 		it( `commits to ${ ENTITY_ALIASES_EDIT_MUTATION }`, () => {
 			const context = newMockStore( {
 				commit: jest.fn(),
@@ -190,11 +192,14 @@ describe( 'entity/actions', () => {
 			const termString2 = 'spud';
 			const expectedTerms = [ { language, value: termString1 }, { language, value: termString2 } ];
 
-			( actions[ ENTITY_ALIASES_EDIT ] )(
+			actions[ ENTITY_ALIASES_EDIT ](
 				context,
-				{language, aliasValues: [ termString1, termString2 ] },
-				);
-			expect( context.commit ).toHaveBeenCalledWith( ENTITY_ALIASES_EDIT_MUTATION, { language, terms: expectedTerms } );
+				{ language, aliasValues: [ termString1, termString2 ] },
+			);
+			expect( context.commit ).toHaveBeenCalledWith( ENTITY_ALIASES_EDIT_MUTATION, {
+				language,
+				terms: expectedTerms,
+			} );
 		} );
 	} );
 

@@ -15,10 +15,10 @@ export default class EntityInitializer {
 
 	private validate( entity: any ) {
 		if (
-			!entity.hasOwnProperty( 'id' )
-			|| !entity.hasOwnProperty( 'labels' )
-			|| !entity.hasOwnProperty( 'descriptions' )
-			|| !entity.hasOwnProperty( 'aliases' )
+			!entity.id
+			|| !entity.labels
+			|| !entity.descriptions
+			|| !entity.aliases
 		) {
 			throw new Error( 'invalid entity serialization' );
 		}

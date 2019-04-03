@@ -1,7 +1,7 @@
 import TermList from '@/datamodel/TermList';
 import AliasesList from '@/datamodel/AliasesList';
 
-export default interface Entity {
+interface Entity {
 	id: string;
 	baseRevision: number;
 
@@ -11,3 +11,5 @@ export default interface Entity {
 
 	isEditable: boolean;
 }
+
+export default Entity;

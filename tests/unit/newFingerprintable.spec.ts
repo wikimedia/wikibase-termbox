@@ -49,10 +49,10 @@ describe( 'newFingerprintable', () => {
 
 		it( 'are set as passed', () => {
 			const entity = newFingerprintable( { aliases: { en: [ 'baz', 'lorem' ] } } );
-			expect( entity.aliases.en[0].language ).toBe( 'en' );
-			expect( entity.aliases.en[0].value ).toBe( 'baz' );
-			expect( entity.aliases.en[1].language ).toBe( 'en' );
-			expect( entity.aliases.en[1].value ).toBe( 'lorem' );
+			expect( entity.aliases.en[ 0 ].language ).toBe( 'en' );
+			expect( entity.aliases.en[ 0 ].value ).toBe( 'baz' );
+			expect( entity.aliases.en[ 1 ].language ).toBe( 'en' );
+			expect( entity.aliases.en[ 1 ].value ).toBe( 'lorem' );
 		} );
 	} );
 

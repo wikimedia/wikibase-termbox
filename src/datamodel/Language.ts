@@ -1,4 +1,6 @@
-export default interface Language {
+interface Language {
 	code: string;
 	directionality: string;
 }
+
+export default Language;

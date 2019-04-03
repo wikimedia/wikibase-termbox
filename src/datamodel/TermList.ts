@@ -1,5 +1,7 @@
 import Term from '@/datamodel/Term';
 
-export default interface TermList {
+interface TermList {
 	[language: string]: Term;
 }
+
+export default TermList;

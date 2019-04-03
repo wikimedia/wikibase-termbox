@@ -29,7 +29,7 @@ function mockMwEnv(
 				getUrl: jest.fn(),
 			};
 		} ),
-		message: ( key: string, ...params: string[] ): MwMessage =>  {
+		message: (): MwMessage => {
 			return {
 				text: () => '',
 			};

@@ -7,7 +7,7 @@ import 'url-search-params-polyfill';
  * @param name string
  * @param defaultValue string
  */
-export default function( name: string, defaultValue: string ): string {
+export default function ( name: string, defaultValue: string ): string {
 	const searchParams = new URLSearchParams( location.search );
 	const value = searchParams.get( name );
 	if ( value === null || value.trim() === '' ) {

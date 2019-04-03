@@ -23,7 +23,7 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 			this.getEntity( id, revision )
 				.then( ( entity: any ) => {
 					try {
-						resolve ( this.entityInitializer.newFromSerialization( entity ) );
+						resolve( this.entityInitializer.newFromSerialization( entity ) );
 					} catch ( e ) {
 						reject( new TechnicalProblem( e.message ) );
 					}

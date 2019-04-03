@@ -19,14 +19,15 @@ describe( 'EntityRepository', () => {
 			new ImmediatelyInvokingEntityLoadedHookHandler( entityReturnedFromHook ),
 		);
 
-		return entityRepository.getFingerprintableEntity( entityId, revision ).then( ( entity: FingerprintableEntity ) => {
-			expect( entity ).toBeInstanceOf( FingerprintableEntity );
+		return entityRepository.getFingerprintableEntity( entityId, revision )
+			.then( ( entity: FingerprintableEntity ) => {
+				expect( entity ).toBeInstanceOf( FingerprintableEntity );
 
-			expect( entity.id ).toBe( entityReturnedFromHook.id );
-			expect( entity.labels ).toBe( entityReturnedFromHook.labels );
-			expect( entity.descriptions ).toBe( entityReturnedFromHook.descriptions );
-			expect( entity.aliases ).toBe( entityReturnedFromHook.aliases );
-		} );
+				expect( entity.id ).toBe( entityReturnedFromHook.id );
+				expect( entity.labels ).toBe( entityReturnedFromHook.labels );
+				expect( entity.descriptions ).toBe( entityReturnedFromHook.descriptions );
+				expect( entity.aliases ).toBe( entityReturnedFromHook.aliases );
+			} );
 	} );
 
 } );
