@@ -26,6 +26,9 @@ export default class LabelEdit extends mixins( Messages ) {
 	@Prop( { required: true, type: String } )
 	public languageCode!: string;
 
+	@Prop( { required: false, default: false, type: Boolean } )
+	public isPrimary!: boolean;
+
 	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
 	public getLanguageByCode!: ( language: string ) => Language;
 

@@ -63,6 +63,19 @@ describe( 'LabelEdit', () => {
 		);
 	} );
 
+	it( 'has an isPrimary prop', () => {
+		const wrapper = shallowMount( LabelEdit, {
+			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			propsData: {
+				label: null,
+				languageCode: 'en',
+				isPrimary: true,
+			},
+		} );
+
+		expect( wrapper.props() ).toHaveProperty( 'isPrimary', true );
+	} );
+
 	describe( 'directionality and language code', () => {
 
 		it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
