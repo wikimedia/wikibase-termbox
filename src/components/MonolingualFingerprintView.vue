@@ -8,14 +8,14 @@
 				:is="editMode ? 'LabelEdit' : 'Label'"
 				:label="getLabelByLanguage( languageCode )"
 				:isPrimary="isPrimary"
-				:languageCode="languageCode"
+				:languageCode="editMode ? languageCode : null"
 				class="wb-ui-monolingualfingerprintview__label-wrapper"
 			/>
 			<div class="wb-ui-monolingualfingerprintview__description-wrapper">
 				<component
 					:is="editMode ? 'DescriptionEdit' : 'Description'"
 					:description="getDescriptionByLanguage( languageCode )"
-					:languageCode="languageCode"
+					:languageCode="editMode ? languageCode : null"
 					class="wb-ui-monolingualfingerprintview__description-inner"
 				/>
 			</div>
@@ -24,7 +24,7 @@
 				<component
 					:is="'Aliases'"
 					:aliases="getAliasesByLanguage( languageCode )"
-					:languageCode="languageCode"
+					:languageCode="editMode ? languageCode : null"
 					class="wb-ui-monolingualfingerprintview__aliases-inner"
 				/>
 			</div>
