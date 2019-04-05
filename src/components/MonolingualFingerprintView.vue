@@ -94,7 +94,6 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 .wb-ui-monolingualfingerprintview {
 	$block: #{&};
 	margin-top: 32px;
-	margin-right: 64px;
 
 	&:first-child {
 		margin-top: 0;
@@ -123,6 +122,8 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 	}
 
 	&:not( &--primaryLanguage ) {
+		margin-right: 64px;
+
 		@include media-breakpoint-up(md) {
 			#{$block}__terms {
 				display: flex;
