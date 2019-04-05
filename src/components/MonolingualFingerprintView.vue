@@ -92,6 +92,7 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-monolingualfingerprintview {
+	$block: #{&};
 	margin-top: 32px;
 	margin-right: 64px;
 
@@ -114,8 +115,8 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 	}
 
 	&:not( &--editing ) {
-		.wb-ui-monolingualfingerprintview__description-inner,
-		.wb-ui-monolingualfingerprintview__aliases-inner {
+		#{$block}__description-inner,
+		#{$block}__aliases-inner {
 			// margin and min-width need to be on different elements for width calculation
 			margin-left: 0.5em;
 		}
@@ -123,26 +124,26 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 
 	&:not( &--primaryLanguage ) {
 		@include media-breakpoint-up(md) {
-			.wb-ui-monolingualfingerprintview__terms {
+			#{$block}__terms {
 				display: flex;
 				flex: 1 1 0;
 			}
 
-			.wb-ui-monolingualfingerprintview__label-wrapper,
-			.wb-ui-monolingualfingerprintview__description-wrapper,
-			.wb-ui-monolingualfingerprintview__aliases-wrapper {
+			#{$block}__label-wrapper,
+			#{$block}__description-wrapper,
+			#{$block}__aliases-wrapper {
 				flex: 1 1 100%;
 
 				@include shrinking-flex-element();
 			}
 
-			.wb-ui-monolingualfingerprintview__description-wrapper,
-			.wb-ui-monolingualfingerprintview__aliases-wrapper {
+			#{$block}__description-wrapper,
+			#{$block}__aliases-wrapper {
 				margin-left: 16px;
 			}
 
-			.wb-ui-monolingualfingerprintview__description-inner,
-			.wb-ui-monolingualfingerprintview__aliases-inner {
+			#{$block}__description-inner,
+			#{$block}__aliases-inner {
 				margin-left: 0;
 			}
 		}
@@ -150,13 +151,13 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 		@include media-breakpoint-up(lg) {
 			display: flex;
 
-			.wb-ui-monolingualfingerprintview__label-wrapper,
-			.wb-ui-monolingualfingerprintview__description-wrapper,
-			.wb-ui-monolingualfingerprintview__aliases-wrapper {
+			#{$block}__label-wrapper,
+			#{$block}__description-wrapper,
+			#{$block}__aliases-wrapper {
 				margin-top: 0;
 			}
 
-			.wb-ui-monolingualfingerprintview__language {
+			#{$block}__language {
 				flex-basis: 128px;
 				margin-right: 16px;
 			}
