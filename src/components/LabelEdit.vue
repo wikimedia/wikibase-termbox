@@ -1,12 +1,12 @@
 <template>
-	<textarea
+	<TermTextField
 		class="wb-ui-label-edit"
 		:class="{
 			'wb-ui-label-edit--primary': isPrimary,
 		}"
 		v-inlanguage="language"
 		v-model="value"
-	></textarea>
+	/>
 </template>
 
 <script lang="ts">
@@ -18,8 +18,11 @@ import { namespace } from 'vuex-class';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
 import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
+import TermTextField from '@/components/TermTextField.vue';
 
-@Component
+@Component( {
+	components: { TermTextField },
+} )
 export default class LabelEdit extends mixins( Messages ) {
 	@Prop( { required: true } )
 	public label!: Term|null;
@@ -51,6 +54,7 @@ export default class LabelEdit extends mixins( Messages ) {
 	get language() {
 		return this.getLanguageByCode( this.languageCode );
 	}
+
 }
 </script>
 

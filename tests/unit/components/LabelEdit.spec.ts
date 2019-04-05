@@ -1,15 +1,12 @@
 import LabelEdit from '@/components/LabelEdit.vue';
+import TermTextField from '@/components/TermTextField.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
-import { mutation } from '@/store/util';
-import { NS_LANGUAGE } from '@/store/namespaces';
+import { action, mutation } from '@/store/util';
+import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
-import { action } from '@/store/util';
-import { NS_ENTITY } from '@/store/namespaces';
-
-const LABEL_SELECTOR = '.wb-ui-label-edit';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -35,9 +32,7 @@ describe( 'LabelEdit', () => {
 			store,
 		} );
 
-		const editSection = wrapper.find( LABEL_SELECTOR ).element as HTMLTextAreaElement;
-		expect( editSection.value ).toBe( label );
-
+		expect( wrapper.find( TermTextField ).props( 'value' ) ).toBe( label );
 	} );
 
 	it( `triggers ${ENTITY_LABEL_EDIT} when the label is edited`, () => {
@@ -52,10 +47,8 @@ describe( 'LabelEdit', () => {
 			},
 			store,
 		} );
-		const textarea = wrapper.find( LABEL_SELECTOR );
 		const newLabel = 'hello';
-		( textarea.element as HTMLTextAreaElement ).value = newLabel;
-		textarea.trigger( 'input' );
+		wrapper.find( TermTextField ).vm.$emit( 'input', newLabel );
 
 		expect( store.dispatch ).toHaveBeenCalledWith(
 			action( NS_ENTITY, ENTITY_LABEL_EDIT ),

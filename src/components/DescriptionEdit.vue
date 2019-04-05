@@ -1,9 +1,9 @@
 <template>
-	<textarea
+	<TermTextField
 		class="wb-ui-description-edit"
 		v-inlanguage="language"
 		v-model="value"
-	></textarea>
+	/>
 </template>
 
 <script lang="ts">
@@ -15,8 +15,11 @@ import { namespace } from 'vuex-class';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
 import { ENTITY_DESCRIPTION_EDIT } from '@/store/entity/actionTypes';
+import TermTextField from '@/components/TermTextField.vue';
 
-@Component
+@Component( {
+	components: { TermTextField },
+} )
 export default class DescriptionEdit extends mixins( Messages ) {
 	@Prop( { required: true } )
 	public description!: Term|null;

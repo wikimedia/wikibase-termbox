@@ -1,4 +1,5 @@
 import DescriptionEdit from '@/components/DescriptionEdit.vue';
+import TermTextField from '@/components/TermTextField.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
@@ -8,8 +9,6 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_DESCRIPTION_EDIT } from '@/store/entity/actionTypes';
 import { action } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
-
-const DESCRIPTION_SELECTOR = '.wb-ui-description-edit';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -35,8 +34,8 @@ describe( 'DescriptionEdit', () => {
 			store,
 		} );
 
-		const editSection = wrapper.find( DESCRIPTION_SELECTOR ).element as HTMLTextAreaElement;
-		expect( editSection.value ).toBe( description );
+		const textField = wrapper.find( TermTextField );
+		expect( textField.props( 'value' ) ).toBe( description );
 
 	} );
 
@@ -52,10 +51,8 @@ describe( 'DescriptionEdit', () => {
 			},
 			store,
 		} );
-		const textarea = wrapper.find( DESCRIPTION_SELECTOR );
 		const newDescription = 'a new description';
-		( textarea.element as HTMLTextAreaElement ).value = newDescription;
-		textarea.trigger( 'input' );
+		wrapper.find( TermTextField ).vm.$emit( 'input', newDescription );
 
 		expect( store.dispatch ).toHaveBeenCalledWith(
 			action( NS_ENTITY, ENTITY_DESCRIPTION_EDIT ),
