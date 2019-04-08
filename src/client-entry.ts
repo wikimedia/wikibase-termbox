@@ -55,7 +55,8 @@ factory.setEntityEditabilityResolver( {
 
 const repoConfig = ( window as MwWindow ).mw.config.get( 'wbRepo' );
 const baseUrl = repoConfig.url + repoConfig.scriptPath;
-const axios = getAxios( baseUrl );
+const userName = ( window as MwWindow ).mw.config.get( 'wgUserName' );
+const axios = getAxios( baseUrl, userName );
 
 factory.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, new EntityInitializer() ) );
 

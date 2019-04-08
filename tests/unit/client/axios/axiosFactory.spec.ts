@@ -4,7 +4,8 @@ import HttpStatus from 'http-status-codes';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 
 const mockRequestBaseURL = 'foo';
-const axios = getAxios( mockRequestBaseURL );
+const mockUsername = 'PacMan';
+const axios = getAxios( mockRequestBaseURL, mockUsername );
 const axiosMock = new MockAdapter( axios );
 
 function addMockCSRFReply( axiosMock: MockAdapter ) {
@@ -61,6 +62,22 @@ describe( 'getAxios', () => {
 		axiosMock.onGet( mockRequestBaseURL + '/' + somePath ).reply( HttpStatus.OK );
 		return axios.get( somePath ).then( ( response ) => {
 			expect( response.status ).toEqual( HttpStatus.OK );
+		} );
+	} );
+
+	it( 'should assert user in POST requests if one is passed', () => {
+		axiosMock.onPost( mockRequestBaseURL ).reply( HttpStatus.OK );
+		axiosMock.onGet( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK, {
+			batchcomplete: '',
+			query: {
+				tokens: {
+					csrftoken: 'foo',
+				},
+			},
+		} );
+		return axios.post( mockRequestBaseURL, { action: 'fooAction' } ).then( () => {
+			expect( axiosMock.history.post[ 0 ].data ).toBeInstanceOf( FormData );
+			expect( axiosMock.history.post[ 0 ].data.get( 'assertuser' ) ).toEqual( mockUsername );
 		} );
 	} );
 } );
