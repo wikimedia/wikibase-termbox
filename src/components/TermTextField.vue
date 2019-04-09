@@ -1,24 +1,42 @@
 <template>
-	<textarea :value="value" @input="e => $emit( 'input', e.target.value )"></textarea>
+	<textarea :value="value" @input="setValue" @keydown.enter.prevent></textarea>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import { Prop, Watch } from 'vue-property-decorator';
+import { Prop } from 'vue-property-decorator';
+
+interface InputEvent {
+	target: InputEventTarget;
+}
+
+interface InputEventTarget {
+	value: string;
+}
 
 @Component
 export default class TermTextField extends Vue {
 	@Prop()
 	public value!: string;
 
-	@Watch( 'value' )
-	public onValueChange() {
+	public mounted() {
 		this.resizeTextField();
 	}
 
-	public mounted() {
-		this.resizeTextField();
+	public setValue( event: InputEvent ) {
+		this.$emit( 'input', this.removeNewlines( event.target.value ) );
+
+		// make sure that even nodiff changes to the state will update our textarea
+		// a nodiff could be caused by pasting newlines only
+		this.$forceUpdate();
+		this.$nextTick().then( () => {
+			this.resizeTextField();
+		} );
+	}
+
+	private removeNewlines( value: string ): string {
+		return value.replace( /\r?\n/g, '' );
 	}
 
 	public resizeTextField() {

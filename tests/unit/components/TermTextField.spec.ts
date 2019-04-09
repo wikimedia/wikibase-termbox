@@ -29,4 +29,22 @@ describe( 'TermTextField', () => {
 
 	// the automatically adjusted height is hard to test in a jsdom environment
 
+	describe( 'newline removal', () => {
+		it.each( [
+			[ 'bar', 'bar' ],
+			[ 'loremipsumdolorsitamet', 'lorem\nipsum\ndolor\nsit\namet\n\n' ],
+			[ '', '' ],
+			[ 'i ama windows', 'i am\r\na windows' ],
+			[ 'i ama unix', 'i am\na unix' ],
+		] )(
+			'propagates value as "%s" when given "%s"',
+			( expected: string, given: string ) => {
+				const wrapper = mount( TermTextField );
+				const textarea = wrapper.element as HTMLTextAreaElement;
+				textarea.value = given;
+				wrapper.trigger( 'input' );
+				expect( wrapper.emitted( 'input' )[ 0 ] ).toEqual( [ expected ] );
+			},
+		);
+	} );
 } );
