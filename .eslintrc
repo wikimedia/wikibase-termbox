@@ -3,7 +3,8 @@
 		"wikimedia"
 	],
 	"plugins": [
-		"@typescript-eslint"
+		"@typescript-eslint",
+		"filenames"
 	],
 	"env": {
 		"es6": true,
@@ -21,6 +22,7 @@
 	"rules": {
 		"function-paren-newline": [ "error", "consistent" ],
 		"@typescript-eslint/type-annotation-spacing": [ "error" ],
+		"filenames/match-exported": "error",
 
 		// problematic in TypeScript / ES6
 		"no-unused-vars": "off",

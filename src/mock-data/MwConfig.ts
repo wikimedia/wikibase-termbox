@@ -1,4 +1,4 @@
-export default class MWConfig {
+export default class MwConfig {
 	private language: string;
 
 	public constructor( language: string ) {
