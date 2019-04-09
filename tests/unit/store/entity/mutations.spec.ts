@@ -10,18 +10,24 @@ import {
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import Entity from '@/store/entity/Entity';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import { lockState } from '../lockState';
 
-function newEntityState( entity: any = {} ): Entity {
-	return {
+function newEntityState( entity: any = null ): Entity {
+	let state = {
 		id: 'Q1',
 		baseRevision: 0,
 		labels: {},
 		descriptions: {},
 		aliases: {},
 		isEditable: false,
-
-		...entity,
 	};
+
+	if ( entity !== null ) {
+		state = { ...state, ...entity };
+		lockState( state );
+	}
+
+	return state;
 }
 
 describe( 'entity/mutations', () => {
@@ -98,6 +104,7 @@ describe( 'entity/mutations', () => {
 			mutations[ ENTITY_SET_LABEL ]( store, newTerm );
 			expect( store.labels[ language ] ).toBe( newTerm );
 		} );
+
 	} );
 
 	describe( ENTITY_SET_DESCRIPTION, () => {

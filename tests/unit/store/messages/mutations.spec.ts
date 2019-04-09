@@ -1,4 +1,5 @@
 import { mutations } from '@/store/messages/mutations';
+import { lockState } from '../lockState';
 import {
 	MESSAGES_INIT,
 } from '@/store/messages/mutationTypes';
@@ -9,6 +10,8 @@ describe( 'messages/mutations', () => {
 	describe( MESSAGES_INIT, () => {
 		it( 'contains messages after initialization', () => {
 			const state: Messages = { messages: {} };
+			lockState( state );
+
 			const messages = {
 				de: {
 					test: 'test',
