@@ -34,10 +34,17 @@ export default class Publish extends mixins( Messages ) {
 		}
 
 		&:hover {
-			filter: saturate( 175% )
-				hue-rotate( 2deg )
-				opacity( 90% );
+			filter: saturate( 55.6% )
+				contrast( 144.5% )
+				brightness( 144.5% );
 			transition: filter 0.3s ease;
+		}
+
+		&:active {
+			filter: saturate( 142% )
+				contrast( 67% )
+				brightness( 67% );
+			transition: filter 0.5s ease;
 		}
 	}
 
