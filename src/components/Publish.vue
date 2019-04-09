@@ -32,6 +32,13 @@ export default class Publish extends mixins( Messages ) {
 		[ dir='rtl' ] & {
 			transform: scaleX( -1 );
 		}
+
+		&:hover {
+			filter: saturate( 175% )
+				hue-rotate( 2deg )
+				opacity( 90% );
+			transition: filter 0.3s ease;
+		}
 	}
 
 	&__text {
