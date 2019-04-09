@@ -1,8 +1,8 @@
-import MessagesRepository from '@/common/data-access/MessagesRepository.ts';
+import MessagesRepositoryInterface from '@/common/data-access/MessagesRepository.ts';
 import MessageCollection from '@/datamodel/MessageTranslationCollection';
 import { MwMessages } from '@/client/mediawiki/MwWindow';
 
-export default class ClientMessagesRepository implements MessagesRepository {
+export default class MessagesRepository implements MessagesRepositoryInterface {
 
 	private mwMessages: MwMessages;
 	private messageKeys: string[];

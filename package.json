@@ -54,6 +54,7 @@
     "css-scss": "^0.1.1",
     "eslint": "^5.16.0",
     "eslint-config-wikimedia": "^0.11.0",
+    "eslint-plugin-filenames": "^1.3.2",
     "jest-dom": "^2.1.1",
     "nock": "^10.0.6",
     "node-sass": "^4.11.0",
