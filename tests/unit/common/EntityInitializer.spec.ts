@@ -12,6 +12,9 @@ describe( 'EntityInitializer', () => {
 		[ {} ],
 		[ { type: 'item' } ],
 		[ { id: 'Q123' } ],
+		[ { id: 'Q123', labels: [ 'wat' ], descriptions: {}, aliases: {} } ],
+		[ { id: 'Q123', labels: {}, descriptions: [ 'wat' ], aliases: {} } ],
+		[ { id: 'Q123', labels: {}, descriptions: {}, aliases: [ 'wat' ] } ],
 	] )(
 		'throws an error given an invalid entity serialization',
 		( serialization ) => {
@@ -47,6 +50,22 @@ describe( 'EntityInitializer', () => {
 		expect( result.labels ).toEqual( entity.labels );
 		expect( result.descriptions ).toEqual( entity.descriptions );
 		expect( result.aliases ).toEqual( entity.aliases );
+	} );
+
+	it( 'converts empty arrays for labels, descriptions and aliases to empty objects', () => {
+		const entity = {
+			id: 'Q123',
+			type: 'item',
+			labels: [],
+			descriptions: [],
+			aliases: [],
+		};
+
+		const result = newEntityInitializer().newFromSerialization( entity );
+
+		expect( result.labels ).toEqual( {} );
+		expect( result.descriptions ).toEqual( {} );
+		expect( result.aliases ).toEqual( {} );
 	} );
 
 } );
