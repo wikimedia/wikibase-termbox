@@ -1,4 +1,5 @@
 import { mutations } from '@/store/user/mutations';
+import { lockState } from '../lockState';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
@@ -7,10 +8,14 @@ import InvalidLanguageValueException from '@/store/user/exceptions/InvalidLangua
 import User from '@/store/user/User';
 
 function newUserState(): User {
-	return {
+	const state = {
 		primaryLanguage: '',
 		secondaryLanguages: [],
 	};
+
+	lockState( state );
+
+	return state;
 }
 
 describe( '/store/user/mutations.ts', () => {

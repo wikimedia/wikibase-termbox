@@ -9,14 +9,10 @@ import LanguageCollection from '@/datamodel/LanguageCollection';
 
 export const mutations: MutationTree<LanguageState> = {
 	[ LANGUAGE_UPDATE ]( state: LanguageState, languages: LanguageCollection ): void {
-		Object.entries( languages ).forEach( ( [ languageKey, localData ] ) => {
-			state.languages[ languageKey ] = localData;
-		} );
+		state.languages = { ...state.languages, ...languages };
 	},
 
 	[ LANGUAGE_TRANSLATION_UPDATE ]( state: LanguageState, translations: LanguageTranslations ): void {
-		Object.entries( translations ).forEach( ( [ languageKey, localTranslations ] ) => {
-			state.translations[ languageKey ] = localTranslations;
-		} );
+		state.translations = { ...state.translations, ...translations };
 	},
 };

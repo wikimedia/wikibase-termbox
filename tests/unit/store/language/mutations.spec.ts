@@ -1,4 +1,5 @@
 import { mutations } from '@/store/language/mutations';
+import { lockState } from '../lockState';
 import {
 	LANGUAGE_TRANSLATION_UPDATE,
 	LANGUAGE_UPDATE,
@@ -7,11 +8,18 @@ import LanguageTranslations from '@/datamodel/LanguageTranslations';
 import LanguageState from '@/store/language/LanguageState';
 import LanguageCollection from '@/datamodel/LanguageCollection';
 
-function newLanguageState(): LanguageState {
-	return {
-		translations: {},
-		languages: {},
+function newLanguageState(
+	languages: LanguageCollection = {},
+	translations: LanguageTranslations = {}
+): LanguageState {
+	const state = {
+		translations: translations,
+		languages: languages,
 	};
+
+	lockState( state );
+
+	return state;
 }
 
 describe( 'language/mutations', () => {
@@ -36,12 +44,18 @@ describe( 'language/mutations', () => {
 		} );
 
 		it( 'appends new languages to pre-existing ones', () => {
-			const state = newLanguageState();
-			const originalDe = {
-				code: 'de',
-				directionality: 'ltr',
+			const originalDe: LanguageCollection = {
+				de: {
+					code: 'de',
+					directionality: 'ltr',
+				},
 			};
-			state.languages.de = originalDe;
+
+			const state = newLanguageState(
+				originalDe,
+				{}
+			);
+
 			const languages: LanguageCollection = {
 				en: {
 					code: 'en',
@@ -55,7 +69,7 @@ describe( 'language/mutations', () => {
 
 			mutations[ LANGUAGE_UPDATE ]( state, languages );
 
-			expect( state.languages.de ).toBe( originalDe );
+			expect( state.languages.de ).toBe( originalDe.de );
 			expect( state.languages.en ).toBe( languages.en );
 			expect( state.languages.ar ).toBe( languages.ar );
 		} );
