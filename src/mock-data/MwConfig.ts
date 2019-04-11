@@ -17,6 +17,7 @@ export default class MwConfig {
 				url: process.env.VUE_APP_WIKIBASE_REPO,
 				scriptPath: '', // contained in the above
 			},
+			wgUserName: null,
 		};
 
 		return config[ key ];
