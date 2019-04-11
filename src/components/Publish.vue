@@ -24,7 +24,7 @@ export default class Publish extends mixins( Messages ) {
 <style lang="scss">
 .wb-ui-publish {
 	&__link {
-		background: $svg-publish 50% 50% no-repeat;
+		background: $svg-publish center/26px no-repeat;
 		width: 48px;
 		height: 48px;
 		display: block;
