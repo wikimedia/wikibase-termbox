@@ -5,6 +5,7 @@
 	box-sizing: border-box;
 	resize: none;
 	overflow: auto;
+	outline: 0;
 
 	&:focus {
 		border-color: $border-colour-focus;
