@@ -3,6 +3,8 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 export default class EntityInitializer {
 
 	public newFromSerialization( entity: any ) {
+		entity = this.deepClone( entity );
+
 		this.repairEmptyArrays( entity );
 		this.validate( entity );
 
@@ -39,6 +41,10 @@ export default class EntityInitializer {
 		}
 
 		return field;
+	}
+
+	private deepClone( original: any ) {
+		return JSON.parse( JSON.stringify( original ) );
 	}
 
 	private repairEmptyArrays( entity: any ) {

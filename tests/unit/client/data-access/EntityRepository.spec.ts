@@ -23,10 +23,10 @@ describe( 'EntityRepository', () => {
 			.then( ( entity: FingerprintableEntity ) => {
 				expect( entity ).toBeInstanceOf( FingerprintableEntity );
 
-				expect( entity.id ).toBe( entityReturnedFromHook.id );
-				expect( entity.labels ).toBe( entityReturnedFromHook.labels );
-				expect( entity.descriptions ).toBe( entityReturnedFromHook.descriptions );
-				expect( entity.aliases ).toBe( entityReturnedFromHook.aliases );
+				expect( entity.id ).toEqual( entityReturnedFromHook.id );
+				expect( entity.labels ).toEqual( entityReturnedFromHook.labels );
+				expect( entity.descriptions ).toEqual( entityReturnedFromHook.descriptions );
+				expect( entity.aliases ).toEqual( entityReturnedFromHook.aliases );
 			} );
 	} );
 
