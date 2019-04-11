@@ -25,7 +25,7 @@
 			<div class="wb-ui-monolingualfingerprintview__aliases-wrapper">
 				<!-- alias editing pending https://phabricator.wikimedia.org/T218690 -->
 				<component
-					:is="'Aliases'"
+					:is="editMode ? 'AliasesEdit' : 'Aliases'"
 					:aliases="getAliasesByLanguage( languageCode )"
 					:languageCode="editMode ? languageCode : null"
 					class="wb-ui-monolingualfingerprintview__aliases-inner"

@@ -6,6 +6,7 @@ import LabelEdit from '@/components/LabelEdit.vue';
 import Description from '@/components/Description.vue';
 import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import Aliases from '@/components/Aliases.vue';
+import AliasesEdit from '@/components/AliasesEdit.vue';
 import { createStore } from '@/store';
 import { NS_LANGUAGE, NS_ENTITY } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
@@ -87,8 +88,9 @@ describe( 'MonolingualFingerprintView.vue', () => {
 				.toBe( entity.descriptions[ language.code ] );
 			expect( wrapper.find( DescriptionEdit ).props( 'languageCode' ) ).toBe( languageCode );
 
-			expect( wrapper.find( Aliases ).exists() ).toBeTruthy();
-			expect( wrapper.find( Aliases ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
+			expect( wrapper.find( AliasesEdit ).exists() ).toBeTruthy();
+			expect( wrapper.find( AliasesEdit ).props( 'languageCode' ) ).toBe( languageCode );
+			expect( wrapper.find( AliasesEdit ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
 		} );
 	} );
 
