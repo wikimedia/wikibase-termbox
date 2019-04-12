@@ -2,9 +2,9 @@
 	<div class="wb-ui-all-entered-languages">
 		<MonolingualFingerprintView
 			v-for="language in allEnteredLanguagesWithoutUserLanguages"
-			:languageCode="language"
+			:language-code="language"
 			:key="language"
-			/>
+		/>
 	</div>
 </template>
 

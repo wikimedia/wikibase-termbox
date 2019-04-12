@@ -9,7 +9,7 @@
 			<span>{{ message( MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
 		</a>
 
-		<AllEnteredLanguages v-if="isExpanded"/>
+		<AllEnteredLanguages v-if="isExpanded" />
 	</div>
 </template>
 

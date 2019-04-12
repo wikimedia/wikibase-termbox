@@ -1,11 +1,12 @@
 <template>
 	<wb:sectionedit v-if="isServerRendered">
-		<div><!-- the else needs a wrapping element around slot so we add it here, too for identical mark-up -->
-			<slot></slot>
+		<div>
+			<!-- the else needs a wrapping element around slot so we add it here, too for identical mark-up -->
+			<slot />
 		</div>
 	</wb:sectionedit>
 	<div v-else>
-		<slot></slot>
+		<slot />
 	</div>
 </template>
 

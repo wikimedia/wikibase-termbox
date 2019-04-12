@@ -12,7 +12,7 @@
 			<span>{{ message( MESSAGE_KEYS.IN_MORE_LANGUAGES ) }}</span>
 		</a>
 
-		<InMoreLanguages v-if="isExpanded"/>
+		<InMoreLanguages v-if="isExpanded" />
 	</div>
 </template>
 

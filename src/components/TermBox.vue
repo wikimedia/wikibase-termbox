@@ -3,18 +3,18 @@
 		<div class="wb-ui-termbox__primary">
 			<MonolingualFingerprintView
 				class="wb-ui-termbox__primary-inner"
-				:languageCode="primaryLanguage"
-				:isPrimary="true"
-				/>
+				:language-code="primaryLanguage"
+				:is-primary="true"
+			/>
 			<div class="wb-ui-termbox__actions">
-				<EditTools v-if="isEditable" :editMode="editMode">
+				<EditTools v-if="isEditable" :edit-mode="editMode">
 					<EditPen :href="editLinkUrl" slot="edit" @edit="activateEditMode" />
 					<Publish slot="publish" @publish="publish" />
 				</EditTools>
 			</div>
 		</div>
 
-		<InMoreLanguagesExpandable/>
+		<InMoreLanguagesExpandable />
 	</div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
 	<section class="wikibase-entitytermsview" :dir="directionality">
-		<TermBox/>
+		<TermBox />
 	</section>
 </template>
 

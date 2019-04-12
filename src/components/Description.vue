@@ -2,10 +2,14 @@
 	<p
 		v-if="description"
 		class="wb-ui-description"
-		v-inlanguage="language">{{ description.value }}</p>
+		v-inlanguage="language"
+	>
+		{{ description.value }}
+	</p>
 	<p
 		v-else
-		class="wb-ui-description wb-ui-description--missing">
+		class="wb-ui-description wb-ui-description--missing"
+	>
 		{{ message( MESSAGE_KEYS.MISSING_DESCRIPTION ) }}
 	</p>
 </template>
