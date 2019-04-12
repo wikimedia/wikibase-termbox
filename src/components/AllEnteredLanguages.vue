@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import { NS_ENTITY, NS_USER } from '@/store/namespaces';
@@ -18,7 +18,7 @@ import { namespace } from 'vuex-class';
 @Component( {
 	components: { MonolingualFingerprintView },
 } )
-export default class AllEnteredLanguages extends ( Vue as VueConstructor ) {
+export default class AllEnteredLanguages extends Vue {
 
 	@namespace( NS_ENTITY ).Getter( 'getAllEnteredLanguageCodes' )
 	public getAllEnteredLanguageCodes!: string[];
