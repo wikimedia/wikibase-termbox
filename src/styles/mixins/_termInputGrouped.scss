@@ -1,0 +1,10 @@
+@mixin termInputGrouped() {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	border: 0;
+
+	&:focus {
+		outline: 0;
+		background-color: $alias-edit-focus-background;
+	}
+}

@@ -10,6 +10,8 @@ $color-moderate-red: #a55858;
 
 $border-color-base: $wmui-color-base50; // defined by wikimedia-ui-base, but lost in less -> scss translation
 $border-colour-focus: $wmui-color-accent50;
+$alias-edit-focus-background: $wmui-color-accent90;
+$alias-edit-focus-color: $wmui-color-base20;
 
 $svg-pen: url( ../../assets/pen.svg );
 $svg-publish: url( ../../assets/transparent_checkmark_in_accent50_circle.svg );

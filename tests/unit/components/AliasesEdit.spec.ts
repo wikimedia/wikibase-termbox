@@ -195,4 +195,36 @@ describe( 'AliasesEdit', () => {
 
 	} );
 
+	describe( 'Focus indication', () => {
+
+		it( 'is not shown by default', () => {
+			const aliases = [ 'hi', 'hello' ];
+			const wrapper = getShallowMountedAliasEdit( aliases );
+
+			expect( wrapper.find( '.wb-ui-aliases-edit--focus-within' ).exists() ).toBeFalsy();
+		} );
+
+		it( 'is shown if an alias is focused', () => {
+			const aliases = [ 'hi', 'hello' ];
+			const wrapper = getShallowMountedAliasEdit( aliases );
+
+			const textField = wrapper.find( TermTextField );
+			textField.trigger( 'focus' );
+
+			expect( wrapper.find( '.wb-ui-aliases-edit--focus-within' ).exists() ).toBeTruthy();
+		} );
+
+		it( 'is removed if the alias loses focus', () => {
+			const aliases = [ 'hi', 'hello' ];
+			const wrapper = getShallowMountedAliasEdit( aliases );
+
+			const textField = wrapper.find( TermTextField );
+			textField.trigger( 'focus' );
+			textField.trigger( 'blur.native' );
+
+			expect( wrapper.find( '.wb-ui-aliases-edit--focus-within' ).exists() ).toBeFalsy();
+		} );
+
+	} );
+
 } );

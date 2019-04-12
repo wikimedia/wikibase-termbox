@@ -60,10 +60,8 @@ export default class LabelEdit extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-label-edit {
-	width: 100%;
-	font-size: inherit;
-
 	@include labelFont( #{&}--primary );
 	@include termInput();
+	@include termInputStandaloneField();
 }
 </style>

@@ -1,13 +1,17 @@
 <template>
-	<div>
+	<div
+		class="wb-ui-aliases-edit"
+		:class="{ 'wb-ui-aliases-edit--focus-within' : hasFocus }"
+	>
 		<TermTextField
 			v-for="( value, index ) in aliasValues"
 			:key="keys[ index ]"
-			class="wb-ui-aliases-edit"
+			class="wb-ui-aliases-edit__alias"
 			v-inlanguage="language"
 			:value="value"
 			@input="value => aliasInput( index, value )"
-			@blur.native="removeAliasIfEmpty( index )"
+			@focus.native="setFocus()"
+			@blur.native="removeAliasIfEmpty( index ); unsetFocus()"
 		/>
 	</div>
 </template>
@@ -40,6 +44,16 @@ export default class AliasesEdit extends mixins( Messages ) {
 
 	@namespace( NS_ENTITY ).Action( ENTITY_ALIAS_REMOVE )
 	public removeAlias!: ( payload: { languageCode: string, index: number } ) => void;
+
+	public hasFocus = false;
+
+	public setFocus() {
+		this.hasFocus = true;
+	}
+
+	public unsetFocus() {
+		this.hasFocus = false;
+	}
 
 	get aliasValues() {
 		return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
@@ -112,7 +126,17 @@ export default class AliasesEdit extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-aliases-edit {
-	@include aliasesFont();
-	@include termInput();
+	@include termInputStandaloneField();
+	overflow-y: visible;
+
+	&__alias {
+		@include aliasesFont();
+		@include termInput();
+		@include termInputGrouped();
+
+		&:focus {
+			color: $alias-edit-focus-color;
+		}
+	}
 }
 </style>

@@ -1,0 +1,11 @@
+@mixin termInputStandaloneField() {
+	border: 1px solid $border-color-base;
+	padding: 7px;
+
+	&:focus,
+	&:focus-within,
+	&--focus-within {
+		outline: 0;
+		border-color: $border-colour-focus;
+	}
+}

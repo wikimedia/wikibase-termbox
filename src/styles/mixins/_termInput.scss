@@ -1,13 +1,8 @@
 @mixin termInput() {
-	border: 1px solid $border-color-base;
-	border-radius: 2px;
-	padding: 7px;
 	box-sizing: border-box;
+	width: 100%;
 	resize: none;
 	overflow: auto;
-	outline: 0;
-
-	&:focus {
-		border-color: $border-colour-focus;
-	}
+	background-color: transparent; // overcome potential browser defaults
+	font-size: inherit;
 }
