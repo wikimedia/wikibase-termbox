@@ -4,6 +4,7 @@ import {
 	EDITABILITY_UPDATE,
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
+	ENTITY_REMOVE_ALIAS,
 	ENTITY_SET_DESCRIPTION,
 	ENTITY_REVISION_UPDATE,
 } from '@/store/entity/mutationTypes';
@@ -164,11 +165,31 @@ describe( 'entity/mutations', () => {
 		} );
 
 	} );
+
 	it( ENTITY_REVISION_UPDATE, () => {
 		const state = newEntityState( { revision: 0 } );
 		const revision = 4711;
 		mutations[ ENTITY_REVISION_UPDATE ]( state, revision );
 		expect( state.baseRevision ).toBe( revision );
+	} );
+
+	it( ENTITY_REMOVE_ALIAS, () => {
+		const state = newEntityState( {
+			aliases: {
+				en: [
+					{ language: 'en', value: 'foo' },
+					{ language: 'en', value: 'bar' },
+					{ language: 'en', value: 'baz' },
+				],
+			},
+		} );
+
+		mutations[ ENTITY_REMOVE_ALIAS ]( state, { languageCode: 'en', index: 1 } );
+
+		expect( state.aliases.en ).toEqual( [
+			{ language: 'en', value: 'foo' },
+			{ language: 'en', value: 'baz' },
+		] );
 	} );
 
 } );

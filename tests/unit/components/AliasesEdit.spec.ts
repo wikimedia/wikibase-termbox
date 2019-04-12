@@ -1,11 +1,14 @@
+import Vue from 'vue';
 import TermTextField from '@/components/TermTextField.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
-import { NS_LANGUAGE } from '@/store/namespaces';
+import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
+import { action } from '@/store/util';
+import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -15,8 +18,9 @@ function createStoreWithLanguage( language: Language ) {
 	return store;
 }
 
+const language = 'en';
+
 function getShallowMountedAliasEdit( aliases: string[] ) {
-	const language = 'en';
 	const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 	return shallowMount( AliasesEdit, {
@@ -30,53 +34,74 @@ function getShallowMountedAliasEdit( aliases: string[] ) {
 
 describe( 'AliasesEdit', () => {
 
-	it( 'adds another blank text field at the bottom when entering content into the empty field', () => {
-		const wrapper = getShallowMountedAliasEdit( [] );
-		const newAlias = 'hello';
-		wrapper.find( TermTextField ).vm.$emit( 'input', newAlias );
+	describe( 'editing', () => {
+		it( 'triggers an edit action when the bottom blank field is edited', () => {
+			const wrapper = getShallowMountedAliasEdit( [ 'foo' ] );
+			const store = wrapper.vm.$store;
+			store.dispatch = jest.fn();
+			const newAlias = 'hello';
+			wrapper.findAll( TermTextField ).at( 1 ).vm.$emit( 'input', newAlias );
+			expect( store.dispatch ).toBeCalledWith( action( NS_ENTITY, ENTITY_ALIASES_EDIT ), {
+				language,
+				aliasValues: [ 'foo', 'hello' ],
+			} );
+		} );
 
-		const textFields = wrapper.findAll( TermTextField );
-		expect( textFields ).toHaveLength( 2 );
-		expect( textFields.at( 0 ).props( 'value' ) ).toBe( newAlias );
-		expect( textFields.at( 1 ).props( 'value' ) ).toBe( '' );
+		it( 'triggers an edit action not containing the bottom blank field when an existing alias is edited', () => {
+			const wrapper = getShallowMountedAliasEdit( [ 'foo' ] );
+			const store = wrapper.vm.$store;
+			store.dispatch = jest.fn();
+			const newAlias = 'fool';
+			wrapper.findAll( TermTextField ).at( 0 ).vm.$emit( 'input', newAlias );
+			expect( store.dispatch ).toBeCalledWith( action( NS_ENTITY, ENTITY_ALIASES_EDIT ), {
+				language,
+				aliasValues: [ newAlias ],
+			} );
+		} );
 	} );
 
 	describe( 'removing empty aliases', () => {
-		it( 'removes empty alias text fields on blur', () => {
-			const wrapper = getShallowMountedAliasEdit( [ 'hi' ] );
-			const textFields = wrapper.findAll( TermTextField );
-			const textField = textFields.at( 0 );
-
-			textField.vm.$emit( 'input', '' );
-			expect( textFields ).toHaveLength( 2 );
-
-			textField.trigger( 'blur.native' );
-			expect( wrapper.findAll( TermTextField ) ).toHaveLength( 1 );
-		} );
-
-		it( 'removes whitespace-only alias text fields on blur', () => {
-			const wrapper = getShallowMountedAliasEdit( [ 'hi' ] );
-			const textFields = wrapper.findAll( TermTextField );
-			const textField = textFields.at( 0 );
-
-			textField.vm.$emit( 'input', '    ' );
-			expect( textFields ).toHaveLength( 2 );
+		it( `triggers ${ENTITY_ALIAS_REMOVE} when a blurring an empty text field`, () => {
+			const wrapper = getShallowMountedAliasEdit( [ '' ] );
+			const index = 0;
+			const textField = wrapper.findAll( TermTextField ).at( index );
+			const store = wrapper.vm.$store;
+			store.dispatch = jest.fn();
 
 			textField.trigger( 'blur.native' );
-			expect( wrapper.findAll( TermTextField ) ).toHaveLength( 1 );
+			expect( store.dispatch ).toHaveBeenCalledWith(
+				action( NS_ENTITY, ENTITY_ALIAS_REMOVE ),
+				{ languageCode: language, index },
+			);
 		} );
 
-		it( 'does not remove the bottom text field when empty on blur', () => {
+		it( `triggers ${ENTITY_ALIAS_REMOVE} when a blurring a text field with only whitespace`, () => {
+			const wrapper = getShallowMountedAliasEdit( [ '    ' ] );
+			const index = 0;
+			const textField = wrapper.findAll( TermTextField ).at( index );
+			const store = wrapper.vm.$store;
+			store.dispatch = jest.fn();
+
+			textField.trigger( 'blur.native' );
+			expect( store.dispatch ).toHaveBeenCalledWith(
+				action( NS_ENTITY, ENTITY_ALIAS_REMOVE ),
+				{ languageCode: language, index },
+			);
+		} );
+
+		it( `does not trigger ${ENTITY_ALIAS_REMOVE} when blurring the bottom blank field`, () => {
 			const wrapper = getShallowMountedAliasEdit( [ 'hi' ] );
+			const store = wrapper.vm.$store;
+			store.dispatch = jest.fn();
 
 			const textFields = wrapper.findAll( TermTextField );
 			const bottomTextField = textFields.at( 1 );
 
-			bottomTextField.vm.$emit( 'input', '' );
-			expect( textFields ).toHaveLength( 2 );
-
 			bottomTextField.trigger( 'blur.native' );
-			expect( wrapper.findAll( TermTextField ) ).toHaveLength( 2 );
+			expect( store.dispatch ).not.toHaveBeenCalledWith(
+				action( NS_ENTITY, ENTITY_ALIAS_REMOVE ),
+				expect.anything(),
+			);
 		} );
 	} );
 
@@ -94,8 +119,11 @@ describe( 'AliasesEdit', () => {
 			const wrapper = getShallowMountedAliasEdit( [ 'hi' ] );
 			const textFields = wrapper.findAll( TermTextField );
 
-			expect( textFields ).toHaveLength( 2 );
-			expect( textFields.at( 1 ).props( 'value' ) ).toBe( '' );
+			return Vue.nextTick().then( () => {
+				expect( textFields.at( 0 ).props( 'value' ) ).toBe( 'hi' );
+				expect( textFields ).toHaveLength( 2 );
+				expect( textFields.at( 1 ).props( 'value' ) ).toBe( '' );
+			} );
 		} );
 
 		it( 'delegates language attribute rendering to the v-inlanguage directive', () => {

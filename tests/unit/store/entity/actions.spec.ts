@@ -2,6 +2,7 @@ import { actions } from '@/store/entity/actions';
 import {
 	ENTITY_INIT,
 	ENTITY_ALIASES_EDIT,
+	ENTITY_ALIAS_REMOVE,
 	ENTITY_DESCRIPTION_EDIT,
 	ENTITY_LABEL_EDIT,
 	ENTITY_SAVE,
@@ -11,6 +12,7 @@ import {
 	ENTITY_UPDATE,
 	ENTITY_SET_LABEL as ENTITY_SET_LABEL_MUTATION,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
+	ENTITY_REMOVE_ALIAS,
 	ENTITY_SET_DESCRIPTION as ENTITY_SET_DESCRIPTION_MUTATION,
 	ENTITY_REVISION_UPDATE,
 } from '@/store/entity/mutationTypes';
@@ -201,6 +203,15 @@ describe( 'entity/actions', () => {
 				terms: expectedTerms,
 			} );
 		} );
+	} );
+
+	it( `${ENTITY_ALIAS_REMOVE} commits to ${ENTITY_REMOVE_ALIAS}`, () => {
+		const context = newMockStore( { commit: jest.fn() } );
+		const payload = { languageCode: 'en', index: 5 };
+
+		actions[ ENTITY_ALIAS_REMOVE ]( context, payload );
+
+		expect( context.commit ).toHaveBeenCalledWith( ENTITY_REMOVE_ALIAS, payload );
 	} );
 
 } );

@@ -7,7 +7,7 @@ import {
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
 	ENTITY_SET_DESCRIPTION,
-	ENTITY_REVISION_UPDATE,
+	ENTITY_REVISION_UPDATE, ENTITY_REMOVE_ALIAS,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -35,6 +35,10 @@ export const mutations: MutationTree<Entity> = {
 
 	[ ENTITY_SET_ALIASES ]( state: Entity, { language, terms }: { language: string, terms: Term[] } ) {
 		Vue.set( state.aliases, language, terms );
+	},
+
+	[ ENTITY_REMOVE_ALIAS ]( state: Entity, { languageCode, index }: { languageCode: string, index: number } ) {
+		state.aliases[ languageCode ].splice( index, 1 );
 	},
 
 	[ ENTITY_SET_DESCRIPTION ]( state: Entity, descriptionTerm: Term ) {

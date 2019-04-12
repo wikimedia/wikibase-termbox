@@ -6,7 +6,7 @@ import {
 	ENTITY_LABEL_EDIT,
 	ENTITY_ALIASES_EDIT,
 	ENTITY_DESCRIPTION_EDIT,
-	ENTITY_SAVE,
+	ENTITY_SAVE, ENTITY_ALIAS_REMOVE,
 } from '@/store/entity/actionTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import {
@@ -15,7 +15,7 @@ import {
 	ENTITY_REVISION_UPDATE,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 	ENTITY_SET_LABEL as SET_ENTITY_LABEL_MUTATION,
-	ENTITY_SET_DESCRIPTION as SET_ENTITY_DESCRIPTION_MUTATION,
+	ENTITY_SET_DESCRIPTION as SET_ENTITY_DESCRIPTION_MUTATION, ENTITY_REMOVE_ALIAS,
 } from '@/store/entity/mutationTypes';
 
 import Term from '@/datamodel/Term';
@@ -61,6 +61,13 @@ export const actions = {
 	): void {
 		const terms: Term[] = aliasValues.map( ( alias ) => ( { language, value: alias } ) );
 		context.commit( ENTITY_ALIASES_EDIT_MUTATION, { language, terms } );
+	},
+
+	[ ENTITY_ALIAS_REMOVE ](
+		context: ActionContext<Entity, any>,
+		payload: { languageCode: string, index: number }
+	) {
+		context.commit( ENTITY_REMOVE_ALIAS, payload );
 	},
 
 	[ ENTITY_DESCRIPTION_EDIT ]( context: ActionContext<Entity, any>, description: Term ): void {

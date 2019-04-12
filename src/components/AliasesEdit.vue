@@ -1,26 +1,27 @@
 <template>
 	<div>
 		<TermTextField
-			v-for="( _alias, index ) in localAliases"
+			v-for="( alias, index ) in aliasValues"
 			:key="index"
 			class="wb-ui-aliases-edit"
 			v-inlanguage="language"
-			v-model="localAliases[ index ]"
+			:value="alias"
 			@input="value => aliasInput( index, value )"
-			@blur.native="removeEmptyAliases( index )"
+			@blur.native="removeAliasIfEmpty( index )"
 		/>
 	</div>
 </template>
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
-import { NS_LANGUAGE } from '@/store/namespaces';
+import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
 import TermTextField from '@/components/TermTextField.vue';
+import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
 @Component( {
 	components: { TermTextField },
 } )
@@ -34,29 +35,39 @@ export default class AliasesEdit extends mixins( Messages ) {
 	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
 	public getLanguageByCode!: ( language: string ) => Language;
 
+	@namespace( NS_ENTITY ).Action( ENTITY_ALIASES_EDIT )
+	public editAliases!: ( payload: { language: string, aliasValues: string[] } ) => void;
+
+	@namespace( NS_ENTITY ).Action( ENTITY_ALIAS_REMOVE )
+	public removeAlias!: ( payload: { languageCode: string, index: number } ) => void;
+
+	get aliasValues() {
+		return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
+	}
+
 	public aliasInput( index: number, value: string ) {
-		if ( this.isLastAlias( index ) && value !== '' ) {
-			this.addNewAlias();
+		const aliasValues = [ ...this.aliasValues ];
+		aliasValues[ index ] = value;
+
+		if ( aliasValues[ aliasValues.length - 1 ].trim() === '' ) {
+			aliasValues.splice( aliasValues.length - 1, 1 );
+		}
+
+		this.editAliases( { language: this.languageCode, aliasValues } );
+	}
+
+	public removeAliasIfEmpty( index: number ) {
+		if (
+			this.aliasValues[ index ].trim() === '' &&
+			!this.isBottomBlankField( index )
+		) {
+			this.removeAlias( { languageCode: this.languageCode, index } );
 		}
 	}
 
-	public removeEmptyAliases( index: number ) {
-		if ( this.localAliases[ index ].trim() === '' && !this.isLastAlias( index ) ) {
-			this.localAliases.splice( index, 1 );
-		}
+	private isBottomBlankField( index: number ) {
+		return index === this.aliasValues.length - 1;
 	}
-
-	private isLastAlias( index: number ) {
-		return index === this.localAliases.length - 1;
-	}
-
-	public addNewAlias() {
-		this.localAliases.push( '' );
-	}
-
-	// TODO Remove me once we wire up the actions to do the store binding
-	// How will this play with the store?
-	public localAliases = [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
 
 	get language() {
 		return this.getLanguageByCode( this.languageCode );
