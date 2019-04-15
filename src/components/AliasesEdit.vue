@@ -1,9 +1,16 @@
 <template>
-	<textarea
-		class="wb-ui-aliases-edit"
-		v-inlanguage="language"
-		:value="value"
-	></textarea>
+	<div>
+		<TermTextField
+			v-for="( _alias, index ) in localAliases"
+			:key="index"
+			class="wb-ui-aliases-edit"
+			v-inlanguage="language"
+			v-model="localAliases[ index ]"
+			@input="value => aliasInput( index, value )"
+			@blur.native="removeEmptyAliases( index )"
+		>
+		</TermTextField>
+	</div>
 </template>
 
 <script lang="ts">
@@ -14,8 +21,10 @@ import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
-
-@Component
+import TermTextField from '@/components/TermTextField.vue';
+@Component( {
+	components: { TermTextField },
+} )
 export default class AliasesEdit extends mixins( Messages ) {
 	@Prop( { required: true } )
 	public aliases!: Term[]|null;
@@ -26,22 +35,32 @@ export default class AliasesEdit extends mixins( Messages ) {
 	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
 	public getLanguageByCode!: ( language: string ) => Language;
 
-	get language() {
-		return this.getLanguageByCode( this.languageCode );
+	public aliasInput( index: number, value: string ) {
+		if ( this.isLastAlias( index ) && value !== '' ) {
+			this.addNewAlias();
+		}
 	}
 
-	get value() {
-		if ( !this.aliases ) {
-			return '';
-		} else {
-
-			const aliases: string[] = [];
-
-			this.aliases.forEach( ( term: Term ) => {
-				aliases.push( term.value );
-			} );
-			return aliases.join( '\n' );
+	public removeEmptyAliases( index: number ) {
+		if ( this.localAliases[ index ].trim() === '' && !this.isLastAlias( index ) ) {
+			this.localAliases.splice( index, 1 );
 		}
+	}
+
+	private isLastAlias( index: number ) {
+		return index === this.localAliases.length - 1;
+	}
+
+	public addNewAlias() {
+		this.localAliases.push( '' );
+	}
+
+	// TODO Remove me once we wire up the actions to do the store binding
+	// How will this play with the store?
+	public localAliases = [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
+
+	get language() {
+		return this.getLanguageByCode( this.languageCode );
 	}
 
 }
