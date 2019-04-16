@@ -1,14 +1,16 @@
 import Vue from 'vue';
 import TermTextField from '@/components/TermTextField.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
-import { shallowMount } from '@vue/test-utils';
+import { mount, shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
-import { mutation } from '@/store/util';
+import { action, mutation } from '@/store/util';
 import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
-import { action } from '@/store/util';
 import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
+import newFingerprintable from '../../newFingerprintable';
+import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
+import Term from '@/datamodel/Term';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -75,6 +77,35 @@ describe( 'AliasesEdit', () => {
 			);
 		} );
 
+		it( 'has the correct keys after removing an empty field on blur when store feeds into the aliases prop', () => {
+			const store = createStoreWithLanguage( { code: 'en', directionality: 'ltr' } );
+			store.commit(
+				mutation( NS_ENTITY, ENTITY_UPDATE ),
+				newFingerprintable( { aliases: { en: [ 'foo', 'bar' ] } } )
+			);
+
+			const wrapper = mount( Vue.extend( {
+				template: '<AliasesEdit :aliases="aliases()" language-code="en" />',
+				components: { AliasesEdit },
+				methods: {
+					aliases(): Term[] {
+						return this.$store.state.entity.aliases.en;
+					},
+				},
+				store,
+			} ) );
+
+			const firstField = wrapper.find( TermTextField );
+			firstField.vm.$emit( 'input', '' );
+			firstField.trigger( 'blur.native' );
+
+			const textFields = wrapper.findAll( TermTextField );
+			expect( textFields ).toHaveLength( 2 );
+			const newFirstField = textFields.at( 0 );
+			expect( newFirstField.vm.$vnode.key! ).toBe( 1 );
+			expect( newFirstField.props( 'value' ) ).toBe( 'bar' );
+		} );
+
 		it( `triggers ${ENTITY_ALIAS_REMOVE} when a blurring a text field with only whitespace`, () => {
 			const wrapper = getShallowMountedAliasEdit( [ '    ' ] );
 			const index = 0;
@@ -106,13 +137,15 @@ describe( 'AliasesEdit', () => {
 	} );
 
 	describe( 'on mount', () => {
-		it( 'makes the aliases in the given language editable as individual text fields', () => {
+		it( 'makes the aliases in the given language editable as individual text fields with appropriate keys', () => {
 			const aliases = [ 'hi', 'hello' ];
 			const wrapper = getShallowMountedAliasEdit( aliases );
 
 			const textFields = wrapper.findAll( TermTextField );
 			expect( textFields.at( 0 ).props( 'value' ) ).toBe( aliases[ 0 ] );
 			expect( textFields.at( 1 ).props( 'value' ) ).toBe( aliases[ 1 ] );
+			expect( textFields.at( 0 ).vm.$vnode.key! ).toBe( 0 );
+			expect( textFields.at( 1 ).vm.$vnode.key! ).toBe( 1 );
 		} );
 
 		it( 'has one extra blank text field at the bottom', () => {
@@ -148,6 +181,16 @@ describe( 'AliasesEdit', () => {
 			expect( inlanguageDirective.mock.calls[ 0 ][ 1 ].value ).toBe( language );
 			expect( inlanguageDirective.mock.calls[ 1 ][ 1 ].value ).toBe( language );
 			expect( inlanguageDirective.mock.calls[ 2 ][ 1 ].value ).toBe( language );
+		} );
+
+		it( 'transforms non-existent aliases into an alias list with one empty string', () => {
+			const store = createStoreWithLanguage( { code: 'en', directionality: 'ltr' } );
+			const wrapper = shallowMount( AliasesEdit, {
+				propsData: { aliases: null, languageCode: 'en' },
+				store,
+			} );
+
+			expect( ( wrapper.vm as any ).aliasValues ).toEqual( [ '' ] );
 		} );
 
 	} );

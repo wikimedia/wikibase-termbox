@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<TermTextField
-			v-for="( alias, index ) in aliasValues"
-			:key="index"
+			v-for="( value, index ) in aliasValues"
+			:key="keys[ index ]"
 			class="wb-ui-aliases-edit"
 			v-inlanguage="language"
-			:value="alias"
+			:value="value"
 			@input="value => aliasInput( index, value )"
 			@blur.native="removeAliasIfEmpty( index )"
 		/>
@@ -45,15 +45,48 @@ export default class AliasesEdit extends mixins( Messages ) {
 		return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
 	}
 
+	private keys = [ ... this.aliasValues.keys() ];
+
+	private addAdditionalKey() {
+		this.keys.push( this.keys[ this.keys.length - 1 ] + 1 );
+	}
+
 	public aliasInput( index: number, value: string ) {
+		if ( this.isBottomBlankField( index ) ) {
+			this.addNewAlias( value );
+		} else {
+			this.editAlias( index, value );
+		}
+	}
+
+	private addNewAlias( value: string ) {
+		if ( value.trim() === '' ) {
+			return;
+		}
+
+		this.addAdditionalKey();
+
+		this.editAliases( {
+			language: this.languageCode,
+			aliasValues: this.getValuesWithEdit( this.aliasValues.length - 1, value ),
+		} );
+	}
+
+	private editAlias( index: number, value: string ) {
+		const aliasValues = this.getValuesWithEdit( index, value );
+		aliasValues.splice( aliasValues.length - 1, 1 );
+
+		this.editAliases( {
+			language: this.languageCode,
+			aliasValues,
+		} );
+	}
+
+	private getValuesWithEdit( index: number, value: string ) {
 		const aliasValues = [ ...this.aliasValues ];
 		aliasValues[ index ] = value;
 
-		if ( aliasValues[ aliasValues.length - 1 ].trim() === '' ) {
-			aliasValues.splice( aliasValues.length - 1, 1 );
-		}
-
-		this.editAliases( { language: this.languageCode, aliasValues } );
+		return aliasValues;
 	}
 
 	public removeAliasIfEmpty( index: number ) {
@@ -62,6 +95,7 @@ export default class AliasesEdit extends mixins( Messages ) {
 			!this.isBottomBlankField( index )
 		) {
 			this.removeAlias( { languageCode: this.languageCode, index } );
+			this.keys.splice( index, 1 );
 		}
 	}
 
