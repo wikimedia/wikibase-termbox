@@ -21,9 +21,9 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 Vue.directive( 'inlanguage', inlanguage );
 
 expect.extend( {
-	toHaveSlotWithContent( container: Wrapper<Vue>, slot: string, component: Wrapper<Vue> ) {
+	toHaveSlotWithContent( container: Wrapper<Vue>, slot: string, component: Wrapper<Vue>, at: number = 0 ) {
 		return {
-			pass: container.vm.$slots![ slot ]![ 0 ] === component.vm.$vnode,
+			pass: container.vm.$slots![ slot ]![ at * 2 ] === component.vm.$vnode,
 			message: () => 'Failed asserting that the \'component\' resides in \'slot\' of \'container\'.',
 		};
 	},

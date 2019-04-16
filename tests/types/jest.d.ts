@@ -3,6 +3,6 @@ declare namespace jest {
 	import { Vue } from 'vue/types/vue';
 
 	interface Matchers<R> {
-		toHaveSlotWithContent( slot: string, component: Wrapper<Vue> );
+		toHaveSlotWithContent( slot: string, component: Wrapper<Vue>, at?: number );
 	}
 }

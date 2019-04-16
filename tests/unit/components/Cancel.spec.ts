@@ -1,4 +1,4 @@
-import EditPen from '@/components/EditPen.vue';
+import Cancel from '@/components/Cancel.vue';
 import { mount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { NS_USER } from '@/store/namespaces';
@@ -8,57 +8,45 @@ import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
 
-describe( 'EditPen', () => {
+describe( 'Cancel', () => {
 
-	it( 'creates a link from its href prop', () => {
-		const url = '/edit/Q123';
-		const wrapper = mount( EditPen, {
+	it( 'creates a link', () => {
+		const wrapper = mount( Cancel, {
 			store: createStore(),
-			propsData: {
-				href: url,
-			},
 		} );
 
-		expect( wrapper.find( 'a' ).attributes().href ).toBe( url );
+		expect( wrapper.find( 'a' ).exists() ).toBeTruthy();
 	} );
 
-	it( 'emits an edit event on link click', () => {
-		const url = '/edit/Q123';
-		const wrapper = mount( EditPen, {
+	it( 'emits a cancel event on link click', () => {
+		const wrapper = mount( Cancel, {
 			store: createStore(),
-			propsData: {
-				href: url,
-			},
-
 		} );
 
 		wrapper.find( 'a' ).trigger( 'click' );
 
-		expect( wrapper.emitted( 'editing' ) ).toBeTruthy();
+		expect( wrapper.emitted( 'cancel' ) ).toBeTruthy();
 	} );
 
 	it( 'renders localized message explaining link', () => {
 		const userLanguage = 'de';
-		const editMessage = 'bearbeiten';
+		const cancelMessage = 'abbrechen';
 
 		const store = createStore();
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
 		store.commit( mutation( NS_MESSAGES, MESSAGES_INIT ), {
 			[ userLanguage ]: {
-				[ MessageKeys.EDIT ]: editMessage,
+				[ MessageKeys.CANCEL ]: cancelMessage,
 			},
 		} );
 
-		const wrapper = mount( EditPen, {
+		const wrapper = mount( Cancel, {
 			store,
-			propsData: {
-				href: '/edit/Q123',
-			},
 		} );
 
 		const link = wrapper.find( 'a' );
-		expect( link.text() ).toBe( editMessage );
-		expect( link.attributes().title ).toBe( editMessage );
+		expect( link.text() ).toBe( cancelMessage );
+		expect( link.attributes().title ).toBe( cancelMessage );
 	} );
 
 } );

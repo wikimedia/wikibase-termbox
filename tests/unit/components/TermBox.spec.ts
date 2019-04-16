@@ -3,6 +3,7 @@ import TermBox from '@/components/TermBox.vue';
 import EditTools from '@/components/EditTools.vue';
 import EditPen from '@/components/EditPen.vue';
 import Publish from '@/components/Publish.vue';
+import Cancel from '@/components/Cancel.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { createStore } from '@/store';
@@ -61,7 +62,7 @@ describe( 'TermBox.vue', () => {
 					const editPen = editTools.find( EditPen );
 
 					expect( editPen.exists() ).toBeTruthy();
-					expect( editTools ).toHaveSlotWithContent( 'edit', editPen );
+					expect( editTools ).toHaveSlotWithContent( 'read', editPen );
 					expect( editPen.props() )
 						.toHaveProperty( 'href', editLinkUrl );
 				} );
@@ -85,7 +86,7 @@ describe( 'TermBox.vue', () => {
 						},
 					} );
 
-					await wrapper.find( EditPen ).vm.$emit( 'edit' );
+					await wrapper.find( EditPen ).vm.$emit( 'editing' );
 
 					expect( mockActivateEditMode ).toHaveBeenCalled();
 				} );
@@ -101,7 +102,7 @@ describe( 'TermBox.vue', () => {
 					const publish = editTools.find( Publish );
 
 					expect( publish.exists() ).toBeTruthy();
-					expect( editTools ).toHaveSlotWithContent( 'publish', publish );
+					expect( editTools ).toHaveSlotWithContent( 'edit', publish );
 				} );
 
 				it( 'emitted publish event triggers entity save and deactivates edit mode', async () => {
@@ -141,6 +142,59 @@ describe( 'TermBox.vue', () => {
 					} );
 				} );
 			} );
+
+			describe( 'Cancel', () => {
+				it( 'is there', () => {
+					const store = createStore();
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+					const wrapper = shallowMount( TermBox, { store } );
+
+					const editTools = wrapper.find( EditTools );
+					const cancel = editTools.find( Cancel );
+
+					expect( cancel.exists() ).toBeTruthy();
+					expect( editTools ).toHaveSlotWithContent( 'edit', cancel, 1 );
+				} );
+
+				it( 'emitted cancel event triggers entity rollback and deactivates edit mode', async () => {
+					const store = createStore();
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+
+					const wrapper = shallowMount( TermBox, {
+						store,
+						stubs: {
+							Cancel,
+						},
+					} );
+
+					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
+					store.hotUpdate( {
+						actions: {
+							...rootStoreActions,
+							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
+						},
+					} );
+
+					await wrapper.find( Cancel ).vm.$emit( 'cancel' );
+
+					expect( mockDeactivateEditMode ).toHaveBeenCalled();
+				} );
+			} );
+		} );
+
+		it( 'renders publish and cancel button in a dedicated order', async () => {
+			const store = createStore();
+			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+
+			const wrapper = shallowMount( TermBox, { store } );
+
+			const editTools = wrapper.find( EditTools );
+			const publish = editTools.find( Publish );
+			const cancel = editTools.find( Cancel );
+
+			expect( editTools ).toHaveSlotWithContent( 'edit', publish, 0 );
+			expect( editTools ).toHaveSlotWithContent( 'edit', cancel, 1 );
+
 		} );
 
 		it( 'given the entity is not editable are not there', () => {

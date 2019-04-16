@@ -8,8 +8,11 @@
 			/>
 			<div class="wb-ui-termbox__actions">
 				<EditTools v-if="isEditable" :edit-mode="editMode">
-					<EditPen :href="editLinkUrl" slot="edit" @edit="activateEditMode" />
-					<Publish slot="publish" @publish="publish" />
+					<EditPen slot="read" @editing="activateEditMode" :href="editLinkUrl" />
+					<template slot="edit">
+						<Publish @publish="publish" />
+						<Cancel @cancel="cancel" />
+					</template>
 				</EditTools>
 			</div>
 		</div>
@@ -32,6 +35,7 @@ import {
 import EditTools from '@/components/EditTools.vue';
 import EditPen from '@/components/EditPen.vue';
 import Publish from '@/components/Publish.vue';
+import Cancel from '@/components/Cancel.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { Action, namespace } from 'vuex-class';
@@ -39,7 +43,14 @@ import { ENTITY_SAVE } from '@/store/entity/actionTypes';
 import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
 
 @Component( {
-	components: { InMoreLanguagesExpandable, MonolingualFingerprintView, EditTools, EditPen, Publish },
+	components: {
+		InMoreLanguagesExpandable,
+		MonolingualFingerprintView,
+		EditTools,
+		EditPen,
+		Publish,
+		Cancel,
+	},
 	computed: {
 		...mapState( [ 'editMode' ] ),
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
@@ -63,6 +74,11 @@ export default class TermBox extends Vue {
 			.then( () => {
 				this.deactivateEditMode();
 			} );
+	}
+
+	public cancel(): void {
+		/* TODO rollback */
+		this.deactivateEditMode();
 	}
 
 }

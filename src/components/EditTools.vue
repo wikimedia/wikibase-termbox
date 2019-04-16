@@ -1,7 +1,7 @@
 <template>
 	<Sectionedit>
-		<slot name="publish" v-if="editMode" />
-		<slot name="edit" v-else />
+		<slot name="edit" v-if="editMode" />
+		<slot name="read" v-else />
 	</Sectionedit>
 </template>
 

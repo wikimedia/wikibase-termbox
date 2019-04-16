@@ -4,7 +4,7 @@
 			class="wb-ui-edit-pen__link"
 			:href="href"
 			:title="message( MESSAGE_KEYS.EDIT )"
-			@click.prevent="$emit( 'edit' )"
+			@click.prevent="$emit( 'editing' )"
 		>
 			<span class="wb-ui-edit-pen__text">{{ message( MESSAGE_KEYS.EDIT ) }}</span>
 		</a>

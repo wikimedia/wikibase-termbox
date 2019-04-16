@@ -16,34 +16,34 @@ describe( 'EditTools', () => {
 		expect( sectionEdit.vm.$parent ).toBe( wrapper.vm );
 	} );
 
-	it( 'Shows edit slot if in reading mode', () => {
-		const edit = 'edit';
+	it( 'Shows read slot if in reading mode', () => {
+		const read = 'read';
 		const wrapper = mount( EditTools, {
 			propsData: {
 				editMode: false,
 			},
 			slots: {
-				edit,
-				publish: 'not to be shown',
+				read,
+				edit: 'not to be shown',
 			},
 		} );
 
-		expect( wrapper.text() ).toBe( edit );
+		expect( wrapper.text() ).toBe( read );
 	} );
 
-	it( 'Shows publish slot if in edit mode', () => {
-		const publish = 'publish';
+	it( 'Shows edit slot if in edit mode', () => {
+		const edit = 'edit';
 		const wrapper = mount( EditTools, {
 			propsData: {
 				editMode: true,
 			},
 			slots: {
-				edit: 'not to be shown',
-				publish,
+				read: 'not to be shown',
+				edit,
 			},
 		} );
 
-		expect( wrapper.text() ).toBe( publish );
+		expect( wrapper.text() ).toBe( edit );
 	} );
 
 } );
