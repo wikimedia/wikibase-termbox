@@ -122,6 +122,10 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 		}
 	}
 
+	&--primaryLanguage {
+		width: 100%;
+	}
+
 	&:not( &--primaryLanguage ) {
 		margin-right: 64px;
 
