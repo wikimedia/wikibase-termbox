@@ -82,7 +82,7 @@ describe( 'AliasesEdit', () => {
 
 	describe( 'on mount', () => {
 		it( 'makes the aliases in the given language editable as individual text fields', () => {
-			let aliases = [ 'hi', 'hello' ];
+			const aliases = [ 'hi', 'hello' ];
 			const wrapper = getShallowMountedAliasEdit( aliases );
 
 			const textFields = wrapper.findAll( TermTextField );
