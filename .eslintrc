@@ -1,6 +1,7 @@
 {
 	"extends": [
-		"wikimedia"
+		"wikimedia",
+		"plugin:vue/strongly-recommended"
 	],
 	"plugins": [
 		"@typescript-eslint",
@@ -36,6 +37,16 @@
 		"comma-dangle": [ "error", "always-multiline" ],
 		"operator-linebreak": "off",
 		"quote-props": "off",
-		"valid-jsdoc": "off"
+		"valid-jsdoc": "off",
+
+		"vue/html-indent": [ "error", "tab" ],
+		"vue/require-v-for-key": "off",
+		"vue/max-attributes-per-line": [ "error", {
+			"singleline": 3,
+			"multiline": {
+				"max": 1,
+				"allowFirstLine": false
+			}
+		} ]
 	}
 }

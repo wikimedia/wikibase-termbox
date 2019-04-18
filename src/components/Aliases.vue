@@ -1,12 +1,18 @@
 <template>
-	<ul v-if="aliases && aliases.length > 0"
+	<ul
+		v-if="aliases && aliases.length > 0"
 		class="wb-ui-aliases"
-		v-inlanguage="language">
-		<li v-for="alias in aliases"
+		v-inlanguage="language"
+	>
+		<li
+			v-for="alias in aliases"
 			class="wb-ui-aliases__alias"
-			:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )">{{ alias.value }}</li>
+			:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )"
+		>
+			{{ alias.value }}
+		</li>
 	</ul>
-	<div class="wb-ui-aliases wb-ui-aliases--placeholder" v-else></div>
+	<div class="wb-ui-aliases wb-ui-aliases--placeholder" v-else />
 </template>
 
 <script lang="ts">

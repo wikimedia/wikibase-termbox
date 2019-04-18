@@ -8,8 +8,7 @@
 			v-model="localAliases[ index ]"
 			@input="value => aliasInput( index, value )"
 			@blur.native="removeEmptyAliases( index )"
-		>
-		</TermTextField>
+		/>
 	</div>
 </template>
 

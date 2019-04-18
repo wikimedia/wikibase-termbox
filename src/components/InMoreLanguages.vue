@@ -1,7 +1,7 @@
 <template>
 	<div class="wb-ui-in-more-languages">
-		<MonolingualFingerprintView v-for="language in secondaryLanguages" :languageCode="language" :key="language"/>
-		<AllEnteredLanguagesExpandable/>
+		<MonolingualFingerprintView v-for="language in secondaryLanguages" :language-code="language" :key="language" />
+		<AllEnteredLanguagesExpandable />
 	</div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-	<textarea :value="value" @input="setValue" @keydown.enter.prevent></textarea>
+	<textarea :value="value" @input="setValue" @keydown.enter.prevent />
 </template>
 
 <script lang="ts">
