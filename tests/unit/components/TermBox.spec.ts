@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount, shallowMount } from '@vue/test-utils';
 import TermBox from '@/components/TermBox.vue';
 import EditTools from '@/components/EditTools.vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
@@ -9,6 +9,7 @@ import {
 	NS_ENTITY,
 	NS_LINKS,
 	NS_USER,
+	NS_LANGUAGE,
 } from '@/store/namespaces';
 import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
 import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
@@ -20,8 +21,14 @@ import {
 } from '@/store/actionTypes';
 import {
 	ENTITY_SAVE,
+	ENTITY_ROLLBACK,
 } from '@/store/entity/actionTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
+import newFingerprintable from '../../newFingerprintable';
+import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
+import Language from '@/datamodel/Language';
+import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
+import Vue from 'vue';
 import { MessageKeys } from '@/common/MessageKeys';
 import mockMessageMixin from '../store/mockMessageMixin';
 import createMockableStore from '../store/createMockableStore';
@@ -163,9 +170,18 @@ describe( 'TermBox.vue', () => {
 
 				it( 'emitted cancel event triggers entity rollback and deactivates edit mode', async () => {
 					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
+					const entityRollbackPromise = Promise.resolve();
+					const mockEntityRollback = jest.fn().mockReturnValue( entityRollbackPromise );
 					const store = createMockableStore( {
 						actions: {
 							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
+						},
+						modules: {
+							[ NS_ENTITY ]: {
+								actions: {
+									[ ENTITY_ROLLBACK ]: mockEntityRollback,
+								},
+							},
 						},
 					} );
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
@@ -178,7 +194,53 @@ describe( 'TermBox.vue', () => {
 
 					await wrapper.find( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
 
-					expect( mockDeactivateEditMode ).toHaveBeenCalled();
+					expect( mockEntityRollback ).toHaveBeenCalled();
+					return entityRollbackPromise.then( () => {
+						expect( mockDeactivateEditMode ).toHaveBeenCalled();
+					} );
+				} );
+
+				it( 'resets the entity to its state before editing started', async () => {
+					const store = createStore();
+
+					const originalLabel = 'Kartoffel';
+					const entity = newFingerprintable( {
+						labels: { de: originalLabel },
+						descriptions: { de: 'Art der Gattung Nachtschatten (Solanum)' },
+						aliases: { de: [ 'Erdapfel', 'Solanum tuberosum' ] },
+					} );
+
+					const languageDe: Language = {
+						code: 'de',
+						directionality: 'ltr',
+					};
+
+					store.commit( mutation( NS_USER, LANGUAGE_INIT ), languageDe.code );
+					store.commit(
+						mutation( NS_LANGUAGE, LANGUAGE_UPDATE ),
+						{
+							de: languageDe,
+						},
+					);
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+					store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
+
+					const wrapper = mount( TermBox, {
+						store,
+					} );
+
+					await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+
+					const labelEdit = wrapper.find( '.wb-ui-label-edit' );
+					( labelEdit.element as HTMLTextAreaElement ).value = 'foo';
+					labelEdit.trigger( 'input' );
+
+					await wrapper.find( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
+
+					return Vue.nextTick().then( () => {
+						const label = wrapper.find( '.wb-ui-label' );
+						expect( label.text() ).toBe( originalLabel );
+					} );
 				} );
 			} );
 		} );

@@ -1,7 +1,7 @@
 import { getters } from '@/store/entity/getters';
-import Entity from '@/store/entity/Entity';
+import EntityState from '@/store/entity/EntityState';
 
-function newMinimalStore( fields: any ): Entity {
+function newMinimalStore( fields: any ): EntityState {
 	return {
 		id: 'Q1',
 		labels: {},

@@ -1,12 +1,14 @@
 import { ActionContext } from 'vuex';
-import Entity from '@/store/entity/Entity';
+import EntityState from '@/store/entity/EntityState';
 import { factory } from '@/common/TermboxFactory';
 import {
 	ENTITY_INIT,
 	ENTITY_LABEL_EDIT,
 	ENTITY_ALIASES_EDIT,
 	ENTITY_DESCRIPTION_EDIT,
-	ENTITY_SAVE, ENTITY_ALIAS_REMOVE,
+	ENTITY_SAVE,
+	ENTITY_ALIAS_REMOVE,
+	ENTITY_ROLLBACK,
 } from '@/store/entity/actionTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import {
@@ -15,7 +17,9 @@ import {
 	ENTITY_REVISION_UPDATE,
 	ENTITY_SET_ALIASES as ENTITY_ALIASES_EDIT_MUTATION,
 	ENTITY_SET_LABEL as SET_ENTITY_LABEL_MUTATION,
-	ENTITY_SET_DESCRIPTION as SET_ENTITY_DESCRIPTION_MUTATION, ENTITY_REMOVE_ALIAS,
+	ENTITY_SET_DESCRIPTION as SET_ENTITY_DESCRIPTION_MUTATION,
+	ENTITY_REMOVE_ALIAS,
+	ENTITY_ROLLBACK as ENTITY_ROLLBACK_MUTATION,
 } from '@/store/entity/mutationTypes';
 
 import Term from '@/datamodel/Term';
@@ -24,7 +28,7 @@ import EntityRevision from '@/datamodel/EntityRevision';
 export const actions = {
 
 	[ ENTITY_INIT ](
-		context: ActionContext<Entity, any>,
+		context: ActionContext<EntityState, any>,
 		payload: { entity: string, revision: number },
 	): Promise<void> {
 		return Promise.all( [
@@ -37,7 +41,7 @@ export const actions = {
 		} );
 	},
 
-	[ ENTITY_SAVE ]( context: ActionContext<Entity, any> ): Promise<EntityRevision> {
+	[ ENTITY_SAVE ]( context: ActionContext<EntityState, any> ): Promise<EntityRevision> {
 		return factory.getWritingEntityRepository().saveEntity( new FingerprintableEntity(
 			context.state.id,
 			context.state.labels,
@@ -51,12 +55,16 @@ export const actions = {
 		} );
 	},
 
-	[ ENTITY_LABEL_EDIT ]( context: ActionContext<Entity, any>, label: Term ): void {
+	[ ENTITY_ROLLBACK ]( context: ActionContext<EntityState, any> ): void {
+		context.commit( ENTITY_ROLLBACK_MUTATION );
+	},
+
+	[ ENTITY_LABEL_EDIT ]( context: ActionContext<EntityState, any>, label: Term ): void {
 		context.commit( SET_ENTITY_LABEL_MUTATION, label );
 	},
 
 	[ ENTITY_ALIASES_EDIT ](
-		context: ActionContext<Entity, any>,
+		context: ActionContext<EntityState, any>,
 		{ language, aliasValues }: { language: string, aliasValues: string[] },
 	): void {
 		const terms: Term[] = aliasValues.map( ( alias ) => ( { language, value: alias } ) );
@@ -64,13 +72,13 @@ export const actions = {
 	},
 
 	[ ENTITY_ALIAS_REMOVE ](
-		context: ActionContext<Entity, any>,
+		context: ActionContext<EntityState, any>,
 		payload: { languageCode: string, index: number }
 	) {
 		context.commit( ENTITY_REMOVE_ALIAS, payload );
 	},
 
-	[ ENTITY_DESCRIPTION_EDIT ]( context: ActionContext<Entity, any>, description: Term ): void {
+	[ ENTITY_DESCRIPTION_EDIT ]( context: ActionContext<EntityState, any>, description: Term ): void {
 		context.commit( SET_ENTITY_DESCRIPTION_MUTATION, description );
 	},
 

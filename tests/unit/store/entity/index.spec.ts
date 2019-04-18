@@ -12,6 +12,8 @@ describe( 'store/entity/index', () => {
 			aliases: {},
 
 			isEditable: false,
+
+			baseRevisionFingerprint: null,
 		} );
 	} );
 } );
