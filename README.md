@@ -21,15 +21,8 @@ Since the Wikidata runs a weekly snapshot of Wikibase master we can be explicit 
 changing the commit of the submodule rather than always having to use master of termbox.
 
 ## Installation
-```sh
-# ensure the node user uses your user id, so you own generated files
-docker-compose build --build-arg UID=$(id -u) --build-arg GID=$(id -g) node
 
-# install npm dependencies
-docker-compose run --rm node npm install
-```
-
-## Configuring
+### Configuring
 
 As this project only comes to full fruition in integration with wikibase some configuration is required to make them collaborate.
 Set the user-specific environment variables: `cp .env.example .env` and modify `.env` according to your setup.
@@ -52,6 +45,16 @@ These environment variables can be distinguished in two groups - some are releva
   * `CSR_PORT` is the port at which you can reach the development server to live-preview your changes
   * `NODE_ENV` is the environment to set for node.js
   * `DEV_WIKIBASE_REPO` points to the wikibase installation on the client side (e.g. used for editing in the browser). In the development setup, this likely corresponds to `WIKIBASE_REPO`, which is the address within the docker network, whereas `DEV_WIKIBASE_REPO` is the address on the docker host.
+
+### Building Docker image
+
+```sh
+# ensure the node user uses your user id, so you own generated files
+docker-compose build --build-arg UID=$(id -u) --build-arg GID=$(id -g) node
+
+# install npm dependencies
+docker-compose run --rm node npm install
+```
 
 ### Configuring Wikibase
 In order to have this termbox displayed in Wikibase entity pages Wikibase need to be configured.
