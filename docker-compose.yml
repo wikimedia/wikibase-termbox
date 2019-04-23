@@ -21,6 +21,13 @@ services:
     ports:
       - '${CSR_PORT}:8080'
     command: 'npm run-script serve'
+    external_links:
+      - 'nginx-proxy:default.web.mw.localhost'
+    networks:
+      mediawiki_dev_network:
+        aliases:
+          - 'node-csr'
+      default: ~
 
   ssr:
     extends:

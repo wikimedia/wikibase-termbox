@@ -14,8 +14,7 @@ export default class MwConfig {
 			wgRelevantPageIsProbablyEditable: true,
 			wbIsEditView: true,
 			wbRepo: {
-				url: process.env.VUE_APP_WIKIBASE_REPO,
-				scriptPath: '', // contained in the above
+				scriptPath: '/csrMWProxy',
 			},
 			wgUserName: null,
 		};

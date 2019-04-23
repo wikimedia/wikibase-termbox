@@ -1,5 +1,6 @@
 const VueSSRServerPlugin = require( 'vue-server-renderer/server-plugin' );
 const VueSSRClientPlugin = require( 'vue-server-renderer/client-plugin' );
+const URL = require( 'url' ).URL;
 const TARGET_NODE = process.env.WEBPACK_TARGET === 'node';
 const DEV_MODE = process.env.WEBPACK_TARGET === 'dev';
 const filePrefix = 'wikibase.termbox.';
@@ -8,8 +9,15 @@ const target = TARGET_NODE
 	? 'server'
 	: 'client';
 
-if ( DEV_MODE ) {
-	process.env.VUE_APP_WIKIBASE_REPO = process.env.DEV_WIKIBASE_REPO;
+let repoHost;
+let repoScriptPath;
+let repoProtocol;
+
+if ( process.env.WIKIBASE_REPO ) {
+	const repoUrl = new URL( process.env.WIKIBASE_REPO );
+	repoHost = repoUrl.host;
+	repoScriptPath = repoUrl.pathname;
+	repoProtocol = repoUrl.protocol;
 }
 
 module.exports = {
@@ -68,6 +76,14 @@ module.exports = {
 		loaderOptions: {
 			sass: {
 				data: '@import "@/styles/_main.scss";',
+			},
+		},
+	},
+	devServer: {
+		proxy: {
+			'^/csrMWProxy': {
+				target: repoProtocol + '//' + repoHost,
+				pathRewrite: { '^/csrMWProxy': repoScriptPath },
 			},
 		},
 	},

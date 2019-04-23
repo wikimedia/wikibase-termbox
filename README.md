@@ -44,7 +44,6 @@ These environment variables can be distinguished in two groups - some are releva
 
   * `CSR_PORT` is the port at which you can reach the development server to live-preview your changes
   * `NODE_ENV` is the environment to set for node.js
-  * `DEV_WIKIBASE_REPO` points to the wikibase installation on the client side (e.g. used for editing in the browser). In the development setup, this likely corresponds to `WIKIBASE_REPO`, which is the address within the docker network, whereas `DEV_WIKIBASE_REPO` is the address on the docker host.
 
 ### Building Docker image
 

@@ -6,7 +6,6 @@ import MwWindow from '@/client/mediawiki/MwWindow';
 import getOrEnforceUrlParameter from './mock-data/getOrEnforceUrlParameter';
 import MockupWikibaseContentLanguages from '@/mock-data/MockWikibaseContentLanguages';
 import { message } from './mock-data/MockMwMessages';
-import Axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 const language = getOrEnforceUrlParameter( 'language', 'de' );
 const preferredLanguages = getOrEnforceUrlParameter(
@@ -32,19 +31,4 @@ const preferredLanguages = getOrEnforceUrlParameter(
 			getDir: ( code: string ) => directionalities.default[ code ],
 		},
 	},
-};
-
-// eslint-disable-next-line no-console
-console.info(
-	'mockup-entry.ts overwrote Axios.create() to allow CORS in dev.',
-	'See https://www.mediawiki.org/wiki/Manual:CORS',
-);
-const originalAxiosCreate = Axios.create;
-Axios.create = ( config?: AxiosRequestConfig ): AxiosInstance => {
-	const instance = originalAxiosCreate( config );
-	instance.interceptors.request.use( ( request: AxiosRequestConfig ) => {
-		request.params.origin = location.origin;
-		return request;
-	} );
-	return instance;
 };
