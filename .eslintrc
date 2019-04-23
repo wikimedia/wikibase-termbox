@@ -40,7 +40,6 @@
 		"valid-jsdoc": "off",
 
 		"vue/html-indent": [ "error", "tab" ],
-		"vue/require-v-for-key": "off",
 		"vue/max-attributes-per-line": [ "error", {
 			"singleline": 3,
 			"multiline": {

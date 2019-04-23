@@ -6,6 +6,7 @@
 	>
 		<li
 			v-for="alias in aliases"
+			:key="alias.value"
 			class="wb-ui-aliases__alias"
 			:data-separator="message( MESSAGE_KEYS.ALIAS_SEPARATOR )"
 		>
