@@ -8,8 +8,10 @@
 			/>
 			<div class="wb-ui-termbox__actions">
 				<EditTools v-if="isEditable" :edit-mode="editMode">
-					<EditPen slot="read" @editing="activateEditMode" :href="editLinkUrl" />
-					<template slot="edit">
+					<template #read>
+						<EditPen @editing="activateEditMode" :href="editLinkUrl" />
+					</template>
+					<template #edit>
 						<Publish @publish="publish" />
 						<Cancel @cancel="cancel" />
 					</template>
