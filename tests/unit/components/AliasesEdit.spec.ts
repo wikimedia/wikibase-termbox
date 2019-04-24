@@ -1,7 +1,7 @@
-import Vue from 'vue';
+import Vue, { VNode } from 'vue';
 import TermTextField from '@/components/TermTextField.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
-import { mount, shallowMount } from '@vue/test-utils';
+import { mount, shallowMount, Wrapper } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { action, mutation } from '@/store/util';
 import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
@@ -32,6 +32,14 @@ function getShallowMountedAliasEdit( aliases: string[] ) {
 		},
 		store,
 	} );
+}
+
+/**
+ * Get the v-for key of an element without a vue model (i.e. not a custom vue component but native HTML)
+ * https://vuejs.org/v2/guide/list.html#Maintaining-State
+ */
+function getWrappersVForKey( wrapper: Wrapper<Vue> ) {
+	return ( ( wrapper as any ).vnode as VNode ).key;
 }
 
 describe( 'AliasesEdit', () => {
@@ -101,9 +109,8 @@ describe( 'AliasesEdit', () => {
 
 			const textFields = wrapper.findAll( TermTextField );
 			expect( textFields ).toHaveLength( 2 );
-			const newFirstField = textFields.at( 0 );
-			expect( newFirstField.vm.$vnode.key! ).toBe( 1 );
-			expect( newFirstField.props( 'value' ) ).toBe( 'bar' );
+			expect( getWrappersVForKey( wrapper.findAll( 'li' ).at( 0 ) ) ).toBe( 1 );
+			expect( textFields.at( 0 ).props( 'value' ) ).toBe( 'bar' );
 		} );
 
 		it( `triggers ${ENTITY_ALIAS_REMOVE} when a blurring a text field with only whitespace`, () => {
@@ -141,11 +148,12 @@ describe( 'AliasesEdit', () => {
 			const aliases = [ 'hi', 'hello' ];
 			const wrapper = getShallowMountedAliasEdit( aliases );
 
+			const aliasItems = wrapper.findAll( 'li' );
 			const textFields = wrapper.findAll( TermTextField );
+			expect( getWrappersVForKey( aliasItems.at( 0 ) ) ).toBe( 0 );
 			expect( textFields.at( 0 ).props( 'value' ) ).toBe( aliases[ 0 ] );
+			expect( getWrappersVForKey( aliasItems.at( 1 ) ) ).toBe( 1 );
 			expect( textFields.at( 1 ).props( 'value' ) ).toBe( aliases[ 1 ] );
-			expect( textFields.at( 0 ).vm.$vnode.key! ).toBe( 0 );
-			expect( textFields.at( 1 ).vm.$vnode.key! ).toBe( 1 );
 		} );
 
 		it( 'has one extra blank text field at the bottom', () => {
