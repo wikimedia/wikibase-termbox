@@ -25,6 +25,7 @@ import {
 import {
 	ENTITY_SAVE,
 } from '@/store/entity/actionTypes';
+import { EDITMODE_SET } from '@/store/mutationTypes';
 
 describe( 'TermBox.vue', () => {
 
@@ -56,13 +57,14 @@ describe( 'TermBox.vue', () => {
 					const editLinkUrl = '/edit/Q42';
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
-					const wrapper = shallowMount( TermBox, { store } );
+					const wrapper = shallowMount( TermBox, {
+						stubs: { EditTools },
+						store,
+					} );
 
-					const editTools = wrapper.find( EditTools );
-					const editPen = editTools.find( EditPen );
+					const editPen = wrapper.find( EditTools ).find( EditPen );
 
 					expect( editPen.exists() ).toBeTruthy();
-					expect( editTools ).toHaveSlotWithContent( 'read', editPen );
 					expect( editPen.props() )
 						.toHaveProperty( 'href', editLinkUrl );
 				} );
@@ -74,7 +76,7 @@ describe( 'TermBox.vue', () => {
 					const wrapper = shallowMount( TermBox, {
 						store,
 						stubs: {
-							EditPen,
+							EditTools,
 						},
 					} );
 
@@ -93,26 +95,27 @@ describe( 'TermBox.vue', () => {
 			} );
 
 			describe( 'Publish', () => {
-				it( 'is there', () => {
+				it( 'is there in edit mode', () => {
 					const store = createStore();
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-					const wrapper = shallowMount( TermBox, { store } );
+					store.commit( mutation( EDITMODE_SET ), true );
+					const wrapper = shallowMount( TermBox, {
+						stubs: { EditTools },
+						store,
+					} );
 
-					const editTools = wrapper.find( EditTools );
-					const publish = editTools.find( Publish );
-
-					expect( publish.exists() ).toBeTruthy();
-					expect( editTools ).toHaveSlotWithContent( 'edit', publish );
+					expect( wrapper.find( EditTools ).find( Publish ).exists() ).toBeTruthy();
 				} );
 
 				it( 'emitted publish event triggers entity save and deactivates edit mode', async () => {
 					const store = createStore();
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+					store.commit( mutation( EDITMODE_SET ), true );
 
 					const wrapper = shallowMount( TermBox, {
 						store,
 						stubs: {
-							Publish,
+							EditTools,
 						},
 					} );
 
@@ -144,26 +147,27 @@ describe( 'TermBox.vue', () => {
 			} );
 
 			describe( 'Cancel', () => {
-				it( 'is there', () => {
+				it( 'is there in edit mode', () => {
 					const store = createStore();
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-					const wrapper = shallowMount( TermBox, { store } );
+					store.commit( mutation( EDITMODE_SET ), true );
+					const wrapper = shallowMount( TermBox, {
+						stubs: { EditTools },
+						store,
+					} );
 
-					const editTools = wrapper.find( EditTools );
-					const cancel = editTools.find( Cancel );
-
-					expect( cancel.exists() ).toBeTruthy();
-					expect( editTools ).toHaveSlotWithContent( 'edit', cancel, 1 );
+					expect( wrapper.find( EditTools ).find( Cancel ).exists() ).toBeTruthy();
 				} );
 
 				it( 'emitted cancel event triggers entity rollback and deactivates edit mode', async () => {
 					const store = createStore();
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+					store.commit( mutation( EDITMODE_SET ), true );
 
 					const wrapper = shallowMount( TermBox, {
 						store,
 						stubs: {
-							Cancel,
+							EditTools,
 						},
 					} );
 
@@ -182,19 +186,18 @@ describe( 'TermBox.vue', () => {
 			} );
 		} );
 
-		it( 'renders publish and cancel button in a dedicated order', async () => {
+		it( 'renders publish and cancel in edit mode', () => {
 			const store = createStore();
 			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+			store.commit( mutation( EDITMODE_SET ), true );
 
-			const wrapper = shallowMount( TermBox, { store } );
+			const wrapper = shallowMount( TermBox, {
+				stubs: { EditTools },
+				store,
+			} );
 
-			const editTools = wrapper.find( EditTools );
-			const publish = editTools.find( Publish );
-			const cancel = editTools.find( Cancel );
-
-			expect( editTools ).toHaveSlotWithContent( 'edit', publish, 0 );
-			expect( editTools ).toHaveSlotWithContent( 'edit', cancel, 1 );
-
+			expect( wrapper.find( Publish ).exists() ).toBe( true );
+			expect( wrapper.find( Cancel ).exists() ).toBe( true );
 		} );
 
 		it( 'given the entity is not editable are not there', () => {
