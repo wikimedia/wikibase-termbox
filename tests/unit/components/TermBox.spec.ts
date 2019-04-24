@@ -1,9 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import TermBox from '@/components/TermBox.vue';
 import EditTools from '@/components/EditTools.vue';
-import EditPen from '@/components/EditPen.vue';
-import Publish from '@/components/Publish.vue';
-import Cancel from '@/components/Cancel.vue';
+import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { createStore } from '@/store';
@@ -26,6 +24,17 @@ import {
 	ENTITY_SAVE,
 } from '@/store/entity/actionTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
+import { MessageKeys } from '@/common/MessageKeys';
+
+function mockMessageMixin( messages: { [key: string]: string } ) {
+	return {
+		methods: {
+			message( key: string ) {
+				return messages[ key ] || '';
+			},
+		},
+	};
+}
 
 describe( 'TermBox.vue', () => {
 
@@ -57,16 +66,20 @@ describe( 'TermBox.vue', () => {
 					const editLinkUrl = '/edit/Q42';
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
+					const message = 'edit';
 					const wrapper = shallowMount( TermBox, {
-						stubs: { EditTools },
+						stubs: { EditTools, EventEmittingButton },
 						store,
+						mixins: [ mockMessageMixin( {
+							[ MessageKeys.EDIT ]: message,
+						} ) ],
 					} );
 
-					const editPen = wrapper.find( EditTools ).find( EditPen );
+					const editPen = wrapper.find( EditTools ).find( '.wb-ui-event-emitting-button--edit' );
 
 					expect( editPen.exists() ).toBeTruthy();
-					expect( editPen.props() )
-						.toHaveProperty( 'href', editLinkUrl );
+					expect( editPen.attributes() ).toHaveProperty( 'href', editLinkUrl );
+					expect( editPen.props( 'message' ) ).toBe( message );
 				} );
 
 				it( 'emitted edit event puts store into editMode', async () => {
@@ -75,9 +88,7 @@ describe( 'TermBox.vue', () => {
 
 					const wrapper = shallowMount( TermBox, {
 						store,
-						stubs: {
-							EditTools,
-						},
+						stubs: { EditTools, EventEmittingButton },
 					} );
 
 					const mockActivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
@@ -88,7 +99,7 @@ describe( 'TermBox.vue', () => {
 						},
 					} );
 
-					await wrapper.find( EditPen ).vm.$emit( 'editing' );
+					await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 					expect( mockActivateEditMode ).toHaveBeenCalled();
 				} );
@@ -99,12 +110,17 @@ describe( 'TermBox.vue', () => {
 					const store = createStore();
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( EDITMODE_SET ), true );
-					const wrapper = shallowMount( TermBox, {
-						stubs: { EditTools },
+					const message = 'publish';
+					const publish = shallowMount( TermBox, {
+						stubs: { EditTools, EventEmittingButton },
 						store,
-					} );
+						mixins: [ mockMessageMixin( {
+							[ MessageKeys.PUBLISH ]: message,
+						} ) ],
+					} ).find( EditTools ).find( '.wb-ui-event-emitting-button--publish' );
 
-					expect( wrapper.find( EditTools ).find( Publish ).exists() ).toBeTruthy();
+					expect( publish.exists() ).toBeTruthy();
+					expect( publish.props( 'message' ) ).toBe( message );
 				} );
 
 				it( 'emitted publish event triggers entity save and deactivates edit mode', async () => {
@@ -114,9 +130,7 @@ describe( 'TermBox.vue', () => {
 
 					const wrapper = shallowMount( TermBox, {
 						store,
-						stubs: {
-							EditTools,
-						},
+						stubs: { EditTools, EventEmittingButton },
 					} );
 
 					const entitySavePromise = Promise.resolve();
@@ -137,7 +151,7 @@ describe( 'TermBox.vue', () => {
 						},
 					} );
 
-					await wrapper.find( Publish ).vm.$emit( 'publish' );
+					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).vm.$emit( 'click' );
 
 					expect( mockEntitySave ).toHaveBeenCalled();
 					entitySavePromise.then( () => {
@@ -151,12 +165,17 @@ describe( 'TermBox.vue', () => {
 					const store = createStore();
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( EDITMODE_SET ), true );
-					const wrapper = shallowMount( TermBox, {
-						stubs: { EditTools },
+					const message = 'cancel';
+					const cancel = shallowMount( TermBox, {
+						stubs: { EditTools, EventEmittingButton },
 						store,
-					} );
+						mixins: [ mockMessageMixin( {
+							[ MessageKeys.CANCEL ]: message,
+						} ) ],
+					} ).find( EditTools ).find( '.wb-ui-event-emitting-button--cancel' );
 
-					expect( wrapper.find( EditTools ).find( Cancel ).exists() ).toBeTruthy();
+					expect( cancel.exists() ).toBeTruthy();
+					expect( cancel.props( 'message' ) ).toBe( message );
 				} );
 
 				it( 'emitted cancel event triggers entity rollback and deactivates edit mode', async () => {
@@ -166,9 +185,7 @@ describe( 'TermBox.vue', () => {
 
 					const wrapper = shallowMount( TermBox, {
 						store,
-						stubs: {
-							EditTools,
-						},
+						stubs: { EditTools, EventEmittingButton },
 					} );
 
 					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
@@ -179,7 +196,7 @@ describe( 'TermBox.vue', () => {
 						},
 					} );
 
-					await wrapper.find( Cancel ).vm.$emit( 'cancel' );
+					await wrapper.find( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
 
 					expect( mockDeactivateEditMode ).toHaveBeenCalled();
 				} );
@@ -192,12 +209,12 @@ describe( 'TermBox.vue', () => {
 			store.commit( mutation( EDITMODE_SET ), true );
 
 			const wrapper = shallowMount( TermBox, {
-				stubs: { EditTools },
+				stubs: { EditTools, EventEmittingButton },
 				store,
 			} );
 
-			expect( wrapper.find( Publish ).exists() ).toBe( true );
-			expect( wrapper.find( Cancel ).exists() ).toBe( true );
+			expect( wrapper.find( '.wb-ui-event-emitting-button--publish' ).exists() ).toBe( true );
+			expect( wrapper.find( '.wb-ui-event-emitting-button--cancel' ).exists() ).toBe( true );
 		} );
 
 		it( 'given the entity is not editable are not there', () => {

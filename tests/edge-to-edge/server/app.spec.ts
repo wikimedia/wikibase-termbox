@@ -439,7 +439,7 @@ describe( 'Termbox SSR', () => {
 				expect( $aliases!.getAttribute( 'dir' ) ).toBe( 'ltr' );
 				expect( $aliases!.querySelectorAll( 'li' ) ).toHaveLength( mockQ64.aliases.de.length );
 
-				expect( $dom.querySelector( '.wb-ui-edit-pen a' ) )
+				expect( $dom.querySelector( '.wb-ui-event-emitting-button--edit' ) )
 					.toHaveAttribute( 'href', editLink );
 			} );
 		} );

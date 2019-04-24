@@ -9,11 +9,24 @@
 			<div class="wb-ui-termbox__actions">
 				<EditTools v-if="isEditable" :edit-mode="editMode">
 					<template #read>
-						<EditPen @editing="activateEditMode" :href="editLinkUrl" />
+						<EventEmittingButton
+							type="edit"
+							@click="activateEditMode"
+							:href="editLinkUrl"
+							:message="message( MESSAGE_KEYS.EDIT )"
+						/>
 					</template>
 					<template #edit>
-						<Publish @publish="publish" />
-						<Cancel @cancel="cancel" />
+						<EventEmittingButton
+							type="publish"
+							@click="publish"
+							:message="message( MESSAGE_KEYS.PUBLISH )"
+						/>
+						<EventEmittingButton
+							type="cancel"
+							@click="cancel"
+							:message="message( MESSAGE_KEYS.CANCEL )"
+						/>
 					</template>
 				</EditTools>
 			</div>
@@ -24,8 +37,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Component, { mixins } from 'vue-class-component';
 import {
 	mapState,
 } from 'vuex';
@@ -35,23 +47,20 @@ import {
 	NS_USER,
 } from '@/store/namespaces';
 import EditTools from '@/components/EditTools.vue';
-import EditPen from '@/components/EditPen.vue';
-import Publish from '@/components/Publish.vue';
-import Cancel from '@/components/Cancel.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { Action, namespace } from 'vuex-class';
 import { ENTITY_SAVE } from '@/store/entity/actionTypes';
 import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
+import EventEmittingButton from '@/components/EventEmittingButton.vue';
+import Messages from '@/components/mixins/Messages';
 
 @Component( {
 	components: {
+		EventEmittingButton,
 		InMoreLanguagesExpandable,
 		MonolingualFingerprintView,
 		EditTools,
-		EditPen,
-		Publish,
-		Cancel,
 	},
 	computed: {
 		...mapState( [ 'editMode' ] ),
@@ -60,7 +69,7 @@ import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
 		...mapState( NS_ENTITY, [ 'isEditable' ] ),
 	},
 } )
-export default class TermBox extends Vue {
+export default class TermBox extends mixins( Messages ) {
 
 	@Action( EDITMODE_ACTIVATE )
 	public activateEditMode!: () => Promise<void>;
