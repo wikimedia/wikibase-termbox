@@ -1,19 +1,19 @@
 <template>
-	<div
+	<ul
 		class="wb-ui-aliases-edit"
 		:class="{ 'wb-ui-aliases-edit--focus-within' : hasFocus }"
 	>
-		<TermTextField
-			v-for="( value, index ) in aliasValues"
-			:key="keys[ index ]"
-			class="wb-ui-aliases-edit__alias"
-			v-inlanguage="language"
-			:value="value"
-			@input="value => aliasInput( index, value )"
-			@focus.native="setFocus()"
-			@blur.native="removeAliasIfEmpty( index ); unsetFocus()"
-		/>
-	</div>
+		<li v-for="( value, index ) in aliasValues" :key="keys[ index ]">
+			<TermTextField
+				class="wb-ui-aliases-edit__alias"
+				v-inlanguage="language"
+				:value="value"
+				@input="value => aliasInput( index, value )"
+				@focus.native="setFocus()"
+				@blur.native="removeAliasIfEmpty( index ); unsetFocus()"
+			/>
+		</li>
+	</ul>
 </template>
 
 <script lang="ts">
