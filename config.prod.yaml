@@ -63,4 +63,5 @@ services:
     conf:
       WIKIBASE_REPO: '{env(WIKIBASE_REPO,https://www.wikidata.org/w)}' #use env var with fallback
       SSR_PORT: '{env(SSR_PORT,3030)}'
+      MEDIAWIKI_REQUEST_TIMEOUT: '{env(MEDIAWIKI_REQUEST_TIMEOUT)}'
     entrypoint: default #required for ES6 style exports

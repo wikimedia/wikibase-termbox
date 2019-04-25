@@ -32,6 +32,7 @@ These environment variables can be distinguished in two groups - some are releva
 * **Production level** environment variables
   * `SSR_PORT` is the port at which the node server performing server-side vue rendering can be reached (by mediawiki to render entity pages, or your browser to try it in isolation)
   * `WIKIBASE_REPO` is the wikibase installation used as information authority (e.g. to load entity information), including the path (where both `index.php` and `api.php` are located)
+  * `MEDIAWIKI_REQUEST_TIMEOUT` is the duration ( in milliseconds ) after which the ssr-server terminates any request to mediawiki in any case. This parameter is optional and will be set by default to 3000.
 
 * **Development level** environment variables
   * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network of **your mediawiki development setup**. The SSR service will attach itself to it in order to make it available to wikibase and vice-versa.
