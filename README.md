@@ -107,8 +107,21 @@ docker run --rm wmde/wikibase-termbox-test
 
 E.g. with production wikidata configured as the backend (`WIKIBASE_REPO`).
 
+#### Using a custom build
+
 ```sh
 blubber .pipeline/blubber.yaml production > Dockerfile
 docker build -t wmde/wikibase-termbox-production .
 docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e SSR_PORT=3030 wmde/wikibase-termbox-production
 ```
+
+#### Using official, automatically created images
+
+Changes to this project that are successfully merged into the main line (master) are automatically run through a so called [service pipeline job](https://integration.wikimedia.org/ci/job/service-pipeline-test-and-publish/) which builds the production variant and publishes the resulting image under a descriptive name as a [tag in the docker registry](https://docker-registry.wikimedia.org/v2/wikimedia/wikibase-termbox/tags/list).
+
+You can reference these tags directly when spinning up a container - the simplest conceivable way to reproduce a production setup at a given moment in time; e.g. to reproduce a reported bug.
+
+```sh
+docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e SSR_PORT=3030 docker-registry.wikimedia.org/wikimedia/wikibase-termbox:2019-04-25-184504-production
+```
+
