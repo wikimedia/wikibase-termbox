@@ -1,8 +1,10 @@
 @mixin termInput() {
+	display: block;
 	box-sizing: border-box;
 	width: 100%;
 	resize: none;
 	overflow: auto;
 	background-color: transparent; // overcome potential browser defaults
 	font-size: inherit;
+	margin: 0;
 }
