@@ -2,12 +2,11 @@ import { shallowMount } from '@vue/test-utils';
 import Aliases from '@/components/Aliases.vue';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
-import { NS_LANGUAGE, NS_MESSAGES, NS_USER } from '@/store/namespaces';
+import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { MessageKeys } from '@/common/MessageKeys';
-import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
-import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
+import mockMessageMixin from '../store/mockMessageMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -44,13 +43,6 @@ describe( 'Aliases', () => {
 		const language = 'en';
 		const separator = '|';
 
-		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
-
-		store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
-		store.commit( mutation( NS_MESSAGES, MESSAGES_INIT ), {
-			[ language ]: { [ MessageKeys.ALIAS_SEPARATOR ]: separator },
-		} );
-
 		const wrapper = shallowMount( Aliases, {
 			propsData: {
 				aliases: [
@@ -58,7 +50,8 @@ describe( 'Aliases', () => {
 					{ language, value: 'hello2' },
 				],
 			},
-			store,
+			store: createStoreWithLanguage( { code: language, directionality: 'ltr' } ),
+			mixins: [ mockMessageMixin( { [ MessageKeys.ALIAS_SEPARATOR ]: separator } ) ],
 		} );
 
 		expect( wrapper.find( ALIAS_SELECTOR ).attributes( 'data-separator' ) ).toBe( separator );

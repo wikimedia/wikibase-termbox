@@ -2,12 +2,11 @@ import Label from '@/components/Label.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
-import { NS_MESSAGES, NS_USER, NS_LANGUAGE } from '@/store/namespaces';
-import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
-import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
+import { NS_LANGUAGE } from '@/store/namespaces';
 import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
+import mockMessageMixin from '../store/mockMessageMixin';
 
 const LABEL_SELECTOR = '.wb-ui-label';
 
@@ -38,17 +37,10 @@ describe( 'Label', () => {
 	} );
 
 	it( 'shows a missing label indicator', () => {
-		const language = 'en';
 		const missingLabelMessage = 'label missing';
-		const store = createStore();
-		store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
-		store.commit( mutation( NS_MESSAGES, MESSAGES_INIT ), {
-			[ language ]: { [ MessageKeys.MISSING_LABEL ]: missingLabelMessage },
-		} );
-
 		const wrapper = shallowMount( Label, {
 			propsData: { label: null },
-			store,
+			mixins: [ mockMessageMixin( { [ MessageKeys.MISSING_LABEL ]: missingLabelMessage } ) ],
 		} );
 
 		expect( wrapper.find( LABEL_SELECTOR ).text() ).toBe( missingLabelMessage );
