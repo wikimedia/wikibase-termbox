@@ -1,5 +1,6 @@
 @mixin termInputStandaloneField() {
 	border: 1px solid $border-color-base;
+	border-radius: 2px;
 	padding: 7px;
 
 	&:focus,

@@ -3,7 +3,7 @@
 		class="wb-ui-aliases-edit"
 		:class="{ 'wb-ui-aliases-edit--focus-within' : hasFocus }"
 	>
-		<li v-for="( value, index ) in aliasValues" :key="keys[ index ]">
+		<li v-for="( value, index ) in aliasValues" :key="keys[ index ]" class="wb-ui-aliases-edit__item">
 			<TermTextField
 				class="wb-ui-aliases-edit__alias"
 				v-inlanguage="language"
@@ -128,6 +128,15 @@ export default class AliasesEdit extends mixins( Messages ) {
 .wb-ui-aliases-edit {
 	@include termInputStandaloneField();
 	overflow-y: visible;
+	padding: 1px 3px;
+
+	&__item {
+		margin-top: 8px;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
 
 	&__alias {
 		@include aliasesFont();
