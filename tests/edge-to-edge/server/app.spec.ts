@@ -501,3 +501,13 @@ describe( 'Termbox SSR', () => {
 	} );
 
 } );
+
+describe( 'Open API Spec', () => {
+	it( 'returns a spec when passing spec query param to /', () => {
+		return request( app ).get( '/' ).query( {
+			spec: 'foo',
+		} ).then( ( response ) => {
+			expect( JSON.parse( response.text ).info.title ).toBe( 'wikibase-termbox' );
+		} );
+	} );
+} );

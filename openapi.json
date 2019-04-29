@@ -1,0 +1,96 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "wikibase-termbox",
+    "description": "Server side rendering for vue-based wikibase UI components.",
+    "contact": {
+      "name": "Wikimedia Deutschland - Wikidata Team"
+    },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/_info": {
+      "get": {
+        "tags": [
+          "Service information"
+        ],
+        "description": "Gets information about the service",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/termbox": {
+      "get": {
+        "description": "Gets a rendered termbox",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "language",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}[a-z-]*$"
+            }
+          },
+          {
+            "in": "query",
+            "name": "entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(Q|P)[1-9]\\d{0,9}$"
+            }
+          },
+          {
+            "in": "query",
+            "name": "revision",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "editLink",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "preferredLanguages",
+            "required": true,
+            "style": "pipeDelimited",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "pattern": "^[a-z]{2}[a-z-]*$"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Entity not found"
+          },
+          "500": {
+            "description": "Technical Problem"
+          }
+        }
+      }
+    }
+  }
+}
