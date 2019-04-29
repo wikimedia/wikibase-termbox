@@ -25,16 +25,7 @@ import {
 } from '@/store/entity/actionTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
-
-function mockMessageMixin( messages: { [key: string]: string } ) {
-	return {
-		methods: {
-			message( key: string ) {
-				return messages[ key ] || '';
-			},
-		},
-	};
-}
+import mockMessageMixin from '../store/mockMessageMixin';
 
 describe( 'TermBox.vue', () => {
 

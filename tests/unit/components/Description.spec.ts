@@ -2,12 +2,11 @@ import Description from '@/components/Description.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
-import { NS_LANGUAGE, NS_MESSAGES, NS_USER } from '@/store/namespaces';
-import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
-import { MESSAGES_INIT } from '@/store/messages/mutationTypes';
+import { NS_LANGUAGE } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import Language from '@/datamodel/Language';
+import mockMessageMixin from '../store/mockMessageMixin';
 
 const DESCRIPTION_SELECTOR = '.wb-ui-description';
 
@@ -36,17 +35,10 @@ describe( 'Description', () => {
 	} );
 
 	it( 'shows a missing description indicator', () => {
-		const language = 'en';
 		const missingDescriptionMessage = 'description missing';
-		const store = createStore();
-		store.commit( mutation( NS_USER, LANGUAGE_INIT ), language );
-		store.commit( mutation( NS_MESSAGES, MESSAGES_INIT ), {
-			[ language ]: { [ MessageKeys.MISSING_DESCRIPTION ]: missingDescriptionMessage },
-		} );
-
 		const wrapper = shallowMount( Description, {
 			propsData: { description: null },
-			store,
+			mixins: [ mockMessageMixin( { [ MessageKeys.MISSING_DESCRIPTION ]: missingDescriptionMessage } ) ],
 		} );
 
 		expect( wrapper.find( DESCRIPTION_SELECTOR ).text() ).toBe( missingDescriptionMessage );
