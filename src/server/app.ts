@@ -11,6 +11,8 @@ import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import BundleRendererContextBuilder from './bundle-renderer/BundleRendererContextBuilder';
 import inlanguage from './directives/inlanguage';
 import swaggerSpec from '@/../openapi.json';
+import packageInfo from '@/../package.json';
+import InfoHandler from './route-handler/_info/InfoHandler';
 
 export default ( services: BundleRendererServices ) => {
 
@@ -28,6 +30,8 @@ export default ( services: BundleRendererServices ) => {
 		},
 	);
 	const contextBuilder = new BundleRendererContextBuilder( services );
+
+	app.use( '/_info', InfoHandler( packageInfo ) );
 
 	app.get( '/', ( request: Request, response: Response, next: NextFunction ) => {
 		if ( request.query && Object.prototype.hasOwnProperty.call( request.query, 'spec' ) ) {

@@ -511,3 +511,32 @@ describe( 'Open API Spec', () => {
 		} );
 	} );
 } );
+
+describe( 'Information endpoint', () => {
+	it( 'returns an info blob at /_info', () => {
+		return request( app ).get( '/_info' )
+			.then( ( response ) => {
+				const jsonReply = JSON.parse( response.text );
+				expect( jsonReply.name ).toBeDefined();
+				expect( jsonReply.version ).toBeDefined();
+			} );
+	} );
+
+	it( 'returns an info blob with only name at /_info/name', () => {
+		return request( app ).get( '/_info/name' )
+			.then( ( response ) => {
+				const jsonReply = JSON.parse( response.text );
+				expect( jsonReply.name ).toBeDefined();
+				expect( Object.keys( jsonReply ).length ).toBe( 1 );
+			} );
+	} );
+
+	it( 'returns an info blob with only version at /_info/version', () => {
+		return request( app ).get( '/_info/version' )
+			.then( ( response ) => {
+				const jsonReply = JSON.parse( response.text );
+				expect( jsonReply.version ).toBeDefined();
+				expect( Object.keys( jsonReply ).length ).toBe( 1 );
+			} );
+	} );
+} );
