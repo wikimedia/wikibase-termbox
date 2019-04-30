@@ -5,8 +5,6 @@ import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { createStore } from '@/store';
-import createEntityStoreModule from '@/store/entity';
-import { actions as rootStoreActions } from '@/store/actions';
 import {
 	NS_ENTITY,
 	NS_LINKS,
@@ -26,6 +24,7 @@ import {
 import { EDITMODE_SET } from '@/store/mutationTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import mockMessageMixin from '../store/mockMessageMixin';
+import createMockableStore from '../store/createMockableStore';
 
 describe( 'TermBox.vue', () => {
 
@@ -74,20 +73,17 @@ describe( 'TermBox.vue', () => {
 				} );
 
 				it( 'emitted edit event puts store into editMode', async () => {
-					const store = createStore();
+					const mockActivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
+					const store = createMockableStore( {
+						actions: {
+							[ EDITMODE_ACTIVATE ]: mockActivateEditMode,
+						},
+					} );
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 
 					const wrapper = shallowMount( TermBox, {
 						store,
 						stubs: { EditTools, EventEmittingButton },
-					} );
-
-					const mockActivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-					store.hotUpdate( {
-						actions: {
-							...rootStoreActions,
-							[ EDITMODE_ACTIVATE ]: mockActivateEditMode,
-						},
 					} );
 
 					await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
@@ -115,31 +111,27 @@ describe( 'TermBox.vue', () => {
 				} );
 
 				it( 'emitted publish event triggers entity save and deactivates edit mode', async () => {
-					const store = createStore();
-					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-					store.commit( mutation( EDITMODE_SET ), true );
-
-					const wrapper = shallowMount( TermBox, {
-						store,
-						stubs: { EditTools, EventEmittingButton },
-					} );
-
 					const entitySavePromise = Promise.resolve();
 					const mockEntitySave = jest.fn().mockReturnValue( entitySavePromise );
 					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-					store.hotUpdate( {
+					const store = createMockableStore( {
 						modules: {
 							[ NS_ENTITY ]: {
-								...createEntityStoreModule(),
 								actions: {
 									[ ENTITY_SAVE ]: mockEntitySave,
 								},
 							},
 						},
 						actions: {
-							...rootStoreActions,
 							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
 						},
+					} );
+					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+					store.commit( mutation( EDITMODE_SET ), true );
+
+					const wrapper = shallowMount( TermBox, {
+						store,
+						stubs: { EditTools, EventEmittingButton },
 					} );
 
 					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).vm.$emit( 'click' );
@@ -170,21 +162,18 @@ describe( 'TermBox.vue', () => {
 				} );
 
 				it( 'emitted cancel event triggers entity rollback and deactivates edit mode', async () => {
-					const store = createStore();
+					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
+					const store = createMockableStore( {
+						actions: {
+							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
+						},
+					} );
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( EDITMODE_SET ), true );
 
 					const wrapper = shallowMount( TermBox, {
 						store,
 						stubs: { EditTools, EventEmittingButton },
-					} );
-
-					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-					store.hotUpdate( {
-						actions: {
-							...rootStoreActions,
-							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
-						},
 					} );
 
 					await wrapper.find( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
