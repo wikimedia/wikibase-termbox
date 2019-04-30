@@ -7,6 +7,8 @@ import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
+import { MessageKeys } from '@/common/MessageKeys';
+import mockMessageMixin from '../store/mockMessageMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -68,6 +70,20 @@ describe( 'LabelEdit', () => {
 
 		expect( wrapper.props() ).toHaveProperty( 'isPrimary', true );
 		expect( wrapper.classes() ).toContain( 'wb-ui-label-edit--primary' );
+	} );
+
+	it( 'passes a placeholder down', () => {
+		const placeholderMessage = 'placeholder';
+		const wrapper = shallowMount( LabelEdit, {
+			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			propsData: {
+				label: null,
+				languageCode: 'en',
+			},
+			mixins: [ mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_LABEL ]: placeholderMessage } ) ],
+		} );
+
+		expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
 	} );
 
 	describe( 'directionality and language code', () => {

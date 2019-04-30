@@ -7,6 +7,9 @@
 		"wikibase-entitytermsview-entitytermsforlanguagelistview-toggler",
 		"wikibase-label-empty",
 		"wikibase-description-empty",
-		"wikibase-cancel"
+		"wikibase-cancel",
+		"wikibase-label-edit-placeholder",
+		"wikibase-description-edit-placeholder",
+		"wikibase-alias-edit-placeholder"
 	]
 }

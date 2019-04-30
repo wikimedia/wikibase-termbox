@@ -3,6 +3,7 @@
 		class="wb-ui-description-edit"
 		v-inlanguage="language"
 		v-model="value"
+		:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_DESCRIPTION )"
 	/>
 </template>
 

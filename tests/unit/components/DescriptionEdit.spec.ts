@@ -9,6 +9,8 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_DESCRIPTION_EDIT } from '@/store/entity/actionTypes';
 import { action } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
+import { MessageKeys } from '@/common/MessageKeys';
+import mockMessageMixin from '../store/mockMessageMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -58,6 +60,20 @@ describe( 'DescriptionEdit', () => {
 			action( NS_ENTITY, ENTITY_DESCRIPTION_EDIT ),
 			{ language, value: newDescription },
 		);
+	} );
+
+	it( 'passes a placeholder down', () => {
+		const placeholderMessage = 'placeholder';
+		const wrapper = shallowMount( DescriptionEdit, {
+			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			propsData: {
+				description: null,
+				languageCode: 'en',
+			},
+			mixins: [ mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_DESCRIPTION ]: placeholderMessage } ) ],
+		} );
+
+		expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
 	} );
 
 	describe( 'directionality and language code', () => {

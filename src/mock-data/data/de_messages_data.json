@@ -6,5 +6,8 @@
 	"wikibase-entitytermsview-entitytermsforlanguagelistview-toggler": "In weiteren Sprachen",
 	"wikibase-label-empty": "Keine Bezeichnung vorhanden",
 	"wikibase-description-empty": "Keine Beschreibung vorhanden",
-	"wikibase-cancel": "abbrechen"
+	"wikibase-cancel": "abbrechen",
+	"wikibase-label-edit-placeholder": "Bezeichnung eingeben",
+	"wikibase-description-edit-placeholder": "Beschreibung eingeben",
+	"wikibase-alias-edit-placeholder": "Alias eingeben"
 }

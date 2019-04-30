@@ -7,4 +7,9 @@
 	background-color: transparent; // overcome potential browser defaults
 	font-size: inherit;
 	margin: 0;
+
+	&::placeholder {
+		font-style: italic;
+		color: $color-placeholder;
+	}
 }

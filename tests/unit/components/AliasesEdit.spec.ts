@@ -11,6 +11,8 @@ import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionT
 import newFingerprintable from '../../newFingerprintable';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import Term from '@/datamodel/Term';
+import { MessageKeys } from '@/common/MessageKeys';
+import mockMessageMixin from '../store/mockMessageMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -22,7 +24,7 @@ function createStoreWithLanguage( language: Language ) {
 
 const language = 'en';
 
-function getShallowMountedAliasEdit( aliases: string[] ) {
+function getShallowMountedAliasEdit( aliases: string[], message = '' ) {
 	const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 	return shallowMount( AliasesEdit, {
@@ -31,6 +33,7 @@ function getShallowMountedAliasEdit( aliases: string[] ) {
 			languageCode: language,
 		},
 		store,
+		mixins: [ mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_ALIAS ]: message } ) ],
 	} );
 }
 
@@ -67,6 +70,12 @@ describe( 'AliasesEdit', () => {
 				language,
 				aliasValues: [ newAlias ],
 			} );
+		} );
+
+		it( 'passes a placeholder down', () => {
+			const placeholderMessage = 'placeholder';
+			const wrapper = getShallowMountedAliasEdit( [ 'foo' ], placeholderMessage );
+			expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
 		} );
 	} );
 
