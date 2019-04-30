@@ -8,6 +8,13 @@ import createMessages from './messages';
 import Root from './Root';
 import { mutations } from './mutations';
 import { actions } from './actions';
+import {
+	NS_ENTITY,
+	NS_LANGUAGE,
+	NS_LINKS,
+	NS_MESSAGES,
+	NS_USER,
+} from '@/store/namespaces';
 
 Vue.use( Vuex );
 
@@ -21,11 +28,11 @@ export function createStore() {
 		mutations,
 		actions,
 		modules: {
-			entity: createEntity(),
-			user: createUser(),
-			language: createLanguage(),
-			links: createLinks(),
-			messages: createMessages(),
+			[ NS_ENTITY ]: createEntity(),
+			[ NS_USER ]: createUser(),
+			[ NS_LANGUAGE ]: createLanguage(),
+			[ NS_LINKS ]: createLinks(),
+			[ NS_MESSAGES ]: createMessages(),
 		},
 		strict: process.env.NODE_ENV !== 'production',
 	};
