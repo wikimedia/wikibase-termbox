@@ -2,7 +2,10 @@ import 'module-alias/register';
 import createApp from './app';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import axios from 'axios';
-import { GLOBAL_REQUEST_PARAMS } from '../common/constants';
+import {
+	GLOBAL_REQUEST_PARAMS,
+	DEFAULT_REQUEST_TIMEOUT,
+} from '../common/constants';
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 
 /* eslint-disable no-console */
@@ -19,13 +22,17 @@ function verifyAndReportSetting( name: string, value: any ) {
 export default ( options: ServiceRunnerOptions ) => {
 	const wikibaseRepo = options.config.WIKIBASE_REPO;
 	const ssrPort = options.config.SSR_PORT;
+	const serverRequestTimeout = options.config.MEDIAWIKI_REQUEST_TIMEOUT || DEFAULT_REQUEST_TIMEOUT;
+
 	verifyAndReportSetting( 'WIKIBASE_REPO', wikibaseRepo );
 	verifyAndReportSetting( 'SSR_PORT', ssrPort );
+	verifyAndReportSetting( 'MEDIAWIKI_REQUEST_TIMEOUT', serverRequestTimeout );
 
 	const services = new BundleRendererServices(
 		axios.create( {
 			baseURL: wikibaseRepo,
 			params: GLOBAL_REQUEST_PARAMS,
+			timeout: serverRequestTimeout,
 		} ),
 		console,
 	);

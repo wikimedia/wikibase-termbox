@@ -45,6 +45,7 @@ services:
     environment:
       - SSR_PORT
       - WIKIBASE_REPO
+      - MEDIAWIKI_REQUEST_TIMEOUT
 
 networks:
   mediawiki_dev_network:
