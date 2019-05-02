@@ -4,3 +4,4 @@ export const GLOBAL_REQUEST_PARAMS = {
 	format: 'json',
 };
 export const DEFAULT_REQUEST_TIMEOUT = 3000;
+export const DEFAULT_MESSAGES_CACHE_MAX_AGE = 60000;

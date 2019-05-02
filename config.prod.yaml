@@ -64,4 +64,5 @@ services:
       WIKIBASE_REPO: '{env(WIKIBASE_REPO,https://www.wikidata.org/w)}' #use env var with fallback
       SSR_PORT: '{env(SSR_PORT,3030)}'
       MEDIAWIKI_REQUEST_TIMEOUT: '{env(MEDIAWIKI_REQUEST_TIMEOUT)}'
+      MESSAGES_CACHE_MAX_AGE: '{env(MESSAGES_CACHE_MAX_AGE)}'
     entrypoint: default #required for ES6 style exports

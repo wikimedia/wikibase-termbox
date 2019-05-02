@@ -46,6 +46,7 @@ services:
       - SSR_PORT
       - WIKIBASE_REPO
       - MEDIAWIKI_REQUEST_TIMEOUT
+      - MESSAGES_CACHE_MAX_AGE
 
 networks:
   mediawiki_dev_network:

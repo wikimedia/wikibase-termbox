@@ -5,8 +5,10 @@ import axios from 'axios';
 import {
 	GLOBAL_REQUEST_PARAMS,
 	DEFAULT_REQUEST_TIMEOUT,
+	DEFAULT_MESSAGES_CACHE_MAX_AGE,
 } from '../common/constants';
 import ServiceRunnerOptions from './ServiceRunnerOptions';
+import LRUCache from 'lru-cache';
 
 /* eslint-disable no-console */
 
@@ -32,6 +34,7 @@ export default ( options: ServiceRunnerOptions ) => {
 	const wikibaseRepo = assertAndGetSetting( config, 'WIKIBASE_REPO' );
 	const ssrPort = assertAndGetSetting( config, 'SSR_PORT' );
 	const serverRequestTimeout = assertAndGetSetting( config, 'MEDIAWIKI_REQUEST_TIMEOUT', DEFAULT_REQUEST_TIMEOUT );
+	const messageCacheMaxAge = assertAndGetSetting( config, 'MESSAGES_CACHE_MAX_AGE', DEFAULT_MESSAGES_CACHE_MAX_AGE );
 
 	const services = new BundleRendererServices(
 		axios.create( {
@@ -40,6 +43,10 @@ export default ( options: ServiceRunnerOptions ) => {
 			timeout: serverRequestTimeout,
 		} ),
 		console,
+		new LRUCache( {
+			max: 1000,
+			maxAge: messageCacheMaxAge,
+		} ),
 	);
 
 	createApp( services )
