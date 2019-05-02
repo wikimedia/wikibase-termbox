@@ -1,11 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { createStore } from '@/store';
 import { StoreOptions } from 'vuex';
-import Root from '@/store/Root';
 
 function getModuleOverrides(
-	defaults: StoreOptions<Root>,
-	overrides: StoreOptions<Root> = {},
+	defaults: StoreOptions<any>,
+	overrides: StoreOptions<any> = {},
 ) {
 	return {
 		namespaced: true,
@@ -30,7 +29,7 @@ function assertOverride( defaultValue: any, override: any, message: string ) {
 /**
  * creates a real store instance with individually overridable module properties
  */
-export default function createMockableStore( overrides: any ) {
+export default function createMockableStore( overrides: StoreOptions<any> ) {
 	const store = createStore();
 	const storeModules = ( store as any )._modules.root._children;
 
