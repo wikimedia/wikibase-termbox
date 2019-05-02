@@ -50,7 +50,7 @@ import EditTools from '@/components/EditTools.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import { Action, namespace } from 'vuex-class';
-import { ENTITY_SAVE } from '@/store/entity/actionTypes';
+import { ENTITY_SAVE, ENTITY_ROLLBACK } from '@/store/entity/actionTypes';
 import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Messages from '@/components/mixins/Messages';
@@ -80,6 +80,9 @@ export default class TermBox extends mixins( Messages ) {
 	@namespace( NS_ENTITY ).Action( ENTITY_SAVE )
 	public saveEntity!: () => Promise<void>;
 
+	@namespace( NS_ENTITY ).Action( ENTITY_ROLLBACK )
+	public rollbackEntity!: () => Promise<void>;
+
 	public publish(): void {
 		this.saveEntity()
 			.then( () => {
@@ -88,8 +91,10 @@ export default class TermBox extends mixins( Messages ) {
 	}
 
 	public cancel(): void {
-		/* TODO rollback */
-		this.deactivateEditMode();
+		this.rollbackEntity()
+			.then( () => {
+				this.deactivateEditMode();
+			} );
 	}
 
 }

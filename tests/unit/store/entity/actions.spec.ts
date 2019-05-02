@@ -6,6 +6,7 @@ import {
 	ENTITY_DESCRIPTION_EDIT,
 	ENTITY_LABEL_EDIT,
 	ENTITY_SAVE,
+	ENTITY_ROLLBACK,
 } from '@/store/entity/actionTypes';
 import {
 	EDITABILITY_UPDATE,
@@ -15,6 +16,7 @@ import {
 	ENTITY_REMOVE_ALIAS,
 	ENTITY_SET_DESCRIPTION as ENTITY_SET_DESCRIPTION_MUTATION,
 	ENTITY_REVISION_UPDATE,
+	ENTITY_ROLLBACK as ENTITY_ROLLBACK_MUTATION,
 } from '@/store/entity/mutationTypes';
 import { factory } from '@/common/TermboxFactory';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
@@ -212,6 +214,14 @@ describe( 'entity/actions', () => {
 		actions[ ENTITY_ALIAS_REMOVE ]( context, payload );
 
 		expect( context.commit ).toHaveBeenCalledWith( ENTITY_REMOVE_ALIAS, payload );
+	} );
+
+	it( `${ENTITY_ROLLBACK} commits to ${ENTITY_ROLLBACK_MUTATION}`, () => {
+		const context = newMockStore( { commit: jest.fn() } );
+
+		actions[ ENTITY_ROLLBACK ]( context );
+
+		expect( context.commit ).toHaveBeenCalledWith( ENTITY_ROLLBACK_MUTATION );
 	} );
 
 } );

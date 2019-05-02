@@ -1,51 +1,79 @@
 import Vue from 'vue';
 import { MutationTree } from 'vuex';
-import Entity from '@/store/entity/Entity';
+import EntityState from '@/store/entity/EntityState';
 import {
 	EDITABILITY_UPDATE,
 	ENTITY_UPDATE,
 	ENTITY_SET_LABEL,
 	ENTITY_SET_ALIASES,
 	ENTITY_SET_DESCRIPTION,
-	ENTITY_REVISION_UPDATE, ENTITY_REMOVE_ALIAS,
+	ENTITY_REVISION_UPDATE,
+	ENTITY_REMOVE_ALIAS,
+	ENTITY_ROLLBACK,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
+import Fingerprintable from '@/datamodel/Fingerprintable';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import Term from '@/datamodel/Term';
 
-export const mutations: MutationTree<Entity> = {
-	[ ENTITY_UPDATE ]( state: Entity, entity: FingerprintableEntity ): void {
+function getFingerprintProperties( source: Fingerprintable ) {
+	return {
+		labels: source.labels,
+		descriptions: source.descriptions,
+		aliases: source.aliases,
+	};
+}
+
+function clone( source: Fingerprintable ): Fingerprintable {
+	return JSON.parse( JSON.stringify( source ) );
+}
+
+export const mutations: MutationTree<EntityState> = {
+	[ ENTITY_UPDATE ]( state: EntityState, entity: FingerprintableEntity ): void {
 		if ( !( entity instanceof FingerprintableEntity ) ) {
 			throw new InvalidEntityException( JSON.stringify( entity ) );
 		}
 
+		const fingerprintProperties = getFingerprintProperties( entity );
+
 		state.id = entity.id;
-		state.labels = entity.labels;
-		state.descriptions = entity.descriptions;
-		state.aliases = entity.aliases;
+		Object.assign( state, fingerprintProperties );
+
+		state.baseRevisionFingerprint = clone( fingerprintProperties );
 	},
 
-	[ EDITABILITY_UPDATE ]( state: Entity, isEditable: boolean ) {
+	[ ENTITY_ROLLBACK ]( state: EntityState ): void {
+		if ( state.baseRevisionFingerprint === null ) {
+			throw new InvalidEntityException( 'Entity baseRevisionFingerprint not set' );
+		}
+
+		Object.assign(
+			state,
+			clone( state.baseRevisionFingerprint ), // avoid modification after rollback
+		);
+	},
+
+	[ EDITABILITY_UPDATE ]( state: EntityState, isEditable: boolean ) {
 		state.isEditable = isEditable;
 	},
 
-	[ ENTITY_SET_LABEL ]( state: Entity, languageTerm: Term ): void {
+	[ ENTITY_SET_LABEL ]( state: EntityState, languageTerm: Term ): void {
 		Vue.set( state.labels, languageTerm.language, languageTerm );
 	},
 
-	[ ENTITY_SET_ALIASES ]( state: Entity, { language, terms }: { language: string, terms: Term[] } ) {
+	[ ENTITY_SET_ALIASES ]( state: EntityState, { language, terms }: { language: string, terms: Term[] } ) {
 		Vue.set( state.aliases, language, terms );
 	},
 
-	[ ENTITY_REMOVE_ALIAS ]( state: Entity, { languageCode, index }: { languageCode: string, index: number } ) {
+	[ ENTITY_REMOVE_ALIAS ]( state: EntityState, { languageCode, index }: { languageCode: string, index: number } ) {
 		state.aliases[ languageCode ].splice( index, 1 );
 	},
 
-	[ ENTITY_SET_DESCRIPTION ]( state: Entity, descriptionTerm: Term ) {
+	[ ENTITY_SET_DESCRIPTION ]( state: EntityState, descriptionTerm: Term ) {
 		Vue.set( state.descriptions, descriptionTerm.language, descriptionTerm );
 	},
 
-	[ ENTITY_REVISION_UPDATE ]( state: Entity, revision: number ) {
+	[ ENTITY_REVISION_UPDATE ]( state: EntityState, revision: number ) {
 		state.baseRevision = revision;
 	},
 

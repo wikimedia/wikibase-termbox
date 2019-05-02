@@ -1,15 +1,10 @@
 import TermList from '@/datamodel/TermList';
 import AliasesList from '@/datamodel/AliasesList';
 
-interface Entity {
-	id: string;
-	baseRevision: number;
-
+interface Fingerprintable {
 	labels: TermList;
 	descriptions: TermList;
 	aliases: AliasesList;
-
-	isEditable: boolean;
 }
 
-export default Entity;
+export default Fingerprintable;

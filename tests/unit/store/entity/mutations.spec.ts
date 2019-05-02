@@ -7,13 +7,14 @@ import {
 	ENTITY_REMOVE_ALIAS,
 	ENTITY_SET_DESCRIPTION,
 	ENTITY_REVISION_UPDATE,
+	ENTITY_ROLLBACK,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
-import Entity from '@/store/entity/Entity';
+import EntityState from '@/store/entity/EntityState';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import { lockState } from '../lockState';
 
-function newEntityState( entity: any = null ): Entity {
+function newEntityState( entity: any = null ): EntityState {
 	let state = {
 		id: 'Q1',
 		baseRevision: 0,
@@ -21,6 +22,7 @@ function newEntityState( entity: any = null ): Entity {
 		descriptions: {},
 		aliases: {},
 		isEditable: false,
+		baseRevisionFingerprint: null,
 	};
 
 	if ( entity !== null ) {
@@ -49,8 +51,8 @@ describe( 'entity/mutations', () => {
 			} ).toThrow( InvalidEntityException );
 		} );
 
-		it( 'contains entity data after initialization', () => {
-			const state: Entity = newEntityState();
+		it( 'contains entity data incl baseRevisionFingerprint after initialization', () => {
+			const state: EntityState = newEntityState();
 			const entity = new FingerprintableEntity(
 				'Q123',
 				{ en: { language: 'en', value: 'foo' } },
@@ -60,11 +62,14 @@ describe( 'entity/mutations', () => {
 
 			mutations[ ENTITY_UPDATE ]( state, entity );
 
-			expect( state.labels ).toBe( entity.labels );
 			expect( state.id ).toBe( entity.id );
 			expect( state.labels ).toBe( entity.labels );
 			expect( state.descriptions ).toBe( entity.descriptions );
 			expect( state.aliases ).toBe( entity.aliases );
+
+			expect( state.baseRevisionFingerprint!.labels ).toEqual( entity.labels );
+			expect( state.baseRevisionFingerprint!.descriptions ).toEqual( entity.descriptions );
+			expect( state.baseRevisionFingerprint!.aliases ).toEqual( entity.aliases );
 		} );
 
 	} );
@@ -190,6 +195,110 @@ describe( 'entity/mutations', () => {
 			{ language: 'en', value: 'foo' },
 			{ language: 'en', value: 'baz' },
 		] );
+	} );
+
+	describe( ENTITY_ROLLBACK, () => {
+		// In theory this can only happen if mutations are added that overlook the baseRevisionFingerprint topic
+		it( 'fails with explanation without baseRevisionFingerprint at hand', () => {
+			const state = newEntityState( { baseRevisionFingerprint: null } );
+			try {
+				mutations[ ENTITY_ROLLBACK ]( state, null );
+				expect( true ).toBeFalsy();
+			} catch ( e ) {
+				expect( e ).toBeInstanceOf( InvalidEntityException );
+				expect( e.message ).toBe( 'Entity baseRevisionFingerprint not set' );
+			}
+		} );
+
+		it( `${ENTITY_ROLLBACK} restores fingerprintable properties from baseRevisionFingerprint`, () => {
+			const id = 'Q123';
+			const isEditable = true;
+			const baseRevision = 0;
+			const labels = {
+				en: {
+					language: 'en',
+					value: 'thing',
+				},
+			};
+			const descriptions = {
+				en: {
+					language: 'en',
+					value: 'a thing',
+				},
+			};
+			const aliases = {
+				en: [
+					{ language: 'en', value: 'foo' },
+					{ language: 'en', value: 'bar' },
+				],
+			};
+			const state = newEntityState( {
+				id,
+				isEditable,
+				baseRevision,
+				labels: {
+					en: {
+						language: 'en',
+						value: 'a label',
+					},
+				},
+				descriptions: {
+					en: {
+						language: 'en',
+						value: 'a description',
+					},
+				},
+				aliases: {
+					en: [
+						{ language: 'en', value: 'an alias' },
+					],
+				},
+				baseRevisionFingerprint: {
+					labels,
+					descriptions,
+					aliases,
+				},
+			} );
+
+			mutations[ ENTITY_ROLLBACK ]( state, null );
+
+			// these are not touched by the rollback, i.e. look like the state was set up
+			expect( state.id ).toBe( id );
+			expect( state.isEditable ).toBe( isEditable );
+			expect( state.baseRevision ).toBe( baseRevision );
+
+			// these _are_ touched by the rollback, i.e. look like the rollback
+			expect( state.labels ).toEqual( labels );
+			expect( state.descriptions ).toEqual( descriptions );
+			expect( state.aliases ).toEqual( aliases );
+		} );
+
+		it( `mutations after ${ENTITY_ROLLBACK} do not change the baseRevisionFingerprint value by reference`, () => {
+			const baseRevisionLabel = 'thing';
+			const state = newEntityState( {
+				labels: {
+					en: {
+						language: 'en',
+						value: 'a label',
+					},
+				},
+				baseRevisionFingerprint: {
+					labels: {
+						en: {
+							language: 'en',
+							value: baseRevisionLabel,
+						},
+					},
+					descriptions: {},
+					aliases: {},
+				},
+			} );
+
+			mutations[ ENTITY_ROLLBACK ]( state, null );
+			mutations[ ENTITY_SET_LABEL ]( state, { language: 'en', value: 'thingyyy' } );
+
+			expect( state.baseRevisionFingerprint!.labels.en.value ).toEqual( baseRevisionLabel );
+		} );
 	} );
 
 } );
