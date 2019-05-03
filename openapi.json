@@ -20,7 +20,23 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "x-amples": [
+          {
+            "title": "retrieve service info",
+            "request": {},
+            "response": {
+              "status": 200,
+              "headers": {
+                "content-type": "application/json"
+              },
+              "body": {
+                "name": "/.+/",
+                "version": "/.+/"
+              }
+            }
+          }
+        ]
       }
     },
     "/termbox": {
@@ -89,7 +105,8 @@
           "500": {
             "description": "Technical Problem"
           }
-        }
+        },
+        "x-monitor": false
       }
     }
   }
