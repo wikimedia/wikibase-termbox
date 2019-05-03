@@ -33,7 +33,7 @@ const WIKIBASE_TEST_INDEX_PATH = '/' + MEDIAWIKI_INDEX_SCRIPT;
 const logger = {
 	log: jest.fn(),
 };
-const cache = { set() {}, get() {} };
+const cache = { has() {}, set() {}, get() {} };
 
 const services = new BundleRendererServices(
 	axios.create( {

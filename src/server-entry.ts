@@ -14,7 +14,9 @@ import WaitingForLanguageWikibaseContentLanguagesRepo
 	from './server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
 import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
 import { MessageKeys } from '@/common/MessageKeys';
-import CachingMessagesRepository from './server/data-access/CachingMessagesRepository';
+import CachingMethodDecorator from './server/data-access/CachingMethodDecorator';
+import MessagesRepository from './common/data-access/MessagesRepository';
+import MessageTranslationCollection from './datamodel/MessageTranslationCollection';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 Vue.mixin( newConfigMixin( {
@@ -37,13 +39,15 @@ export default ( context: BundleRendererContext ) => {
 	factory.setLanguageRepository(
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
-	factory.setMessagesRepository( new CachingMessagesRepository(
+	const axiosWikibaseMessagesRepo = new AxiosWikibaseMessagesRepo(
+		axios,
+		Object.values( MessageKeys ),
+	);
+	factory.setMessagesRepository( new CachingMethodDecorator<MessageTranslationCollection>(
 		context.services.messageCache,
-		new AxiosWikibaseMessagesRepo(
-			axios,
-			Object.values( MessageKeys ),
-		),
-	) );
+		axiosWikibaseMessagesRepo,
+		axiosWikibaseMessagesRepo.getMessagesInLanguage,
+	) as any as MessagesRepository );
 
 	factory.setEntityRepository(
 		new AxiosSpecialPageEntityRepo(
