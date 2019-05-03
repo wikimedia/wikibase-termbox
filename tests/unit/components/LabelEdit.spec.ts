@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import LabelEdit from '@/components/LabelEdit.vue';
 import TermTextField from '@/components/TermTextField.vue';
 import { shallowMount } from '@vue/test-utils';
@@ -9,6 +10,7 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
 import { MessageKeys } from '@/common/MessageKeys';
 import mockMessageMixin from '../store/mockMessageMixin';
+import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -17,6 +19,8 @@ function createStoreWithLanguage( language: Language ) {
 	} );
 	return store;
 }
+
+Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
 
 describe( 'LabelEdit', () => {
 
@@ -80,10 +84,26 @@ describe( 'LabelEdit', () => {
 				label: null,
 				languageCode: 'en',
 			},
-			mixins: [ mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_LABEL ]: placeholderMessage } ) ],
+			mixins: [
+				mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_LABEL ]: placeholderMessage } ),
+			],
 		} );
 
 		expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
+	} );
+
+	it( 'passes a maxlength down', () => {
+		const maxLength = 23;
+		const wrapper = shallowMount( LabelEdit, {
+			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			propsData: {
+				label: null,
+				languageCode: 'en',
+			},
+			mixins: [ newConfigMixin( { textFieldCharacterLimit: maxLength } ) ],
+		} );
+
+		expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 	} );
 
 	describe( 'directionality and language code', () => {

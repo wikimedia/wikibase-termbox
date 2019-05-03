@@ -4,6 +4,7 @@
 		v-inlanguage="language"
 		v-model="value"
 		:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_DESCRIPTION )"
+		:maxlength="config.textFieldCharacterLimit"
 	/>
 </template>
 

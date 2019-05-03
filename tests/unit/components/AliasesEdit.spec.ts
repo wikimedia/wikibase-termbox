@@ -13,6 +13,7 @@ import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import Term from '@/datamodel/Term';
 import { MessageKeys } from '@/common/MessageKeys';
 import mockMessageMixin from '../store/mockMessageMixin';
+import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -24,7 +25,13 @@ function createStoreWithLanguage( language: Language ) {
 
 const language = 'en';
 
-function getShallowMountedAliasEdit( aliases: string[], message = '' ) {
+Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
+
+function getShallowMountedAliasEdit(
+	aliases: string[],
+	message = '',
+	config: ConfigOptions = { textFieldCharacterLimit: 0 }
+) {
 	const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 	return shallowMount( AliasesEdit, {
@@ -33,7 +40,10 @@ function getShallowMountedAliasEdit( aliases: string[], message = '' ) {
 			languageCode: language,
 		},
 		store,
-		mixins: [ mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_ALIAS ]: message } ) ],
+		mixins: [
+			mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_ALIAS ]: message } ),
+			newConfigMixin( config ),
+		],
 	} );
 }
 
@@ -76,6 +86,12 @@ describe( 'AliasesEdit', () => {
 			const placeholderMessage = 'placeholder';
 			const wrapper = getShallowMountedAliasEdit( [ 'foo' ], placeholderMessage );
 			expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
+		} );
+
+		it( 'passes a maxlength down', () => {
+			const maxLength = 23;
+			const wrapper = getShallowMountedAliasEdit( [ 'foo' ], '', { textFieldCharacterLimit: maxLength } );
+			expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 		} );
 	} );
 

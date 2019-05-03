@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import TermTextField from '@/components/TermTextField.vue';
 import { shallowMount } from '@vue/test-utils';
@@ -11,6 +12,7 @@ import { action } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
 import { MessageKeys } from '@/common/MessageKeys';
 import mockMessageMixin from '../store/mockMessageMixin';
+import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -19,6 +21,8 @@ function createStoreWithLanguage( language: Language ) {
 	} );
 	return store;
 }
+
+Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
 
 describe( 'DescriptionEdit', () => {
 
@@ -70,10 +74,26 @@ describe( 'DescriptionEdit', () => {
 				description: null,
 				languageCode: 'en',
 			},
-			mixins: [ mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_DESCRIPTION ]: placeholderMessage } ) ],
+			mixins: [
+				mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_DESCRIPTION ]: placeholderMessage } ),
+			],
 		} );
 
 		expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
+	} );
+
+	it( 'passes a maxlength down', () => {
+		const maxLength = 23;
+		const wrapper = shallowMount( DescriptionEdit, {
+			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			propsData: {
+				description: null,
+				languageCode: 'en',
+			},
+			mixins: [ newConfigMixin( { textFieldCharacterLimit: maxLength } ) ],
+		} );
+
+		expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 	} );
 
 	describe( 'directionality and language code', () => {

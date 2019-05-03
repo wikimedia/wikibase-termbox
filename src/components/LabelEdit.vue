@@ -7,6 +7,7 @@
 		:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_LABEL )"
 		v-inlanguage="language"
 		v-model="value"
+		:maxlength="config.textFieldCharacterLimit"
 	/>
 </template>
 

@@ -14,11 +14,18 @@ import inlanguage from '@/client/directives/inlanguage';
 import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
 import EntityInitializer from '@/common/EntityInitializer';
 import { getAxios } from '@/client/axios/axiosFactory';
+import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 Vue.config.productionTip = false;
-const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
+Vue.mixin( newConfigMixin(
+	{
+		textFieldCharacterLimit: ( window as MwWindow ).mw.config.get( 'wbMultiLingualStringLimit' ),
+	}
+) );
 
 Vue.directive( 'inlanguage', inlanguage );
+
+const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
 
 factory.setLanguageTranslationRepository(
 	new UlsLanguageTranslationRepository(

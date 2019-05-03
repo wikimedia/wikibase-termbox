@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import buildApp from '@/common/buildApp';
 import { factory } from './common/TermboxFactory';
 import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
@@ -14,6 +15,11 @@ import WaitingForLanguageWikibaseContentLanguagesRepo
 import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
 import { MessageKeys } from '@/common/MessageKeys';
 import CachingMessagesRepository from './server/data-access/CachingMessagesRepository';
+import newConfigMixin from '@/components/mixins/newConfigMixin';
+
+Vue.mixin( newConfigMixin( {
+	textFieldCharacterLimit: 0, // edit mode is not reachable on the server side
+} ) );
 
 export default ( context: BundleRendererContext ) => {
 	const axios = context.services.axios;

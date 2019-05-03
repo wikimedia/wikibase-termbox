@@ -12,6 +12,7 @@
 				@focus.native="setFocus()"
 				@blur.native="removeAliasIfEmpty( index ); unsetFocus()"
 				:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_ALIAS )"
+				:maxlength="config.textFieldCharacterLimit"
 			/>
 		</li>
 	</ul>

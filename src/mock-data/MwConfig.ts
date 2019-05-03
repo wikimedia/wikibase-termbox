@@ -17,6 +17,7 @@ export default class MwConfig {
 				scriptPath: '/csrMWProxy',
 			},
 			wgUserName: null,
+			wbMultiLingualStringLimit: 250,
 		};
 
 		return config[ key ];

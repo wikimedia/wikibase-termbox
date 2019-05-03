@@ -32,6 +32,9 @@ import Vue from 'vue';
 import { MessageKeys } from '@/common/MessageKeys';
 import mockMessageMixin from '../store/mockMessageMixin';
 import createMockableStore from '../store/createMockableStore';
+import newConfigMixin from '@/components/mixins/newConfigMixin';
+
+Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
 
 describe( 'TermBox.vue', () => {
 
