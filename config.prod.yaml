@@ -65,4 +65,5 @@ services:
       SSR_PORT: '{env(SSR_PORT,3030)}'
       MEDIAWIKI_REQUEST_TIMEOUT: '{env(MEDIAWIKI_REQUEST_TIMEOUT)}'
       MESSAGES_CACHE_MAX_AGE: '{env(MESSAGES_CACHE_MAX_AGE)}'
+      LANGUAGES_CACHE_MAX_AGE: '{env(LANGUAGES_CACHE_MAX_AGE)}'
     entrypoint: default #required for ES6 style exports

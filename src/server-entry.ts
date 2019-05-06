@@ -17,6 +17,8 @@ import { MessageKeys } from '@/common/MessageKeys';
 import CachingMethodDecorator from './server/data-access/CachingMethodDecorator';
 import MessagesRepository from './common/data-access/MessagesRepository';
 import MessageTranslationCollection from './datamodel/MessageTranslationCollection';
+import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages }
+	from '@/server/data-access/WikibaseContentLanguagesRepo';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 Vue.mixin( newConfigMixin( {
@@ -26,10 +28,13 @@ Vue.mixin( newConfigMixin( {
 export default ( context: BundleRendererContext ) => {
 	const axios = context.services.axios;
 
+	const axiosLanguages = new AxiosWikibaseContentLanguagesRepo( axios );
 	const languageRepo = new WaitingForLanguageWikibaseContentLanguagesRepo(
-		new AxiosWikibaseContentLanguagesRepo(
-			axios,
-		),
+		new CachingMethodDecorator<WikibaseApiContentLanguages>(
+			context.services.languageCache,
+			axiosLanguages,
+			axiosLanguages.getContentLanguages,
+		) as any as WikibaseContentLanguagesRepo,
 	);
 
 	factory.setLanguageTranslationRepository(

@@ -47,6 +47,7 @@ services:
       - WIKIBASE_REPO
       - MEDIAWIKI_REQUEST_TIMEOUT
       - MESSAGES_CACHE_MAX_AGE
+      - LANGUAGES_CACHE_MAX_AGE
 
 networks:
   mediawiki_dev_network:

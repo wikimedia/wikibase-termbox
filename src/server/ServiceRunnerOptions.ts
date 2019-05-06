@@ -4,6 +4,7 @@ interface ServiceRunnerOptions {
 		SSR_PORT?: string,
 		MEDIAWIKI_REQUEST_TIMEOUT?: number,
 		MESSAGES_CACHE_MAX_AGE?: number,
+		LANGUAGES_CACHE_MAX_AGE?: number,
 	};
 }
 

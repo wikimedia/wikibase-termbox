@@ -15,6 +15,7 @@ describe( 'BundleRendererContextBuilder', () => {
 				axios,
 				{ log: () => {} },
 				new ( jest.fn() )(),
+				new ( jest.fn() )(),
 			);
 			const request = new TermboxRequest( 'Q71', 'de', 31510, '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] );
 

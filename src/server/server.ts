@@ -6,6 +6,7 @@ import {
 	GLOBAL_REQUEST_PARAMS,
 	DEFAULT_REQUEST_TIMEOUT,
 	DEFAULT_MESSAGES_CACHE_MAX_AGE,
+	DEFAULT_LANGUAGES_CACHE_MAX_AGE,
 } from '../common/constants';
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
@@ -35,6 +36,11 @@ export default ( options: ServiceRunnerOptions ) => {
 	const ssrPort = assertAndGetSetting( config, 'SSR_PORT' );
 	const serverRequestTimeout = assertAndGetSetting( config, 'MEDIAWIKI_REQUEST_TIMEOUT', DEFAULT_REQUEST_TIMEOUT );
 	const messageCacheMaxAge = assertAndGetSetting( config, 'MESSAGES_CACHE_MAX_AGE', DEFAULT_MESSAGES_CACHE_MAX_AGE );
+	const languageCacheMaxAge = assertAndGetSetting(
+		config,
+		'LANGUAGES_CACHE_MAX_AGE',
+		DEFAULT_LANGUAGES_CACHE_MAX_AGE
+	);
 
 	const services = new BundleRendererServices(
 		axios.create( {
@@ -46,6 +52,10 @@ export default ( options: ServiceRunnerOptions ) => {
 		new LRUCache( {
 			max: 1000,
 			maxAge: messageCacheMaxAge,
+		} ),
+		new LRUCache( {
+			max: 1000,
+			maxAge: languageCacheMaxAge,
 		} ),
 	);
 

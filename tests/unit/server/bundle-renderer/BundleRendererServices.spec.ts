@@ -5,13 +5,15 @@ describe( 'BundleRendererServices', () => {
 	it( 'can be constructed and assigns properties', () => {
 		const logger = { log: () => {} };
 		const messageCache = new ( jest.fn() )();
+		const languageCache = new ( jest.fn() )();
 
-		const services = new BundleRendererServices( axios, logger, messageCache );
+		const services = new BundleRendererServices( axios, logger, messageCache, languageCache );
 
 		expect( services ).toBeInstanceOf( BundleRendererServices );
 		expect( services.axios ).toBe( axios );
 		expect( services.logger ).toBe( logger );
 		expect( services.messageCache ).toBe( messageCache );
+		expect( services.languageCache ).toBe( languageCache );
 	} );
 
 } );
