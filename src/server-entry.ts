@@ -13,6 +13,7 @@ import WaitingForLanguageWikibaseContentLanguagesRepo
 	from './server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
 import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
 import { MessageKeys } from '@/common/MessageKeys';
+import CachingMessagesRepository from './server/data-access/CachingMessagesRepository';
 
 export default ( context: BundleRendererContext ) => {
 	const axios = context.services.axios;
@@ -30,13 +31,13 @@ export default ( context: BundleRendererContext ) => {
 	factory.setLanguageRepository(
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
-
-	factory.setMessagesRepository(
+	factory.setMessagesRepository( new CachingMessagesRepository(
+		context.services.messageCache,
 		new AxiosWikibaseMessagesRepo(
 			axios,
 			Object.values( MessageKeys ),
 		),
-	);
+	) );
 
 	factory.setEntityRepository(
 		new AxiosSpecialPageEntityRepo(
