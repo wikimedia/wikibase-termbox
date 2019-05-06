@@ -1,32 +1,41 @@
-import QueryValidator from './QueryValidator';
 import InvalidRequest from './error/InvalidRequest';
 import TermboxRequest from '@/common/TermboxRequest';
+import { IOpenAPIRequestValidator } from 'openapi-request-validator';
+import { IOpenAPIRequestCoercer } from 'openapi-request-coercer';
+import { OpenAPI } from 'openapi-types';
 
 export default class TermboxHandler {
 
-	private queryValidator: QueryValidator;
+	private coercer: IOpenAPIRequestCoercer;
+	private validator: IOpenAPIRequestValidator;
 
-	constructor( queryValidator: QueryValidator ) {
-		this.queryValidator = queryValidator;
+	constructor( coercer: IOpenAPIRequestCoercer, validator: IOpenAPIRequestValidator ) {
+		this.coercer = coercer;
+		this.validator = validator;
 	}
 
-	public createTermboxRequest( query: any ): Promise<TermboxRequest> {
+	public createTermboxRequest( request: OpenAPI.Request ): Promise<TermboxRequest> {
+		this.coercer.coerce( request );
+
 		return new Promise( ( resolve, reject ) => {
-			if ( !this.queryValidator.validate( query ) ) {
+			const rejection = this.validator.validate( request );
+			if ( rejection ) {
 				reject(
 					new InvalidRequest(
-						'Request errors: ' + JSON.stringify( this.queryValidator.getErrors() ),
+						'Request errors', rejection.errors,
 					),
 				);
 				return;
 			}
+
+			const query = request.query as any;
 			resolve(
 				new TermboxRequest(
 					query.language,
 					query.entity,
 					query.revision,
 					query.editLink,
-					query.preferredLanguages.split( '|' ),
+					query.preferredLanguages,
 				),
 			);
 		} );

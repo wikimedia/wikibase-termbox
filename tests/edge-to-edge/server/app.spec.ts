@@ -274,13 +274,113 @@ describe( 'Termbox SSR', () => {
 		} );
 	} );
 
-	it( 'renders Bad Request when requesting /termbox without well-formed query', ( done ) => {
-		request( app ).get( '/termbox' ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
-			expect( response.text ).toContain( 'Bad request' );
-			done();
-		} );
-	} );
+	it.each( [
+		[
+			{}, // all empty
+			[ 'entity', 'revision', 'language', 'editLink', 'preferredLanguages' ],
+		],
+		[
+			{
+				entity: 'Q3',
+				revision: 31510,
+				preferredLanguages: 'de|fe|zh|tw',
+				editLink: '/somewhere/Q2',
+			},
+			[ 'language' ],
+		],
+		[
+			{
+				revision: 31510,
+				language: 'de',
+				preferredLanguages: 'de|fe|zh|tw',
+				editLink: '/somewhere/Q2',
+			},
+			[ 'entity' ],
+		],
+		[
+			{
+				entity: 'Q3',
+				revision: 31510,
+				language: 'de',
+				editLink: '/somewhere/Q2',
+			},
+			[ 'preferredLanguages' ],
+		],
+		[
+			{ // empty strings
+				entity: '',
+				revision: '',
+				language: '',
+				preferredLanguages: '',
+				editLink: '',
+			},
+			[ 'entity', 'revision', 'language', 'preferredLanguages[0]' ],
+		],
+		[
+			{ // evil strings
+				entity: ' ',
+				revision: '  ',
+				language: '      ',
+				preferredLanguages: '	', // eslint-disable-line no-tabs
+				editLink: '',
+			},
+			[ 'entity', 'revision', 'language', 'preferredLanguages[0]' ],
+		],
+		[
+			{
+				entity: [ 'bad', 'value' ], // off-type value
+				revision: 31510,
+				language: 'de',
+				editLink: '/somewhere/Q2',
+				preferredLanguages: 'de|en',
+			},
+			[ 'entity' ],
+		],
+		[
+			{
+				entity: 'Q0', // crafted entity
+				revision: 31510,
+				language: 'de',
+				editLink: '/somewhere/Q2',
+				preferredLanguages: 'de|en',
+			},
+			[ 'entity' ],
+		],
+		[
+			{ entity: 'Q2', language: 'de', editLink: '/somewhere/Q2', preferredLanguages: 'de|en' },
+			[ 'revision' ],
+		],
+		[
+			{
+				entity: 'Q2',
+				revision: 'foo',
+				language: 'de',
+				editLink: '/somewhere/Q2',
+				preferredLanguages: 'de|en',
+			},
+			[ 'revision' ],
+		],
+		[
+			{
+				entity: 'Q2',
+				revision: 31510,
+				language: 'de',
+				editLink: '/somewhere/Q2',
+				preferredLanguages: 'de|en-x-excessivelylongextensionthathasaverylimitedchanceofbeingvalid',
+			},
+			[ 'preferredLanguages[1]' ],
+		],
+	] )(
+		'renders Bad Request when requesting /termbox with defunct query #%# (%o) having known faults (%o)',
+		( query: object, reasons: string[] ) => {
+			return request( app ).get( '/termbox' ).query( query ).then( ( response ) => {
+				expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
+				expect( response.text ).toContain( 'Bad request' );
+				const errors = JSON.parse( response.text.match( '.*Errors: (.+)' )![ 1 ]! );
+				expect( errors.map( ( e: any ) => e.path ).sort() ).toEqual( reasons.sort() );
+			} );
+		}
+	);
 
 	it( 'renders Bad request when requesting /termbox with well-formed query for unknown language', ( done ) => {
 		const entityId = 'Q64';

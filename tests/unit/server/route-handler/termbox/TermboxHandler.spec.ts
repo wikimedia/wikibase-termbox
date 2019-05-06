@@ -2,43 +2,58 @@ import TermboxHandler from '@/server/route-handler/termbox/TermboxHandler';
 import TermboxRequest from '@/common/TermboxRequest';
 import InvalidRequest from '@/server/route-handler/termbox/error/InvalidRequest';
 
-function newTermboxHandler( queryValidator: any ) {
-	return new TermboxHandler( queryValidator );
+function newTermboxHandler( coercer: any, queryValidator: any ) {
+	return new TermboxHandler( coercer, queryValidator );
 }
 
 describe( 'TermboxHandler', () => {
 	describe( 'createTermboxRequest', () => {
-		it( 'resolves to TermboxRequest on valid request', ( done ) => {
-			const entity = 'Q64';
-			const language = 'de';
-			const preferredLanguages = 'de|en|fr|it|pl|zh';
-			const queryValidator = {
-				validate: () => true,
+		it( 'resolves to TermboxRequest on valid request', () => {
+			const validQuery = {
+				entity: 'Q64',
+				language: 'de',
+				preferredLanguages: 'de|en|fr|it|pl|zh',
+			};
+			const coercer = {
+				coerce: ( request: any ) => request,
+			};
+			const validator = {
+				validate: () => undefined,
 			};
 
-			const routeHandler = newTermboxHandler( queryValidator );
-			routeHandler.createTermboxRequest( { entity, language, preferredLanguages } )
-				.then( ( termboxRequest: TermboxRequest ) => {
-					expect( termboxRequest ).toBeInstanceOf( TermboxRequest );
-					expect( termboxRequest.language ).toEqual( language );
-					expect( termboxRequest.entityId ).toEqual( entity );
-					done();
-				} );
+			const routeHandler = newTermboxHandler( coercer, validator );
+
+			return routeHandler.createTermboxRequest( {
+				query: validQuery,
+			} ).then( ( termboxRequest: TermboxRequest ) => {
+				expect( termboxRequest ).toBeInstanceOf( TermboxRequest );
+				expect( termboxRequest.language ).toEqual( validQuery.language );
+				expect( termboxRequest.entityId ).toEqual( validQuery.entity );
+				expect( termboxRequest.preferredLanguages ).toEqual( validQuery.preferredLanguages );
+			} );
 		} );
 
-		it( 'rejects when failing to validate request', ( done ) => {
-			const request = { entity: '', language: '', preferredLanguages: '' };
-			const queryValidator = {
-				validate: () => false,
-				getErrors: () => [ { entity: 'bad' }, { language: 'worse' } ],
+		it( 'rejects when failing to validate request', () => {
+			const coercer = {
+				coerce: ( request: any ) => request,
 			};
-			const routeHandler = newTermboxHandler( queryValidator );
+			const errors = [
+				{ path: 'revision', message: 'should have required property "revision"' },
+			];
+			const validator = {
+				validate: () => ( {
+					code: 400,
+					errors,
+				} ),
+			};
+			const routeHandler = newTermboxHandler( coercer, validator );
 
-			routeHandler.createTermboxRequest( request )
-				.catch( ( reason: Error ) => {
-					expect( reason ).toBeInstanceOf( InvalidRequest );
-					done();
-				} );
+			return routeHandler.createTermboxRequest( {
+				query: {},
+			} ).catch( ( reason: InvalidRequest ) => {
+				expect( reason ).toBeInstanceOf( InvalidRequest );
+				expect( reason.info ).toBe( errors );
+			} );
 		} );
 
 	} );

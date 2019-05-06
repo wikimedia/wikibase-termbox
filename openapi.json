@@ -67,7 +67,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "minimum": 0
+              "minimum": 1
             }
           },
           {
@@ -87,6 +87,8 @@
             "schema": {
               "type": "array",
               "items": {
+                "type": "string",
+                "maxLength": 20,
                 "pattern": "^[a-z]{2}[a-z-]*$"
               }
             }
