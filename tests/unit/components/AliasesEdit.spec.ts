@@ -1,4 +1,4 @@
-import Vue, { VNode } from 'vue';
+import Vue, { ComponentOptions, VNode } from 'vue';
 import TermTextField from '@/components/TermTextField.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
 import { mount, shallowMount, Wrapper } from '@vue/test-utils';
@@ -25,14 +25,20 @@ function createStoreWithLanguage( language: Language ) {
 
 const language = 'en';
 
-Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
-
 function getShallowMountedAliasEdit(
 	aliases: string[],
 	message = '',
-	config: ConfigOptions = { textFieldCharacterLimit: 0 }
+	config?: ConfigOptions
 ) {
 	const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
+
+	const mixins: ( ComponentOptions<Vue> | typeof Vue )[] = [
+		mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_ALIAS ]: message } ),
+	];
+
+	if ( config ) {
+		mixins.push( newConfigMixin( config ) );
+	}
 
 	return shallowMount( AliasesEdit, {
 		propsData: {
@@ -40,10 +46,7 @@ function getShallowMountedAliasEdit(
 			languageCode: language,
 		},
 		store,
-		mixins: [
-			mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_ALIAS ]: message } ),
-			newConfigMixin( config ),
-		],
+		mixins: mixins,
 	} );
 }
 

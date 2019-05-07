@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import LabelEdit from '@/components/LabelEdit.vue';
 import TermTextField from '@/components/TermTextField.vue';
 import { shallowMount } from '@vue/test-utils';
@@ -19,8 +18,6 @@ function createStoreWithLanguage( language: Language ) {
 	} );
 	return store;
 }
-
-Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
 
 describe( 'LabelEdit', () => {
 

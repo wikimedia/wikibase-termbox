@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import inlanguage from '@/client/directives/inlanguage';
+import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 beforeEach( () => {
 	expect.hasAssertions();
@@ -18,6 +19,8 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 }
 
 Vue.directive( 'inlanguage', inlanguage );
+
+Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
 
 jest.spyOn( global.console, 'error' ).mockImplementation( ( ...args: any[] ) => {
 	expect( args ).toBeUndefined(); // i.e. this should not have been called
