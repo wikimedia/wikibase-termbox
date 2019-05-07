@@ -10,6 +10,7 @@ import {
 } from '../common/constants';
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
+import * as PackageInfo from '@/../package.json';
 
 /* eslint-disable no-console */
 
@@ -30,6 +31,14 @@ function assertAndGetSetting( config: { [ index: string ]: any }, name: string, 
 	return value;
 }
 
+function getMwUserAgentString() {
+	const appInformation = `${ PackageInfo.default.name }/${ PackageInfo.default.version }`;
+	const authorInfo = `${ PackageInfo.default.author }`;
+	const libaryInfo = `axios/${ PackageInfo.default.dependencies.axios }`;
+
+	return `${ appInformation } (${ authorInfo }) ${ libaryInfo }`;
+}
+
 export default ( options: ServiceRunnerOptions ) => {
 	const config = options.config;
 	const wikibaseRepo = assertAndGetSetting( config, 'WIKIBASE_REPO' );
@@ -41,12 +50,15 @@ export default ( options: ServiceRunnerOptions ) => {
 		'LANGUAGES_CACHE_MAX_AGE',
 		DEFAULT_LANGUAGES_CACHE_MAX_AGE
 	);
+	const headers: { [ key: string ]: string } = {};
+	headers[ 'User-Agent' ] = getMwUserAgentString();
 
 	const services = new BundleRendererServices(
 		axios.create( {
 			baseURL: wikibaseRepo,
 			params: GLOBAL_REQUEST_PARAMS,
 			timeout: serverRequestTimeout,
+			headers,
 		} ),
 		console,
 		new LRUCache( {
