@@ -12,14 +12,7 @@ import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
 import * as PackageInfo from '@/../package.json';
 import assertAndGetConfig from './assertAndGetConfig';
-
-function getMwUserAgentString() {
-	const appInformation = `${ PackageInfo.default.name }/${ PackageInfo.default.version }`;
-	const authorInfo = `${ PackageInfo.default.author }`;
-	const libaryInfo = `axios/${ PackageInfo.default.dependencies.axios }`;
-
-	return `${ appInformation } (${ authorInfo }) ${ libaryInfo }`;
-}
+import getMwUserAgentString from './axios/getMwUserAgentString';
 
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
@@ -40,15 +33,15 @@ export default ( options: ServiceRunnerOptions ) => {
 		options.config,
 		logger,
 	);
-	const headers: { [ key: string ]: string } = {};
-	headers[ 'User-Agent' ] = getMwUserAgentString();
 
 	const services = new BundleRendererServices(
 		axios.create( {
 			baseURL: config.WIKIBASE_REPO,
 			params: GLOBAL_REQUEST_PARAMS,
 			timeout: config.MEDIAWIKI_REQUEST_TIMEOUT,
-			headers,
+			headers: {
+				'User-Agent': getMwUserAgentString( PackageInfo.default ),
+			},
 		} ),
 		logger,
 		new LRUCache( {
