@@ -72,7 +72,7 @@ export default ( services: BundleRendererServices ) => {
 					}
 				} else {
 					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
-					services.logger.log( err );
+					services.logger.log( 'error/service', err );
 				}
 			} );
 	} );

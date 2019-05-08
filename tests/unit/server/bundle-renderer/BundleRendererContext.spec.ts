@@ -7,7 +7,7 @@ describe( 'BundleRendererContext', () => {
 	it( 'can be constructed and assigns properties', () => {
 		const services = new BundleRendererServices(
 			axios,
-			{ log: () => {} },
+			new ( jest.fn() )(),
 			new ( jest.fn() )(),
 			new ( jest.fn() )(),
 		);

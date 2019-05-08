@@ -13,7 +13,7 @@ describe( 'BundleRendererContextBuilder', () => {
 		it( 'returns BundleRendererContext with correct values', () => {
 			const services = new BundleRendererServices(
 				axios,
-				{ log: () => {} },
+				new ( jest.fn() )(),
 				new ( jest.fn() )(),
 				new ( jest.fn() )(),
 			);
