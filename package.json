@@ -1,6 +1,7 @@
 {
   "name": "wikibase-termbox",
   "version": "0.1.0",
+  "author": "The Wikidata team",
   "private": true,
   "scripts": {
     "serve": "WEBPACK_TARGET=dev vue-cli-service serve",
