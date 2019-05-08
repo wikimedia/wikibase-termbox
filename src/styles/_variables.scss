@@ -1,6 +1,8 @@
 @import '~wikimedia-ui-base/wikimedia-ui-base';
 
-$base-font-size: 16px;
+// cf. https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/src/themes/wikimediaui/common.less$4
+$base-font-size: 16px; // assumed browser default
+$base-font-size-desired: 14px;
 
 $color-light-azureish-gray: $wmui-color-base30;
 $color-dark-azureish-gray: $wmui-color-base20;
@@ -9,10 +11,42 @@ $color-black: #000;
 $color-moderate-red: #a55858;
 $color-placeholder: $wmui-color-base30;
 
+$color-primaryProgressive: $wmui-color-accent50;
+$border-color-primaryProgressive: $wmui-color-accent50;
+$font-color-primaryProgressive: $wmui-color-base100;
+$color-primaryProgressive--hover: $color-primary--hover;
+$border-color-primaryProgressive--hover: $color-primary--hover;
+$font-color-primaryProgressive--hover: $wmui-color-base100;
+$color-primaryProgressive--active: $wmui-color-accent30;
+$border-color-primaryProgressive--active: $wmui-color-accent30;
+$font-color-primaryProgressive--active: $wmui-color-base100;
+$box-shadow-color-1-primaryProgressive--focus: $wmui-color-accent50;
+$box-shadow-color-2-primaryProgressive--focus: $wmui-color-base100;
+
+$color-normal: $wmui-color-base80;
+$border-color-normal: $wmui-color-base50;
+$font-color-normal: $wmui-color-base10;
+$color-normal--hover: $wmui-color-base100;
+$border-color-normal--hover: $wmui-color-base50;
+$font-color-normal--hover: $wmui-color-base10;
+$color-normal--active: $wmui-color-base70;
+$border-color-normal--active: $wmui-color-base30;
+$font-color-normal--active: $wmui-color-base0;
+$box-shadow-color-normal--focus: $wmui-color-accent50;
+
+$color-framelessProgressive: $wmui-color-base100;
+$border-color-framelessProgressive: $wmui-color-base100;
+$font-color-framelessProgressive: $wmui-color-accent50;
+$font-color-framelessProgressive--hover: $color-primary--hover;
+$font-color-framelessProgressive--active: $wmui-color-accent30;
+
 $border-color-base: $wmui-color-base50; // defined by wikimedia-ui-base, but lost in less -> scss translation
 $border-colour-focus: $wmui-color-accent50;
 $alias-edit-focus-background: $wmui-color-accent90;
 $alias-edit-focus-color: $wmui-color-base20;
+
+$padding-vertical-base: #{ 6px / $base-font-size-desired }em;
+$padding-horizontal-base: #{ 12px / $base-font-size-desired }em;
 
 $svg-pen: url( ../../assets/pen.svg );
 $svg-publish: url( ../../assets/transparent_checkmark_in_accent50_circle.svg );

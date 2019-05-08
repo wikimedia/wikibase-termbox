@@ -229,13 +229,13 @@ describe( 'TermBox.vue', () => {
 						store,
 					} );
 
-					await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+					await wrapper.find( '.wb-ui-event-emitting-button--edit' ).trigger( 'click' );
 
 					const labelEdit = wrapper.find( '.wb-ui-label-edit' );
 					( labelEdit.element as HTMLTextAreaElement ).value = 'foo';
 					labelEdit.trigger( 'input' );
 
-					await wrapper.find( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
+					await wrapper.find( '.wb-ui-event-emitting-button--cancel' ).trigger( 'click' );
 
 					return Vue.nextTick().then( () => {
 						const label = wrapper.find( '.wb-ui-label' );
