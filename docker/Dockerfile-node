@@ -1,9 +1,15 @@
-FROM node:8.12
+# cf. .pipeline/blubber.yaml
+
+FROM docker-registry.wikimedia.org/nodejs10-devel
+
+RUN apt-get update && \
+	apt-get install -y \
+		ca-certificates \
+		git
 
 ARG UID=1000
 ARG GID=1000
 
-RUN usermod -u $UID node
-RUN groupmod -g $GID node
+RUN addgroup --gid $GID runuser && adduser --uid $UID --gid $GID --disabled-password --gecos "" runuser
 
-USER node
+USER runuser
