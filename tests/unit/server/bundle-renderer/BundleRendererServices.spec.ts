@@ -3,7 +3,7 @@ import axios from 'axios';
 
 describe( 'BundleRendererServices', () => {
 	it( 'can be constructed and assigns properties', () => {
-		const logger = { log: () => {} };
+		const logger = new ( jest.fn() )();
 		const messageCache = new ( jest.fn() )();
 		const languageCache = new ( jest.fn() )();
 

@@ -192,7 +192,8 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[ 0 ][ 0 ].toString() ).toEqual( 'Error: result not well formed.' );
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].toString() ).toEqual( 'Error: result not well formed.' );
 
 			done();
 		} );
@@ -228,7 +229,8 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[ 0 ][ 0 ].toString() )
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].toString() )
 				.toEqual( 'Error: Error: Request failed with status code 500' );
 
 			done();
@@ -267,7 +269,8 @@ describe( 'Termbox SSR', () => {
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[ 0 ][ 0 ].toString() )
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].toString() )
 				.toEqual( 'Error: Error: Request failed with status code 500' );
 
 			done();

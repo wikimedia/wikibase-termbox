@@ -11,25 +11,7 @@ import {
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
 import * as PackageInfo from '@/../package.json';
-
-/* eslint-disable no-console */
-
-function assertAndGetSetting( config: { [ index: string ]: any }, name: string, fallback?: any ): any {
-	let value = config[ name ];
-
-	if ( typeof value === 'undefined' ) {
-		if ( typeof fallback === 'undefined' ) {
-			console.warn( `${name} env must be configured to a meaningful value. Exiting.` );
-			process.exit( 1 );
-		}
-
-		value = fallback;
-	}
-
-	console.info( `Set ${name} to ${value}` );
-
-	return value;
-}
+import assertAndGetConfig from './assertAndGetConfig';
 
 function getMwUserAgentString() {
 	const appInformation = `${ PackageInfo.default.name }/${ PackageInfo.default.version }`;
@@ -40,44 +22,52 @@ function getMwUserAgentString() {
 }
 
 export default ( options: ServiceRunnerOptions ) => {
-	const config = options.config;
-	const wikibaseRepo = assertAndGetSetting( config, 'WIKIBASE_REPO' );
-	const ssrPort = assertAndGetSetting( config, 'SSR_PORT' );
-	const serverRequestTimeout = assertAndGetSetting( config, 'MEDIAWIKI_REQUEST_TIMEOUT', DEFAULT_REQUEST_TIMEOUT );
-	const messageCacheMaxAge = assertAndGetSetting( config, 'MESSAGES_CACHE_MAX_AGE', DEFAULT_MESSAGES_CACHE_MAX_AGE );
-	const languageCacheMaxAge = assertAndGetSetting(
-		config,
-		'LANGUAGES_CACHE_MAX_AGE',
-		DEFAULT_LANGUAGES_CACHE_MAX_AGE
+	const logger = options.logger;
+	const config = assertAndGetConfig(
+		{
+			WIKIBASE_REPO: {},
+			SSR_PORT: {},
+			MEDIAWIKI_REQUEST_TIMEOUT: {
+				fallback: DEFAULT_REQUEST_TIMEOUT,
+			},
+			MESSAGES_CACHE_MAX_AGE: {
+				fallback: DEFAULT_MESSAGES_CACHE_MAX_AGE,
+			},
+			LANGUAGES_CACHE_MAX_AGE: {
+				fallback: DEFAULT_LANGUAGES_CACHE_MAX_AGE,
+			},
+		},
+		options.config,
+		logger,
 	);
 	const headers: { [ key: string ]: string } = {};
 	headers[ 'User-Agent' ] = getMwUserAgentString();
 
 	const services = new BundleRendererServices(
 		axios.create( {
-			baseURL: wikibaseRepo,
+			baseURL: config.WIKIBASE_REPO,
 			params: GLOBAL_REQUEST_PARAMS,
-			timeout: serverRequestTimeout,
+			timeout: config.MEDIAWIKI_REQUEST_TIMEOUT,
 			headers,
 		} ),
-		console,
+		logger,
 		new LRUCache( {
 			max: 1000,
-			maxAge: messageCacheMaxAge,
+			maxAge: config.MESSAGES_CACHE_MAX_AGE,
 		} ),
 		new LRUCache( {
 			max: 1000,
-			maxAge: languageCacheMaxAge,
+			maxAge: config.LANGUAGES_CACHE_MAX_AGE,
 		} ),
 	);
 
 	createApp( services )
-		.listen( ssrPort, () => {
-			console.info( 'server is now running...' );
+		.listen( config.SSR_PORT, () => {
+			logger.log( 'info/service', 'server is now running...' );
 		} );
 
 	process.on( 'SIGINT', () => {
-		console.info( 'Process received SIGINT' );
+		logger.log( 'info/service', 'Process received SIGINT' );
 		process.exit( 0 );
 	} );
 };

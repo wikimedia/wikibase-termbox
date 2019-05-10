@@ -2,10 +2,7 @@ import { AxiosInstance } from 'axios';
 import LRUCache from 'lru-cache';
 import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 import { WikibaseApiContentLanguages } from '@/server/data-access/WikibaseContentLanguagesRepo';
-
-interface Logger {
-	log( ...things: any[] ): void;
-}
+import Logger from '@/server/Logger';
 
 export default class BundleRendererServices {
 	public readonly axios: AxiosInstance;
