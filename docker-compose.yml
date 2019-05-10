@@ -49,6 +49,13 @@ services:
       - MESSAGES_CACHE_MAX_AGE
       - LANGUAGES_CACHE_MAX_AGE
 
+  storybook:
+    extends:
+      service: node
+    ports:
+      - '6006:6006'
+    command: 'npm run storybook --ci'
+
 networks:
   mediawiki_dev_network:
     external:
