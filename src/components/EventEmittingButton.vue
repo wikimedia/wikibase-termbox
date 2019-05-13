@@ -53,7 +53,7 @@ $block: '.wb-ui-event-emitting-button';
 	height: 48px;
 	display: block;
 
-	[ dir='rtl' ] & {
+	@at-root html[ dir='rtl' ] & { // references dir attribute of the App component
 		transform: scaleX( -1 );
 	}
 
