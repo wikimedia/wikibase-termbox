@@ -21,11 +21,10 @@ describe( 'assertAndGetConfig', () => {
 			logger,
 		);
 
-		expect( logger.log ).toHaveBeenCalled();
-		expect( logger.log.mock.calls[ 0 ] ).toEqual( [
+		expect( logger.log ).toHaveBeenCalledWith(
 			'fatal/service',
 			'baz env must be configured to a meaningful value. Exiting.',
-		] );
+		);
 		expect( exit ).toHaveBeenCalled();
 	} );
 
@@ -44,8 +43,7 @@ describe( 'assertAndGetConfig', () => {
 
 		expect( result ).toEqual( config );
 
-		expect( logger.log ).toHaveBeenCalled();
-		expect( logger.log.mock.calls[ 0 ] ).toEqual( [ 'info/service', 'Set foo to bar' ] );
+		expect( logger.log ).toHaveBeenCalledWith( 'info/service', 'Set foo to bar' );
 	} );
 
 	it( 'assumes defaults', () => {
