@@ -10,4 +10,9 @@ export enum MessageKeys {
 	PLACEHOLDER_EDIT_LABEL = 'wikibase-label-edit-placeholder',
 	PLACEHOLDER_EDIT_DESCRIPTION = 'wikibase-description-edit-placeholder',
 	PLACEHOLDER_EDIT_ALIAS = 'wikibase-alias-edit-placeholder',
+	EDIT_WARNING_HEADING = 'wikibase-anonymouseditwarning-heading',
+	EDIT_WARNING_MESSAGE = 'wikibase-anonymouseditwarning-message',
+	EDIT_WARNING_DISMISS_BUTTON = 'wikibase-anonymouseditwarning-dismiss-button',
+	LOGIN = 'login',
+	CREATE_ACCOUNT = 'createaccount'
 }

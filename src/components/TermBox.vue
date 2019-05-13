@@ -29,6 +29,9 @@
 						/>
 					</template>
 				</EditTools>
+				<Modal v-if="showEditWarning">
+					<AnonEditWarning @dismiss="showEditWarning = false" />
+				</Modal>
 			</div>
 		</div>
 
@@ -54,9 +57,13 @@ import { ENTITY_SAVE, ENTITY_ROLLBACK } from '@/store/entity/actionTypes';
 import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Messages from '@/components/mixins/Messages';
+import Modal from '@/components/Modal.vue';
+import AnonEditWarning from '@/components/AnonEditWarning.vue';
 
 @Component( {
 	components: {
+		AnonEditWarning,
+		Modal,
 		EventEmittingButton,
 		InMoreLanguagesExpandable,
 		MonolingualFingerprintView,
@@ -82,6 +89,8 @@ export default class TermBox extends mixins( Messages ) {
 
 	@namespace( NS_ENTITY ).Action( ENTITY_ROLLBACK )
 	public rollbackEntity!: () => Promise<void>;
+
+	public showEditWarning = false;
 
 	public publish(): void {
 		this.saveEntity()

@@ -4,6 +4,8 @@ import EditTools from '@/components/EditTools.vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
+import Modal from '@/components/Modal.vue';
+import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import { createStore } from '@/store';
 import {
 	NS_ENTITY,
@@ -273,6 +275,27 @@ describe( 'TermBox.vue', () => {
 		const wrapper = shallowMount( TermBox, { store } );
 
 		expect( wrapper.find( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
+	} );
+
+	describe( 'anonymous edit warning overlay', () => {
+		it( 'can be shown', () => {
+			const wrapper = shallowMount( TermBox, { store: createStore() } );
+
+			wrapper.setData( { showEditWarning: true } );
+			const modal = wrapper.find( Modal );
+
+			expect( modal.exists() ).toBeTruthy();
+			expect( modal.find( AnonEditWarning ).exists() ).toBeTruthy();
+		} );
+
+		it( 'can be dismissed', () => {
+			const wrapper = shallowMount( TermBox, { store: createStore() } );
+			wrapper.setData( { showEditWarning: true } );
+
+			wrapper.find( AnonEditWarning ).vm.$emit( 'dismiss' );
+
+			expect( wrapper.find( Modal ).exists() ).toBeFalsy();
+		} );
 	} );
 
 } );

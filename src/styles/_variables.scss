@@ -48,11 +48,15 @@ $alias-edit-focus-color: $wmui-color-base20;
 $padding-vertical-base: #{ 6px / $base-font-size-desired }em;
 $padding-horizontal-base: #{ 12px / $base-font-size-desired }em;
 
+$warning-message-background: $wmui-color-yellow90;
+$warning-message-border: $wmui-color-yellow50;
+
 $svg-pen: url( ../../assets/pen.svg );
 $svg-publish: url( ../../assets/transparent_checkmark_in_accent50_circle.svg );
 $svg-cancel: url( ../../assets/close.svg );
 $svg-in-more-languages: url( ../../assets/arrow_in_circle_grey_up.svg );
 $svg-all-entered-languages: url( ../../assets/double_arrow_in_circle_grey_up.svg );
+$svg-warning: url( ../../assets/warning_sign.svg );
 
 $sm: 501px;
 $md: 952px;

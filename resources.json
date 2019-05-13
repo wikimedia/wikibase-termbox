@@ -10,6 +10,11 @@
 		"wikibase-cancel",
 		"wikibase-label-edit-placeholder",
 		"wikibase-description-edit-placeholder",
-		"wikibase-alias-edit-placeholder"
+		"wikibase-alias-edit-placeholder",
+		"wikibase-anonymouseditwarning-heading",
+		"wikibase-anonymouseditwarning-message",
+		"wikibase-anonymouseditwarning-dismiss-button",
+		"login",
+		"createaccount"
 	]
 }
