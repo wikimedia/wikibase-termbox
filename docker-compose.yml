@@ -54,7 +54,7 @@ services:
       service: node
     ports:
       - '6006:6006'
-    command: 'npm run storybook --ci'
+    command: 'npm run storybook -- --ci'
 
 networks:
   mediawiki_dev_network:
