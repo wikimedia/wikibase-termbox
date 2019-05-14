@@ -65,17 +65,18 @@ $block: '.wb-ui-event-emitting-button';
 %textButton {
 	font-family: $font-family-sans;
 	display: inline-block;
+	cursor: pointer;
+	white-space: nowrap;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+%framed {
 	border-width: 1px;
 	border-radius: 2px;
 	border-style: solid;
 	box-sizing: border-box;
-	cursor: pointer;
-	vertical-align: middle;
 	padding: $padding-vertical-base $padding-horizontal-base;
-	white-space: nowrap;
-	text-align: center;
-	text-decoration: none;
-	font-weight: bold;
 }
 
 #{$block} {
@@ -106,6 +107,7 @@ $block: '.wb-ui-event-emitting-button';
 
 	&--normal {
 		@extend %textButton;
+		@extend %framed;
 		background-color: $color-normal;
 		color: $font-color-normal;
 		border-color: $border-color-normal;
@@ -129,6 +131,7 @@ $block: '.wb-ui-event-emitting-button';
 
 	&--primaryProgressive {
 		@extend %textButton;
+		@extend %framed;
 		background-color: $color-primaryProgressive;
 		color: $font-color-primaryProgressive;
 		border-color: $border-color-primaryProgressive;
