@@ -6,6 +6,8 @@ import { actions } from '@/store/links/actions';
 export default function (): Module<LinksState, any> {
 	const state: LinksState = {
 		editLinkUrl: '',
+		loginLinkUrl: '',
+		signUpLinkUrl: '',
 	};
 
 	return {

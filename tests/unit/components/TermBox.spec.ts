@@ -14,7 +14,7 @@ import {
 	NS_LANGUAGE,
 } from '@/store/namespaces';
 import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
-import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
+import { LINKS_UPDATE } from '@/store/links/mutationTypes';
 import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
 import {
@@ -64,7 +64,7 @@ describe( 'TermBox.vue', () => {
 					const store = createStore();
 					const editLinkUrl = '/edit/Q42';
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-					store.commit( mutation( NS_LINKS, EDIT_LINK_URL_UPDATE ), editLinkUrl );
+					store.commit( mutation( NS_LINKS, LINKS_UPDATE ), { editLinkUrl: editLinkUrl } );
 					const message = 'edit';
 					const wrapper = shallowMount( TermBox, {
 						stubs: { EditTools, EventEmittingButton },

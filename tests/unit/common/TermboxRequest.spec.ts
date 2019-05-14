@@ -1,24 +1,29 @@
 import TermboxRequest from '@/common/TermboxRequest';
+import TermboxLinks from '@/common/TermboxLinks';
 
 describe( 'TermboxRequest', () => {
 	it( 'takes arguments in constructor and then exposes them', () => {
 		const language = 'de';
 		const entity = 'Q5';
 		const revision = 31510;
-		const url = '/link/to/edit/Q23';
+		const links: TermboxLinks = {
+			editLinkUrl: '/link/to/edit/Q23',
+			loginLinkUrl: '/login',
+			signUpLinkUrl: '/signUp',
+		};
 		const preferredLanguages = [ 'de', 'en', 'it', 'zh', 'de-sw' ];
 
 		const request = new TermboxRequest(
 			language,
 			entity,
 			revision,
-			url,
+			links,
 			preferredLanguages,
 		);
 		expect( request.language ).toStrictEqual( language );
 		expect( request.entityId ).toStrictEqual( entity );
 		expect( request.revision ).toStrictEqual( revision );
-		expect( request.editLinkUrl ).toStrictEqual( url );
+		expect( request.links ).toStrictEqual( links );
 		expect( request.preferredLanguages ).toStrictEqual( preferredLanguages );
 	} );
 } );

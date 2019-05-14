@@ -5,6 +5,8 @@ describe( 'store/links/index', () => {
 		const module = createLinks();
 		expect( module.state ).toEqual( {
 			editLinkUrl: '',
+			loginLinkUrl: '',
+			signUpLinkUrl: '',
 		} );
 	} );
 } );

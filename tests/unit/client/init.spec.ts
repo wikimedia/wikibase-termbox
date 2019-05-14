@@ -3,12 +3,15 @@ import init from '@/client/init';
 import TermboxRequest from '@/common/TermboxRequest';
 import MwWindow, { MwMessage } from '@/client/mediawiki/MwWindow';
 
+const CURRENT_PAGE = '/entity/Q123';
+
 function mockMwEnv(
 	language: string,
 	entityId: any,
 	namespaces: any = null,
 	title: any = null,
 	getUserLanguages: any = null,
+	getUrl: any = null,
 ) {
 	( window as MwWindow ).mw = {
 		config: { get( key ) {
@@ -19,6 +22,8 @@ function mockMwEnv(
 					return entityId;
 				case 'wgNamespaceIds':
 					return namespaces || { special: -1 };
+				case 'wgPageName':
+					return CURRENT_PAGE;
 				default:
 					return null;
 			}
@@ -34,6 +39,7 @@ function mockMwEnv(
 				text: () => '',
 			};
 		},
+		util: { getUrl: getUrl || jest.fn() },
 	};
 
 	( window as MwWindow ).wb = {
@@ -56,29 +62,39 @@ describe( 'client/init', () => {
 
 	it( 'generates a TermboxRequest from the mw environment', () => {
 		const namespaces = { special: 42 };
-		const getUrl = jest.fn();
 		const expectedEditLinkUrl = '/some/url';
+		const expectedLoginLinkUrl = '/login';
+		const expectedSignUpLinkUrl = '/signUp';
 
 		const expectedPreferredLanguages = [ 'de', 'en', 'fr' ];
 		const wbGetUserLanguages = jest.fn();
 		wbGetUserLanguages.mockReturnValue( expectedPreferredLanguages );
 
-		getUrl.mockReturnValue( expectedEditLinkUrl );
 		const titleClass = jest.fn().mockImplementation( () => {
 			return {
-				getUrl,
+				getUrl: () => expectedEditLinkUrl,
 			};
 		} );
+		const mwUtilGetUrl = jest.fn()
+			.mockReturnValueOnce( expectedLoginLinkUrl )
+			.mockReturnValueOnce( expectedSignUpLinkUrl );
 
-		mockMwEnv( 'en', 'Q666', namespaces, titleClass, wbGetUserLanguages );
+		mockMwEnv( 'en', 'Q666', namespaces, titleClass, wbGetUserLanguages, mwUtilGetUrl );
 
 		return init().then( ( request ) => {
 			expect( titleClass ).toHaveBeenCalledWith( 'SetLabelDescriptionAliases/Q666', namespaces.special );
+			expect( mwUtilGetUrl ).toHaveBeenCalledWith( 'Special:UserLogin', { returnto: CURRENT_PAGE } );
+			expect( mwUtilGetUrl ).toHaveBeenCalledWith(
+				'Special:UserLogin',
+				{ returnto: CURRENT_PAGE, type: 'signup' },
+			);
 			expect( wbGetUserLanguages ).toHaveBeenCalled();
 
 			expect( request.language ).toBe( 'en' );
 			expect( request.entityId ).toBe( 'Q666' );
-			expect( request.editLinkUrl ).toBe( expectedEditLinkUrl );
+			expect( request.links.editLinkUrl ).toBe( expectedEditLinkUrl );
+			expect( request.links.loginLinkUrl ).toBe( expectedLoginLinkUrl );
+			expect( request.links.signUpLinkUrl ).toBe( expectedSignUpLinkUrl );
 			expect( request.preferredLanguages ).toBe( expectedPreferredLanguages );
 		} );
 	} );

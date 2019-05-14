@@ -18,6 +18,9 @@ const preferredLanguages = getOrEnforceUrlParameter(
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
 	Title: class Title { public getUrl() { return '/edit/' + entity.id; } },
 	message,
+	util: {
+		getUrl: ( page ) => `#${ page }`,
+	},
 };
 
 ( window as MwWindow ).wb = {

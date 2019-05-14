@@ -34,7 +34,13 @@ export default class TermboxHandler {
 					query.language,
 					query.entity,
 					query.revision,
-					query.editLink,
+					{
+						editLinkUrl: query.editLink,
+
+						// the following two are not relevant for the server-side markup
+						signUpLinkUrl: '',
+						loginLinkUrl: '',
+					},
 					query.preferredLanguages,
 				),
 			);
