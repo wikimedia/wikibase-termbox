@@ -25,4 +25,13 @@ storiesOf( 'EventEmittingButton', module )
 	.add( 'framelessProgressive', () => ( {
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="framelessProgressive" message="framelessProgressive" />',
+	} ) )
+	.add( 'framelessProgressive as link', () => ( {
+		components: { EventEmittingButton },
+		template: `<EventEmittingButton
+			type="framelessProgressive"
+			message="go (opens in new tab)"
+			href="https://www.wikidata.org/"
+			:preventDefault="false"
+			target="_blank" />`,
 	} ) );

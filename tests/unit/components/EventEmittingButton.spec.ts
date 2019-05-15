@@ -16,7 +16,23 @@ describe( 'EventEmittingButton', () => {
 	it( 'emits an event on click', () => {
 		const wrapper = shallowMountWithProps();
 		wrapper.find( 'a' ).trigger( 'click' );
-		expect( wrapper.emitted( 'click' ) ).toBeTruthy();
+		const clickEvent = wrapper.emitted( 'click' );
+		expect( clickEvent ).toBeTruthy();
+		const originalEvent: MouseEvent = clickEvent[ 0 ][ 0 ];
+		expect( originalEvent ).toBeInstanceOf( MouseEvent );
+		expect( originalEvent.defaultPrevented ).toBeTruthy();
+	} );
+
+	it( 'can be configured not to prevent default (href) event', () => {
+		const wrapper = shallowMountWithProps( {
+			preventDefault: false,
+		} );
+		wrapper.find( 'a' ).trigger( 'click' );
+		const clickEvent = wrapper.emitted( 'click' );
+		expect( clickEvent ).toBeTruthy();
+		const originalEvent: MouseEvent = clickEvent[ 0 ][ 0 ];
+		expect( originalEvent ).toBeInstanceOf( MouseEvent );
+		expect( originalEvent.defaultPrevented ).toBeFalsy();
 	} );
 
 	it( 'can have a link target', () => {

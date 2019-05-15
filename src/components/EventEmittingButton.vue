@@ -4,7 +4,7 @@
 		:class="`wb-ui-event-emitting-button--${type}`"
 		:href="href"
 		:title="message"
-		@click.prevent="$emit( 'click' )"
+		@click="click"
 	>
 		<span
 			class="wb-ui-event-emitting-button__text"
@@ -38,6 +38,16 @@ export default class EventEmittingButton extends Vue {
 
 	@Prop( { required: false, default: '#', type: String } )
 	public href!: string;
+
+	@Prop( { required: false, default: true, type: Boolean } )
+	public preventDefault!: boolean;
+
+	public click( event: MouseEvent ) {
+		if ( this.preventDefault ) {
+			event.preventDefault();
+		}
+		this.$emit( 'click', event );
+	}
 }
 
 </script>
