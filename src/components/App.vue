@@ -11,7 +11,7 @@ import TermBox from './TermBox.vue';
 import { Store } from 'vuex';
 import { NS_ENTITY, NS_LANGUAGE, NS_LINKS, NS_USER } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/actionTypes';
-import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
+import { LANGUAGE_PREFERENCE, USER_NAME_SET } from '@/store/user/actionTypes';
 import TermboxRequest from '@/common/TermboxRequest';
 import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { LINKS_INIT } from '@/store/links/actionTypes';
@@ -38,6 +38,7 @@ export default class App extends Vue {
 				{ primaryLanguage: request.language, preferredLanguages: request.preferredLanguages },
 			),
 			store.dispatch( action( NS_LINKS, LINKS_INIT ), request.links ),
+			store.dispatch( action( NS_USER, USER_NAME_SET ), request.userName ),
 		] );
 	}
 

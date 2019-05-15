@@ -2,6 +2,7 @@ import { MutationTree } from 'vuex';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
+	USER_SET_NAME,
 } from '@/store/user/mutationTypes';
 import User from '@/store/user/User';
 import InvalidLanguageValueException from '@/store/user/exceptions/InvalidLanguageValueException';
@@ -21,5 +22,9 @@ export const mutations: MutationTree<User> = {
 		}
 
 		state.secondaryLanguages = secondaryLanguages;
+	},
+
+	[ USER_SET_NAME ]( state: User, name: string ) {
+		state.name = name;
 	},
 };

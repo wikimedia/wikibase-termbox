@@ -4,6 +4,7 @@ describe( 'store/user/index', () => {
 	it( 'creates a user store', () => {
 		const module = createUser();
 		expect( module.state ).toEqual( {
+			name: null,
 			primaryLanguage: '',
 			secondaryLanguages: [],
 		} );

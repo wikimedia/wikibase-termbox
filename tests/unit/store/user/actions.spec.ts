@@ -1,8 +1,12 @@
 import { actions } from '@/store/user/actions';
-import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
+import {
+	LANGUAGE_PREFERENCE,
+	USER_NAME_SET,
+} from '@/store/user/actionTypes';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
+	USER_SET_NAME,
 } from '@/store/user/mutationTypes';
 import {
 	NS_LANGUAGE,
@@ -51,5 +55,13 @@ describe( 'user/actions', () => {
 				done();
 			} );
 		} );
+	} );
+
+	it( USER_NAME_SET, () => {
+		const context = newMockStore( {} );
+		const name = 'Lord Voldemort';
+		actions[ USER_NAME_SET ]( context, name );
+
+		expect( context.commit ).toHaveBeenCalledWith( USER_SET_NAME, name );
 	} );
 } );

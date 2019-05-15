@@ -6,6 +6,7 @@ export default class TermboxRequest {
 	public readonly revision: number;
 	public readonly links: TermboxLinks;
 	public readonly preferredLanguages: string[];
+	public readonly userName: string | null = null;
 
 	constructor(
 		language: string,
@@ -13,11 +14,13 @@ export default class TermboxRequest {
 		revision: number,
 		links: TermboxLinks,
 		preferredLanguages: string[],
+		userName: string | null = null
 	) {
 		this.language = language;
 		this.entityId = entityId;
 		this.revision = revision;
 		this.links = links;
 		this.preferredLanguages = preferredLanguages;
+		this.userName = userName;
 	}
 }

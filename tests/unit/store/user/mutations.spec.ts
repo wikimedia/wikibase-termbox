@@ -6,11 +6,13 @@ import {
 } from '@/store/user/mutationTypes';
 import InvalidLanguageValueException from '@/store/user/exceptions/InvalidLanguageValueException';
 import User from '@/store/user/User';
+import { USER_SET_NAME } from '@/store/user/mutationTypes';
 
 function newUserState(): User {
 	const state = {
 		primaryLanguage: '',
 		secondaryLanguages: [],
+		name: null,
 	};
 
 	lockState( state );
@@ -54,5 +56,12 @@ describe( '/store/user/mutations.ts', () => {
 		const secondaryLanguages = [ 'de', 'en', 'it', 'zh', 'ug', 'ar', 'kl' ];
 		mutations[ SECONDARY_LANGUAGES_INIT ]( userState, secondaryLanguages );
 		expect( userState.secondaryLanguages ).toStrictEqual( secondaryLanguages );
+	} );
+
+	it( USER_SET_NAME, () => {
+		const userState = newUserState();
+		const name = 'Lord Voldemort';
+		mutations[ USER_SET_NAME ]( userState, name );
+		expect( userState.name ).toBe( name );
 	} );
 } );

@@ -5,6 +5,7 @@ import { mutations } from '@/store/user/mutations';
 
 export default function (): Module<User, any> {
 	const state: User = {
+		name: null,
 		primaryLanguage: '',
 		secondaryLanguages: [],
 	};
