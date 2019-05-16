@@ -28,7 +28,6 @@ export default class Modal extends Vue {
 	&__content {
 		font-family: $font-family-sans;
 		margin: 0 auto;
-		width: 100%;
 		max-width: 375px;
 		padding: 16px;
 		background: #fff;
