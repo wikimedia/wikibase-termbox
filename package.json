@@ -14,7 +14,7 @@
     "test:lint": "vue-cli-service lint --no-fix . && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "vue-cli-service test:unit",
     "test:distnodiff": "NODE_ENV=production vue-cli-service build --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.main.js /tmp/dist/wikibase.termbox.main.js",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook",
     "storybook:build": "build-storybook"
   },
   "_moduleAliases": {
