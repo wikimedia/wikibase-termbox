@@ -20,7 +20,7 @@ describe( 'TermboxRequest', () => {
 			revision,
 			links,
 			preferredLanguages,
-			user
+			user,
 		);
 		expect( request.language ).toStrictEqual( language );
 		expect( request.entityId ).toStrictEqual( entity );

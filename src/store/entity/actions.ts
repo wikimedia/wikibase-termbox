@@ -73,7 +73,7 @@ export const actions = {
 
 	[ ENTITY_ALIAS_REMOVE ](
 		context: ActionContext<EntityState, any>,
-		payload: { languageCode: string, index: number }
+		payload: { languageCode: string, index: number },
 	) {
 		context.commit( ENTITY_REMOVE_ALIAS, payload );
 	},

@@ -20,7 +20,7 @@ Vue.config.productionTip = false;
 Vue.mixin( newConfigMixin(
 	{
 		textFieldCharacterLimit: ( window as MwWindow ).mw.config.get( 'wbMultiLingualStringLimit' ),
-	}
+	},
 ) );
 
 Vue.directive( 'inlanguage', inlanguage );

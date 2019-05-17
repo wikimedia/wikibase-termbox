@@ -382,7 +382,7 @@ describe( 'Termbox SSR', () => {
 				const errors = JSON.parse( response.text.match( '.*Errors: (.+)' )![ 1 ]! );
 				expect( errors.map( ( e: any ) => e.path ).sort() ).toEqual( reasons.sort() );
 			} );
-		}
+		},
 	);
 
 	it( 'renders Bad request when requesting /termbox with well-formed query for unknown language', ( done ) => {
