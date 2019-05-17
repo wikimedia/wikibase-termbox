@@ -8,7 +8,7 @@ export default function newMockStore(
 		getters?: GetterTree<any, any>,
 		rootState?: any,
 		rootGetters?: GetterTree<any, any>,
-	}
+	},
 ): ActionContext<any, any> {
 	return {
 		commit: commit || jest.fn(),

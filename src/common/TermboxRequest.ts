@@ -14,7 +14,7 @@ export default class TermboxRequest {
 		revision: number,
 		links: TermboxLinks,
 		preferredLanguages: string[],
-		userName: string | null = null
+		userName: string | null = null,
 	) {
 		this.language = language;
 		this.entityId = entityId;

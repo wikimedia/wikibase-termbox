@@ -34,7 +34,13 @@
 
 		// diverging from Wikimedia rule set
 		"max-len": [ "error", 120 ],
-		"comma-dangle": [ "error", "always-multiline" ],
+		"comma-dangle": [ "error", {
+			"arrays": "always-multiline",
+			"objects": "always-multiline",
+			"imports": "always-multiline",
+			"exports": "always-multiline",
+			"functions": "always-multiline"
+		} ],
 		"operator-linebreak": "off",
 		"quote-props": "off",
 		"valid-jsdoc": "off",

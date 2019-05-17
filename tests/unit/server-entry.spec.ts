@@ -32,7 +32,7 @@ function newFineBundleRendererContext() {
 				signUpLinkUrl: '',
 			},
 			[ 'de', 'en', 'fr', 'it', 'pl' ],
-		)
+		),
 	);
 }
 

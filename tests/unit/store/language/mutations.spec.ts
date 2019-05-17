@@ -10,7 +10,7 @@ import LanguageCollection from '@/datamodel/LanguageCollection';
 
 function newLanguageState(
 	languages: LanguageCollection = {},
-	translations: LanguageTranslations = {}
+	translations: LanguageTranslations = {},
 ): LanguageState {
 	const state = {
 		translations: translations,
@@ -53,7 +53,7 @@ describe( 'language/mutations', () => {
 
 			const state = newLanguageState(
 				originalDe,
-				{}
+				{},
 			);
 
 			const languages: LanguageCollection = {

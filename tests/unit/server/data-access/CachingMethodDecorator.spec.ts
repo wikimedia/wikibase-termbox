@@ -44,7 +44,7 @@ describe( 'CachingMessagesRepository', () => {
 		const decorator = new CachingMethodDecorator<object>(
 			cache as any,
 			service,
-			service.methodToBeDecorated
+			service.methodToBeDecorated,
 		);
 
 		return ( decorator as any ).methodToBeDecorated( arg1, arg2 ).then( ( value: any ) => {
@@ -66,7 +66,7 @@ describe( 'CachingMessagesRepository', () => {
 		const decorator = new CachingMethodDecorator<object>(
 			cache as any,
 			service,
-			service.methodToBeDecorated
+			service.methodToBeDecorated,
 		);
 
 		return ( decorator as any ).methodToBeDecorated( arg1, arg2 ).then( ( value: any ) => {

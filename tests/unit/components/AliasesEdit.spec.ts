@@ -28,7 +28,7 @@ const language = 'en';
 function getShallowMountedAliasEdit(
 	aliases: string[],
 	message = '',
-	config?: ConfigOptions
+	config?: ConfigOptions,
 ) {
 	const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
@@ -117,7 +117,7 @@ describe( 'AliasesEdit', () => {
 			const store = createStoreWithLanguage( { code: 'en', directionality: 'ltr' } );
 			store.commit(
 				mutation( NS_ENTITY, ENTITY_UPDATE ),
-				newFingerprintable( { aliases: { en: [ 'foo', 'bar' ] } } )
+				newFingerprintable( { aliases: { en: [ 'foo', 'bar' ] } } ),
 			);
 
 			const wrapper = mount( Vue.extend( {
