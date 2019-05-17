@@ -1,18 +1,19 @@
-import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
-import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
+import { LINKS_INIT } from '@/store/links/actionTypes';
+import { LINKS_UPDATE } from '@/store/links/mutationTypes';
 import { actions } from '@/store/links/actions';
+import TermboxLinks from '@/common/TermboxLinks';
 import newMockStore from '../newMockStore';
 
 describe( 'links/actions', () => {
-	describe( EDIT_LINK_URL_INIT, () => {
+	describe( LINKS_INIT, () => {
 		it( 'commits the url provided and returns a resolved promise', () => {
-			const url = '/link/to/edit/Q42';
+			const links: TermboxLinks = { editLinkUrl: '/edit/Q123', loginLinkUrl: '/login', signUpLinkUrl: '/signUp' };
 			const store = newMockStore( {
 				commit: jest.fn(),
 			} );
 
-			actions[ EDIT_LINK_URL_INIT ]( store, url );
-			expect( store.commit ).toHaveBeenCalledWith( EDIT_LINK_URL_UPDATE, url );
+			actions[ LINKS_INIT ]( store, links );
+			expect( store.commit ).toHaveBeenCalledWith( LINKS_UPDATE, links );
 		} );
 	} );
 

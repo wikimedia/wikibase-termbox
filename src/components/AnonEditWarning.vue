@@ -10,6 +10,8 @@
 			<EventEmittingButton
 				type="primaryProgressive"
 				:message="message( MESSAGE_KEYS.LOGIN )"
+				:href="loginLinkUrl"
+				:prevent-default="false"
 			/>
 			<EventEmittingButton
 				type="normal"
@@ -21,6 +23,8 @@
 			<EventEmittingButton
 				type="framelessProgressive"
 				:message="message( MESSAGE_KEYS.CREATE_ACCOUNT )"
+				:href="signUpLinkUrl"
+				:prevent-default="false"
 			/>
 		</div>
 	</div>
@@ -30,11 +34,19 @@
 import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
+import { namespace } from 'vuex-class';
+import { NS_LINKS } from '@/store/namespaces';
 
 @Component( {
 	components: { EventEmittingButton },
 } )
 export default class AnonEditWarning extends mixins( Messages ) {
+
+	@namespace( NS_LINKS ).State( 'loginLinkUrl' )
+	public loginLinkUrl!: string;
+
+	@namespace( NS_LINKS ).State( 'signUpLinkUrl' )
+	public signUpLinkUrl!: string;
 
 }
 </script>

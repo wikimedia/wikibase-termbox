@@ -14,7 +14,7 @@ import { ENTITY_INIT } from '@/store/entity/actionTypes';
 import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
 import TermboxRequest from '@/common/TermboxRequest';
 import { LANGUAGE_INIT } from '@/store/language/actionTypes';
-import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
+import { LINKS_INIT } from '@/store/links/actionTypes';
 import Language from '@/datamodel/Language';
 import { action } from '@/store/util';
 import { namespace } from 'vuex-class';
@@ -37,7 +37,7 @@ export default class App extends Vue {
 				action( NS_USER, LANGUAGE_PREFERENCE ),
 				{ primaryLanguage: request.language, preferredLanguages: request.preferredLanguages },
 			),
-			store.dispatch( action( NS_LINKS, EDIT_LINK_URL_INIT ), request.editLinkUrl ),
+			store.dispatch( action( NS_LINKS, LINKS_INIT ), request.links ),
 		] );
 	}
 

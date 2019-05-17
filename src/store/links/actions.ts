@@ -1,10 +1,11 @@
 import { ActionContext } from 'vuex';
 import LinksState from '@/store/links/LinksState';
-import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
-import { EDIT_LINK_URL_UPDATE } from '@/store/links/mutationTypes';
+import { LINKS_INIT } from '@/store/links/actionTypes';
+import { LINKS_UPDATE } from '@/store/links/mutationTypes';
+import TermboxLinks from '@/common/TermboxLinks';
 
 export const actions = {
-	[ EDIT_LINK_URL_INIT ]( store: ActionContext<LinksState, any>, editLinkUrl: string ): void {
-		store.commit( EDIT_LINK_URL_UPDATE, editLinkUrl );
+	[ LINKS_INIT ]( store: ActionContext<LinksState, any>, links: TermboxLinks ): void {
+		store.commit( LINKS_UPDATE, links );
 	},
 };

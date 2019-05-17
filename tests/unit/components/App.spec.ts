@@ -7,7 +7,7 @@ import { NS_ENTITY, NS_LANGUAGE, NS_USER, NS_LINKS } from '@/store/namespaces';
 import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { ENTITY_INIT } from '@/store/entity/actionTypes';
 import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
-import { EDIT_LINK_URL_INIT } from '@/store/links/actionTypes';
+import { LINKS_INIT } from '@/store/links/actionTypes';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { LANGUAGE_INIT as USER_LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { action, mutation } from '@/store/util';
@@ -56,14 +56,17 @@ describe( 'App.vue', () => {
 		const entity = 'Q123';
 		const revision = 31510;
 		const primaryLanguage = 'en';
-		const editLinkUrl = '/edit/term/data/of/Q123';
 		const preferredLanguages = [ 'de', 'en', 'pl', 'it', 'zh' ];
+		const links = {
+			editLinkUrl: '/edit/Q123',
+			loginLinkUrl: '/login',
+			signUpLinkUrl: '/signUp',
+		};
 
 		const store = {
 			dispatch: jest.fn(),
 		};
-
-		const request = new TermboxRequest( primaryLanguage, entity, revision, editLinkUrl, preferredLanguages );
+		const request = new TermboxRequest( primaryLanguage, entity, revision, links, preferredLanguages );
 
 		return ( App as any ).asyncData( store, request ).then( () => {
 			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LANGUAGE, LANGUAGE_INIT ) );
@@ -75,7 +78,7 @@ describe( 'App.vue', () => {
 				action( NS_USER, LANGUAGE_PREFERENCE ),
 				{ primaryLanguage, preferredLanguages },
 			);
-			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LINKS, EDIT_LINK_URL_INIT ), editLinkUrl );
+			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LINKS, LINKS_INIT ), links );
 		} );
 	} );
 

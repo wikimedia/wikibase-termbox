@@ -20,7 +20,7 @@ describe( 'buildApp', () => {
 			language: 'en',
 			entityId: 'Q123',
 			revision: 31510,
-			editLinkUrl: '/edit/Q123',
+			links: { editLinkUrl: '/edit/Q123', loginLinkUrl: '/login', signUpLinkUrl: '/signup' },
 			preferredLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
 		};
 		mockGetChildComponents.mockReturnValue( [] );
@@ -35,7 +35,7 @@ describe( 'buildApp', () => {
 			language: 'en',
 			entityId: 'Q123',
 			revision: 31510,
-			editLinkUrl: '/edit/Q123',
+			links: { editLinkUrl: '/edit/Q123', loginLinkUrl: '/login', signUpLinkUrl: '/signup' },
 			preferredLanguages: [ 'en', 'de', 'fr', 'it', 'pl' ],
 		};
 

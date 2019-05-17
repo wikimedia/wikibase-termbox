@@ -12,7 +12,9 @@ describe( 'TermboxHandler', () => {
 			const validQuery = {
 				entity: 'Q64',
 				language: 'de',
+				editLink: '/edit/Q64',
 				preferredLanguages: 'de|en|fr|it|pl|zh',
+				revision: 4711,
 			};
 			const coercer = {
 				coerce: ( request: any ) => request,
@@ -30,6 +32,11 @@ describe( 'TermboxHandler', () => {
 				expect( termboxRequest.language ).toEqual( validQuery.language );
 				expect( termboxRequest.entityId ).toEqual( validQuery.entity );
 				expect( termboxRequest.preferredLanguages ).toEqual( validQuery.preferredLanguages );
+				expect( termboxRequest.revision ).toEqual( validQuery.revision );
+
+				expect( termboxRequest.links.editLinkUrl ).toEqual( validQuery.editLink );
+				expect( termboxRequest.links.loginLinkUrl ).toEqual( '' );
+				expect( termboxRequest.links.signUpLinkUrl ).toEqual( '' );
 			} );
 		} );
 

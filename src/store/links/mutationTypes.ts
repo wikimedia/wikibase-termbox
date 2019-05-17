@@ -1,1 +1,1 @@
-export const EDIT_LINK_URL_UPDATE = 'updateEditLinkUrl';
+export const LINKS_UPDATE = 'updateLinks';

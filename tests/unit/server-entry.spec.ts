@@ -22,7 +22,17 @@ function getMockBundleRendererServices() {
 function newFineBundleRendererContext() {
 	return new BundleRendererContext(
 		getMockBundleRendererServices(),
-		new TermboxRequest( 'en', 'Q4711', 31510, '/edit/Q4711', [ 'de', 'en', 'fr', 'it', 'pl' ] ),
+		new TermboxRequest(
+			'Q71',
+			'de',
+			31510,
+			{
+				editLinkUrl: '/edit/Q4711',
+				loginLinkUrl: '',
+				signUpLinkUrl: '',
+			},
+			[ 'de', 'en', 'fr', 'it', 'pl' ],
+		)
 	);
 }
 

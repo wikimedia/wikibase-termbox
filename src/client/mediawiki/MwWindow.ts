@@ -18,6 +18,9 @@ interface MediaWiki {
 	config: MwConfig;
 	Title: MwTitle;
 	message: MwMessages;
+	util: {
+		getUrl( title: string, params: object ): string;
+	}
 }
 
 export interface WikibaseContentLanguages {
