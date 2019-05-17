@@ -9,13 +9,19 @@ import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import { createStore } from '@/store';
 import {
 	NS_ENTITY,
+	NS_LANGUAGE,
 	NS_LINKS,
 	NS_USER,
-	NS_LANGUAGE,
 } from '@/store/namespaces';
-import { EDITABILITY_UPDATE } from '@/store/entity/mutationTypes';
+import {
+	EDITABILITY_UPDATE,
+	ENTITY_UPDATE,
+} from '@/store/entity/mutationTypes';
 import { LINKS_UPDATE } from '@/store/links/mutationTypes';
-import { LANGUAGE_INIT } from '@/store/user/mutationTypes';
+import {
+	LANGUAGE_INIT,
+	USER_SET_NAME,
+} from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
 import {
 	EDITMODE_ACTIVATE,
@@ -27,7 +33,6 @@ import {
 } from '@/store/entity/actionTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
-import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import Vue from 'vue';
@@ -98,6 +103,46 @@ describe( 'TermBox.vue', () => {
 					await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 					expect( mockActivateEditMode ).toHaveBeenCalled();
+				} );
+
+				describe( 'AnonEditWarning', () => {
+					it( 'is shown for anonymous users', async () => {
+						const store = createStore();
+						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+						const wrapper = shallowMount( TermBox, {
+							store,
+							stubs: { EditTools, EventEmittingButton, AnonEditWarning },
+						} );
+
+						await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+
+						expect( wrapper.find( AnonEditWarning ).exists() ).toBeTruthy();
+					} );
+
+					it( 'is not shown for logged in users', async () => {
+						const store = createStore();
+						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+						store.commit( mutation( NS_USER, USER_SET_NAME ), 'Lord Voldemort' );
+						const wrapper = shallowMount( TermBox, {
+							store: store,
+							stubs: { EditTools, EventEmittingButton, AnonEditWarning },
+						} );
+
+						await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+
+						expect( wrapper.find( AnonEditWarning ).exists() ).toBeFalsy();
+					} );
+
+					it( 'can be dismissed', () => {
+						const wrapper = shallowMount( TermBox, {
+							store: createStore(),
+							data: () => ( { showEditWarning: true } ),
+						} );
+
+						wrapper.find( AnonEditWarning ).vm.$emit( 'dismiss' );
+
+						expect( wrapper.find( Modal ).exists() ).toBeFalsy();
+					} );
 				} );
 			} );
 
@@ -275,27 +320,6 @@ describe( 'TermBox.vue', () => {
 		const wrapper = shallowMount( TermBox, { store } );
 
 		expect( wrapper.find( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
-	} );
-
-	describe( 'anonymous edit warning overlay', () => {
-		it( 'can be shown', () => {
-			const wrapper = shallowMount( TermBox, { store: createStore() } );
-
-			wrapper.setData( { showEditWarning: true } );
-			const modal = wrapper.find( Modal );
-
-			expect( modal.exists() ).toBeTruthy();
-			expect( modal.find( AnonEditWarning ).exists() ).toBeTruthy();
-		} );
-
-		it( 'can be dismissed', () => {
-			const wrapper = shallowMount( TermBox, { store: createStore() } );
-			wrapper.setData( { showEditWarning: true } );
-
-			wrapper.find( AnonEditWarning ).vm.$emit( 'dismiss' );
-
-			expect( wrapper.find( Modal ).exists() ).toBeFalsy();
-		} );
 	} );
 
 } );

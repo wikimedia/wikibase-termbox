@@ -6,7 +6,7 @@ import TermboxRequest from '@/common/TermboxRequest';
 import { NS_ENTITY, NS_LANGUAGE, NS_USER, NS_LINKS } from '@/store/namespaces';
 import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { ENTITY_INIT } from '@/store/entity/actionTypes';
-import { LANGUAGE_PREFERENCE } from '@/store/user/actionTypes';
+import { LANGUAGE_PREFERENCE, USER_NAME_SET } from '@/store/user/actionTypes';
 import { LINKS_INIT } from '@/store/links/actionTypes';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { LANGUAGE_INIT as USER_LANGUAGE_INIT } from '@/store/user/mutationTypes';
@@ -62,11 +62,12 @@ describe( 'App.vue', () => {
 			loginLinkUrl: '/login',
 			signUpLinkUrl: '/signUp',
 		};
+		const user = 'Lord Voldemort';
 
 		const store = {
 			dispatch: jest.fn(),
 		};
-		const request = new TermboxRequest( primaryLanguage, entity, revision, links, preferredLanguages );
+		const request = new TermboxRequest( primaryLanguage, entity, revision, links, preferredLanguages, user );
 
 		return ( App as any ).asyncData( store, request ).then( () => {
 			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LANGUAGE, LANGUAGE_INIT ) );
@@ -79,6 +80,7 @@ describe( 'App.vue', () => {
 				{ primaryLanguage, preferredLanguages },
 			);
 			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_LINKS, LINKS_INIT ), links );
+			expect( store.dispatch ).toHaveBeenCalledWith( action( NS_USER, USER_NAME_SET ), user );
 		} );
 	} );
 

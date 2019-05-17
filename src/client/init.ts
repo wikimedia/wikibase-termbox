@@ -25,6 +25,7 @@ export default () => {
 				} ),
 			},
 			( window as MwWindow ).wb.getUserLanguages(),
+			config.get( 'wgUserName' ),
 		) );
 	} );
 };

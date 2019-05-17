@@ -1,8 +1,12 @@
 import { ActionContext } from 'vuex';
-import { LANGUAGE_PREFERENCE } from './actionTypes';
+import {
+	LANGUAGE_PREFERENCE,
+	USER_NAME_SET,
+} from './actionTypes';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
+	USER_SET_NAME,
 } from './mutationTypes';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import User from '@/store/user/User';
@@ -29,5 +33,9 @@ export const actions = {
 			context.dispatch( action( NS_MESSAGES, MESSAGES_INIT ), primaryLanguage, { root: true } ),
 			context.dispatch( action( NS_LANGUAGE, ENSURE_AVAILABLE_IN_LANGUAGE ), primaryLanguage, { root: true } ),
 		] );
+	},
+
+	[ USER_NAME_SET ]( context: ActionContext<User, any>, name: string ) {
+		context.commit( USER_SET_NAME, name );
 	},
 };

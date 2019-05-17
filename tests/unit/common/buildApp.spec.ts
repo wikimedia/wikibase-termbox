@@ -22,6 +22,7 @@ describe( 'buildApp', () => {
 			revision: 31510,
 			links: { editLinkUrl: '/edit/Q123', loginLinkUrl: '/login', signUpLinkUrl: '/signup' },
 			preferredLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
+			userName: null,
 		};
 		mockGetChildComponents.mockReturnValue( [] );
 
@@ -37,6 +38,7 @@ describe( 'buildApp', () => {
 			revision: 31510,
 			links: { editLinkUrl: '/edit/Q123', loginLinkUrl: '/login', signUpLinkUrl: '/signup' },
 			preferredLanguages: [ 'en', 'de', 'fr', 'it', 'pl' ],
+			userName: null,
 		};
 
 		const mockAsyncData1 = jest.fn();

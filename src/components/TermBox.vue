@@ -11,7 +11,7 @@
 					<template #read>
 						<EventEmittingButton
 							type="edit"
-							@click="activateEditMode"
+							@click="edit"
 							:href="editLinkUrl"
 							:message="message( MESSAGE_KEYS.EDIT )"
 						/>
@@ -90,7 +90,15 @@ export default class TermBox extends mixins( Messages ) {
 	@namespace( NS_ENTITY ).Action( ENTITY_ROLLBACK )
 	public rollbackEntity!: () => Promise<void>;
 
+	@namespace( NS_USER ).State( 'name' )
+	public userName!: string | null;
+
 	public showEditWarning = false;
+
+	public edit() {
+		this.showEditWarningForAnonymousUser();
+		this.activateEditMode();
+	}
 
 	public publish(): void {
 		this.saveEntity()
@@ -104,6 +112,10 @@ export default class TermBox extends mixins( Messages ) {
 			.then( () => {
 				this.deactivateEditMode();
 			} );
+	}
+
+	public showEditWarningForAnonymousUser() {
+		this.showEditWarning = this.userName === null;
 	}
 
 }

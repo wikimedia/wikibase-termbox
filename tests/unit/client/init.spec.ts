@@ -4,6 +4,7 @@ import TermboxRequest from '@/common/TermboxRequest';
 import MwWindow, { MwMessage } from '@/client/mediawiki/MwWindow';
 
 const CURRENT_PAGE = '/entity/Q123';
+const USER_NAME = 'Lord Voldemort';
 
 function mockMwEnv(
 	language: string,
@@ -24,6 +25,8 @@ function mockMwEnv(
 					return namespaces || { special: -1 };
 				case 'wgPageName':
 					return CURRENT_PAGE;
+				case 'wgUserName':
+					return USER_NAME;
 				default:
 					return null;
 			}
@@ -96,6 +99,7 @@ describe( 'client/init', () => {
 			expect( request.links.loginLinkUrl ).toBe( expectedLoginLinkUrl );
 			expect( request.links.signUpLinkUrl ).toBe( expectedSignUpLinkUrl );
 			expect( request.preferredLanguages ).toBe( expectedPreferredLanguages );
+			expect( request.userName ).toBe( USER_NAME );
 		} );
 	} );
 } );
