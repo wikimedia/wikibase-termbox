@@ -118,66 +118,63 @@ $block: '.wb-ui-event-emitting-button';
 	&--normal {
 		@extend %textButton;
 		@extend %framed;
-		background-color: $color-normal;
-		color: $font-color-normal;
-		border-color: $border-color-normal;
+
+		// default & hover are flipped compared to background-color-base & background-color-base--hover
+		background-color: $wmui-color-base80;
+		color: $color-base;
+		border-color: $border-color-base;
 
 		&:hover {
-			background-color: $color-normal--hover;
-			color: $font-color-normal--hover;
-			border-color: $border-color-normal--hover;
+			background-color: $wmui-color-base100;
+			color: $color-base; // intentionally not $color-base--hover for reasons
+			border-color: $border-color-base--hover;
 		}
 
 		&:active {
-			background-color: $color-normal--active;
-			color: $font-color-normal--active;
-			border-color: $border-color-normal--active;
+			background-color: $wmui-color-base70;
+			color: $color-base--active;
+			border-color: $border-color-base--active;
 		}
 
 		&:focus {
-			box-shadow: inset 0 0 0 1px $box-shadow-color-normal--focus;
+			box-shadow: $box-shadow-base--focus;
 		}
 	}
 
 	&--primaryProgressive {
 		@extend %textButton;
 		@extend %framed;
-		background-color: $color-primaryProgressive;
-		color: $font-color-primaryProgressive;
-		border-color: $border-color-primaryProgressive;
+		background-color: $color-primary;
+		color: $color-base--inverted;
+		border-color: $color-primary;
 
 		&:hover {
-			background-color: $color-primaryProgressive--hover;
-			color: $font-color-primaryProgressive--hover;
-			border-color: $border-color-primaryProgressive--hover;
+			background-color: $color-primary--hover;
+			border-color: $color-primary--hover;
 		}
 
 		&:active {
-			background-color: $color-primaryProgressive--active;
-			color: $font-color-primaryProgressive--active;
-			border-color: $border-color-primaryProgressive--active;
+			background-color: $color-primary--active;
+			border-color: $color-primary--active;
 		}
 
 		&:focus {
-			$box-shadow-1-primaryProgressive: inset 0 0 0 1px $box-shadow-color-1-primaryProgressive--focus;
-			$box-shadow-2-primaryProgressive: inset 0 0 0 2px $box-shadow-color-2-primaryProgressive--focus;
-			box-shadow: $box-shadow-1-primaryProgressive, $box-shadow-2-primaryProgressive;
-			border-color: $box-shadow-color-1-primaryProgressive--focus;
+			box-shadow: $box-shadow-primary--focus;
 		}
 	}
 
 	&--framelessProgressive {
 		@extend %textButton;
 		border-width: 0;
-		color: $font-color-framelessProgressive;
-		border-color: $border-color-framelessProgressive;
+		color: $color-primary;
+		border-color: $wmui-color-base100;
 
 		&:hover {
-			color: $font-color-framelessProgressive--hover;
+			color: $color-primary--hover;
 		}
 
 		&:active {
-			color: $font-color-framelessProgressive--active;
+			color: $color-primary--active;
 		}
 
 		&:focus {

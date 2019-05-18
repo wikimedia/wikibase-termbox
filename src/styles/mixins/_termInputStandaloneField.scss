@@ -7,6 +7,6 @@
 	&:focus-within,
 	&--focus-within {
 		outline: 0;
-		border-color: $border-colour-focus;
+		border-color: $color-primary--focus;
 	}
 }
