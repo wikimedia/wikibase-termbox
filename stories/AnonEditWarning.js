@@ -3,6 +3,7 @@ import Modal from '@/components/Modal.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import { MessageKeys } from '@/common/MessageKeys';
 import stubMessagesMixin from '../.storybook/helpers/stubMessagesMixin';
+import { createStore } from '@/store';
 
 storiesOf( 'AnonEditWarning', module )
 	.add( 'in Modal', () => {
@@ -15,6 +16,8 @@ storiesOf( 'AnonEditWarning', module )
 		};
 
 		return {
+			store: createStore(),
+
 			components: {
 				AnonEditWarning: stubMessagesMixin( AnonEditWarning, messages ),
 				Modal,
