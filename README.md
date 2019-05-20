@@ -4,21 +4,21 @@ User interface for managing terms in Wikibase.
 This file can be considered a quick setup guide.
 To dive into the development documentation please refer to the [docs folder](./docs).
 
+In a nutshell, this project provides the following functionalities:
+
+1. when run as server ("SSR") provides an HTTP API that is consumed by wikibase [TermboxRemoteRenderer](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/view/src/Termbox/Renderer/TermboxRemoteRenderer.php) to shows the HTML result on wikibase entity pages
+2. contains a `dist/` folder with auto-generated JavaScript and CSS files, that are consumed by a MediaWiki component called [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader), to be used in the frontend on wikibase entity pages. The configuration for this can be seen in [resources.php](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/view/lib/resources.php).
+3. contains the tools to facilitate development of the termbox application and components used inside of it
+
 ## How this connects to Wikibase
 This code can be found as a git submodule of Wikibase at the following relative path: `extensions/Wikibase/view/lib/wikibase-termbox/`
 
-This is because the client-side JS and styling needs to be served by Wikibase. It is served by a component of MediaWiki
-called [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader). The configuration for this can be seen in
-[resources.php](../resources.php)
-
-The commit of this submodule on Wikibase master may not be the latest development version of this code
-so to get the latest development version you may need to run:
+The commit of this submodule on Wikibase master may not be the latest development version of this code so to get the latest development version you may need to run:
 ```sh
 git checkout master
 ```
 
-Since the Wikidata runs a weekly snapshot of Wikibase master we can be explicit about which version of termbox we run by
-changing the commit of the submodule rather than always having to use master of termbox.
+Since the Wikidata runs a weekly snapshot of Wikibase master we can be explicit about which version of termbox we run by changing the commit of the submodule rather than always having to use master of termbox.
 
 ## Installation
 
@@ -27,7 +27,7 @@ changing the commit of the submodule rather than always having to use master of 
 As this project only comes to full fruition in integration with wikibase some configuration is required to make them collaborate.
 Set the user-specific environment variables: `cp .env.example .env` and modify `.env` according to your setup.
 
-These environment variables can be distinguished in two groups - some are relevant configuring how the SSR service works ("production level"), some add to this for the development context ("development level"). **Set all of them** to reasonable values per the example file to get a working setup.
+These environment variables can be distinguished in two groups - some are relevant configuring how the SSR service works ("production level"), some add to this for the development context ("development level"). **Set all of them**. Reasonable defaults are in place where it is possible but this needs your attention to get a working setup.
 
 * **Production level** environment variables
   * `SSR_PORT` is the port at which the node server performing server-side vue rendering can be reached (by mediawiki to render entity pages, or your browser to try it in isolation)
@@ -45,7 +45,8 @@ These environment variables can be distinguished in two groups - some are releva
 
     The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file> to get HTML, in turn the SSR services calls <WIKIBASE_REPO> to [get essential information](./src/server/data-access).
 
-  * `CSR_PORT` is the port at which you can reach the development server to live-preview your changes
+  * `CSR_PORT` is the port at which you can reach the development server on your machine to live-preview changes to the termbox application
+  * `STORYBOOK_PORT` is the port at which you can reach the storybook server on your machine to live-preview changes in the component library
   * `NODE_ENV` is the environment to set for node.js
 
 ### Building Docker image
@@ -78,10 +79,12 @@ wfLoadSkin( 'MinervaNeue' );
 * `docker-compose run --rm node npm run build` builds the frontend code
 * `docker-compose run --rm node npm run build-server` builds the server-side manifest and the node entry point
 
-## Starting the server
-* `docker-compose up` starts two servers
-  * a development SSR server at http://localhost:<SSR_PORT from your .env file>
-  * a development server for the frontend part in development mode reachable at http://localhost:<CSR_PORT from your .env file>
+## Starting it up
+* `docker-compose up` starts three development servers
+  1. an SSR server (HTTP endpoint to be hooked up to your wikibase), reachable at http://localhost:<SSR_PORT from your .env file>
+  2. a server for the frontend part in development mode (akin to the `dist/` folder working on a dummy entity), reachable at http://localhost:<CSR_PORT from your .env file>
+  3. a [storybook](docs/storybook.md) server for component development, reachable at http://localhost:<STORYBOOK_PORT from your .env file>
+  > 🗯 These more or less mirror the individual project functionalities
 
 ## Development
 
