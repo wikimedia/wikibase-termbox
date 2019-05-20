@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import inlanguage from '@/client/directives/inlanguage';
+import focus from '@/client/directives/focus';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 beforeEach( () => {
@@ -19,6 +20,7 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 }
 
 Vue.directive( 'inlanguage', inlanguage );
+Vue.directive( 'focus', { inserted: focus } );
 
 Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
 

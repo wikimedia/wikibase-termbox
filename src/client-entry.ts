@@ -11,6 +11,7 @@ import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKeys } from '@/common/MessageKeys';
 import inlanguage from '@/client/directives/inlanguage';
+import focus from '@/client/directives/focus';
 import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
 import EntityInitializer from '@/common/EntityInitializer';
 import { getAxios } from '@/client/axios/axiosFactory';
@@ -24,6 +25,7 @@ Vue.mixin( newConfigMixin(
 ) );
 
 Vue.directive( 'inlanguage', inlanguage );
+Vue.directive( 'focus', { inserted: focus } );
 
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
 

@@ -18,6 +18,7 @@ function createStoreWithLinks() {
 }
 
 describe( 'AnonEditWarning', () => {
+
 	it( 'has a heading', () => {
 		const expectedHeading = 'you are not logged in';
 		const wrapper = shallowMount( AnonEditWarning, {
@@ -44,20 +45,25 @@ describe( 'AnonEditWarning', () => {
 			.toBe( expectedMessage );
 	} );
 
-	it( 'has a login button', () => {
+	it( 'has a focused login button', () => {
 		const buttonLabel = 'login';
+		const focus = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
 			store: createStoreWithLinks(),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKeys.LOGIN ]: buttonLabel,
 			} ) ],
+			directives: {
+				focus,
+			},
 		} );
 		const button = wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
 		expect( button.props( 'href' ) ).toBe( LOGIN_URL );
 		expect( button.props( 'preventDefault' ) ).toBe( false );
+		expect( focus ).toBeCalledTimes( 1 );
 	} );
 
 	it( 'has a sign-up button', () => {

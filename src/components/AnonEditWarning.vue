@@ -12,6 +12,7 @@
 				:message="message( MESSAGE_KEYS.LOGIN )"
 				:href="loginLinkUrl"
 				:prevent-default="false"
+				v-focus
 			/>
 			<EventEmittingButton
 				type="normal"
