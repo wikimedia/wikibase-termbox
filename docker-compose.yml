@@ -45,6 +45,7 @@ services:
     environment:
       - SSR_PORT
       - WIKIBASE_REPO
+      - WIKIBASE_REPO_HOSTNAME_ALIAS
       - MEDIAWIKI_REQUEST_TIMEOUT
       - MESSAGES_CACHE_MAX_AGE
       - LANGUAGES_CACHE_MAX_AGE

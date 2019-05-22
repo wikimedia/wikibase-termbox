@@ -23,6 +23,7 @@ export default ( options: ServiceRunnerOptions ) => {
 	const config = assertAndGetConfig(
 		{
 			WIKIBASE_REPO: {},
+			WIKIBASE_REPO_HOSTNAME_ALIAS: {},
 			SSR_PORT: {},
 			MEDIAWIKI_REQUEST_TIMEOUT: {
 				fallback: DEFAULT_REQUEST_TIMEOUT,
@@ -62,6 +63,7 @@ export default ( options: ServiceRunnerOptions ) => {
 	const services = new BundleRendererServices(
 		getAxios(
 			config.WIKIBASE_REPO,
+			config.WIKIBASE_REPO_HOSTNAME_ALIAS,
 			config.MEDIAWIKI_REQUEST_TIMEOUT,
 			getMwUserAgentString( PackageInfo.default ),
 		),

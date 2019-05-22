@@ -32,6 +32,7 @@ These environment variables can be distinguished in two groups - some are releva
 * **Production level** environment variables
   * `SSR_PORT` is the port at which the node server performing server-side vue rendering can be reached (by mediawiki to render entity pages, or your browser to try it in isolation)
   * `WIKIBASE_REPO` is the wikibase installation used as information authority (e.g. to load entity information), including the path (where both `index.php` and `api.php` are located)
+  * `WIKIBASE_REPO_HOSTNAME_ALIAS` is used to replace the hostname in WIKIBASE_REPO. Added to help with deployment in the WMF cluster. It must be set but in can be the same as the WIKIBASE_REPO hostname. In most cases setting them to be the same is what non-WMF installs will desire.
   * `MEDIAWIKI_REQUEST_TIMEOUT` is the duration ( in milliseconds ) after which the ssr-server terminates any request to mediawiki in any case. This parameter is optional and will be set by default to 3000.
   * `MESSAGES_CACHE_MAX_AGE` is the maximum age of entries in the messages cache in ms. This parameter is set to 1 minute by default. Setting this to a negative value will effectively disable this cache.
   * `LANGUAGES_CACHE_MAX_AGE` is the maximum age of entries in the languages cache in milliseconds. This parameter is set to 5 minutes by default. Setting this to a negative value will effectively disable this cache.
@@ -118,7 +119,7 @@ E.g. with production wikidata configured as the backend (`WIKIBASE_REPO`).
 ```sh
 blubber .pipeline/blubber.yaml production > Dockerfile
 docker build -t wmde/wikibase-termbox-production .
-docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e SSR_PORT=3030 wmde/wikibase-termbox-production
+docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e WIKIBASE_REPO_HOSTNAME_ALIAS=www.wikidata.org -e SSR_PORT=3030 wmde/wikibase-termbox-production
 ```
 
 #### Using official, automatically created images
@@ -128,6 +129,6 @@ Changes to this project that are successfully merged into the main line (master)
 You can reference these tags directly when spinning up a container - the simplest conceivable way to reproduce a production setup at a given moment in time; e.g. to reproduce a reported bug.
 
 ```sh
-docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e SSR_PORT=3030 docker-registry.wikimedia.org/wikimedia/wikibase-termbox:2019-04-25-184504-production
+docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e WIKIBASE_REPO_HOSTNAME_ALIAS=www.wikidata.org -e SSR_PORT=3030 docker-registry.wikimedia.org/wikimedia/wikibase-termbox:2019-04-25-184504-production
 ```
 
