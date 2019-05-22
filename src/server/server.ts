@@ -1,23 +1,22 @@
 import 'module-alias/register';
 import createApp from './app';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
-import axios from 'axios';
 import {
-	GLOBAL_REQUEST_PARAMS,
 	DEFAULT_REQUEST_TIMEOUT,
 	DEFAULT_MESSAGES_CACHE_MAX_AGE,
 	DEFAULT_LANGUAGES_CACHE_MAX_AGE,
 } from '../common/constants';
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
-import * as PackageInfo from '@/../package.json';
 import openApiJson from '@/../openapi.json';
-import assertAndGetConfig from './assertAndGetConfig';
-import getMwUserAgentString from './axios/getMwUserAgentString';
 import TermboxQueryValidator from './route-handler/termbox/TermboxQueryValidator';
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 import buildOpenApiSpec from './buildOpenApiSpec';
+import assertAndGetConfig from './assertAndGetConfig';
+import { getAxios } from './axios/axiosFactory';
+import getMwUserAgentString from './axios/getMwUserAgentString';
+import * as PackageInfo from '@/../package.json';
 
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
@@ -61,14 +60,11 @@ export default ( options: ServiceRunnerOptions ) => {
 	}
 
 	const services = new BundleRendererServices(
-		axios.create( {
-			baseURL: config.WIKIBASE_REPO,
-			params: GLOBAL_REQUEST_PARAMS,
-			timeout: config.MEDIAWIKI_REQUEST_TIMEOUT,
-			headers: {
-				'User-Agent': getMwUserAgentString( PackageInfo.default ),
-			},
-		} ),
+		getAxios(
+			config.WIKIBASE_REPO,
+			config.MEDIAWIKI_REQUEST_TIMEOUT,
+			getMwUserAgentString( PackageInfo.default ),
+		),
 		logger,
 		new LRUCache( {
 			max: 1000,
