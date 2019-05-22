@@ -1,22 +1,17 @@
 import InvalidRequest from './error/InvalidRequest';
 import TermboxRequest from '@/common/TermboxRequest';
-import { IOpenAPIRequestValidator } from 'openapi-request-validator';
-import { IOpenAPIRequestCoercer } from 'openapi-request-coercer';
 import { OpenAPI } from 'openapi-types';
+import TermboxQueryValidator from './TermboxQueryValidator';
 
 export default class TermboxHandler {
 
-	private coercer: IOpenAPIRequestCoercer;
-	private validator: IOpenAPIRequestValidator;
+	private validator: TermboxQueryValidator;
 
-	constructor( coercer: IOpenAPIRequestCoercer, validator: IOpenAPIRequestValidator ) {
-		this.coercer = coercer;
+	constructor( validator: TermboxQueryValidator ) {
 		this.validator = validator;
 	}
 
 	public createTermboxRequest( request: OpenAPI.Request ): Promise<TermboxRequest> {
-		this.coercer.coerce( request );
-
 		return new Promise( ( resolve, reject ) => {
 			const rejection = this.validator.validate( request );
 			if ( rejection ) {

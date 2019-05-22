@@ -2,8 +2,8 @@ import TermboxHandler from '@/server/route-handler/termbox/TermboxHandler';
 import TermboxRequest from '@/common/TermboxRequest';
 import InvalidRequest from '@/server/route-handler/termbox/error/InvalidRequest';
 
-function newTermboxHandler( coercer: any, queryValidator: any ) {
-	return new TermboxHandler( coercer, queryValidator );
+function newTermboxHandler( queryValidator: any ) {
+	return new TermboxHandler( queryValidator );
 }
 
 describe( 'TermboxHandler', () => {
@@ -16,14 +16,11 @@ describe( 'TermboxHandler', () => {
 				preferredLanguages: 'de|en|fr|it|pl|zh',
 				revision: 4711,
 			};
-			const coercer = {
-				coerce: ( request: any ) => request,
-			};
 			const validator = {
 				validate: () => undefined,
 			};
 
-			const routeHandler = newTermboxHandler( coercer, validator );
+			const routeHandler = newTermboxHandler( validator );
 
 			return routeHandler.createTermboxRequest( {
 				query: validQuery,
@@ -41,9 +38,6 @@ describe( 'TermboxHandler', () => {
 		} );
 
 		it( 'rejects when failing to validate request', () => {
-			const coercer = {
-				coerce: ( request: any ) => request,
-			};
 			const errors = [
 				{ path: 'revision', message: 'should have required property "revision"' },
 			];
@@ -53,7 +47,7 @@ describe( 'TermboxHandler', () => {
 					errors,
 				} ),
 			};
-			const routeHandler = newTermboxHandler( coercer, validator );
+			const routeHandler = newTermboxHandler( validator );
 
 			return routeHandler.createTermboxRequest( {
 				query: {},

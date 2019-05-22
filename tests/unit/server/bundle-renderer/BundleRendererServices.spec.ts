@@ -6,14 +6,25 @@ describe( 'BundleRendererServices', () => {
 		const logger = new ( jest.fn() )();
 		const messageCache = new ( jest.fn() )();
 		const languageCache = new ( jest.fn() )();
+		const queryValidator = new ( jest.fn() )();
+		const openApiSpec = new ( jest.fn() )();
 
-		const services = new BundleRendererServices( axios, logger, messageCache, languageCache );
+		const services = new BundleRendererServices(
+			axios,
+			logger,
+			messageCache,
+			languageCache,
+			queryValidator,
+			openApiSpec,
+		);
 
 		expect( services ).toBeInstanceOf( BundleRendererServices );
 		expect( services.axios ).toBe( axios );
 		expect( services.logger ).toBe( logger );
 		expect( services.messageCache ).toBe( messageCache );
 		expect( services.languageCache ).toBe( languageCache );
+		expect( services.termboxQueryValidator ).toBe( queryValidator );
+		expect( services.openApiSpec ).toBe( openApiSpec );
 	} );
 
 } );

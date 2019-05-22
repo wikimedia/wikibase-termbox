@@ -108,24 +108,7 @@
             "description": "Technical Problem"
           }
         },
-        "x-amples": {
-          "title": "get rendered termbox",
-          "request": {
-            "body": {
-              "language": "de",
-              "entity": "Q18720640",
-              "revision": 907661186,
-              "editLink": "irrelevant",
-              "preferredLanguages": "en|de"
-            }
-          },
-          "response": {
-            "status": 200,
-            "headers": {
-              "content-type": "text/html"
-            }
-          }
-        }
+        "x-monitor": false
       }
     }
   }

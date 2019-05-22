@@ -35,6 +35,7 @@ These environment variables can be distinguished in two groups - some are releva
   * `MEDIAWIKI_REQUEST_TIMEOUT` is the duration ( in milliseconds ) after which the ssr-server terminates any request to mediawiki in any case. This parameter is optional and will be set by default to 3000.
   * `MESSAGES_CACHE_MAX_AGE` is the maximum age of entries in the messages cache in ms. This parameter is set to 1 minute by default. Setting this to a negative value will effectively disable this cache.
   * `LANGUAGES_CACHE_MAX_AGE` is the maximum age of entries in the languages cache in milliseconds. This parameter is set to 5 minutes by default. Setting this to a negative value will effectively disable this cache.
+  * `HEALTHCHECK_QUERY` is the query string for the OpenAPI `x-amples` healthcheck. Note that the revision and entity id must refer to an existing entity revision on the corresponding Wikibase installation. If this is not set, no healthchecks will be performed, i.e. `x-monitor` will be set to false in the OpenAPI spec.
 
 * **Development level** environment variables
   * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network of **your mediawiki development setup**. The SSR service will attach itself to it in order to make it available to wikibase and vice-versa.

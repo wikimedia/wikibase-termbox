@@ -9,11 +9,8 @@ import BundleBoundaryPassingException, { ErrorReason } from './exceptions/Bundle
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import BundleRendererContextBuilder from './bundle-renderer/BundleRendererContextBuilder';
 import inlanguage from './directives/inlanguage';
-import openapiSpec from '@/../openapi.json';
 import packageInfo from '@/../package.json';
 import InfoHandler from './route-handler/_info/InfoHandler';
-import OpenAPIRequestValidator from 'openapi-request-validator';
-import OpenAPIRequestCoercer from 'openapi-request-coercer';
 
 export default ( services: BundleRendererServices ) => {
 
@@ -36,23 +33,14 @@ export default ( services: BundleRendererServices ) => {
 
 	app.get( '/', ( request: Request, response: Response, next: NextFunction ) => {
 		if ( request.query && Object.prototype.hasOwnProperty.call( request.query, 'spec' ) ) {
-			response.json( openapiSpec );
+			response.json( services.openApiSpec );
 		} else {
 			next();
 		}
 	} );
 
 	app.get( '/termbox', ( request: Request, response: Response ) => {
-		const termboxSpecParameters = openapiSpec.paths[ '/termbox' ].get.parameters;
-
-		const termboxHandler = new TermboxHandler(
-			new OpenAPIRequestCoercer( {
-				parameters: termboxSpecParameters,
-			} ),
-			new OpenAPIRequestValidator( {
-				parameters: termboxSpecParameters,
-			} ),
-		);
+		const termboxHandler = new TermboxHandler( services.termboxQueryValidator );
 
 		termboxHandler.createTermboxRequest( request )
 			.then( contextBuilder.passRequest.bind( contextBuilder ) )
