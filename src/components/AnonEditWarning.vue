@@ -67,6 +67,7 @@ export default class AnonEditWarning extends mixins( Messages ) {
 		border: 1px solid $warning-message-border;
 		padding: 8px 8px 8px 48px;
 		margin: 16px -8px 0 -8px;
+		line-height: 1.2;
 	}
 
 	&__button-group {
