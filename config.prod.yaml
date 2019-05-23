@@ -66,4 +66,5 @@ services:
       MEDIAWIKI_REQUEST_TIMEOUT: '{env(MEDIAWIKI_REQUEST_TIMEOUT)}'
       MESSAGES_CACHE_MAX_AGE: '{env(MESSAGES_CACHE_MAX_AGE)}'
       LANGUAGES_CACHE_MAX_AGE: '{env(LANGUAGES_CACHE_MAX_AGE)}'
+      HEALTHCHECK_QUERY: '{env(HEALTHCHECK_QUERY)}'
     entrypoint: default #required for ES6 style exports

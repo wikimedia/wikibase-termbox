@@ -1,5 +1,6 @@
 import request from 'supertest';
 import mockQ64 from '@/mock-data/data/Q64_data.json';
+import openApiJson from '@/../openapi.json';
 import createApp from '@/server/app';
 import nock from 'nock';
 import 'jest-dom/extend-expect';
@@ -16,6 +17,9 @@ import { MessageKeys } from '@/common/MessageKeys';
  */
 import { MEDIAWIKI_API_SCRIPT, MEDIAWIKI_INDEX_SCRIPT, GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEntityRepo';
+import TermboxQueryValidator from '@/server/route-handler/termbox/TermboxQueryValidator';
+import OpenAPIRequestCoercer from 'openapi-request-coercer';
+import OpenAPIRequestValidator from 'openapi-request-validator';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -37,6 +41,7 @@ const logger = {
 const messageCache = { has() {}, set() {}, get() {} };
 const languageCache = { has() {}, set() {}, get() {} };
 
+const termboxSpecParameters = openApiJson.paths[ '/termbox' ].get.parameters;
 const services = new BundleRendererServices(
 	axios.create( {
 		baseURL: WIKIBASE_TEST_HOST,
@@ -48,6 +53,15 @@ const services = new BundleRendererServices(
 	logger,
 	messageCache as any,
 	languageCache as any,
+	new TermboxQueryValidator(
+		new OpenAPIRequestCoercer( {
+			parameters: termboxSpecParameters,
+		} ),
+		new OpenAPIRequestValidator( {
+			parameters: termboxSpecParameters,
+		} ),
+	),
+	openApiJson,
 );
 
 const app = createApp( services );

@@ -11,8 +11,13 @@ import {
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
 import * as PackageInfo from '@/../package.json';
+import openApiJson from '@/../openapi.json';
 import assertAndGetConfig from './assertAndGetConfig';
 import getMwUserAgentString from './axios/getMwUserAgentString';
+import TermboxQueryValidator from './route-handler/termbox/TermboxQueryValidator';
+import OpenAPIRequestCoercer from 'openapi-request-coercer';
+import OpenAPIRequestValidator from 'openapi-request-validator';
+import buildOpenApiSpec from './buildOpenApiSpec';
 
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
@@ -29,10 +34,31 @@ export default ( options: ServiceRunnerOptions ) => {
 			LANGUAGES_CACHE_MAX_AGE: {
 				fallback: DEFAULT_LANGUAGES_CACHE_MAX_AGE,
 			},
+			HEALTHCHECK_QUERY: {
+				fallback: null,
+			},
 		},
 		options.config,
 		logger,
 	);
+
+	const termboxSpecParameters = openApiJson.paths[ '/termbox' ].get.parameters;
+	const termboxQueryValidator = new TermboxQueryValidator(
+		new OpenAPIRequestCoercer( {
+			parameters: termboxSpecParameters,
+		} ),
+		new OpenAPIRequestValidator( {
+			parameters: termboxSpecParameters,
+		} ),
+	);
+
+	let openApiSpec;
+	try {
+		openApiSpec = buildOpenApiSpec( config.HEALTHCHECK_QUERY!, termboxQueryValidator );
+	} catch ( error ) {
+		logger.log( 'fatal/service', `HEALTHCHECK_QUERY malformed: ${ JSON.stringify( error.info ) }. Exiting.` );
+		process.exit( 1 );
+	}
 
 	const services = new BundleRendererServices(
 		axios.create( {
@@ -52,6 +78,8 @@ export default ( options: ServiceRunnerOptions ) => {
 			max: 1000,
 			maxAge: config.LANGUAGES_CACHE_MAX_AGE,
 		} ),
+		termboxQueryValidator,
+		openApiSpec,
 	);
 
 	createApp( services )

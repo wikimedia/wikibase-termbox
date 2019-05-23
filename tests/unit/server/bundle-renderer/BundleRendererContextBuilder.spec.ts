@@ -16,6 +16,8 @@ describe( 'BundleRendererContextBuilder', () => {
 				new ( jest.fn() )(),
 				new ( jest.fn() )(),
 				new ( jest.fn() )(),
+				new ( jest.fn() )(),
+				new ( jest.fn() )(),
 			);
 			const request = new TermboxRequest(
 				'Q71',

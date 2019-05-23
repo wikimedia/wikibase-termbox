@@ -48,6 +48,7 @@ services:
       - MEDIAWIKI_REQUEST_TIMEOUT
       - MESSAGES_CACHE_MAX_AGE
       - LANGUAGES_CACHE_MAX_AGE
+      - HEALTHCHECK_QUERY
 
   storybook:
     extends:
