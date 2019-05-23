@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import inlanguage from '@/client/directives/inlanguage';
-import focus from '@/client/directives/focus';
+import '@/client/directives';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 beforeEach( () => {
@@ -18,9 +17,6 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 	// Avoid memory leak by adding too many listeners
 	process.env.LISTENING_TO_UNHANDLED_REJECTION = 'yes';
 }
-
-Vue.directive( 'inlanguage', inlanguage );
-Vue.directive( 'focus', { inserted: focus } );
 
 Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
 
