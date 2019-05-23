@@ -108,6 +108,13 @@ blubber .pipeline/blubber.yaml test > Dockerfile
 docker build -t wmde/wikibase-termbox-test .
 docker run --rm wmde/wikibase-termbox-test
 ```
+### Browsertests
+#### Browsertests in Integration
+* Start chromedriver: `chromedriver --url-base=wd/hub --port=4444`
+* change to your `Wikibase` folder of your `extension` folder in your `Mediawiki` installation
+* from there got into `repo/tests/selenium`
+* put `'__dirname + '/../../../view/lib/wikibase-termbox/tests/selenium/specs/*.js'` in the `specs` section (aproximatly near line 27 ) in the `wdio.conf.js`
+* follow the instruction in `README.md` to run the tests
 
 ### Running for production
 
