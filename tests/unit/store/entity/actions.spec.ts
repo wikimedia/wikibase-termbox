@@ -18,7 +18,7 @@ import {
 	ENTITY_REVISION_UPDATE,
 	ENTITY_ROLLBACK as ENTITY_ROLLBACK_MUTATION,
 } from '@/store/entity/mutationTypes';
-import { factory } from '@/common/TermboxFactory';
+import { services } from '@/common/TermboxServices';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import newMockStore from '../newMockStore';
@@ -28,10 +28,10 @@ import EntityRevision from '@/datamodel/EntityRevision';
 describe( 'entity/actions', () => {
 	describe( ENTITY_INIT, () => {
 		beforeEach( () => {
-			factory.setEntityEditabilityResolver( {
+			services.setEntityEditabilityResolver( {
 				isEditable: () => Promise.resolve( true ),
 			} );
-			factory.setEntityRepository( {
+			services.setEntityRepository( {
 				getFingerprintableEntity: () => Promise.resolve(
 					new FingerprintableEntity( 'Q123', {}, {}, {} ),
 				),
@@ -43,7 +43,7 @@ describe( 'entity/actions', () => {
 			const revision = 4711;
 
 			const entity = new FingerprintableEntity( entityId, {}, {}, {} );
-			factory.setEntityRepository( {
+			services.setEntityRepository( {
 				getFingerprintableEntity: ( thisEntityId: string, thisRevision: number ) => {
 					expect( thisEntityId ).toBe( entityId );
 					expect( thisRevision ).toBe( revision );
@@ -65,7 +65,7 @@ describe( 'entity/actions', () => {
 
 		it( `commits to ${EDITABILITY_UPDATE} on successful lookup and editability resolution`, () => {
 			const isEditable = true;
-			factory.setEntityEditabilityResolver( {
+			services.setEntityEditabilityResolver( {
 				isEditable: () => Promise.resolve( isEditable ),
 			} );
 
@@ -93,7 +93,7 @@ describe( 'entity/actions', () => {
 			const entityId = 'Q1';
 			const revision = 4711;
 			const error = new EntityNotFound( 'Entity not found' );
-			factory.setEntityRepository( {
+			services.setEntityRepository( {
 				getFingerprintableEntity: ( thisEntityId: string ) => {
 					expect( thisEntityId ).toBe( entityId );
 					return Promise.reject( error );
@@ -127,7 +127,7 @@ describe( 'entity/actions', () => {
 			const writingRepository = {
 				saveEntity: jest.fn().mockResolvedValue( new ( jest.fn() )() ),
 			};
-			factory.setWritingEntityRepository( writingRepository );
+			services.setWritingEntityRepository( writingRepository );
 
 			return actions[ ENTITY_SAVE ]( newMockStore( { state } ) ).then( () => {
 				expect( writingRepository.saveEntity ).toBeCalledWith( entity, baseRevision );
@@ -142,7 +142,7 @@ describe( 'entity/actions', () => {
 			const writingRepository = {
 				saveEntity: jest.fn().mockResolvedValue( responseEntityRevision ),
 			};
-			factory.setWritingEntityRepository( writingRepository );
+			services.setWritingEntityRepository( writingRepository );
 			const store = { commit: jest.fn() };
 
 			return actions[ ENTITY_SAVE ]( newMockStore( store ) ).then( () => {

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import buildApp from '@/common/buildApp';
-import { factory } from './common/TermboxFactory';
+import { services } from './common/TermboxServices';
 import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
 import EntityInitializer from './common/EntityInitializer';
 import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
@@ -37,30 +37,30 @@ export default ( context: BundleRendererContext ) => {
 		) as any as WikibaseContentLanguagesRepo,
 	);
 
-	factory.setLanguageTranslationRepository(
+	services.setLanguageTranslationRepository(
 		new ContentLanguagesLanguageTranslationRepo( languageRepo ),
 	);
 
-	factory.setLanguageRepository(
+	services.setLanguageRepository(
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
 	const axiosWikibaseMessagesRepo = new AxiosWikibaseMessagesRepo(
 		axios,
 		Object.values( MessageKeys ),
 	);
-	factory.setMessagesRepository( new CachingMethodDecorator<MessageTranslationCollection>(
+	services.setMessagesRepository( new CachingMethodDecorator<MessageTranslationCollection>(
 		context.services.messageCache,
 		axiosWikibaseMessagesRepo,
 		axiosWikibaseMessagesRepo.getMessagesInLanguage,
 	) as any as MessagesRepository );
 
-	factory.setEntityRepository(
+	services.setEntityRepository(
 		new AxiosSpecialPageEntityRepo(
 			axios,
 			new EntityInitializer(),
 		),
 	);
-	factory.setEntityEditabilityResolver( {
+	services.setEntityEditabilityResolver( {
 		isEditable() {
 			// hiding elements used for editing is done by the consumer of the SSR service
 			return Promise.resolve( true );
