@@ -5,7 +5,7 @@ import MessagesRepository from '@/common/data-access/MessagesRepository';
 import EntityEditabilityResolver from '@/common/data-access/EntityEditabilityResolver';
 import WritingEntityRepository from '@/common/data-access/WritingEntityRepository';
 
-export default class TermboxFactory {
+export default class TermboxServices {
 	private languageTranslationRepository?: LanguageTranslationRepository;
 	private languageRepository?: LanguageRepository;
 	private entityRepository?: EntityRepository;
@@ -87,8 +87,8 @@ export default class TermboxFactory {
 
 }
 
-const factory = new TermboxFactory();
+const services = new TermboxServices();
 
 export {
-	factory,
+	services,
 };

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import init from '@/client/init';
 import buildApp from '@/common/buildApp';
 import TermboxRequest from '@/common/TermboxRequest';
-import { factory } from '@/common/TermboxFactory';
+import { services } from '@/common/TermboxServices';
 import UlsLanguageTranslationRepository from '@/client/data-access/UlsLanguageTranslationRepository';
 import UlsLanguageRepository from '@/client/data-access/UlsLanguageRepository';
 import MessagesRepository from '@/client/data-access/MessagesRepository';
@@ -29,31 +29,31 @@ Vue.directive( 'focus', { inserted: focus } );
 
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
 
-factory.setLanguageTranslationRepository(
+services.setLanguageTranslationRepository(
 	new UlsLanguageTranslationRepository(
 		contentLanguages,
 	),
 );
 
-factory.setLanguageRepository(
+services.setLanguageRepository(
 	new UlsLanguageRepository(
 		contentLanguages,
 		( window as MwWindow ).$.uls.data,
 	),
 );
 
-factory.setMessagesRepository(
+services.setMessagesRepository(
 	new MessagesRepository(
 		( window as MwWindow ).mw.message,
 		Object.values( MessageKeys ),
 	),
 );
 
-factory.setEntityRepository( new EntityRepository(
+services.setEntityRepository( new EntityRepository(
 	( window as MwWindow ).mw.hook( Hooks.entityLoaded ),
 ) );
 
-factory.setEntityEditabilityResolver( {
+services.setEntityEditabilityResolver( {
 	isEditable() {
 		return Promise.resolve(
 			( window as MwWindow ).mw.config.get( 'wbIsEditView' )
@@ -67,7 +67,7 @@ const baseUrl = repoConfig.scriptPath;
 const userName = ( window as MwWindow ).mw.config.get( 'wgUserName' );
 const axios = getAxios( baseUrl, userName );
 
-factory.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, new EntityInitializer() ) );
+services.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, new EntityInitializer() ) );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
 	buildApp( termboxRequest ).then( ( app ) => {

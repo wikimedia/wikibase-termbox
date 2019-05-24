@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 import EntityState from '@/store/entity/EntityState';
-import { factory } from '@/common/TermboxFactory';
+import { services } from '@/common/TermboxServices';
 import {
 	ENTITY_INIT,
 	ENTITY_LABEL_EDIT,
@@ -32,8 +32,8 @@ export const actions = {
 		payload: { entity: string, revision: number },
 	): Promise<void> {
 		return Promise.all( [
-			factory.getEntityRepository().getFingerprintableEntity( payload.entity, payload.revision ),
-			factory.getEntityEditabilityResolver().isEditable( payload.entity ),
+			services.getEntityRepository().getFingerprintableEntity( payload.entity, payload.revision ),
+			services.getEntityEditabilityResolver().isEditable( payload.entity ),
 		] ).then( ( [ entity, isEditable ] ) => {
 			context.commit( ENTITY_REVISION_UPDATE, payload.revision );
 			context.commit( ENTITY_UPDATE, entity );
@@ -42,7 +42,7 @@ export const actions = {
 	},
 
 	[ ENTITY_SAVE ]( context: ActionContext<EntityState, any> ): Promise<EntityRevision> {
-		return factory.getWritingEntityRepository().saveEntity( new FingerprintableEntity(
+		return services.getWritingEntityRepository().saveEntity( new FingerprintableEntity(
 			context.state.id,
 			context.state.labels,
 			context.state.descriptions,

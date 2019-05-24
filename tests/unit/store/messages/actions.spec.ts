@@ -1,7 +1,7 @@
 import { actions } from '@/store/messages/actions';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutationTypes';
-import { factory } from '@/common/TermboxFactory';
+import { services } from '@/common/TermboxServices';
 import newMockStore from '../newMockStore';
 
 describe( 'messages/actions', () => {
@@ -15,7 +15,7 @@ describe( 'messages/actions', () => {
 				},
 			};
 
-			factory.setMessagesRepository( {
+			services.setMessagesRepository( {
 				getMessagesInLanguage: () => Promise.resolve( mockMessages ),
 			} );
 

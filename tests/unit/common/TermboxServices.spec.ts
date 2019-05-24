@@ -1,9 +1,9 @@
-import TermboxFactory from '@/common/TermboxFactory';
+import TermboxServices from '@/common/TermboxServices';
 import LanguageTranslationRepository from '@/common/data-access/LanguageTranslationRepository';
 import EntityRepository from '@/client/data-access/EntityRepository';
 
-function newTermboxFactory() {
-	return new TermboxFactory();
+function newTermboxServices() {
+	return new TermboxServices();
 }
 
 function newMockLookup(): LanguageTranslationRepository {
@@ -14,63 +14,63 @@ function newMockEntityRepository(): EntityRepository {
 	return {} as EntityRepository;
 }
 
-describe( 'TermboxFactory', () => {
+describe( 'TermboxServices', () => {
 
 	describe( 'languageTranslationRepository', () => {
 		it( 'throws an error if it is not set', () => {
-			expect( () => newTermboxFactory().getLanguageTranslationRepository() ).toThrow();
+			expect( () => newTermboxServices().getLanguageTranslationRepository() ).toThrow();
 		} );
 
 		it( 'can set and get a languageTranslationRepository', () => {
-			const factory = newTermboxFactory();
+			const services = newTermboxServices();
 			const mockLookup = newMockLookup();
 
-			factory.setLanguageTranslationRepository( mockLookup );
-			expect( factory.getLanguageTranslationRepository() ).toBe( mockLookup );
+			services.setLanguageTranslationRepository( mockLookup );
+			expect( services.getLanguageTranslationRepository() ).toBe( mockLookup );
 		} );
 	} );
 
 	describe( 'entityRepository', () => {
 		it( 'throws an error if it is not set', () => {
-			expect( () => newTermboxFactory().getEntityRepository() ).toThrow();
+			expect( () => newTermboxServices().getEntityRepository() ).toThrow();
 		} );
 
 		it( 'can set and get an entityRepository', () => {
-			const factory = newTermboxFactory();
+			const services = newTermboxServices();
 			const mockEntityRepository = newMockEntityRepository();
 
-			factory.setEntityRepository( mockEntityRepository );
-			expect( factory.getEntityRepository() ).toBe( mockEntityRepository );
+			services.setEntityRepository( mockEntityRepository );
+			expect( services.getEntityRepository() ).toBe( mockEntityRepository );
 		} );
 	} );
 
 	describe( 'entityEditabilityResolver', () => {
 		it( 'throws an error if it is not set', () => {
-			expect( () => newTermboxFactory().getEntityEditabilityResolver() ).toThrow();
+			expect( () => newTermboxServices().getEntityEditabilityResolver() ).toThrow();
 		} );
 
 		it( 'can set and get an entityEditabilityResolver', () => {
-			const factory = newTermboxFactory();
+			const services = newTermboxServices();
 			const mockEntityEditabilityResolver = {
 				isEditable: () => Promise.resolve( true ),
 			};
 
-			factory.setEntityEditabilityResolver( mockEntityEditabilityResolver );
-			expect( factory.getEntityEditabilityResolver() ).toBe( mockEntityEditabilityResolver );
+			services.setEntityEditabilityResolver( mockEntityEditabilityResolver );
+			expect( services.getEntityEditabilityResolver() ).toBe( mockEntityEditabilityResolver );
 		} );
 	} );
 
 	describe( 'writingEntityRepository', () => {
 		it( 'throws an error if it is not set', () => {
-			expect( () => newTermboxFactory().getWritingEntityRepository() ).toThrow();
+			expect( () => newTermboxServices().getWritingEntityRepository() ).toThrow();
 		} );
 
 		it( 'can set and get an writingEntityRepository', () => {
-			const factory = newTermboxFactory();
+			const services = newTermboxServices();
 			const mockRepository = new ( jest.fn() )();
 
-			factory.setWritingEntityRepository( mockRepository );
-			expect( factory.getWritingEntityRepository() ).toBe( mockRepository );
+			services.setWritingEntityRepository( mockRepository );
+			expect( services.getWritingEntityRepository() ).toBe( mockRepository );
 		} );
 	} );
 

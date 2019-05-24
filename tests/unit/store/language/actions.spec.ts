@@ -4,7 +4,7 @@ import {
 	LANGUAGE_TRANSLATION_UPDATE,
 	LANGUAGE_UPDATE,
 } from '@/store/language/mutationTypes';
-import { factory } from '@/common/TermboxFactory';
+import { services } from '@/common/TermboxServices';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
 import LanguageCollection from '@/datamodel/LanguageCollection';
 import newMockStore from '../newMockStore';
@@ -28,7 +28,7 @@ describe( 'language/actions', () => {
 			};
 			const getLanguagesMock = jest.fn();
 			getLanguagesMock.mockResolvedValue( languages );
-			factory.setLanguageRepository( {
+			services.setLanguageRepository( {
 				getLanguages: getLanguagesMock,
 			} );
 			const commitMock = jest.fn();
@@ -55,7 +55,7 @@ describe( 'language/actions', () => {
 					en: 'Englisch',
 				},
 			};
-			factory.setLanguageTranslationRepository( {
+			services.setLanguageTranslationRepository( {
 				getLanguagesInLanguage: ( thisInLanguage: string ) => {
 					expect( thisInLanguage ).toBe( inLanguage );
 					return Promise.resolve( translations );
