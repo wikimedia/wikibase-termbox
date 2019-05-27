@@ -1,6 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
-import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
 import Label from '@/components/Label.vue';
 import LabelEdit from '@/components/LabelEdit.vue';
 import Description from '@/components/Description.vue';
@@ -14,6 +13,7 @@ import { mutation } from '@/store/util';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
+import createMockableStore from '../store/createMockableStore';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
 	const store = createStore();
@@ -130,25 +130,35 @@ describe( 'MonolingualFingerprintView.vue', () => {
 		} );
 	} );
 
-	it( 'delegates the translation of the name of the language to LanguageNameInUserLanguage', () => {
-		const language = { code: 'de', directionality: 'ltr' };
+	it( 'delegates the translation of the name of the language to the getTranslationInUserLanguage getter', () => {
+		const languageCode = 'de';
+		const languageTranslation = 'Teutonic';
 
-		const store = createStore();
-		store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
+		const getTranslationInUserLanguage = jest.fn().mockReturnValue( languageTranslation );
+		const store = createMockableStore( {
+			modules: {
+				[ NS_LANGUAGE ]: {
+					getters: {
+						getTranslationInUserLanguage: () => getTranslationInUserLanguage,
+					},
+				},
+			},
+		} );
+
 		const wrapper = shallowMount(
 			MonolingualFingerprintView,
 			{
 				store,
 				propsData: {
-					languageCode: language.code,
+					languageCode,
 				},
 			},
 		);
 
 		const languageNameInUserLanguage = wrapper.find( '.wb-ui-monolingualfingerprintview__language' );
-
-		expect( languageNameInUserLanguage.is( LanguageNameInUserLanguage ) ).toBeTruthy();
-		expect( languageNameInUserLanguage.props( 'language' ) ).toBe( language );
+		expect( getTranslationInUserLanguage ).toHaveBeenCalledWith( languageCode );
+		expect( languageNameInUserLanguage.is( 'span' ) ).toBeTruthy();
+		expect( languageNameInUserLanguage.text() ).toBe( languageTranslation );
 	} );
 
 } );

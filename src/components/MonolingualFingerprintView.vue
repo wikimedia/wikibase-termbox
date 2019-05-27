@@ -6,7 +6,9 @@
 			'wb-ui-monolingualfingerprintview--editing': editMode,
 		}"
 	>
-		<LanguageNameInUserLanguage class="wb-ui-monolingualfingerprintview__language" :language="language" />
+		<span class="wb-ui-monolingualfingerprintview__language">
+			{{ getLanguageTranslationInUserLanguage( languageCode ) }}
+		</span>
 		<div class="wb-ui-monolingualfingerprintview__terms">
 			<component
 				:is="editMode ? 'LabelEdit' : 'Label'"
@@ -44,7 +46,6 @@ import {
 	mapGetters,
 } from 'vuex';
 import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
-import LanguageNameInUserLanguage from '@/components/LanguageNameInUserLanguage.vue';
 import Label from '@/components/Label.vue';
 import LabelEdit from '@/components/LabelEdit.vue';
 import Description from '@/components/Description.vue';
@@ -63,7 +64,6 @@ import { Prop } from 'vue-property-decorator';
 		DescriptionEdit,
 		Aliases,
 		AliasesEdit,
-		LanguageNameInUserLanguage,
 	},
 	computed: {
 		...mapState( [ 'editMode' ] ),
@@ -72,6 +72,9 @@ import { Prop } from 'vue-property-decorator';
 			'getDescriptionByLanguage',
 			'getAliasesByLanguage',
 		] ),
+		...mapGetters( NS_LANGUAGE, {
+			getLanguageTranslationInUserLanguage: 'getTranslationInUserLanguage',
+		} ),
 	},
 } )
 export default class MonolingualFingerprintView extends mixins( Messages ) {
@@ -85,9 +88,6 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
 	public getLanguageByCode!: ( languageCode: string ) => Language;
 
-	get language(): Language {
-		return this.getLanguageByCode( this.languageCode );
-	}
 }
 </script>
 
