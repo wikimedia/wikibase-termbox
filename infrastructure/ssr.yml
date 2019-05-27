@@ -16,6 +16,11 @@
           name: blubber
           state: present
 
+    - name: Ensure curl is installed
+      package:
+        name: curl
+        state: present
+
     - name: Ensure project directory exists
       file:
           path: "{{ PATH }}"

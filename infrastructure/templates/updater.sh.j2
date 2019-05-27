@@ -1,11 +1,8 @@
 set -e
 
-cd {{ PATH }}/git
-git checkout -- package-lock.json
-git pull
+LATEST_COMMIT=`curl -s --header 'Accept: application/vnd.github.v3.sha' 'https://api.github.com/repos/wikimedia/wikibase-termbox/commits/master'`
 
-blubber .pipeline/blubber.yaml production > Dockerfile
-docker build --force-rm -t wmde/wikibase-termbox-production .
+docker pull docker-registry.wikimedia.org/wikimedia/wikibase-termbox:$LATEST_COMMIT
+docker tag docker-registry.wikimedia.org/wikimedia/wikibase-termbox:$LATEST_COMMIT wmde/wikibase-termbox-production:latest
 
 sudo systemctl restart termbox
-
