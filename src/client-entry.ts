@@ -15,6 +15,9 @@ import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntit
 import EntityInitializer from '@/common/EntityInitializer';
 import { getAxios } from '@/client/axios/axiosFactory';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
+import DispatchingUserPreferenceRepository from '@/common/data-access/DispatchingUserPreferenceRepository';
+import { UserPreference } from '@/common/UserPreference';
+import MWCookieUserPreferenceRepository from '@/client/data-access/MWCookieUserPreferenceRepository';
 
 Vue.config.productionTip = false;
 Vue.mixin( newConfigMixin(
@@ -64,6 +67,14 @@ const userName = ( window as MwWindow ).mw.config.get( 'wgUserName' );
 const axios = getAxios( baseUrl, userName );
 
 services.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, new EntityInitializer() ) );
+
+services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
+	[ UserPreference.HIDE_ANON_EDIT_WARNING ]: new MWCookieUserPreferenceRepository(
+		( window as MwWindow ).mw.cookie,
+		'wikibase-no-anonymouseditwarning',
+		{ expires: 60 * 60 * 24 * 365 * 10 },
+	),
+} ) );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
 	buildApp( termboxRequest ).then( ( app ) => {

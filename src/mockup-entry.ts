@@ -21,6 +21,7 @@ const preferredLanguages = getOrEnforceUrlParameter(
 	util: {
 		getUrl: ( page ) => `#${ page }`,
 	},
+	cookie: { set() {}, get() {} },
 };
 
 ( window as MwWindow ).wb = {

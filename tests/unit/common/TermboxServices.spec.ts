@@ -65,12 +65,26 @@ describe( 'TermboxServices', () => {
 			expect( () => newTermboxServices().getWritingEntityRepository() ).toThrow();
 		} );
 
-		it( 'can set and get an writingEntityRepository', () => {
+		it( 'can set and get a writingEntityRepository', () => {
 			const services = newTermboxServices();
 			const mockRepository = new ( jest.fn() )();
 
 			services.setWritingEntityRepository( mockRepository );
 			expect( services.getWritingEntityRepository() ).toBe( mockRepository );
+		} );
+	} );
+
+	describe( 'UserPreferenceRepository', () => {
+		it( 'throws an error if it is not set', () => {
+			expect( () => newTermboxServices().getUserPreferenceRepository() ).toThrow();
+		} );
+
+		it( 'can set and get a UserPreferenceRepository', () => {
+			const services = newTermboxServices();
+			const mockRepository = new ( jest.fn() )();
+
+			services.setUserPreferenceRepository( mockRepository );
+			expect( services.getUserPreferenceRepository() ).toBe( mockRepository );
 		} );
 	} );
 

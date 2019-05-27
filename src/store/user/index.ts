@@ -8,6 +8,7 @@ export default function (): Module<User, any> {
 		name: null,
 		primaryLanguage: '',
 		secondaryLanguages: [],
+		preferences: {},
 	};
 
 	const namespaced = true;
