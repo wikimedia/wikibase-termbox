@@ -1,5 +1,5 @@
 <template>
-	<div class="wb-ui-anon-edit-warning">
+	<div class="wb-ui-anon-edit-warning" tabindex="-1" v-focus>
 		<h4 class="wb-ui-anon-edit-warning__heading">
 			{{ message( MESSAGE_KEYS.EDIT_WARNING_HEADING ) }}
 		</h4>
@@ -12,7 +12,6 @@
 				:message="message( MESSAGE_KEYS.LOGIN )"
 				:href="loginLinkUrl"
 				:prevent-default="false"
-				v-focus
 			/>
 			<EventEmittingButton
 				type="normal"
@@ -79,6 +78,11 @@ export default class AnonEditWarning extends mixins( Messages ) {
 				margin-right: 16px;
 			}
 		}
+	}
+
+	&:focus {
+		outline: 0;
+		border: 0;
 	}
 }
 </style>
