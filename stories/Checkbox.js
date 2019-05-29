@@ -3,11 +3,14 @@ import Checkbox from '@/components/Checkbox.vue';
 
 storiesOf( 'Checkbox', module )
 	.add( 'without value', () => ( {
-		data() { return { isChecked: false }; },
+		data() { return { aChecked: false, bChecked: true }; },
 		components: { Checkbox },
-		template: '<Checkbox v-model="isChecked" :label="isChecked ? \'Checked!\' : \'Not checked!\'" />',
+		template:
+			`<p>
+				<Checkbox v-model="aChecked" :label="aChecked ? 'Checked!' : 'Not checked!'" />
+				<Checkbox v-model="bChecked" :label="bChecked ? 'Checked!' : 'Not checked!'" />
+			</p>`,
 	} ) )
-
 	.add( 'with value', () => ( {
 		data() { return { isChecked: false }; },
 		components: { Checkbox },
