@@ -13,6 +13,7 @@
 	"wikibase-anonymouseditwarning-heading": "Du bist nicht eingeloggt",
 	"wikibase-anonymouseditwarning-message": "Deine IP-Adresse wird öffentlich sichtbar sein, falls du Bearbeitungen durchführst. Wenn du dich anmeldest oder ein Benutzerkonto erstellst, werden deine Bearbeitungen neben anderen Vorteilen einem Benutzernamen zugeordnet.",
 	"wikibase-anonymouseditwarning-dismiss-button": "Ohne Anmeldung bearbeiten",
+	"wikibase-anonymouseditwarning-dismiss-persist": "Warne mich immer, wenn ich nicht eingeloggt bin.",
 	"login": "Anmelden",
 	"createaccount": "Benutzerkonto anlegen"
 }

@@ -6,17 +6,24 @@
 		<p class="wb-ui-anon-edit-warning__message">
 			{{ message( MESSAGE_KEYS.EDIT_WARNING_MESSAGE ) }}
 		</p>
+		<p class="wb-ui-anon-edit-warning__persist">
+			<Checkbox
+				v-model="warnRecurringly"
+				:label="message( MESSAGE_KEYS.EDIT_WARNING_DISMISS_PERSIST )"
+			/>
+		</p>
 		<div class="wb-ui-anon-edit-warning__button-group">
 			<EventEmittingButton
 				type="primaryProgressive"
 				:message="message( MESSAGE_KEYS.LOGIN )"
 				:href="loginLinkUrl"
 				:prevent-default="false"
+				@click="persistUserPreference()"
 			/>
 			<EventEmittingButton
 				type="normal"
 				:message="message( MESSAGE_KEYS.EDIT_WARNING_DISMISS_BUTTON )"
-				@click="$emit( 'dismiss' )"
+				@click="persistUserPreference(); $emit( 'dismiss' )"
 			/>
 		</div>
 		<div class="wb-ui-anon-edit-warning__button-group">
@@ -25,6 +32,7 @@
 				:message="message( MESSAGE_KEYS.CREATE_ACCOUNT )"
 				:href="signUpLinkUrl"
 				:prevent-default="false"
+				@click="persistUserPreference()"
 			/>
 		</div>
 	</div>
@@ -35,10 +43,17 @@ import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import { namespace } from 'vuex-class';
-import { NS_LINKS } from '@/store/namespaces';
+import {
+	NS_LINKS,
+	NS_USER,
+} from '@/store/namespaces';
+import Checkbox from '@/components/Checkbox.vue';
+import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
+import { UserPreference } from '@/common/UserPreference';
+import { action } from '@/store/util';
 
 @Component( {
-	components: { EventEmittingButton },
+	components: { Checkbox, EventEmittingButton },
 } )
 export default class AnonEditWarning extends mixins( Messages ) {
 
@@ -48,6 +63,17 @@ export default class AnonEditWarning extends mixins( Messages ) {
 	@namespace( NS_LINKS ).State( 'signUpLinkUrl' )
 	public signUpLinkUrl!: string;
 
+	public warnRecurringly: Boolean = false;
+
+	public persistUserPreference() {
+		this.$store.dispatch(
+			action( NS_USER, USER_PREFERENCE_SET ),
+			{
+				name: UserPreference.HIDE_ANON_EDIT_WARNING,
+				value: !this.warnRecurringly,
+			},
+		);
+	}
 }
 </script>
 
@@ -85,6 +111,10 @@ export default class AnonEditWarning extends mixins( Messages ) {
 	&:focus {
 		outline: 0;
 		border: 0;
+	}
+
+	&__persist {
+		margin: 16px 0;
 	}
 }
 </style>

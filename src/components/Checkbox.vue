@@ -41,9 +41,9 @@ $label: '.wb-ui-checkbox__label';
 	&__label {
 		font-family: $font-family-sans;
 		cursor: pointer;
-		white-space: nowrap;
 		display: flex;
 		align-items: center;
+		line-height: 1.2;
 
 		&:before {
 			min-width: $size-input-binary;

@@ -11,6 +11,7 @@ storiesOf( 'AnonEditWarning', module )
 			[ MessageKeys.LOGIN ]: 'asinus',
 			[ MessageKeys.CREATE_ACCOUNT ]: 'dolor',
 			[ MessageKeys.EDIT_WARNING_DISMISS_BUTTON ]: 'lorem ipsum',
+			[ MessageKeys.EDIT_WARNING_DISMISS_PERSIST ]: 'historia amend',
 			[ MessageKeys.EDIT_WARNING_HEADING ]: 'amet',
 			[ MessageKeys.EDIT_WARNING_MESSAGE ]: 'Nunc volutpat mattis augue. Sed eu enim vitae dui.',
 		};

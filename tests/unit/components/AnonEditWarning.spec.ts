@@ -6,7 +6,13 @@ import { MessageKeys } from '@/common/MessageKeys';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { LINKS_UPDATE } from '@/store/links/mutationTypes';
-import { NS_LINKS } from '@/store/namespaces';
+import {
+	NS_LINKS,
+	NS_USER,
+} from '@/store/namespaces';
+import createMockableStore from '../store/createMockableStore';
+import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
+import { UserPreference } from '@/common/UserPreference';
 
 const LOGIN_URL = '/login';
 const SIGNUP_URL = '/signup';
@@ -45,46 +51,64 @@ describe( 'AnonEditWarning', () => {
 			.toBe( expectedMessage );
 	} );
 
-	it( 'has a login button', () => {
+	it( 'has a login button acting as link that also causes preference persistence', () => {
 		const buttonLabel = 'login';
+		const persistUserPreference = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
 			store: createStoreWithLinks(),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKeys.LOGIN ]: buttonLabel,
 			} ) ],
+			methods: {
+				persistUserPreference,
+			},
 		} );
 		const button = wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
 		expect( button.props( 'href' ) ).toBe( LOGIN_URL );
 		expect( button.props( 'preventDefault' ) ).toBe( false );
+
+		button.trigger( 'click' );
+		expect( persistUserPreference ).toHaveBeenCalled();
 	} );
 
-	it( 'has a sign-up button', () => {
+	it( 'has a sign-up button acting as link that also causes preference persistence', () => {
 		const buttonLabel = 'sign up';
+		const persistUserPreference = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
 			store: createStoreWithLinks(),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKeys.CREATE_ACCOUNT ]: buttonLabel,
 			} ) ],
+			methods: {
+				persistUserPreference,
+			},
 		} );
 		const button = wrapper.find( '.wb-ui-event-emitting-button--framelessProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
 		expect( button.props( 'href' ) ).toBe( SIGNUP_URL );
 		expect( button.props( 'preventDefault' ) ).toBe( false );
+
+		button.trigger( 'click' );
+		expect( persistUserPreference ).toHaveBeenCalled();
 	} );
 
-	it( 'has a dismiss button', () => {
+	it( 'has a dismiss button that emits an event and also causes preference persistence', () => {
 		const buttonLabel = 'edit w/o login';
+		const persistUserPreference = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
 			store: createStore(),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKeys.EDIT_WARNING_DISMISS_BUTTON ]: buttonLabel,
 			} ) ],
+			methods: {
+				persistUserPreference,
+			},
 		} );
 
 		const button = wrapper.find( '.wb-ui-event-emitting-button--normal' );
@@ -92,6 +116,7 @@ describe( 'AnonEditWarning', () => {
 
 		button.trigger( 'click' );
 		expect( wrapper.emitted( 'dismiss' ) ).toBeTruthy();
+		expect( persistUserPreference ).toHaveBeenCalled();
 	} );
 
 	it( 'is focused', () => {
@@ -104,5 +129,64 @@ describe( 'AnonEditWarning', () => {
 		} );
 
 		expect( focus.mock.calls[ 0 ][ 0 ] ).toBe( wrapper.element );
+	} );
+
+	describe( `saves ${UserPreference.HIDE_ANON_EDIT_WARNING} user preference`, () => {
+		it( 'as true when warnRecurringly is false', () => {
+			const mockUserPreferenceSet = jest.fn();
+			const wrapper = shallowMount( AnonEditWarning, {
+				store: createMockableStore( {
+					modules: {
+						[ NS_USER ]: {
+							actions: {
+								[ USER_PREFERENCE_SET ]: mockUserPreferenceSet,
+							},
+						},
+					},
+				} ),
+				data: () => ( {
+					warnRecurringly: false,
+				} ),
+			} );
+
+			( wrapper.vm as any ).persistUserPreference();
+
+			expect( mockUserPreferenceSet ).toHaveBeenCalledWith(
+				expect.anything(),
+				{
+					name: UserPreference.HIDE_ANON_EDIT_WARNING,
+					value: true,
+				},
+				undefined,
+			);
+		} );
+
+		it( 'as false when warnRecurringly is true', () => {
+			const mockUserPreferenceSet = jest.fn();
+			const wrapper = shallowMount( AnonEditWarning, {
+				store: createMockableStore( {
+					modules: {
+						[ NS_USER ]: {
+							actions: {
+								[ USER_PREFERENCE_SET ]: mockUserPreferenceSet,
+							},
+						},
+					},
+				} ),
+				data: () => ( {
+					warnRecurringly: true,
+				} ),
+			} );
+			( wrapper.vm as any ).persistUserPreference();
+
+			expect( mockUserPreferenceSet ).toHaveBeenCalledWith(
+				expect.anything(),
+				{
+					name: UserPreference.HIDE_ANON_EDIT_WARNING,
+					value: false,
+				},
+				undefined,
+			);
+		} );
 	} );
 } );
