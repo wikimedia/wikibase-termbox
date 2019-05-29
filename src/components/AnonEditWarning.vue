@@ -54,6 +54,7 @@ export default class AnonEditWarning extends mixins( Messages ) {
 <style lang="scss">
 .wb-ui-anon-edit-warning {
 	$block: #{ & };
+	margin: 0 8px;
 
 	&__heading {
 		text-align: center;
@@ -65,7 +66,7 @@ export default class AnonEditWarning extends mixins( Messages ) {
 		background: $warning-message-background $svg-warning no-repeat 16px 8px;
 		border: 1px solid $warning-message-border;
 		padding: 8px 8px 8px 48px;
-		margin-top: 16px;
+		margin: 16px -8px 0 -8px;
 	}
 
 	&__button-group {
