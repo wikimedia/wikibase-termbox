@@ -62,7 +62,7 @@ services:
     module: ./serverBuild/server/server.js
     conf:
       WIKIBASE_REPO: '{env(WIKIBASE_REPO,https://www.wikidata.org/w)}' #use env var with fallback
-      WIKIBASE_REPO_HOSTNAME_ALIAS: '{env(WIKIBASE_REPO_HOSTNAME_ALIAS),appservers-ro.discovery.wmnet}'
+      WIKIBASE_REPO_HOSTNAME_ALIAS: '{env(WIKIBASE_REPO_HOSTNAME_ALIAS,appservers-ro.discovery.wmnet)}'
       SSR_PORT: '{env(SSR_PORT,3030)}'
       MEDIAWIKI_REQUEST_TIMEOUT: '{env(MEDIAWIKI_REQUEST_TIMEOUT)}'
       MESSAGES_CACHE_MAX_AGE: '{env(MESSAGES_CACHE_MAX_AGE)}'
