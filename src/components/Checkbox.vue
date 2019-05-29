@@ -46,8 +46,8 @@ $label: '.wb-ui-checkbox__label';
 		align-items: center;
 
 		&:before {
-			width: $size-input-binary;
-			height: $size-input-binary;
+			min-width: $size-input-binary;
+			min-height: $size-input-binary;
 			border: $border-base;
 			border-color: $border-color-input-binary;
 			border-radius: $border-radius-base;
