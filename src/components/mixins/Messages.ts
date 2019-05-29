@@ -9,12 +9,12 @@ export default class Messages extends Vue {
 	public readonly MESSAGE_KEYS = MessageKeys;
 
 	@namespace( NS_MESSAGES ).Getter( 'getMessageInLanguage' )
-	public getMessageInLanguage!: ( inLanguage: string, messageKey: string ) => string | null;
+	public getMessageInLanguage!: ( inLanguage: string, messageKey: MessageKeys ) => string | null;
 
 	@namespace( NS_USER ).State( 'primaryLanguage' )
 	public primaryLanguage!: string;
 
-	public message( messageKey: string ): string {
+	public message( messageKey: MessageKeys ): string {
 		const messageContent = this.getMessageInLanguage(
 			this.primaryLanguage,
 			messageKey,

@@ -3,6 +3,7 @@ import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutationTypes';
 import { services } from '@/common/TermboxServices';
 import newMockStore from '../newMockStore';
+import { MessageKeys } from '@/common/MessageKeys';
 
 describe( 'messages/actions', () => {
 	describe( MESSAGES_INIT, () => {
@@ -10,8 +11,8 @@ describe( 'messages/actions', () => {
 
 			const mockMessages = {
 				de: {
-					test1: 'test',
-					test2: 'teststring with spaces',
+					[ MessageKeys.CANCEL ]: 'abbrechen',
+					[ MessageKeys.EDIT ]: 'b e a r b e i t e n',
 				},
 			};
 

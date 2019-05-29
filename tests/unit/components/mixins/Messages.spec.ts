@@ -29,7 +29,7 @@ describe( 'Messages', () => {
 
 	it( 'returns the message for a given message key', () => {
 		const language = 'en';
-		const messageKey = 'wikibase-edit';
+		const messageKey = MessageKeys.EDIT;
 		const message = 'edit';
 
 		const getter = jest.fn();
@@ -53,7 +53,7 @@ describe( 'Messages', () => {
 		const messages = new Messages();
 		messages.$store = mockStore( language, getter );
 
-		expect( messages.message( messageKey ) ).toBe( messageKey );
+		expect( messages.message( messageKey as MessageKeys ) ).toBe( messageKey );
 		expect( getter ).toBeCalledWith( language, messageKey );
 	} );
 

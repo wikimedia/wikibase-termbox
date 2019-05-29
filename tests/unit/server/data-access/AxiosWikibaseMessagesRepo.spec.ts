@@ -10,7 +10,7 @@ import HttpStatus from 'http-status-codes';
 
 const axiosMock = new MockAdapter( axios );
 
-function newAxiosWikibaseMessagesRepo( messageKeys: string[] ) {
+function newAxiosWikibaseMessagesRepo( messageKeys: MessageKeys[] ) {
 	return new AxiosWikibaseMessagesRepo(
 		axios,
 		messageKeys,
@@ -31,12 +31,12 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 	describe( 'getMessagesInLanguage', () => {
 		it( 'with well-formed allmessages query resolves to messages on success', ( done ) => {
 			const inLanguage = 'de';
-			const messageKeys = [ 'wikibase-edit', 'wikibase-save' ];
+			const messageKeys = [ MessageKeys.EDIT, MessageKeys.PUBLISH ];
 
 			const messages: MessageTranslationCollection = {
 				de: {
 					'wikibase-edit': 'bearbeiten',
-					'wikibase-save': 'speichern',
+					'wikibase-publish': 'speichern',
 				},
 			};
 			const results = {
@@ -48,8 +48,8 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 						'*': 'bearbeiten',
 					},
 					{
-						'name': 'wikibase-save',
-						'normalizedname': 'wikibase-save',
+						'name': 'wikibase-publish',
+						'normalizedname': 'wikibase-publish',
 						'*': 'speichern',
 					} ],
 				},
@@ -86,7 +86,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 
 			axiosMock.onGet().reply( HttpStatus.OK, results );
 
-			const repo = newAxiosWikibaseMessagesRepo( [ 'wikibase-edit', 'foo' ] );
+			const repo = newAxiosWikibaseMessagesRepo( [ 'wikibase-edit', 'foo' ] as MessageKeys[] );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
 				expect( reason ).toBeInstanceOf( MessagesNotFound );
 				expect( reason.message ).toEqual( 'foo is not a valid message-key.' );

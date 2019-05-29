@@ -1,5 +1,6 @@
 import { getters } from '@/store/messages/getters';
 import Messages from '@/store/messages/Messages';
+import { MessageKeys } from '@/common/MessageKeys';
 
 describe( 'messages/Getters', () => {
 
@@ -8,8 +9,8 @@ describe( 'messages/Getters', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						toefften: 'potato',
-						plumen: 'Pflaumen',
+						[ MessageKeys.PUBLISH ]: 'veröffentlichen',
+						[ MessageKeys.EDIT ]: 'bearbeiten',
 					},
 				},
 			};
@@ -23,7 +24,7 @@ describe( 'messages/Getters', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						toefften: 'potato',
+						[ MessageKeys.CANCEL ]: 'abbrechen',
 					},
 				},
 			};
@@ -39,41 +40,41 @@ describe( 'messages/Getters', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						toefften: 'potato',
-						plumen: 'Pflaumen',
+						[ MessageKeys.CANCEL ]: 'abbrechen',
+						[ MessageKeys.CREATE_ACCOUNT ]: 'Account erstellen',
 					},
 				},
 			};
 
 			expect( getters.getMessageInLanguage(
 				messages, null, null, null,
-			)( 'de', 'toefften' ) ).toBe( messages.messages.de.toefften );
+			)( 'de', MessageKeys.CANCEL ) ).toBe( messages.messages.de[ MessageKeys.CANCEL ] );
 		} );
 
-		it( 'returns null if no message for the messageKey exists', () => {
+		it( 'returns null if no message for the message key exists', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						plumen: 'Pflaumen',
+						[ MessageKeys.EDIT ]: 'bearbeiten',
 					},
 				},
 			};
 			expect( getters.getMessageInLanguage(
 				messages, null, null, null,
-			)( 'en', 'plumen' ) ).toBe( null );
+			)( 'de', 'potato' ) ).toBe( null );
 		} );
 
-		it( 'returns null if no message for the messageKey exists', () => {
+		it( 'returns null if no message data exists in the given language', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						plumen: 'Pflaumen',
+						[ MessageKeys.EDIT ]: 'bearbeiten',
 					},
 				},
 			};
 			expect( getters.getMessageInLanguage(
 				messages, null, null, null,
-			)( 'de', 'toefften' ) ).toBe( null );
+			)( 'en', MessageKeys.EDIT ) ).toBe( null );
 		} );
 	} );
 } );
