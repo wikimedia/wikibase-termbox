@@ -1,5 +1,5 @@
 <template>
-	<div class="wb-ui-checkbox">
+	<span class="wb-ui-checkbox">
 		<input
 			type="checkbox"
 			:id="id"
@@ -11,7 +11,7 @@
 			class="wb-ui-checkbox__label"
 			:for="id"
 		>{{ label }}</label>
-	</div>
+	</span>
 </template>
 
 <script lang="ts">
