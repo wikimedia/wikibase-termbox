@@ -21,6 +21,7 @@ import { LINKS_UPDATE } from '@/store/links/mutationTypes';
 import {
 	LANGUAGE_INIT,
 	USER_SET_NAME,
+	USER_SET_PREFERENCE,
 } from '@/store/user/mutationTypes';
 import { mutation } from '@/store/util';
 import {
@@ -39,6 +40,7 @@ import Vue from 'vue';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import createMockableStore from '../store/createMockableStore';
+import { UserPreference } from '@/common/UserPreference';
 
 describe( 'TermBox.vue', () => {
 
@@ -123,6 +125,23 @@ describe( 'TermBox.vue', () => {
 						const store = createStore();
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						store.commit( mutation( NS_USER, USER_SET_NAME ), 'Lord Voldemort' );
+						const wrapper = shallowMount( TermBox, {
+							store,
+							stubs: { EditTools, EventEmittingButton, AnonEditWarning },
+						} );
+
+						await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+
+						expect( wrapper.find( AnonEditWarning ).exists() ).toBeFalsy();
+					} );
+
+					it( `is not shown if ${ UserPreference.HIDE_ANON_EDIT_WARNING } is set`, async () => {
+						const store = createStore();
+						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+						store.commit(
+							mutation( NS_USER, USER_SET_PREFERENCE ),
+							{ name: UserPreference.HIDE_ANON_EDIT_WARNING, value: true },
+						);
 						const wrapper = shallowMount( TermBox, {
 							store,
 							stubs: { EditTools, EventEmittingButton, AnonEditWarning },

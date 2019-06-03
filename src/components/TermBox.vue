@@ -59,6 +59,8 @@ import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Messages from '@/components/mixins/Messages';
 import Modal from '@/components/Modal.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
+import { UserPreference } from '@/common/UserPreference';
+import User from '@/store/user/User';
 
 @Component( {
 	components: {
@@ -93,10 +95,16 @@ export default class TermBox extends mixins( Messages ) {
 	@namespace( NS_USER ).State( 'name' )
 	public userName!: string | null;
 
+	@namespace( NS_USER ).State( ( state: User ) => state.preferences[ UserPreference.HIDE_ANON_EDIT_WARNING ] )
+	public hideAnonEditWarning!: boolean;
+
 	public showEditWarning = false;
 
 	public edit() {
-		this.showEditWarningForAnonymousUser();
+		if ( !this.hideAnonEditWarning ) {
+			this.showEditWarningForAnonymousUser();
+		}
+
 		this.activateEditMode();
 	}
 
