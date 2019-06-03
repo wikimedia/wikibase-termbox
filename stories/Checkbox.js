@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/vue';
 import Checkbox from '@/components/Checkbox.vue';
 
 storiesOf( 'Checkbox', module )
-	.add( 'without value', () => ( {
+	.add( 'without value, one checked by default', () => ( {
 		data() { return { aChecked: false, bChecked: true }; },
 		components: { Checkbox },
 		template:
