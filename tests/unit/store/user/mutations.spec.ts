@@ -7,15 +7,21 @@ import {
 import InvalidLanguageValueException from '@/store/user/exceptions/InvalidLanguageValueException';
 import User from '@/store/user/User';
 import { USER_SET_NAME } from '@/store/user/mutationTypes';
+import { USER_SET_PREFERENCE } from '@/store/user/mutationTypes';
+import { UserPreference } from '@/common/UserPreference';
 
-function newUserState(): User {
-	const state = {
+function newUserState( user: any = null ): User {
+	let state = {
 		primaryLanguage: '',
 		secondaryLanguages: [],
 		name: null,
+		preferences: {},
 	};
 
-	lockState( state );
+	if ( user !== null ) {
+		state = { ...state, ...user };
+		lockState( state );
+	}
 
 	return state;
 }
@@ -63,5 +69,11 @@ describe( '/store/user/mutations.ts', () => {
 		const name = 'Lord Voldemort';
 		mutations[ USER_SET_NAME ]( userState, name );
 		expect( userState.name ).toBe( name );
+	} );
+
+	it( USER_SET_PREFERENCE, () => {
+		const state = newUserState();
+		mutations[ USER_SET_PREFERENCE ]( state, { name: UserPreference.HIDE_ANON_EDIT_WARNING, value: true } );
+		expect( state.preferences[ UserPreference.HIDE_ANON_EDIT_WARNING ] ).toBe( true );
 	} );
 } );

@@ -4,6 +4,7 @@ import LanguageRepository from '@/common/data-access/LanguageRepository';
 import MessagesRepository from '@/common/data-access/MessagesRepository';
 import EntityEditabilityResolver from '@/common/data-access/EntityEditabilityResolver';
 import WritingEntityRepository from '@/common/data-access/WritingEntityRepository';
+import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
 
 export default class TermboxServices {
 	private languageTranslationRepository?: LanguageTranslationRepository;
@@ -12,6 +13,7 @@ export default class TermboxServices {
 	private messagesRepository?: MessagesRepository;
 	private entityEditabilityResolver?: EntityEditabilityResolver;
 	private writingEntityRepository?: WritingEntityRepository;
+	private userPreferenceRepository?: UserPreferenceRepository;
 
 	public setLanguageTranslationRepository( lookup: LanguageTranslationRepository ) {
 		this.languageTranslationRepository = lookup;
@@ -82,6 +84,18 @@ export default class TermboxServices {
 			return this.writingEntityRepository;
 		} else {
 			throw new Error( 'writingEntityRepository is undefined' );
+		}
+	}
+
+	public setUserPreferenceRepository( userPreferenceRepository: UserPreferenceRepository ) {
+		this.userPreferenceRepository = userPreferenceRepository;
+	}
+
+	public getUserPreferenceRepository() {
+		if ( this.userPreferenceRepository ) {
+			return this.userPreferenceRepository;
+		} else {
+			throw new Error( 'userPreferenceRepository is undefined' );
 		}
 	}
 

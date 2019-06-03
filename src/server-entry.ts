@@ -66,6 +66,11 @@ export default ( context: BundleRendererContext ) => {
 			return Promise.resolve( true );
 		},
 	} );
+	services.setUserPreferenceRepository( {
+		// setting and getting user preferences is not relevant for the SSR output for now
+		setPreference: () => Promise.resolve(),
+		getPreference: () => Promise.resolve(),
+	} );
 
 	return buildApp( context.request ).catch( ( err: any ) => {
 		if ( err instanceof EntityNotFound ) {

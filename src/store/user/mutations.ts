@@ -1,11 +1,14 @@
+import Vue from 'vue';
 import { MutationTree } from 'vuex';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
 	USER_SET_NAME,
+	USER_SET_PREFERENCE,
 } from '@/store/user/mutationTypes';
 import User from '@/store/user/User';
 import InvalidLanguageValueException from '@/store/user/exceptions/InvalidLanguageValueException';
+import { UserPreference } from '@/common/UserPreference';
 
 export const mutations: MutationTree<User> = {
 	[ LANGUAGE_INIT ]( state: User, language: string ): void {
@@ -26,5 +29,9 @@ export const mutations: MutationTree<User> = {
 
 	[ USER_SET_NAME ]( state: User, name: string ) {
 		state.name = name;
+	},
+
+	[ USER_SET_PREFERENCE ]( state: User, { name, value }: { name: UserPreference, value: any } ) {
+		Vue.set( state.preferences, name, value );
 	},
 };

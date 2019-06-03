@@ -2,11 +2,14 @@ import { actions } from '@/store/user/actions';
 import {
 	LANGUAGE_PREFERENCE,
 	USER_NAME_SET,
+	USER_PREFERENCES_INIT,
+	USER_PREFERENCE_SET,
 } from '@/store/user/actionTypes';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
 	USER_SET_NAME,
+	USER_SET_PREFERENCE,
 } from '@/store/user/mutationTypes';
 import {
 	NS_LANGUAGE,
@@ -16,6 +19,8 @@ import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { action } from '@/store/util';
 import newMockStore from '../newMockStore';
+import { UserPreference } from '@/common/UserPreference';
+import { services } from '@/common/TermboxServices';
 
 describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
@@ -63,5 +68,48 @@ describe( 'user/actions', () => {
 		actions[ USER_NAME_SET ]( context, name );
 
 		expect( context.commit ).toHaveBeenCalledWith( USER_SET_NAME, name );
+	} );
+
+	it( USER_PREFERENCES_INIT, () => {
+		const context = newMockStore( {} );
+		const preferenceStubs: { [preference in UserPreference]: any } = {
+			[ UserPreference.HIDE_ANON_EDIT_WARNING ]: true,
+		};
+		const prefsRepo = {
+			setPreference: jest.fn(),
+			getPreference: jest.fn().mockImplementation(
+				( preference: UserPreference ) => Promise.resolve( preferenceStubs[ preference ] ),
+			),
+		};
+		services.setUserPreferenceRepository( prefsRepo );
+
+		return actions[ USER_PREFERENCES_INIT ]( context ).then( () => {
+			Object.values( UserPreference ).forEach( ( preference: UserPreference ) => {
+				expect( prefsRepo.getPreference ).toHaveBeenCalledWith( preference );
+				expect( context.commit ).toHaveBeenCalledWith(
+					USER_SET_PREFERENCE,
+					{ name: preference, value: preferenceStubs[ preference ] },
+				);
+			} );
+		} );
+	} );
+
+	it( USER_PREFERENCE_SET, () => {
+		const context = newMockStore( {} );
+		const prefsRepo = {
+			setPreference: jest.fn().mockReturnValue( Promise.resolve() ),
+			getPreference: jest.fn(),
+		};
+		services.setUserPreferenceRepository( prefsRepo );
+		const preferenceName = UserPreference.HIDE_ANON_EDIT_WARNING;
+		const preferenceValue = true;
+
+		return actions[ USER_PREFERENCE_SET ]( context, { name: preferenceName, value: preferenceValue } ).then( () => {
+			expect( prefsRepo.setPreference ).toHaveBeenCalledWith( preferenceName, preferenceValue );
+			expect( context.commit ).toHaveBeenCalledWith(
+				USER_SET_PREFERENCE,
+				{ name: preferenceName, value: preferenceValue },
+			);
+		} );
 	} );
 } );

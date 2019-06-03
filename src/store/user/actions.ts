@@ -2,11 +2,14 @@ import { ActionContext } from 'vuex';
 import {
 	LANGUAGE_PREFERENCE,
 	USER_NAME_SET,
+	USER_PREFERENCES_INIT,
+	USER_PREFERENCE_SET,
 } from './actionTypes';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
 	USER_SET_NAME,
+	USER_SET_PREFERENCE,
 } from './mutationTypes';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import User from '@/store/user/User';
@@ -16,13 +19,15 @@ import {
 } from '@/store/namespaces';
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import { action } from '@/store/util';
+import { UserPreference } from '@/common/UserPreference';
+import { services } from '@/common/TermboxServices';
 
 export const actions = {
 
 	[ LANGUAGE_PREFERENCE ](
 		context: ActionContext<User, any>,
 		{ primaryLanguage, preferredLanguages }: { primaryLanguage: string, preferredLanguages: string[] },
-	): Promise<[void, void]> {
+	): Promise<[ void, void ]> {
 		context.commit( LANGUAGE_INIT, primaryLanguage );
 
 		context.commit( SECONDARY_LANGUAGES_INIT, preferredLanguages.filter( ( languageKey: string ) => {
@@ -37,5 +42,26 @@ export const actions = {
 
 	[ USER_NAME_SET ]( context: ActionContext<User, any>, name: string ) {
 		context.commit( USER_SET_NAME, name );
+	},
+
+	[ USER_PREFERENCES_INIT ]( context: ActionContext<User, any> ): Promise<void[]> {
+		return Promise.all( Object.values( UserPreference ).map( ( preference ) => {
+			return services.getUserPreferenceRepository().getPreference( preference )
+				.then( ( value ) => context.commit(
+					USER_SET_PREFERENCE,
+					{ name: preference, value },
+				) );
+		} ) );
+	},
+
+	[ USER_PREFERENCE_SET ](
+		context: ActionContext<User, any>,
+		{ name, value }: { name: UserPreference, value: any },
+	) {
+		return services.getUserPreferenceRepository().setPreference( name, value ).then( () => {
+			// Only write to the store if persisting the preference was successful in order to avoid inconsistencies
+			// between store and preference repository.
+			context.commit( USER_SET_PREFERENCE, { name, value } );
+		} );
 	},
 };

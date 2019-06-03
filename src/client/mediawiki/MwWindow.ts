@@ -20,11 +20,25 @@ interface MediaWiki {
 	message: MwMessages;
 	util: {
 		getUrl( title: string, params: object ): string;
-	}
+	};
+	cookie: MWCookie;
 }
 
 export interface WikibaseContentLanguages {
 	getAllPairs: () => any;
+}
+
+export type MWCookieOptions = {
+	expires?: Date | number | null;
+	prefix?: string;
+	domain?: string;
+	path?: string;
+	secure?: boolean;
+}
+
+export interface MWCookie {
+	set( name: string, value: string, options?: MWCookieOptions ): void;
+	get( name: string ): string;
 }
 
 interface Wikibase {

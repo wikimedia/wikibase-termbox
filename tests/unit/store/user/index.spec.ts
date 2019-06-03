@@ -7,6 +7,7 @@ describe( 'store/user/index', () => {
 			name: null,
 			primaryLanguage: '',
 			secondaryLanguages: [],
+			preferences: {},
 		} );
 	} );
 } );
