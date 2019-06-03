@@ -6,6 +6,7 @@
 			class="wb-ui-checkbox__box"
 			@change="$emit( 'input', $event.target.checked )"
 			:value="htmlValue"
+			:checked="value"
 		>
 		<label
 			class="wb-ui-checkbox__label"
@@ -21,6 +22,9 @@ import { Prop } from 'vue-property-decorator';
 
 @Component
 export default class Checkbox extends Vue {
+	@Prop( { required: true, type: Boolean } )
+	public value!: boolean;
+
 	@Prop( { required: true, type: String } )
 	public label!: string;
 

@@ -4,6 +4,7 @@ import { shallowMount } from '@vue/test-utils';
 function shallowMountWithProps( props = {} ) {
 	return shallowMount( Checkbox, {
 		propsData: {
+			value: false,
 			label: 'check me',
 			...props,
 		},
@@ -34,5 +35,11 @@ describe( 'Checkbox', () => {
 		const htmlValue = 'test';
 		const wrapper = shallowMountWithProps( { htmlValue } );
 		expect( wrapper.find( 'input' ).attributes( 'value' ) ).toBe( htmlValue );
+	} );
+
+	it( 'sets the checkbox state from the `value` prop', () => {
+		const value = true;
+		const wrapper = shallowMountWithProps( { value } );
+		expect( ( wrapper.find( 'input' ).is( ':checked' ) ) ).toBe( value );
 	} );
 } );
