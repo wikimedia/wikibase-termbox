@@ -25,6 +25,7 @@
 		"@typescript-eslint/type-annotation-spacing": [ "error" ],
 		"filenames/match-exported": "error",
 		"prefer-const": "error",
+		"object-shorthand": [ "error", "always" ],
 
 		// problematic in TypeScript / ES6
 		"no-unused-vars": "off",

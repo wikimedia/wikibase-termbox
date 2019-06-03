@@ -46,7 +46,7 @@ function getShallowMountedAliasEdit(
 			languageCode: language,
 		},
 		store,
-		mixins: mixins,
+		mixins,
 	} );
 }
 

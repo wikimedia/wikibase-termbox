@@ -13,8 +13,8 @@ function newLanguageState(
 	translations: LanguageTranslations = {},
 ): LanguageState {
 	const state = {
-		translations: translations,
-		languages: languages,
+		translations,
+		languages,
 	};
 
 	lockState( state );

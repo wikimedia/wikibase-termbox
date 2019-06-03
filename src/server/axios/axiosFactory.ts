@@ -9,7 +9,7 @@ export const getAxios = ( wikibaseRepo: string, hostnameAlias: string, timeout: 
 	return axios.create( {
 		baseURL: baseUrl.toString(),
 		params: GLOBAL_REQUEST_PARAMS,
-		timeout: timeout,
+		timeout,
 		headers: {
 			'User-Agent': userAgentString,
 			'Host': hostHeader,

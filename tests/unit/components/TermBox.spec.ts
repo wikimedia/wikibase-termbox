@@ -69,7 +69,7 @@ describe( 'TermBox.vue', () => {
 					const store = createStore();
 					const editLinkUrl = '/edit/Q42';
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-					store.commit( mutation( NS_LINKS, LINKS_UPDATE ), { editLinkUrl: editLinkUrl } );
+					store.commit( mutation( NS_LINKS, LINKS_UPDATE ), { editLinkUrl } );
 					const message = 'edit';
 					const wrapper = shallowMount( TermBox, {
 						stubs: { EditTools, EventEmittingButton },
@@ -124,7 +124,7 @@ describe( 'TermBox.vue', () => {
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						store.commit( mutation( NS_USER, USER_SET_NAME ), 'Lord Voldemort' );
 						const wrapper = shallowMount( TermBox, {
-							store: store,
+							store,
 							stubs: { EditTools, EventEmittingButton, AnonEditWarning },
 						} );
 
