@@ -117,6 +117,16 @@ docker run --rm wmde/wikibase-termbox-test
 * put `'__dirname + '/../../../view/lib/wikibase-termbox/tests/selenium/specs/*.js'` in the `specs` section (aproximatly near line 27 ) in the `wdio.conf.js`
 * follow the instruction in `README.md` to run the tests
 
+### Vue CLI
+
+If you have worked with vue before you may be familiar with [vue cli](https://cli.vuejs.org/guide/). Given at time of writing our development workflows are all rather shell-centered we opted against adding its weight as a dependency but you can fire it up dynamically by invoking
+
+```sh
+docker-compose run --rm -p 8000:8000 node npx @vue/cli ui --port 8000 --host 0.0.0.0
+```
+
+Amongst others it provides a neat [(webpack) analysis of the build artifacts](http://localhost:8000/tasks/%2Fapp:build).
+
 ### Running for production
 
 E.g. with production wikidata configured as the backend (`WIKIBASE_REPO`).
