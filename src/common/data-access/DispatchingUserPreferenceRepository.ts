@@ -1,11 +1,15 @@
 import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
 import { UserPreference } from '@/common/UserPreference';
 
+type RepoMapping = {
+	[ preference in UserPreference ]: UserPreferenceRepository
+};
+
 export default class DispatchingUserPreferenceRepository implements UserPreferenceRepository {
 
-	private repoMapping: { [preference in UserPreference]: UserPreferenceRepository };
+	private repoMapping: RepoMapping;
 
-	public constructor( mapping: { [preference in UserPreference]: UserPreferenceRepository } ) {
+	public constructor( mapping: RepoMapping ) {
 		this.repoMapping = mapping;
 	}
 
