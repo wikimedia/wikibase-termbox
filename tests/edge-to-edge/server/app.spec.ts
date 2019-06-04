@@ -20,6 +20,8 @@ import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEnt
 import CoercingQueryValidator from '@/server/route-handler/termbox/CoercingQueryValidator';
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
+import errorLoggingInterceptor from '@/server/axios/errorLoggingInterceptor';
+import AxiosErrorLogger from '@/server/axios/AxiosErrorLogger';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -42,14 +44,18 @@ const messageCache = { has() {}, set() {}, get() {} };
 const languageCache = { has() {}, set() {}, get() {} };
 
 const termboxSpecParameters = openApiJson.paths[ '/termbox' ].get.parameters;
+const testAxios = axios.create( {
+	baseURL: WIKIBASE_TEST_HOST,
+	adapter: httpAdapter, // https://github.com/axios/axios/issues/305#issuecomment-272162405
+	params: {
+		...GLOBAL_REQUEST_PARAMS,
+	},
+} );
+testAxios.interceptors.response.use( ...errorLoggingInterceptor(
+	new AxiosErrorLogger( logger, 'error/service' ),
+) );
 const services = new BundleRendererServices(
-	axios.create( {
-		baseURL: WIKIBASE_TEST_HOST,
-		adapter: httpAdapter, // https://github.com/axios/axios/issues/305#issuecomment-272162405
-		params: {
-			...GLOBAL_REQUEST_PARAMS,
-		},
-	} ),
+	testAxios,
 	logger,
 	messageCache as any,
 	languageCache as any,
@@ -242,13 +248,13 @@ describe( 'Termbox SSR', () => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
-			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log ).toHaveBeenCalledTimes( 2 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].toString() )
+			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( 'upstream system error' );
+			expect( logger.log.mock.calls[ 1 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 1 ][ 1 ].toString() )
 				.toEqual( 'Error: Error: Request failed with status code 500' );
-
-			done();
-		} );
+		} ).finally( () => { done(); } );
 	} );
 
 	it( 'renders Server Error when requesting /termbox and language translation backend request fails', ( done ) => {
@@ -282,9 +288,11 @@ describe( 'Termbox SSR', () => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
-			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log ).toHaveBeenCalledTimes( 2 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].toString() )
+			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( 'upstream system error' );
+			expect( logger.log.mock.calls[ 1 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 1 ][ 1 ].toString() )
 				.toEqual( 'Error: Error: Request failed with status code 500' );
 
 			done();
@@ -448,12 +456,13 @@ describe( 'Termbox SSR', () => {
 		} );
 	} );
 
-	it( 'renders Not found when requesting /termbox with well-formed query for unknown entity', ( done ) => {
+	it( 'renders Not found when requesting /termbox with well-formed query for unknown entity', () => {
 		const entityId = 'Q63';
 		const revision = REVISION_NOT_MATCHING_ENTITY;
 		const language = 'de';
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
+		const backendErrorMessage = '<html><body><h1>Not Found</h1></body></html>';
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -465,43 +474,7 @@ describe( 'Termbox SSR', () => {
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.NOT_FOUND, '<html><body><h1>Not Found</h1></body></html>' );
-
-		request( app ).get( '/termbox' ).query( {
-			entity: entityId,
-			revision,
-			language,
-			editLink,
-			preferredLanguages,
-		} ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
-			expect( response.text ).toContain( 'Entity not found' );
-			expect( logger.log ).not.toBeCalled();
-			done();
-		} );
-	} );
-
-	it( 'renders Not found when requesting /termbox with well-formed query for revision not matching entity', () => {
-		const entityId = 'Q64';
-		const revision = REVISION_NOT_MATCHING_ENTITY;
-		const language = 'de';
-		const editLink = '/some/' + entityId;
-		const preferredLanguages = 'de|en';
-
-		nockSuccessfulLanguageLoading( language );
-		nockSuccessfulMessagesLoading( language );
-		nock( WIKIBASE_TEST_HOST )
-			.get( WIKIBASE_TEST_INDEX_PATH )
-			.query( {
-				id: entityId,
-				revision,
-				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
-				...GLOBAL_REQUEST_PARAMS,
-			} )
-			.reply(
-				HttpStatus.NOT_FOUND,
-				`<h1>Not Found</h1><p>Can't show revision ${revision} of entity ${entityId}.</p>`,
-			);
+			.reply( HttpStatus.NOT_FOUND, backendErrorMessage );
 
 		return request( app ).get( '/termbox' ).query( {
 			entity: entityId,
@@ -512,7 +485,46 @@ describe( 'Termbox SSR', () => {
 		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
-			expect( logger.log ).not.toBeCalled();
+			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( backendErrorMessage );
+		} );
+	} );
+
+	it( 'renders Not found when requesting /termbox with well-formed query for revision not matching entity', () => {
+		const entityId = 'Q64';
+		const revision = REVISION_NOT_MATCHING_ENTITY;
+		const language = 'de';
+		const editLink = '/some/' + entityId;
+		const preferredLanguages = 'de|en';
+		const backendErrorMessage = `<h1>Not Found</h1><p>Can't show revision ${revision} of entity ${entityId}.</p>`;
+
+		nockSuccessfulLanguageLoading( language );
+		nockSuccessfulMessagesLoading( language );
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_INDEX_PATH )
+			.query( {
+				id: entityId,
+				revision,
+				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
+				...GLOBAL_REQUEST_PARAMS,
+			} )
+			.reply( HttpStatus.NOT_FOUND, backendErrorMessage );
+
+		return request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			revision,
+			language,
+			editLink,
+			preferredLanguages,
+		} ).then( ( response ) => {
+			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
+			expect( response.text ).toContain( 'Entity not found' );
+			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( backendErrorMessage );
 		} );
 	} );
 

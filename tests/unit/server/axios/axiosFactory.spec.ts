@@ -2,6 +2,7 @@ import { getAxios } from '@/server/axios/axiosFactory';
 import MockAdapter from 'axios-mock-adapter';
 import HttpStatus from 'http-status-codes';
 import axiosLib from 'axios';
+import AxiosErrorLogger from '@/server/axios/AxiosErrorLogger';
 
 describe( 'getAxios', () => {
 	it( 'should return an Axios instance that makes requests with the correct baseURL', () => {
@@ -10,7 +11,8 @@ describe( 'getAxios', () => {
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
-		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		const logger = { log: jest.fn() } as any as AxiosErrorLogger;
+		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString, logger );
 		const axiosMock = new MockAdapter( axios );
 
 		const somePath = 'somePath';
@@ -28,7 +30,8 @@ describe( 'getAxios', () => {
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
-		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		const logger = { log: jest.fn() } as any as AxiosErrorLogger;
+		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString, logger );
 		const axiosMock = new MockAdapter( axios );
 		const somePath = 'somePath';
 		axiosMock.onGet( 'http://' + mockRepoHostAlias + '/' + mockWikiHostSubPath + '/' + somePath )
@@ -46,8 +49,8 @@ describe( 'getAxios', () => {
 		const mockRepoHostAlias = 'http://reverse.proxy.test';
 
 		const createMock = jest.spyOn( axiosLib, 'create' );
-
-		getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		const logger = { log: jest.fn() } as any as AxiosErrorLogger;
+		getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString, logger );
 
 		expect( createMock.mock.calls[ 0 ][ 0 ]!.timeout ).toEqual( 123 );
 	} );
@@ -57,11 +60,30 @@ describe( 'getAxios', () => {
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
-		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		const logger = { log: jest.fn() } as any as AxiosErrorLogger;
+		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString, logger );
 		const axiosMock = new MockAdapter( axios );
 		axiosMock.onGet( 'http://reverse.proxy.test:1111/w/foo' ).reply( HttpStatus.OK );
-		axios.get( '/foo' ).then( () => {
+		return axios.get( '/foo' ).then( () => {
 			expect( axiosMock.history.get[ 0 ].headers.Host ).toBe( 'test.wiki.example.com:1111' );
+		} );
+	} );
+
+	it( 'should log in the event of an Error', () => {
+		const mockWikiHostSubPath = 'w';
+		const mockRepo = 'http://test.wiki.example.com/' + mockWikiHostSubPath;
+		const mockTimeout = 123;
+		const mockUserAgentString = 'Secret Agent 1.0';
+		const mockRepoHostAlias = 'reverse.proxy.test';
+		const logger = { log: jest.fn() } as any as AxiosErrorLogger;
+		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString, logger );
+		const axiosMock = new MockAdapter( axios );
+		const somePath = 'somePath';
+		axiosMock.onGet( 'http://' + mockRepoHostAlias + '/' + mockWikiHostSubPath + '/' + somePath )
+			.reply( HttpStatus.INTERNAL_SERVER_ERROR );
+
+		return axios.get( somePath ).catch( () => {
+			expect( logger.log ).toBeCalledWith( Error( 'Request failed with status code 500' ) );
 		} );
 	} );
 } );
