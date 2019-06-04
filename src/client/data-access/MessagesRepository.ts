@@ -1,5 +1,5 @@
-import MessagesRepositoryInterface from '@/common/data-access/MessagesRepository.ts';
-import MessageCollection from '@/datamodel/MessageTranslationCollection';
+import MessagesRepositoryInterface from '@/common/data-access/MessagesRepository';
+import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 import { MwMessages } from '@/client/mediawiki/MwWindow';
 import { MessageKey } from '@/common/MessageKey';
 
@@ -13,12 +13,12 @@ export default class MessagesRepository implements MessagesRepositoryInterface {
 		this.messageKeys = messageKeys;
 	}
 
-	public getMessagesInLanguage( inLanguage: string ): Promise<MessageCollection> {
+	public getMessagesInLanguage( inLanguage: string ): Promise<MessageTranslationCollection> {
 		return Promise.resolve( this.getMessageCollection( inLanguage ) );
 	}
 
-	private getMessageCollection( inLanguage: string ): MessageCollection {
-		const collection: MessageCollection = {
+	private getMessageCollection( inLanguage: string ): MessageTranslationCollection {
+		const collection: MessageTranslationCollection = {
 			[ inLanguage ]: {},
 		};
 		this.messageKeys.forEach( ( messageKey: MessageKey ) => {
