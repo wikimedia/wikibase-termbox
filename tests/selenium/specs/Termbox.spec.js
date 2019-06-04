@@ -42,22 +42,15 @@ function verifyMonolingualFingerprintSection(
 	} );
 }
 
-const primaryLanguage = 'de';
-let allEnteredLanguages, fingerprint, id;
-
 describe( 'Termbox', () => {
+	const primaryLanguage = 'de';
+	let fingerprint, allEnteredLanguages, id;
+
 	before( () => {
 		TermboxPage.wikiLogin();
 		TermboxPage.readLanguageData( primaryLanguage );
-		fingerprint = TermboxPage.createTestItem( [ primaryLanguage ] );
-		allEnteredLanguages = fingerprint[ 1 ];
-		fingerprint = fingerprint[ 0 ];
-		browser.call( () => {
-			return WikibaseApi.createItem( '', fingerprint )
-				.then( ( itemId ) => {
-					id = itemId;
-				} );
-		} );
+		[ fingerprint, allEnteredLanguages ] = TermboxPage.createTestItem( [ primaryLanguage ] );
+		id = browser.call( () => WikibaseApi.createItem( '', fingerprint ) );
 		TermboxPage.wikiLogout();
 	} );
 
@@ -382,7 +375,7 @@ describe( 'Termbox', () => {
 					TermboxPage.switchToEditmode();
 				} );
 
-				it( 'disappears after clicking anonymus sigin', () => {
+				it( 'disappears after clicking anonymous editing', () => {
 					TermboxPage.clickWithoutSignIn();
 					assert.strictEqual( TermboxPage.hasIPWarning, false );
 				} );
