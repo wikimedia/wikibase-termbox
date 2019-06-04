@@ -13,6 +13,7 @@ export enum MessageKeys {
 	EDIT_WARNING_HEADING = 'wikibase-anonymouseditwarning-heading',
 	EDIT_WARNING_MESSAGE = 'wikibase-anonymouseditwarning-message',
 	EDIT_WARNING_DISMISS_BUTTON = 'wikibase-anonymouseditwarning-dismiss-button',
+	EDIT_WARNING_DISMISS_PERSIST = 'wikibase-anonymouseditwarning-dismiss-persist',
 	LOGIN = 'login',
 	CREATE_ACCOUNT = 'createaccount'
 }
