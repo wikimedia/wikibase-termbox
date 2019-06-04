@@ -38,8 +38,8 @@ export type MWCookieOptions = {
 }
 
 export interface MWCookie {
-	set( name: string, value: string, options?: MWCookieOptions ): void;
-	get( name: string ): string;
+	set( name: string, value: string|null, options?: MWCookieOptions ): void;
+	get( name: string, prefix?: string | null, defaultValue?: string ): string | null;
 }
 
 interface Wikibase {
