@@ -27,6 +27,7 @@ Vue.mixin( newConfigMixin(
 ) );
 
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
+const entityInitializer = new EntityInitializer();
 
 services.setLanguageTranslationRepository(
 	new UlsLanguageTranslationRepository(
@@ -50,6 +51,7 @@ services.setMessagesRepository(
 
 services.setEntityRepository( new EntityRepository(
 	( window as MwWindow ).mw.hook( Hooks.entityLoaded ),
+	entityInitializer,
 ) );
 
 services.setEntityEditabilityResolver( {
@@ -66,7 +68,7 @@ const baseUrl = repoConfig.scriptPath;
 const userName = ( window as MwWindow ).mw.config.get( 'wgUserName' );
 const axios = getAxios( baseUrl, userName );
 
-services.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, new EntityInitializer() ) );
+services.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, entityInitializer ) );
 
 services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
 	[ UserPreference.HIDE_ANON_EDIT_WARNING ]: new MWCookieUserPreferenceRepository(

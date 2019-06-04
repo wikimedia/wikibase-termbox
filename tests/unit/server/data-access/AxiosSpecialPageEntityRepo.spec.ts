@@ -7,13 +7,14 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MEDIAWIKI_INDEX_SCRIPT } from '@/common/constants';
 import HttpStatus from 'http-status-codes';
+import EntityInitializerInterface from '@/common/EntityInitializerInterface';
 
 const axiosMock = new MockAdapter( axios );
 
-function newAxiosSpecialPageEntityRepo( initializer?: any ) {
+function newAxiosSpecialPageEntityRepo( initializer?: EntityInitializerInterface ) {
 	return new AxiosSpecialPageEntityRepo(
 		axios,
-		initializer || {},
+		initializer || new EntityInitializer(),
 	);
 }
 
@@ -70,7 +71,7 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 				revision,
 			} } ).reply( HttpStatus.OK, results );
 
-			const repo = newAxiosSpecialPageEntityRepo( new EntityInitializer() );
+			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId, revision ).then( ( result: FingerprintableEntity ) => {
 				expect( result ).toBeInstanceOf( FingerprintableEntity );
 				expect( result.id ).toEqual( entity.id );

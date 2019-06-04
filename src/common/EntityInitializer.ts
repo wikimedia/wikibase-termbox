@@ -1,6 +1,7 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import EntityInitializerInterface from './EntityInitializerInterface';
 
-export default class EntityInitializer {
+export default class EntityInitializer implements EntityInitializerInterface {
 
 	public newFromSerialization( entity: any ) {
 		entity = this.deepClone( entity );
