@@ -9,7 +9,7 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_DESCRIPTION_EDIT } from '@/store/entity/actionTypes';
 import { action } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
@@ -72,7 +72,7 @@ describe( 'DescriptionEdit', () => {
 				languageCode: 'en',
 			},
 			mixins: [
-				mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_DESCRIPTION ]: placeholderMessage } ),
+				mockMessageMixin( { [ MessageKey.PLACEHOLDER_EDIT_DESCRIPTION ]: placeholderMessage } ),
 			],
 		} );
 

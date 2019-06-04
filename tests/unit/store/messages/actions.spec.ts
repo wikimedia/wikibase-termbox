@@ -3,7 +3,7 @@ import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutationTypes';
 import { services } from '@/common/TermboxServices';
 import newMockStore from '../newMockStore';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 
 describe( 'messages/actions', () => {
 	describe( MESSAGES_INIT, () => {
@@ -11,8 +11,8 @@ describe( 'messages/actions', () => {
 
 			const mockMessages = {
 				de: {
-					[ MessageKeys.CANCEL ]: 'abbrechen',
-					[ MessageKeys.EDIT ]: 'b e a r b e i t e n',
+					[ MessageKey.CANCEL ]: 'abbrechen',
+					[ MessageKey.EDIT ]: 'b e a r b e i t e n',
 				},
 			};
 

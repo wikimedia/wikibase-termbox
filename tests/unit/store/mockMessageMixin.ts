@@ -1,7 +1,10 @@
-export default function mockMessageMixin( messages: { [key: string]: string } = {} ) {
+import { MessageKey } from '@/common/MessageKey';
+import MessageCollection from '@/datamodel/MessageCollection';
+
+export default function mockMessageMixin( messages: MessageCollection = {} ) {
 	return {
 		methods: {
-			message( key: string ) {
+			message( key: MessageKey ) {
 				return messages[ key ] || '';
 			},
 		},

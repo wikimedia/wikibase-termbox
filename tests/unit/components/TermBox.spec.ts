@@ -36,7 +36,7 @@ import newFingerprintable from '../../newFingerprintable';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import Vue from 'vue';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import createMockableStore from '../store/createMockableStore';
 
@@ -75,7 +75,7 @@ describe( 'TermBox.vue', () => {
 						stubs: { EditTools, EventEmittingButton },
 						store,
 						mixins: [ mockMessageMixin( {
-							[ MessageKeys.EDIT ]: message,
+							[ MessageKey.EDIT ]: message,
 						} ) ],
 					} );
 
@@ -156,7 +156,7 @@ describe( 'TermBox.vue', () => {
 						stubs: { EditTools, EventEmittingButton },
 						store,
 						mixins: [ mockMessageMixin( {
-							[ MessageKeys.PUBLISH ]: message,
+							[ MessageKey.PUBLISH ]: message,
 						} ) ],
 					} ).find( EditTools ).find( '.wb-ui-event-emitting-button--publish' );
 
@@ -207,7 +207,7 @@ describe( 'TermBox.vue', () => {
 						stubs: { EditTools, EventEmittingButton },
 						store,
 						mixins: [ mockMessageMixin( {
-							[ MessageKeys.CANCEL ]: message,
+							[ MessageKey.CANCEL ]: message,
 						} ) ],
 					} ).find( EditTools ).find( '.wb-ui-event-emitting-button--cancel' );
 

@@ -5,7 +5,7 @@ import {
 	NS_MESSAGES,
 	NS_USER,
 } from '@/store/namespaces';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 
 Vue.use( Vuex );
 
@@ -29,7 +29,7 @@ describe( 'Messages', () => {
 
 	it( 'returns the message for a given message key', () => {
 		const language = 'en';
-		const messageKey = MessageKeys.EDIT;
+		const messageKey = MessageKey.EDIT;
 		const message = 'edit';
 
 		const getter = jest.fn();
@@ -53,11 +53,11 @@ describe( 'Messages', () => {
 		const messages = new Messages();
 		messages.$store = mockStore( language, getter );
 
-		expect( messages.message( messageKey as MessageKeys ) ).toBe( messageKey );
+		expect( messages.message( messageKey as MessageKey ) ).toBe( messageKey );
 		expect( getter ).toBeCalledWith( language, messageKey );
 	} );
 
 	it( 'sets the MESSAGE_KEYS property', () => {
-		expect( ( new Messages() ).MESSAGE_KEYS ).toBe( MessageKeys );
+		expect( ( new Messages() ).MESSAGE_KEYS ).toBe( MessageKey );
 	} );
 } );

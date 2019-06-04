@@ -4,7 +4,7 @@ import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import Language from '@/datamodel/Language';
 import mockMessageMixin from '../store/mockMessageMixin';
 
@@ -38,7 +38,7 @@ describe( 'Description', () => {
 		const missingDescriptionMessage = 'description missing';
 		const wrapper = shallowMount( Description, {
 			propsData: { description: null },
-			mixins: [ mockMessageMixin( { [ MessageKeys.MISSING_DESCRIPTION ]: missingDescriptionMessage } ) ],
+			mixins: [ mockMessageMixin( { [ MessageKey.MISSING_DESCRIPTION ]: missingDescriptionMessage } ) ],
 		} );
 
 		expect( wrapper.find( DESCRIPTION_SELECTOR ).text() ).toBe( missingDescriptionMessage );

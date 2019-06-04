@@ -10,7 +10,7 @@ import * as messages from '@/mock-data/data/de_messages_data.json';
 import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
 import axios from 'axios';
 import httpAdapter from 'axios/lib/adapters/http';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 /**
  * arguably we could not add GLOBAL_REQUEST_PARAMS to neither axios (building the request)
  * nor nock (mocking the response) but this way it is closer to reality (cf. server.ts)
@@ -119,7 +119,7 @@ function getApiResponseMessages( keys: string[] ) {
 }
 
 function nockSuccessfulMessagesLoading( inLanguage: string ) {
-	const messageKeys = Object.values( MessageKeys );
+	const messageKeys = Object.values( MessageKey );
 	nock( WIKIBASE_TEST_HOST )
 		.get( WIKIBASE_TEST_API_PATH )
 		.query( {

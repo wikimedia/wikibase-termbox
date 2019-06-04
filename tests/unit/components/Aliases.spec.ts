@@ -4,7 +4,7 @@ import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import mockMessageMixin from '../store/mockMessageMixin';
 
@@ -51,7 +51,7 @@ describe( 'Aliases', () => {
 				],
 			},
 			store: createStoreWithLanguage( { code: language, directionality: 'ltr' } ),
-			mixins: [ mockMessageMixin( { [ MessageKeys.ALIAS_SEPARATOR ]: separator } ) ],
+			mixins: [ mockMessageMixin( { [ MessageKey.ALIAS_SEPARATOR ]: separator } ) ],
 		} );
 
 		expect( wrapper.find( ALIAS_SELECTOR ).attributes( 'data-separator' ) ).toBe( separator );

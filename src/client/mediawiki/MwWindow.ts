@@ -1,6 +1,6 @@
 import HookHandler from '@/client/mediawiki/HookHandler';
 import { Hooks } from '@/client/mediawiki/Hooks';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 
 interface MwConfig {
 	get( key: string ): any;
@@ -12,7 +12,7 @@ export interface MwMessage {
 	text: () => string;
 }
 
-export type MwMessages = ( key: MessageKeys, ...params: string[] ) => MwMessage;
+export type MwMessages = ( key: MessageKey, ...params: string[] ) => MwMessage;
 
 interface MediaWiki {
 	hook: ( key: Hooks ) => HookHandler;

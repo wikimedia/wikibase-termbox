@@ -1,6 +1,6 @@
 import { getters } from '@/store/messages/getters';
 import Messages from '@/store/messages/Messages';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 
 describe( 'messages/Getters', () => {
 
@@ -9,8 +9,8 @@ describe( 'messages/Getters', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						[ MessageKeys.PUBLISH ]: 'veröffentlichen',
-						[ MessageKeys.EDIT ]: 'bearbeiten',
+						[ MessageKey.PUBLISH ]: 'veröffentlichen',
+						[ MessageKey.EDIT ]: 'bearbeiten',
 					},
 				},
 			};
@@ -24,7 +24,7 @@ describe( 'messages/Getters', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						[ MessageKeys.CANCEL ]: 'abbrechen',
+						[ MessageKey.CANCEL ]: 'abbrechen',
 					},
 				},
 			};
@@ -40,22 +40,22 @@ describe( 'messages/Getters', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						[ MessageKeys.CANCEL ]: 'abbrechen',
-						[ MessageKeys.CREATE_ACCOUNT ]: 'Account erstellen',
+						[ MessageKey.CANCEL ]: 'abbrechen',
+						[ MessageKey.CREATE_ACCOUNT ]: 'Account erstellen',
 					},
 				},
 			};
 
 			expect( getters.getMessageInLanguage(
 				messages, null, null, null,
-			)( 'de', MessageKeys.CANCEL ) ).toBe( messages.messages.de[ MessageKeys.CANCEL ] );
+			)( 'de', MessageKey.CANCEL ) ).toBe( messages.messages.de[ MessageKey.CANCEL ] );
 		} );
 
 		it( 'returns null if no message for the message key exists', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						[ MessageKeys.EDIT ]: 'bearbeiten',
+						[ MessageKey.EDIT ]: 'bearbeiten',
 					},
 				},
 			};
@@ -68,13 +68,13 @@ describe( 'messages/Getters', () => {
 			const messages: Messages = {
 				messages: {
 					de: {
-						[ MessageKeys.EDIT ]: 'bearbeiten',
+						[ MessageKey.EDIT ]: 'bearbeiten',
 					},
 				},
 			};
 			expect( getters.getMessageInLanguage(
 				messages, null, null, null,
-			)( 'en', MessageKeys.EDIT ) ).toBe( null );
+			)( 'en', MessageKey.EDIT ) ).toBe( null );
 		} );
 	} );
 } );

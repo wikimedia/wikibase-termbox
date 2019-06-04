@@ -1,4 +1,4 @@
-export enum MessageKeys {
+export enum MessageKey {
 	EDIT = 'wikibase-edit',
 	PUBLISH = 'wikibase-publish',
 	CANCEL = 'wikibase-cancel',

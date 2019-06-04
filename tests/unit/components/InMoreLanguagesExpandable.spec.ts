@@ -2,7 +2,7 @@ import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vu
 import InMoreLanguages from '@/components/InMoreLanguages.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import { render } from '@vue/server-test-utils';
 import mockMessageMixin from '../store/mockMessageMixin';
 
@@ -18,7 +18,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 		it( 'has a button saying "in more languages"', () => {
 			const expectedLinkText = 'moar languages';
 			const wrapper = shallowMount( InMoreLanguagesExpandable, {
-				mixins: [ mockMessageMixin( { [ MessageKeys.IN_MORE_LANGUAGES ]: expectedLinkText } ) ],
+				mixins: [ mockMessageMixin( { [ MessageKey.IN_MORE_LANGUAGES ]: expectedLinkText } ) ],
 			} );
 
 			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch span' ).text() )
