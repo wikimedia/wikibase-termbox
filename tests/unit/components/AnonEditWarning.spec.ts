@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
+import Checkbox from '@/components/Checkbox.vue';
 import mockMessageMixin from '../store/mockMessageMixin';
 import { MessageKey } from '@/common/MessageKey';
 import { createStore } from '@/store';
@@ -117,6 +118,12 @@ describe( 'AnonEditWarning', () => {
 		button.trigger( 'click' );
 		expect( wrapper.emitted( 'dismiss' ) ).toBeTruthy();
 		expect( persistUserPreference ).toHaveBeenCalled();
+	} );
+
+	it( 'has a checkbox that is checked by default', () => {
+		const wrapper = shallowMount( AnonEditWarning, { store: createStore() } );
+
+		expect( wrapper.find( Checkbox ).props( 'value' ) ).toBeTruthy();
 	} );
 
 	it( 'is focused', () => {
