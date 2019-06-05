@@ -1,4 +1,5 @@
 import { mount, shallowMount } from '@vue/test-utils';
+import { Store } from 'vuex';
 import TermBox from '@/components/TermBox.vue';
 import EditTools from '@/components/EditTools.vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
@@ -6,6 +7,7 @@ import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import Modal from '@/components/Modal.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
+import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import { createStore } from '@/store';
 import {
 	NS_ENTITY,
@@ -41,6 +43,26 @@ import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import createMockableStore from '../store/createMockableStore';
 import { UserPreference } from '@/common/UserPreference';
+
+function shallowMountWithStore( store: Store<any> ) {
+	return shallowMount( TermBox, {
+		store,
+		stubs: { EditTools, EventEmittingButton, LicenseAgreement },
+	} );
+}
+
+function setStoreInEditMode( store: Store<any> ) {
+	store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
+	store.commit( mutation( EDITMODE_SET ), true );
+}
+
+function createStoreInEditMode() {
+	const store = createStore();
+
+	setStoreInEditMode( store );
+
+	return store;
+}
 
 describe( 'TermBox.vue', () => {
 
@@ -183,36 +205,12 @@ describe( 'TermBox.vue', () => {
 					expect( publish.props( 'message' ) ).toBe( message );
 				} );
 
-				it( 'emitted publish event triggers entity save and deactivates edit mode', async () => {
-					const entitySavePromise = Promise.resolve();
-					const mockEntitySave = jest.fn().mockReturnValue( entitySavePromise );
-					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-					const store = createMockableStore( {
-						modules: {
-							[ NS_ENTITY ]: {
-								actions: {
-									[ ENTITY_SAVE ]: mockEntitySave,
-								},
-							},
-						},
-						actions: {
-							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
-						},
-					} );
-					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-					store.commit( mutation( EDITMODE_SET ), true );
+				it( 'shows the LicenseAgreement overlay when clicked', async () => {
+					const wrapper = shallowMountWithStore( createStoreInEditMode() );
 
-					const wrapper = shallowMount( TermBox, {
-						store,
-						stubs: { EditTools, EventEmittingButton },
-					} );
+					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 
-					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).vm.$emit( 'click' );
-
-					expect( mockEntitySave ).toHaveBeenCalled();
-					entitySavePromise.then( () => {
-						expect( mockDeactivateEditMode ).toHaveBeenCalled();
-					} );
+					expect( wrapper.find( LicenseAgreement ).exists() ).toBeTruthy();
 				} );
 			} );
 
@@ -309,6 +307,48 @@ describe( 'TermBox.vue', () => {
 					} );
 				} );
 			} );
+		} );
+
+		describe( 'LicenseAgreement', () => {
+			it( 'saves on clicking publish', async () => {
+				const entitySavePromise = Promise.resolve();
+				const mockEntitySave = jest.fn().mockReturnValue( entitySavePromise );
+				const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
+				const store = createMockableStore( {
+					modules: {
+						[ NS_ENTITY ]: {
+							actions: {
+								[ ENTITY_SAVE ]: mockEntitySave,
+							},
+						},
+					},
+					actions: {
+						[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
+					},
+				} );
+
+				setStoreInEditMode( store );
+
+				const wrapper = shallowMountWithStore( store );
+
+				await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+				await wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' ).trigger( 'click' );
+
+				expect( mockEntitySave ).toHaveBeenCalled();
+				entitySavePromise.then( () => {
+					expect( mockDeactivateEditMode ).toHaveBeenCalled();
+				} );
+			} );
+
+			it( 'can be aborted', async () => {
+				const wrapper = shallowMountWithStore( createStoreInEditMode() );
+
+				await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+				await wrapper.find( '.wb-ui-event-emitting-button--normal' ).trigger( 'click' );
+
+				expect( wrapper.find( Modal ).exists() ).toBeFalsy();
+			} );
+
 		} );
 
 		it( 'renders publish and cancel in edit mode', () => {
