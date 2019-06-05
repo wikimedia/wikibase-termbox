@@ -63,7 +63,7 @@ export default class AnonEditWarning extends mixins( Messages ) {
 	@namespace( NS_LINKS ).State( 'signUpLinkUrl' )
 	public signUpLinkUrl!: string;
 
-	public warnRecurringly: Boolean = false;
+	public warnRecurringly: Boolean = true;
 
 	public persistUserPreference() {
 		this.$store.dispatch(
