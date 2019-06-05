@@ -1,7 +1,7 @@
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 
 type MessageCollection = {
-	[ key in MessageKeys ]?: string;
+	[ key in MessageKey ]?: string;
 }
 
 export default MessageCollection;

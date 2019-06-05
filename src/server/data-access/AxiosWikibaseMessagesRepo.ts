@@ -5,16 +5,16 @@ import MessageCollection from '@/datamodel/MessageCollection';
 import MessagesRepository from '@/common/data-access/MessagesRepository';
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 
 interface ResponseMessageSuccess {
-	name: MessageKeys;
+	name: MessageKey;
 	normalizedname: string;
 	'*': string;
 }
 
 interface ResponseMessageMissing {
-	name: MessageKeys;
+	name: MessageKey;
 	missing: string;
 }
 
@@ -22,9 +22,9 @@ type AllMessagesResponseMessage = ResponseMessageSuccess | ResponseMessageMissin
 
 export default class AxiosWikibaseMessagesRepo implements MessagesRepository {
 	private axios: AxiosInstance;
-	private messageKeys: MessageKeys[];
+	private messageKeys: MessageKey[];
 
-	public constructor( axios: AxiosInstance, messageKeys: MessageKeys[] ) {
+	public constructor( axios: AxiosInstance, messageKeys: MessageKey[] ) {
 		this.axios = axios;
 		this.messageKeys = messageKeys;
 	}

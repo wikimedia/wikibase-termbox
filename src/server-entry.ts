@@ -13,7 +13,7 @@ import AxiosWikibaseMessagesRepo from './server/data-access/AxiosWikibaseMessage
 import WaitingForLanguageWikibaseContentLanguagesRepo
 	from './server/data-access/WaitingForLanguageWikibaseContentLanguagesRepo';
 import BundleRendererContext from './server/bundle-renderer/BundleRendererContext';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from './common/MessageKey';
 import CachingMethodDecorator from './server/data-access/CachingMethodDecorator';
 import MessagesRepository from './common/data-access/MessagesRepository';
 import MessageTranslationCollection from './datamodel/MessageTranslationCollection';
@@ -46,7 +46,7 @@ export default ( context: BundleRendererContext ) => {
 	);
 	const axiosWikibaseMessagesRepo = new AxiosWikibaseMessagesRepo(
 		axios,
-		Object.values( MessageKeys ),
+		Object.values( MessageKey ),
 	);
 	services.setMessagesRepository( new CachingMethodDecorator<MessageTranslationCollection>(
 		context.services.messageCache,

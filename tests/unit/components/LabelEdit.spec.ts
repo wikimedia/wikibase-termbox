@@ -7,7 +7,7 @@ import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
@@ -82,7 +82,7 @@ describe( 'LabelEdit', () => {
 				languageCode: 'en',
 			},
 			mixins: [
-				mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_LABEL ]: placeholderMessage } ),
+				mockMessageMixin( { [ MessageKey.PLACEHOLDER_EDIT_LABEL ]: placeholderMessage } ),
 			],
 		} );
 

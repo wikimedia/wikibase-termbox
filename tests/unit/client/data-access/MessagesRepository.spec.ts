@@ -1,16 +1,16 @@
 import MessagesRepository from '@/client/data-access/MessagesRepository';
 import { MwMessage } from '@/client/mediawiki/MwWindow';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import MessageCollection from '@/datamodel/MessageCollection';
 
 describe( 'MessagesRepository', () => {
 	it( 'get mw.message and the messages keys to build a message collection', () => {
 		const translations: MessageCollection = {
-			[ MessageKeys.PUBLISH ]: 'bar',
-			[ MessageKeys.EDIT ]: 'bearbeiten',
+			[ MessageKey.PUBLISH ]: 'bar',
+			[ MessageKey.EDIT ]: 'bearbeiten',
 		};
 
-		const mwMessages = ( key: MessageKeys ): MwMessage => {
+		const mwMessages = ( key: MessageKey ): MwMessage => {
 			return {
 				text: () => translations[ key ]!,
 			};
@@ -19,7 +19,7 @@ describe( 'MessagesRepository', () => {
 		return (
 			new MessagesRepository(
 				mwMessages,
-				Object.keys( translations ) as MessageKeys[],
+				Object.keys( translations ) as MessageKey[],
 			) ).getMessagesInLanguage( 'de' ).then( ( messagesResolved ) => {
 			expect( messagesResolved.de ).toStrictEqual( translations );
 		} );

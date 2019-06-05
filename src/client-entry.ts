@@ -9,7 +9,7 @@ import MessagesRepository from '@/client/data-access/MessagesRepository';
 import EntityRepository from '@/client/data-access/EntityRepository';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import '@/client/directives';
 import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
 import EntityInitializer from '@/common/EntityInitializer';
@@ -45,7 +45,7 @@ services.setLanguageRepository(
 services.setMessagesRepository(
 	new MessagesRepository(
 		( window as MwWindow ).mw.message,
-		Object.values( MessageKeys ),
+		Object.values( MessageKey ),
 	),
 );
 

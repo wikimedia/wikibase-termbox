@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import mockMessageMixin from '../store/mockMessageMixin';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { LINKS_UPDATE } from '@/store/links/mutationTypes';
@@ -30,7 +30,7 @@ describe( 'AnonEditWarning', () => {
 		const wrapper = shallowMount( AnonEditWarning, {
 			store: createStore(),
 			mixins: [ mockMessageMixin( {
-				[ MessageKeys.EDIT_WARNING_HEADING ]: expectedHeading,
+				[ MessageKey.EDIT_WARNING_HEADING ]: expectedHeading,
 			} ) ],
 		} );
 
@@ -43,7 +43,7 @@ describe( 'AnonEditWarning', () => {
 		const wrapper = shallowMount( AnonEditWarning, {
 			store: createStore(),
 			mixins: [ mockMessageMixin( {
-				[ MessageKeys.EDIT_WARNING_MESSAGE ]: expectedMessage,
+				[ MessageKey.EDIT_WARNING_MESSAGE ]: expectedMessage,
 			} ) ],
 		} );
 
@@ -58,7 +58,7 @@ describe( 'AnonEditWarning', () => {
 			store: createStoreWithLinks(),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
-				[ MessageKeys.LOGIN ]: buttonLabel,
+				[ MessageKey.LOGIN ]: buttonLabel,
 			} ) ],
 			methods: {
 				persistUserPreference,
@@ -81,7 +81,7 @@ describe( 'AnonEditWarning', () => {
 			store: createStoreWithLinks(),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
-				[ MessageKeys.CREATE_ACCOUNT ]: buttonLabel,
+				[ MessageKey.CREATE_ACCOUNT ]: buttonLabel,
 			} ) ],
 			methods: {
 				persistUserPreference,
@@ -104,7 +104,7 @@ describe( 'AnonEditWarning', () => {
 			store: createStore(),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
-				[ MessageKeys.EDIT_WARNING_DISMISS_BUTTON ]: buttonLabel,
+				[ MessageKey.EDIT_WARNING_DISMISS_BUTTON ]: buttonLabel,
 			} ) ],
 			methods: {
 				persistUserPreference,

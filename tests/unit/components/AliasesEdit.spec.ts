@@ -11,7 +11,7 @@ import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionT
 import newFingerprintable from '../../newFingerprintable';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import Term from '@/datamodel/Term';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
@@ -33,7 +33,7 @@ function getShallowMountedAliasEdit(
 	const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 	const mixins: ( ComponentOptions<Vue> | typeof Vue )[] = [
-		mockMessageMixin( { [ MessageKeys.PLACEHOLDER_EDIT_ALIAS ]: message } ),
+		mockMessageMixin( { [ MessageKey.PLACEHOLDER_EDIT_ALIAS ]: message } ),
 	];
 
 	if ( config ) {

@@ -1,19 +1,19 @@
 import { storiesOf } from '@storybook/vue';
 import Modal from '@/components/Modal.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import stubMessagesMixin from '../.storybook/helpers/stubMessagesMixin';
 import { createStore } from '@/store';
 
 storiesOf( 'AnonEditWarning', module )
 	.add( 'in Modal', () => {
 		const messages = {
-			[ MessageKeys.LOGIN ]: 'asinus',
-			[ MessageKeys.CREATE_ACCOUNT ]: 'dolor',
-			[ MessageKeys.EDIT_WARNING_DISMISS_BUTTON ]: 'lorem ipsum',
-			[ MessageKeys.EDIT_WARNING_DISMISS_PERSIST ]: 'historia amend',
-			[ MessageKeys.EDIT_WARNING_HEADING ]: 'amet',
-			[ MessageKeys.EDIT_WARNING_MESSAGE ]: 'Nunc volutpat mattis augue. Sed eu enim vitae dui.',
+			[ MessageKey.LOGIN ]: 'asinus',
+			[ MessageKey.CREATE_ACCOUNT ]: 'dolor',
+			[ MessageKey.EDIT_WARNING_DISMISS_BUTTON ]: 'lorem ipsum',
+			[ MessageKey.EDIT_WARNING_DISMISS_PERSIST ]: 'historia amend',
+			[ MessageKey.EDIT_WARNING_HEADING ]: 'amet',
+			[ MessageKey.EDIT_WARNING_MESSAGE ]: 'Nunc volutpat mattis augue. Sed eu enim vitae dui.',
 		};
 
 		return {

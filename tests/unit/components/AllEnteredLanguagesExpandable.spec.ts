@@ -3,14 +3,14 @@ import AllEnteredLanguagesExpandable from '@/components/AllEnteredLanguagesExpan
 import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
 import { render } from '@vue/server-test-utils';
 import mockMessageMixin from '../store/mockMessageMixin';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 
 describe( 'AllEnteredLanguagesExpandable', () => {
 
 	it( 'has a toggle button', () => {
 		const buttonText = 'all entered languages';
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
-			mixins: [ mockMessageMixin( { [ MessageKeys.ALL_LANGUAGES ]: buttonText } ) ],
+			mixins: [ mockMessageMixin( { [ MessageKey.ALL_LANGUAGES ]: buttonText } ) ],
 		} );
 
 		const button = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch > span' );
@@ -41,7 +41,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		// https://vue-test-utils.vuejs.org/api/render.html#render
 		const wrapper = render(
 			AllEnteredLanguagesExpandable,
-			{ mixins: [ mockMessageMixin( { [ MessageKeys.ALL_LANGUAGES ]: 'button text' } ) ] },
+			{ mixins: [ mockMessageMixin( { [ MessageKey.ALL_LANGUAGES ]: 'button text' } ) ] },
 		) as any;
 		expect( wrapper.text() ).toBe( '' );
 	} );

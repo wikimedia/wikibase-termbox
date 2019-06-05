@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@/store/util';
 import { NS_LANGUAGE } from '@/store/namespaces';
-import { MessageKeys } from '@/common/MessageKeys';
+import { MessageKey } from '@/common/MessageKey';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import mockMessageMixin from '../store/mockMessageMixin';
@@ -40,7 +40,7 @@ describe( 'Label', () => {
 		const missingLabelMessage = 'label missing';
 		const wrapper = shallowMount( Label, {
 			propsData: { label: null },
-			mixins: [ mockMessageMixin( { [ MessageKeys.MISSING_LABEL ]: missingLabelMessage } ) ],
+			mixins: [ mockMessageMixin( { [ MessageKey.MISSING_LABEL ]: missingLabelMessage } ) ],
 		} );
 
 		expect( wrapper.find( LABEL_SELECTOR ).text() ).toBe( missingLabelMessage );
