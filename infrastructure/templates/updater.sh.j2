@@ -1,8 +1,10 @@
 set -e
 
-LATEST_COMMIT=`curl -s --header 'Accept: application/vnd.github.v3.sha' 'https://api.github.com/repos/wikimedia/wikibase-termbox/commits/master'`
+LATEST_COMMIT=$(curl -s --header 'Accept: application/vnd.github.v3.sha' 'https://api.github.com/repos/wikimedia/wikibase-termbox/commits/master')
 
 docker pull docker-registry.wikimedia.org/wikimedia/wikibase-termbox:$LATEST_COMMIT
 docker tag docker-registry.wikimedia.org/wikimedia/wikibase-termbox:$LATEST_COMMIT wmde/wikibase-termbox-production:latest
 
 sudo systemctl restart termbox
+
+docker rmi $(docker images -q docker-registry.wikimedia.org/wikimedia/wikibase-termbox) || true
