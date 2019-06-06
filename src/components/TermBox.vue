@@ -19,7 +19,7 @@
 					<template #edit>
 						<EventEmittingButton
 							type="publish"
-							@click="publish"
+							@click="saveOrShowLicenseAgreement"
 							:message="message( MESSAGE_KEYS.PUBLISH )"
 						/>
 						<EventEmittingButton
@@ -31,6 +31,9 @@
 				</EditTools>
 				<Modal v-if="showEditWarning">
 					<AnonEditWarning @dismiss="showEditWarning = false" />
+				</Modal>
+				<Modal v-if="showLicenseAgreement">
+					<LicenseAgreement @cancel="closeLicenseAgreement()" @save="save()" />
 				</Modal>
 			</div>
 		</div>
@@ -59,12 +62,14 @@ import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Messages from '@/components/mixins/Messages';
 import Modal from '@/components/Modal.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
+import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import { UserPreference } from '@/common/UserPreference';
 import User from '@/store/user/User';
 
 @Component( {
 	components: {
 		AnonEditWarning,
+		LicenseAgreement,
 		Modal,
 		EventEmittingButton,
 		InMoreLanguagesExpandable,
@@ -100,6 +105,8 @@ export default class TermBox extends mixins( Messages ) {
 
 	public showEditWarning = false;
 
+	public showLicenseAgreement = false;
+
 	public edit() {
 		if ( !this.hideAnonEditWarning ) {
 			this.showEditWarningForAnonymousUser();
@@ -108,11 +115,19 @@ export default class TermBox extends mixins( Messages ) {
 		this.activateEditMode();
 	}
 
-	public publish(): void {
+	public saveOrShowLicenseAgreement(): void {
+		this.showLicenseAgreement = true;
+	}
+
+	public save(): void {
 		this.saveEntity()
 			.then( () => {
 				this.deactivateEditMode();
 			} );
+	}
+
+	public closeLicenseAgreement() {
+		this.showLicenseAgreement = false;
 	}
 
 	public cancel(): void {
