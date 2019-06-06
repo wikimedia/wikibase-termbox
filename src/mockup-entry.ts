@@ -31,7 +31,7 @@ const preferredLanguages = getOrEnforceUrlParameter(
 				localStorage.setItem( key, value );
 			}
 		},
-		get( key: string, defaultValue?: string ) {
+		get( key: string, _prefix?: string | null, defaultValue?: string ) {
 			return localStorage.getItem( key ) || defaultValue || null;
 		} },
 };
