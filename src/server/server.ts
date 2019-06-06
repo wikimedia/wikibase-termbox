@@ -16,7 +16,7 @@ import buildOpenApiSpec from './buildOpenApiSpec';
 import assertAndGetConfig from './assertAndGetConfig';
 import { getAxios } from './axios/axiosFactory';
 import getMwUserAgentString from './axios/getMwUserAgentString';
-import * as PackageInfo from '@/../package.json';
+import packageInfo from '@/../package.json';
 
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
@@ -65,7 +65,7 @@ export default ( options: ServiceRunnerOptions ) => {
 			config.WIKIBASE_REPO,
 			config.WIKIBASE_REPO_HOSTNAME_ALIAS,
 			config.MEDIAWIKI_REQUEST_TIMEOUT,
-			getMwUserAgentString( PackageInfo.default ),
+			getMwUserAgentString( packageInfo ),
 		),
 		logger,
 		new LRUCache( {
