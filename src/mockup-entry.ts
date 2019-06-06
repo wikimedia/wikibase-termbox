@@ -21,7 +21,19 @@ const preferredLanguages = getOrEnforceUrlParameter(
 	util: {
 		getUrl: ( page ) => `#${ page }`,
 	},
-	cookie: { set() {}, get: () => null },
+	cookie: {
+		set( key: string, value: string|null ) {
+			// eslint-disable-next-line no-console
+			console.info( `Set ${ key } to ${ value }.` );
+			if ( value === null ) {
+				localStorage.removeItem( key );
+			} else {
+				localStorage.setItem( key, value );
+			}
+		},
+		get( key: string, defaultValue?: string ) {
+			return localStorage.getItem( key ) || defaultValue || null;
+		} },
 };
 
 ( window as MwWindow ).wb = {
