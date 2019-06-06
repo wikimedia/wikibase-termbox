@@ -1,19 +1,9 @@
 - hosts: ssr
-  name: Run the SSR service based on the blubbler production variant
+  name: Run the SSR service based on its latest (blubber-based) image
   tasks:
-    - name: Ensure git is installed
-      package:
-          name: git
-          state: present
-
     - name: Ensure docker is installed
       package:
           name: docker-ce
-          state: present
-
-    - name: Ensure blubber is installed
-      package:
-          name: blubber
           state: present
 
     - name: Ensure curl is installed
@@ -26,12 +16,13 @@
           path: "{{ PATH }}"
           state: directory
 
-    - name: Ensure project directory contains checkout
-      git:
-        repo: https://gerrit.wikimedia.org/r/wikibase/termbox
-        dest: "{{ PATH }}/git"
-        update: no
-        version: "{{ BRANCH }}"
+    - name: Ensure README is in place
+      copy:
+        src: files/README.md
+        dest: "{{ PATH }}/README.md"
+        owner: "root"
+        group: "root"
+        mode: 0644
 
     - name: Ensure updater is in place
       template:
