@@ -79,7 +79,6 @@ export default class AnonEditWarning extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-anon-edit-warning {
-	$block: #{ & };
 	margin: 0 8px;
 
 	&__heading {
