@@ -46,6 +46,10 @@ describe( 'Termbox', () => {
 	const primaryLanguage = 'de';
 	let fingerprint, allEnteredLanguages, id;
 
+	beforeEach( () => {
+		browser.deleteCookie();
+	} );
+
 	before( () => {
 		TermboxPage.wikiLogin();
 		TermboxPage.readLanguageData( primaryLanguage );
@@ -355,14 +359,25 @@ describe( 'Termbox', () => {
 			before( () => {
 				TermboxPage.logoutAndOpen( id );
 				TermboxPage.switchToEditmode();
+				TermboxPage.ipWarningEventuallyAppears();
 			} );
 
 			it( 'is in Editmode', () => {
 				assert.ok( TermboxPage.isInEditmode );
 			} );
 
-			it( 'shows the ip warning overlay', () => {
+			it( 'shows the ip warning overlay if user has not opted out (default)', () => {
 				assert.ok( TermboxPage.hasIPWarning );
+				assert.ok( TermboxPage.hasIpWarningCheckbox );
+			} );
+
+			it( 'does not show ip warning overlay again if user has opted out', () => {
+				TermboxPage.clickIpWarningCheckbox();
+				TermboxPage.clickWithoutSignIn();
+
+				TermboxPage.logoutAndOpen( id );
+				TermboxPage.clickEditButton();
+				assert.ok( TermboxPage.ipWarningDoesNotAppear() );
 			} );
 
 			it( 'has a Cancel button', () => {
@@ -373,6 +388,7 @@ describe( 'Termbox', () => {
 				before( () => {
 					TermboxPage.logoutAndOpen( id );
 					TermboxPage.switchToEditmode();
+					TermboxPage.ipWarningEventuallyAppears();
 				} );
 
 				it( 'disappears after clicking anonymous editing', () => {
@@ -405,9 +421,11 @@ describe( 'Termbox', () => {
 			before( () => {
 				TermboxPage.loginAndOpen( id );
 				TermboxPage.switchToEditmode();
+				TermboxPage.ipWarningEventuallyAppears();
 			} );
 
 			it( 'has switched to Readmode after clicking the CancelButton', () => {
+				TermboxPage.clickWithoutSignIn();
 				TermboxPage.clickCancelButton();
 				assert.ok( TermboxPage.isInReadmode );
 			} );
