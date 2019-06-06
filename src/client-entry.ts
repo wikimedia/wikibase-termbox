@@ -24,6 +24,7 @@ Vue.config.productionTip = false;
 Vue.mixin( newConfigMixin(
 	{
 		textFieldCharacterLimit: ( window as MwWindow ).mw.config.get( 'wbMultiLingualStringLimit' ),
+		licenseAgreementInnerHtml: ( window as MwWindow ).mw.config.get( 'wbCopyright' ),
 	},
 ) );
 

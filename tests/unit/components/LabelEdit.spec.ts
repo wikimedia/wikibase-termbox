@@ -97,7 +97,13 @@ describe( 'LabelEdit', () => {
 				label: null,
 				languageCode: 'en',
 			},
-			mixins: [ newConfigMixin( { textFieldCharacterLimit: maxLength } ) ],
+			mixins: [
+				newConfigMixin(
+					{
+						textFieldCharacterLimit: maxLength,
+						licenseAgreementInnerHtml: '',
+					},
+				) ],
 		} );
 
 		expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );

@@ -93,7 +93,11 @@ describe( 'AliasesEdit', () => {
 
 		it( 'passes a maxlength down', () => {
 			const maxLength = 23;
-			const wrapper = getShallowMountedAliasEdit( [ 'foo' ], '', { textFieldCharacterLimit: maxLength } );
+			const wrapper = getShallowMountedAliasEdit(
+				[ 'foo' ],
+				'',
+				{ textFieldCharacterLimit: maxLength, licenseAgreementInnerHtml: '' },
+			);
 			expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 		} );
 	} );

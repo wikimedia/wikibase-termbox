@@ -23,6 +23,7 @@ import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 Vue.mixin( newConfigMixin( {
 	textFieldCharacterLimit: 0, // edit mode is not reachable on the server side
+	licenseAgreementInnerHtml: '', // edit mode is not reachable on the server side
 } ) );
 
 export default ( context: BundleRendererContext ) => {

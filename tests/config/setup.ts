@@ -18,7 +18,10 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 	process.env.LISTENING_TO_UNHANDLED_REJECTION = 'yes';
 }
 
-Vue.mixin( newConfigMixin( { textFieldCharacterLimit: 0 } ) );
+Vue.mixin( newConfigMixin( {
+	textFieldCharacterLimit: 0,
+	licenseAgreementInnerHtml: '',
+} ) );
 
 jest.spyOn( global.console, 'error' ).mockImplementation( ( ...args: any[] ) => {
 	expect( args ).toBeUndefined(); // i.e. this should not have been called
