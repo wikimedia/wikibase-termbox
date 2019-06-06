@@ -6,7 +6,7 @@ import nock from 'nock';
 import 'jest-dom/extend-expect';
 import HttpStatus from 'http-status-codes';
 import Vue from 'vue';
-import * as messages from '@/mock-data/data/de_messages_data.json';
+import messages from '@/mock-data/data/de_messages_data.json';
 import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
 import axios from 'axios';
 import httpAdapter from 'axios/lib/adapters/http';
@@ -114,7 +114,7 @@ function getApiResponseMessages( keys: string[] ) {
 	return keys.map( ( key ) => ( {
 		'name': key,
 		'normalizedname': key,
-		'*': messages.default[ key ],
+		'*': messages[ key ],
 	} ) );
 }
 
