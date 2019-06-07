@@ -1,7 +1,7 @@
 <template>
 	<div class="wb-ui-license-agreement" tabindex="-1" v-focus>
 		<h4 class="wb-ui-license-agreement__heading">
-			{{ message( MESSAGE_KEYS.LICENSE_HEADER ) }}
+			<!-- TODO license header goes here -->
 		</h4>
 		<p class="wb-ui-license-agreement__message" v-html="config.licenseAgreementInnerHtml" />
 		<div class="wb-ui-license-agreement__button-group">

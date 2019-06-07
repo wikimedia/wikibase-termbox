@@ -17,7 +17,6 @@ storiesOf( 'LicenseAgreement', module )
 		const messages = {
 			[ MessageKey.PUBLISH ]: 'asinus',
 			[ MessageKey.CANCEL ]: 'dolor',
-			[ MessageKey.LICENSE_HEADER ]: 'adipisici elit',
 		};
 
 		return {
