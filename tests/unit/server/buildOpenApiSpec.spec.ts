@@ -1,6 +1,9 @@
 import openApiSpec from '@/../openapi.json';
 import buildOpenApiSpec from '@/server/buildOpenApiSpec';
 import InvalidRequest from '@/server/route-handler/termbox/error/InvalidRequest';
+import TermboxQueryValidator from '@/server/route-handler/termbox/TermboxQueryValidator';
+import OpenAPIRequestCoercer from 'openapi-request-coercer';
+import OpenAPIRequestValidator from 'openapi-request-validator';
 
 describe( 'buildOpenApiSpec', () => {
 
@@ -25,6 +28,54 @@ describe( 'buildOpenApiSpec', () => {
 				+ `&editLink=${editLink}`
 				+ `&preferredLanguages=${preferredLanguages}`,
 			validator as any,
+		);
+
+		const termboxRouteSpec = spec.paths[ '/termbox' ].get;
+
+		expect( termboxRouteSpec[ 'x-monitor' ] ).toBeTruthy();
+		expect( termboxRouteSpec[ 'x-amples' ] ).not.toBeUndefined();
+
+		const xAmples = termboxRouteSpec[ 'x-amples' ][ 0 ];
+		expect( xAmples.title ).not.toBeUndefined();
+		expect( xAmples.request ).toEqual( {
+			query: {
+				language,
+				entity,
+				revision,
+				editLink,
+				preferredLanguages,
+			},
+			response: {
+				status: 200,
+				headers: { 'content-type': 'text/html' },
+			},
+		} );
+	} );
+
+	it( 'sets x-amples correctly with a real validator', () => {
+		const termboxSpecParameters = openApiSpec.paths[ '/termbox' ].get.parameters;
+		const termboxQueryValidator = new TermboxQueryValidator(
+			new OpenAPIRequestCoercer( {
+				parameters: termboxSpecParameters,
+			} ),
+			new OpenAPIRequestValidator( {
+				parameters: termboxSpecParameters,
+			} ),
+		);
+
+		const language = 'de';
+		const entity = 'Q123';
+		const revision = '3';
+		const editLink = '/edit/Q123';
+		const preferredLanguages = 'de|en';
+
+		const spec = buildOpenApiSpec(
+			`language=${language}`
+			+ `&entity=${entity}`
+			+ `&revision=${revision}`
+			+ `&editLink=${editLink}`
+			+ `&preferredLanguages=${preferredLanguages}`,
+			termboxQueryValidator,
 		);
 
 		const termboxRouteSpec = spec.paths[ '/termbox' ].get;

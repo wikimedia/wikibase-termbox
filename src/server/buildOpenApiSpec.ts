@@ -9,7 +9,8 @@ export default function buildOpenApiSpec( healthCheckQuery: string|null, validat
 	}
 
 	const query = qs.parse( healthCheckQuery );
-	const rejection = validator.validate( { query } );
+	// TODO: this cloning is needed because the validator actually also parses and mutates the query.
+	const rejection = validator.validate( { query: JSON.parse( JSON.stringify( query ) ) } );
 	if ( rejection ) {
 		throw new InvalidRequest( 'Request errors', rejection.errors );
 
