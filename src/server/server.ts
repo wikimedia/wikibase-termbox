@@ -9,7 +9,7 @@ import {
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
 import openApiJson from '@/../openapi.json';
-import TermboxQueryValidator from './route-handler/termbox/TermboxQueryValidator';
+import CoercingQueryValidator from './route-handler/termbox/CoercingQueryValidator';
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 import buildOpenApiSpec from './buildOpenApiSpec';
@@ -43,7 +43,7 @@ export default ( options: ServiceRunnerOptions ) => {
 	);
 
 	const termboxSpecParameters = openApiJson.paths[ '/termbox' ].get.parameters;
-	const termboxQueryValidator = new TermboxQueryValidator(
+	const termboxQueryValidator = new CoercingQueryValidator(
 		new OpenAPIRequestCoercer( {
 			parameters: termboxSpecParameters,
 		} ),

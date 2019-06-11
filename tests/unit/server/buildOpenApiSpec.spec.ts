@@ -1,20 +1,20 @@
 import openApiSpec from '@/../openapi.json';
 import buildOpenApiSpec from '@/server/buildOpenApiSpec';
 import InvalidRequest from '@/server/route-handler/termbox/error/InvalidRequest';
-import TermboxQueryValidator from '@/server/route-handler/termbox/TermboxQueryValidator';
+import CoercingQueryValidator from '@/server/route-handler/termbox/CoercingQueryValidator';
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 
 describe( 'buildOpenApiSpec', () => {
 
 	it( 'returns the unmodified openapi.json without a healthCheckQuery', () => {
-		const validator = { validate: jest.fn() };
+		const validator = { coerceAndValidate: jest.fn() };
 		const spec = buildOpenApiSpec( null, validator as any );
 		expect( spec ).toBe( openApiSpec );
 	} );
 
 	it( 'sets x-amples and x-monitor given a valid healthCheckQuery', () => {
-		const validator = { validate: jest.fn() };
+		const validator = { coerceAndValidate: jest.fn() };
 		const language = 'de';
 		const entity = 'Q123';
 		const revision = '3';
@@ -54,7 +54,7 @@ describe( 'buildOpenApiSpec', () => {
 
 	it( 'sets x-amples correctly with a real validator', () => {
 		const termboxSpecParameters = openApiSpec.paths[ '/termbox' ].get.parameters;
-		const termboxQueryValidator = new TermboxQueryValidator(
+		const termboxQueryValidator = new CoercingQueryValidator(
 			new OpenAPIRequestCoercer( {
 				parameters: termboxSpecParameters,
 			} ),
@@ -105,7 +105,7 @@ describe( 'buildOpenApiSpec', () => {
 			{ path: 'revision', message: 'should have required property "revision"' },
 		];
 		const validator = {
-			validate: () => ( {
+			coerceAndValidate: () => ( {
 				code: 400,
 				errors,
 			} ),

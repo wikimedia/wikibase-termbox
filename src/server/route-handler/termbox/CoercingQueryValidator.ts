@@ -2,7 +2,7 @@ import { IOpenAPIRequestCoercer } from 'openapi-request-coercer';
 import { IOpenAPIRequestValidator } from 'openapi-request-validator';
 import { OpenAPI } from 'openapi-types';
 
-export default class TermboxQueryValidator {
+export default class CoercingQueryValidator {
 
 	private coercer: IOpenAPIRequestCoercer;
 	private validator: IOpenAPIRequestValidator;
@@ -12,7 +12,7 @@ export default class TermboxQueryValidator {
 		this.validator = validator;
 	}
 
-	public validate( request: OpenAPI.Request ) {
+	public coerceAndValidate( request: OpenAPI.Request ) {
 		this.coercer.coerce( request );
 		return this.validator.validate( request );
 	}

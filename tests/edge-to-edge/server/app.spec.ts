@@ -17,7 +17,7 @@ import { MessageKey } from '@/common/MessageKey';
  */
 import { MEDIAWIKI_API_SCRIPT, MEDIAWIKI_INDEX_SCRIPT, GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEntityRepo';
-import TermboxQueryValidator from '@/server/route-handler/termbox/TermboxQueryValidator';
+import CoercingQueryValidator from '@/server/route-handler/termbox/CoercingQueryValidator';
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 
@@ -53,7 +53,7 @@ const services = new BundleRendererServices(
 	logger,
 	messageCache as any,
 	languageCache as any,
-	new TermboxQueryValidator(
+	new CoercingQueryValidator(
 		new OpenAPIRequestCoercer( {
 			parameters: termboxSpecParameters,
 		} ),

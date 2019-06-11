@@ -1,16 +1,17 @@
 import openApiSpec from '@/../openapi.json';
 import qs from 'querystring';
-import TermboxQueryValidator from './route-handler/termbox/TermboxQueryValidator';
+import CoercingQueryValidator from './route-handler/termbox/CoercingQueryValidator';
 import InvalidRequest from './route-handler/termbox/error/InvalidRequest';
 
-export default function buildOpenApiSpec( healthCheckQuery: string|null, validator: TermboxQueryValidator ) {
+export default function buildOpenApiSpec( healthCheckQuery: string|null, validator: CoercingQueryValidator ) {
 	if ( !healthCheckQuery ) {
 		return openApiSpec;
 	}
 
 	const query = qs.parse( healthCheckQuery );
-	// TODO: this cloning is needed because the validator actually also parses and mutates the query.
-	const rejection = validator.validate( { query: JSON.parse( JSON.stringify( query ) ) } );
+	// Cloning the parsed query object is necessary because we do not want it to be coerced. The health check service
+	// expects an unmodified parsed query string.
+	const rejection = validator.coerceAndValidate( { query: JSON.parse( JSON.stringify( query ) ) } );
 	if ( rejection ) {
 		throw new InvalidRequest( 'Request errors', rejection.errors );
 

@@ -3,14 +3,14 @@ import LRUCache from 'lru-cache';
 import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 import { WikibaseApiContentLanguages } from '@/server/data-access/WikibaseContentLanguagesRepo';
 import Logger from '@/server/Logger';
-import TermboxQueryValidator from '@/server/route-handler/termbox/TermboxQueryValidator';
+import CoercingQueryValidator from '@/server/route-handler/termbox/CoercingQueryValidator';
 
 export default class BundleRendererServices {
 	public readonly axios: AxiosInstance;
 	public readonly logger: Logger;
 	public readonly messageCache: LRUCache<string, MessageTranslationCollection>;
 	public readonly languageCache: LRUCache<string, WikibaseApiContentLanguages>;
-	public readonly termboxQueryValidator: TermboxQueryValidator;
+	public readonly termboxQueryValidator: CoercingQueryValidator;
 	public readonly openApiSpec: object;
 
 	public constructor(
@@ -18,7 +18,7 @@ export default class BundleRendererServices {
 		logger: Logger,
 		messageCache: LRUCache<string, MessageTranslationCollection>,
 		languageCache: LRUCache<string, WikibaseApiContentLanguages>,
-		termboxQueryValidator: TermboxQueryValidator,
+		termboxQueryValidator: CoercingQueryValidator,
 		openApiSpec: object,
 	) {
 		this.axios = axios;

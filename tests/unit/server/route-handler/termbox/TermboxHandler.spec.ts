@@ -17,7 +17,7 @@ describe( 'TermboxHandler', () => {
 				revision: 4711,
 			};
 			const validator = {
-				validate: () => undefined,
+				coerceAndValidate: () => undefined,
 			};
 
 			const routeHandler = newTermboxHandler( validator );
@@ -42,7 +42,7 @@ describe( 'TermboxHandler', () => {
 				{ path: 'revision', message: 'should have required property "revision"' },
 			];
 			const validator = {
-				validate: () => ( {
+				coerceAndValidate: () => ( {
 					code: 400,
 					errors,
 				} ),
