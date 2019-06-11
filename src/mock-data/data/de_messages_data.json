@@ -16,5 +16,6 @@
 	"wikibase-anonymouseditwarning-dismiss-persist": "Warne mich immer, wenn ich nicht eingeloggt bin.",
 	"login": "Anmelden",
 	"createaccount": "Benutzerkonto anlegen",
-	"wikibase-shortcopyrightwarning-accept-persist": "Ich stimme den Nutzungsbedingungen für meine zukünftigen Bearbeitungen zu. Zeige diese Nachricht nicht erneut an."
+	"wikibase-shortcopyrightwarning-accept-persist": "Ich stimme den Nutzungsbedingungen für meine zukünftigen Bearbeitungen zu. Zeige diese Nachricht nicht erneut an.",
+	"wikibase-shortcopyrightwarning-heading": "Lizenzzuordnung"
 }

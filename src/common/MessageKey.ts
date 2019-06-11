@@ -17,4 +17,5 @@ export enum MessageKey {
 	LOGIN = 'login',
 	CREATE_ACCOUNT = 'createaccount',
 	LICENSE_AGREEMENT_ACCEPT_PERSIST = 'wikibase-shortcopyrightwarning-accept-persist',
+	LICENSE_HEADER = 'wikibase-shortcopyrightwarning-heading',
 }

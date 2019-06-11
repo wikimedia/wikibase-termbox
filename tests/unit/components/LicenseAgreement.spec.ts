@@ -13,6 +13,19 @@ import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
 describe( 'LicenseAgreement', () => {
 
+	it( 'has a heading', () => {
+		const expectedHeading = 'you are not logged in';
+		const wrapper = shallowMount( LicenseAgreement, {
+			stubs: { EventEmittingButton },
+			mixins: [ mockMessageMixin( {
+				[ MessageKey.LICENSE_HEADER ]: expectedHeading,
+			} ) ],
+		} );
+
+		expect( wrapper.find( '.wb-ui-license-agreement__heading' ).text() )
+			.toBe( expectedHeading );
+	} );
+
 	it( 'has a message, which can contain html', () => {
 		const expectedMessage = 'Accept our agreement. <a href="#">See here</a> [...]';
 		const wrapper = shallowMount( LicenseAgreement, {
@@ -21,7 +34,9 @@ describe( 'LicenseAgreement', () => {
 				newConfigMixin( {
 					licenseAgreementInnerHtml: expectedMessage,
 				} as ConfigOptions ),
-				mockMessageMixin( {} ),
+				mockMessageMixin( {
+					[ MessageKey.LICENSE_HEADER ]: 'abc',
+				} ),
 			],
 		} );
 
@@ -42,6 +57,7 @@ describe( 'LicenseAgreement', () => {
 			} ),
 			mixins: [
 				mockMessageMixin( {
+					[ MessageKey.LICENSE_HEADER ]: '',
 					[ MessageKey.PUBLISH ]: buttonLabel,
 				} ),
 			],
@@ -59,6 +75,7 @@ describe( 'LicenseAgreement', () => {
 			stubs: { EventEmittingButton },
 			mixins: [
 				mockMessageMixin( {
+					[ MessageKey.LICENSE_HEADER ]: '',
 					[ MessageKey.CANCEL ]: buttonLabel,
 				} ),
 			],
