@@ -73,14 +73,14 @@ class TermboxPage extends Page {
 
 	static get OVERLAYS() {
 		return {
-			IP_WARNING: '.wb-ui-modal__content',
+			IP_WARNING: '.wb-ui-modal__content .wb-ui-anon-edit-warning',
 		};
 	}
 
 	static get IP_WARNING() {
 		return {
-			DISMISS: '.wb-ui-modal__content .wb-ui-event-emitting-button--normal',
-			CHECKBOX: '.wb-ui-modal__content input + label',
+			DISMISS: TermboxPage.OVERLAYS.IP_WARNING + ' .wb-ui-event-emitting-button--normal',
+			CHECKBOX: TermboxPage.OVERLAYS.IP_WARNING + ' input + label',
 		};
 	}
 
