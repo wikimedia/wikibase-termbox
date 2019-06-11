@@ -1,11 +1,6 @@
 import 'module-alias/register';
 import createApp from './app';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
-import {
-	DEFAULT_REQUEST_TIMEOUT,
-	DEFAULT_MESSAGES_CACHE_MAX_AGE,
-	DEFAULT_LANGUAGES_CACHE_MAX_AGE,
-} from '@/common/constants';
 import ServiceRunnerOptions from './ServiceRunnerOptions';
 import LRUCache from 'lru-cache';
 import openApiJson from '@/../openapi.json';
@@ -22,24 +17,7 @@ import AxiosErrorLogger from './axios/AxiosErrorLogger';
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
 	const config = assertAndGetConfig(
-		{
-			WIKIBASE_REPO: {},
-			WIKIBASE_REPO_HOSTNAME_ALIAS: {},
-			SSR_PORT: {},
-			MEDIAWIKI_REQUEST_TIMEOUT: {
-				fallback: DEFAULT_REQUEST_TIMEOUT,
-			},
-			MESSAGES_CACHE_MAX_AGE: {
-				fallback: DEFAULT_MESSAGES_CACHE_MAX_AGE,
-			},
-			LANGUAGES_CACHE_MAX_AGE: {
-				fallback: DEFAULT_LANGUAGES_CACHE_MAX_AGE,
-			},
-			HEALTHCHECK_QUERY: {
-				fallback: null,
-			},
-		},
-		options.config,
+		options.environment,
 		logger,
 	);
 

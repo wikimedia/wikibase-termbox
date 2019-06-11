@@ -1,40 +1,35 @@
 import { Config } from './ServiceRunnerOptions';
 import Logger from './Logger';
+import env from 'env-var';
+import {
+	DEFAULT_LANGUAGES_CACHE_MAX_AGE,
+	DEFAULT_MESSAGES_CACHE_MAX_AGE,
+	DEFAULT_REQUEST_TIMEOUT,
+} from '@/common/constants';
 
-interface Spec {
-	[ index: string ]: {
-		fallback?: any,
+export default function ( processEnv: NodeJS.ProcessEnv, logger: Logger ): Config {
+
+	const sourcedEnv = env.from( processEnv );
+	let config: Config;
+	try {
+		config = {
+			WIKIBASE_REPO: sourcedEnv.get( 'WIKIBASE_REPO' ).required().asUrlString(),
+			WIKIBASE_REPO_HOSTNAME_ALIAS: sourcedEnv.get( 'WIKIBASE_REPO_HOSTNAME_ALIAS' ).required().asString(),
+			SSR_PORT: sourcedEnv.get( 'SSR_PORT' ).required().asString(),
+			MEDIAWIKI_REQUEST_TIMEOUT:
+				sourcedEnv.get( 'MEDIAWIKI_REQUEST_TIMEOUT', DEFAULT_REQUEST_TIMEOUT.toString() ).asIntPositive(),
+			MESSAGES_CACHE_MAX_AGE:
+				sourcedEnv.get( 'MESSAGES_CACHE_MAX_AGE', DEFAULT_MESSAGES_CACHE_MAX_AGE.toString() ).asIntPositive(),
+			LANGUAGES_CACHE_MAX_AGE:
+				sourcedEnv.get( 'LANGUAGES_CACHE_MAX_AGE', DEFAULT_LANGUAGES_CACHE_MAX_AGE.toString() ).asIntPositive(),
+			HEALTHCHECK_QUERY: sourcedEnv.get( 'HEALTHCHECK_QUERY' ).asString() || '',
+		};
+	} catch ( e ) {
+		logger.log( 'fatal/service', 'Failed parsing env vars: ' + e.toString() );
+		process.exit( 1 );
 	}
-}
 
-export default function (
-	spec: Spec,
-	config: { [ index: string ]: any },
-	logger: Logger,
-): Required<Config> {
-	const result: any = {};
+	logger.log( 'info/service', 'Set config to: ' + JSON.stringify( config! ) );
 
-	Object.keys( spec ).forEach( ( name ) => {
-		let value = config[ name ];
-		const fallback = spec[ name ].fallback;
-
-		if ( typeof value === 'undefined' || value === '' ) {
-			if ( typeof fallback === 'undefined' ) {
-				logger.log( 'fatal/service', `${name} env must be configured to a meaningful value. Exiting.` );
-				process.exit( 1 );
-			}
-
-			value = fallback;
-		}
-
-		if ( !isNaN( value ) ) {
-			value = parseInt( value );
-		}
-
-		result[ name ] = value;
-
-		logger.log( 'info/service', `Set ${name} to ${value}` );
-	} );
-
-	return result;
+	return config!;
 }

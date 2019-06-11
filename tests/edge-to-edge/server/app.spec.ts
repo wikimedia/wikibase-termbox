@@ -254,7 +254,9 @@ describe( 'Termbox SSR', () => {
 			expect( logger.log.mock.calls[ 1 ][ 0 ] ).toBe( 'error/service' );
 			expect( logger.log.mock.calls[ 1 ][ 1 ].toString() )
 				.toEqual( 'Error: Error: Request failed with status code 500' );
-		} ).finally( () => { done(); } );
+
+			done();
+		} );
 	} );
 
 	it( 'renders Server Error when requesting /termbox and language translation backend request fails', ( done ) => {
