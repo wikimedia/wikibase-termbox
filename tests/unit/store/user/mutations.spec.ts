@@ -1,30 +1,13 @@
 import { mutations } from '@/store/user/mutations';
-import { lockState } from '../lockState';
 import {
 	LANGUAGE_INIT,
 	SECONDARY_LANGUAGES_INIT,
 } from '@/store/user/mutationTypes';
 import InvalidLanguageValueException from '@/store/user/exceptions/InvalidLanguageValueException';
-import User from '@/store/user/User';
 import { USER_SET_NAME } from '@/store/user/mutationTypes';
 import { USER_SET_PREFERENCE } from '@/store/user/mutationTypes';
 import { UserPreference } from '@/common/UserPreference';
-
-function newUserState( user: any = null ): User {
-	let state = {
-		primaryLanguage: '',
-		secondaryLanguages: [],
-		name: null,
-		preferences: {},
-	};
-
-	if ( user !== null ) {
-		state = { ...state, ...user };
-		lockState( state );
-	}
-
-	return state;
-}
+import newUserState from './newUserState';
 
 describe( '/store/user/mutations.ts', () => {
 	it( 'throws a exceptions if the given type is invalid during initialisation', () => {

@@ -97,8 +97,8 @@ export default class TermBox extends mixins( Messages ) {
 	@namespace( NS_ENTITY ).Action( ENTITY_ROLLBACK )
 	public rollbackEntity!: () => Promise<void>;
 
-	@namespace( NS_USER ).State( 'name' )
-	public userName!: string | null;
+	@namespace( NS_USER ).Getter( 'isAnonymous' )
+	public userIsAnonymous!: boolean;
 
 	@namespace( NS_USER ).State( ( state: User ) => state.preferences[ UserPreference.HIDE_ANON_EDIT_WARNING ] )
 	public hideAnonEditWarning!: boolean;
@@ -138,7 +138,7 @@ export default class TermBox extends mixins( Messages ) {
 	}
 
 	public showEditWarningForAnonymousUser() {
-		this.showEditWarning = this.userName === null;
+		this.showEditWarning = this.userIsAnonymous;
 	}
 
 }
