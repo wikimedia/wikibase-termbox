@@ -1,11 +1,10 @@
-import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
-import { UserPreference } from '@/common/UserPreference';
+import SingleUserPreferenceRepository from '@/common/data-access/SingleUserPreferenceRepository';
 import {
 	CookieOptions,
 	CookieStore,
 } from '@/client/data-access/CookieStore';
 
-export default class CookieUserPreferenceRepository<T> implements UserPreferenceRepository {
+export default class CookieUserPreferenceRepository<T> implements SingleUserPreferenceRepository<T> {
 	private cookieStore: CookieStore<T>;
 	private cookieName: string;
 	private options: CookieOptions;
@@ -23,12 +22,12 @@ export default class CookieUserPreferenceRepository<T> implements UserPreference
 		this.defaultValue = defaultValue;
 	}
 
-	public setPreference( _name: UserPreference, value: T ): Promise<void> {
+	public setPreference( value: T ): Promise<void> {
 		this.cookieStore.set( this.cookieName, value, this.options );
 		return Promise.resolve();
 	}
 
-	public getPreference( _name: UserPreference ): Promise<T> {
+	public getPreference(): Promise<T> {
 		return Promise.resolve( this.cookieStore.get( this.cookieName, this.defaultValue ) );
 	}
 

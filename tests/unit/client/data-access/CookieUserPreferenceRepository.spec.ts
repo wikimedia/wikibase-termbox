@@ -1,5 +1,4 @@
 import CookieUserPreferenceRepository from '@/client/data-access/CookieUserPreferenceRepository';
-import { UserPreference } from '@/common/UserPreference';
 
 describe( 'CookieUserPreferenceRepository', () => {
 
@@ -10,7 +9,7 @@ describe( 'CookieUserPreferenceRepository', () => {
 		const repo = new CookieUserPreferenceRepository<string>( cookieStore as any, cookieName, cookieOptions );
 		const value = 'yes';
 
-		return repo.setPreference( UserPreference.HIDE_ANON_EDIT_WARNING, value ).then( () => {
+		return repo.setPreference( value ).then( () => {
 			expect( cookieStore.set ).toHaveBeenCalledWith( cookieName, value, cookieOptions );
 		} );
 	} );
@@ -22,7 +21,7 @@ describe( 'CookieUserPreferenceRepository', () => {
 		const defaultValue = 'hello';
 		const repo = new CookieUserPreferenceRepository<string>( cookieStore as any, cookieName, {}, defaultValue );
 
-		return repo.getPreference( UserPreference.HIDE_ANON_EDIT_WARNING ).then( ( value ) => {
+		return repo.getPreference().then( ( value ) => {
 			expect( value ).toBe( expectedValue );
 			expect( cookieStore.get ).toHaveBeenCalledWith( cookieName, defaultValue );
 		} );

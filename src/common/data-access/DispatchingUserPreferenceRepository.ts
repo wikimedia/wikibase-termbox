@@ -1,8 +1,9 @@
-import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
+import SingleUserPreferenceRepository from '@/common/data-access/SingleUserPreferenceRepository';
 import { UserPreference } from '@/common/UserPreference';
+import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
 
 type RepoMapping = {
-	[ preference in UserPreference ]: UserPreferenceRepository
+	[ Preference in UserPreference ]: SingleUserPreferenceRepository<any>
 };
 
 export default class DispatchingUserPreferenceRepository implements UserPreferenceRepository {
@@ -14,11 +15,11 @@ export default class DispatchingUserPreferenceRepository implements UserPreferen
 	}
 
 	public setPreference( preference: UserPreference, value: any ): Promise<void> {
-		return this.repoMapping[ preference ].setPreference( preference, value );
+		return this.repoMapping[ preference ].setPreference( value );
 	}
 
 	public getPreference( preference: UserPreference ): Promise<any> {
-		return this.repoMapping[ preference ].getPreference( preference );
+		return this.repoMapping[ preference ].getPreference();
 	}
 
 }
