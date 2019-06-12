@@ -34,6 +34,13 @@ const preferredLanguages = getOrEnforceUrlParameter(
 		get( key: string, _prefix?: string | null, defaultValue?: string ) {
 			return localStorage.getItem( key ) || defaultValue || null;
 		} },
+	user: {
+		options: {
+			get() {
+				return null;
+			},
+		},
+	},
 };
 
 ( window as MwWindow ).wb = {

@@ -44,6 +44,7 @@ function mockMwEnv(
 		},
 		util: { getUrl: getUrl || jest.fn() },
 		cookie: new ( jest.fn() )(),
+		user: new ( jest.fn() )(),
 	};
 
 	( window as MwWindow ).wb = {

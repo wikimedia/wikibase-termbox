@@ -14,6 +14,10 @@ export interface MwMessage {
 
 export type MwMessages = ( key: MessageKey, ...params: string[] ) => MwMessage;
 
+export interface MWUserOptions {
+	get( optionName: string, defaultValue?: any ): any;
+}
+
 interface MediaWiki {
 	hook: ( key: Hooks ) => HookHandler;
 	config: MwConfig;
@@ -23,6 +27,9 @@ interface MediaWiki {
 		getUrl( title: string, params: object ): string;
 	};
 	cookie: MWCookie;
+	user: {
+		options: MWUserOptions;
+	};
 }
 
 export interface WikibaseContentLanguages {
