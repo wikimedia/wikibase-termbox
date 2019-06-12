@@ -46,16 +46,16 @@ describe( 'Termbox', () => {
 	const primaryLanguage = 'de';
 	let fingerprint, allEnteredLanguages, id;
 
-	beforeEach( () => {
-		browser.deleteCookie();
-	} );
-
 	before( () => {
 		TermboxPage.wikiLogin();
 		TermboxPage.readLanguageData( primaryLanguage );
 		[ fingerprint, allEnteredLanguages ] = TermboxPage.createTestItem( [ primaryLanguage ] );
 		id = browser.call( () => WikibaseApi.createItem( '', fingerprint ) );
 		TermboxPage.wikiLogout();
+	} );
+
+	afterEach( () => {
+		TermboxPage.clearStorage();
 	} );
 
 	describe( 'Readmode', () => {
@@ -414,6 +414,36 @@ describe( 'Termbox', () => {
 
 			it( 'has a Cancel button', () => {
 				assert.ok( TermboxPage.hasCancelButton );
+			} );
+		} );
+
+		describe( 'license agreement', () => {
+			beforeEach( () => {
+				TermboxPage.openItemPage( id );
+				TermboxPage.switchToEditmodeSkipWarning();
+			} );
+
+			it( 'is shown, after clicking publish', () => {
+				TermboxPage.clickPublishButton();
+				TermboxPage.waitForLicenseOverlayToAppear();
+				assert.ok( TermboxPage.hasLicenseAgreement );
+			} );
+
+			it( 'disappears, after clicking cancel and goes back to Editmode', () => {
+				TermboxPage.clickPublishButton();
+				TermboxPage.waitForLicenseOverlayToAppear();
+				TermboxPage.clickCancelLicenseAgreement();
+				assert.strictEqual( TermboxPage.hasLicenseAgreement, false );
+				assert.ok( TermboxPage.isInEditmode );
+			} );
+
+			it( 'disappears, after clicking publish and goes to Readmode', () => {
+				TermboxPage.clickPublishButton();
+				TermboxPage.waitForLicenseOverlayToAppear();
+				TermboxPage.clickSaveLicenseAgreement();
+				assert.strictEqual( TermboxPage.hasLicenseAgreement, false );
+				TermboxPage.waitUntilSaved();
+				assert.ok( TermboxPage.isInReadmode );
 			} );
 		} );
 
