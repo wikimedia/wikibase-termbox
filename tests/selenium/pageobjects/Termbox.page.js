@@ -80,6 +80,7 @@ class TermboxPage extends Page {
 	static get IP_WARNING() {
 		return {
 			DISMISS: '.wb-ui-modal__content .wb-ui-event-emitting-button--normal',
+			CHECKBOX: '.wb-ui-modal__content input + label',
 		};
 	}
 
@@ -353,12 +354,28 @@ class TermboxPage extends Page {
 		return $( TermboxPage.OVERLAYS.IP_WARNING );
 	}
 
+	ipWarningEventuallyAppears() {
+		return this.ipWarning.waitForExist( 3000 );
+	}
+
+	ipWarningDoesNotAppear() {
+		return this.ipWarning.waitForExist( 1000, true );
+	}
+
 	get hasIPWarning() {
 		return this.ipWarning.isExisting() && this.ipWarning.isVisible();
 	}
 
 	get withoutSignInButton() {
 		return $( TermboxPage.IP_WARNING.DISMISS );
+	}
+
+	get ipWarningCheckbox() {
+		return $( TermboxPage.IP_WARNING.CHECKBOX );
+	}
+
+	get hasIpWarningCheckbox() {
+		return this.ipWarningCheckbox.isVisible();
 	}
 
 	clickInMoreLanguagesButton() {
@@ -381,11 +398,12 @@ class TermboxPage extends Page {
 		this.withoutSignInButton.click();
 	}
 
+	clickIpWarningCheckbox() {
+		this.ipWarningCheckbox.click();
+	}
+
 	switchToEditmode() {
 		this.clickEditButton();
-		if ( !this.isLoggedIn ) {
-			this.ipWarning.waitForExist( 3000 );
-		}
 	}
 }
 
