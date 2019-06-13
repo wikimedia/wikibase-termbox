@@ -23,12 +23,12 @@ export default class CookieUserPreferenceRepository<T> implements UserPreference
 		this.defaultValue = defaultValue;
 	}
 
-	setPreference( _name: UserPreference, value: T ): Promise<void> {
+	public setPreference( _name: UserPreference, value: T ): Promise<void> {
 		this.cookieStore.set( this.cookieName, value, this.options );
 		return Promise.resolve();
 	}
 
-	getPreference( _name: UserPreference ): Promise<T> {
+	public getPreference( _name: UserPreference ): Promise<T> {
 		return Promise.resolve( this.cookieStore.get( this.cookieName, this.defaultValue ) );
 	}
 

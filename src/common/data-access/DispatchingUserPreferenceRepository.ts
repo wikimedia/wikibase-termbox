@@ -13,11 +13,11 @@ export default class DispatchingUserPreferenceRepository implements UserPreferen
 		this.repoMapping = mapping;
 	}
 
-	setPreference( preference: UserPreference, value: any ): Promise<void> {
+	public setPreference( preference: UserPreference, value: any ): Promise<void> {
 		return this.repoMapping[ preference ].setPreference( preference, value );
 	}
 
-	getPreference( preference: UserPreference ): Promise<any> {
+	public getPreference( preference: UserPreference ): Promise<any> {
 		return this.repoMapping[ preference ].getPreference( preference );
 	}
 

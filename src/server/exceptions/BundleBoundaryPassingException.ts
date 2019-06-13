@@ -9,7 +9,7 @@ export enum ErrorReason {
 export default class BundleBoundaryPassingException {
 	public readonly reason: ErrorReason;
 
-	constructor( reason: ErrorReason ) {
+	public constructor( reason: ErrorReason ) {
 		this.reason = reason;
 	}
 

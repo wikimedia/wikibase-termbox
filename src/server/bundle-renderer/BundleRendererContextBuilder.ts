@@ -5,7 +5,7 @@ import TermboxRequest from '@/common/TermboxRequest';
 export default class BundleRendererContextBuilder {
 	private readonly services: BundleRendererServices;
 
-	constructor( services: BundleRendererServices ) {
+	public constructor( services: BundleRendererServices ) {
 		this.services = services;
 	}
 

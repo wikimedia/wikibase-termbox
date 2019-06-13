@@ -4,15 +4,15 @@ class FakeCache {
 
 	private contents: { [ key: string ]: any } = {};
 
-	has( key: string ) {
+	public has( key: string ) {
 		return this.contents[ key ] !== undefined;
 	}
 
-	set( key: string, value: any ) {
+	public set( key: string, value: any ) {
 		this.contents[ key ] = value;
 	}
 
-	get( key: string ) {
+	public get( key: string ) {
 		return this.contents[ key ];
 	}
 

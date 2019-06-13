@@ -8,7 +8,7 @@ export default class TermboxRequest {
 	public readonly preferredLanguages: string[];
 	public readonly userName: string | null = null;
 
-	constructor(
+	public constructor(
 		language: string,
 		entityId: string,
 		revision: number,

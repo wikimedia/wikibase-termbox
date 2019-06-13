@@ -13,7 +13,7 @@ export default class BooleanMWCookieStore implements CookieStore<boolean> {
 		this.mwCookie = mwCookie;
 	}
 
-	set( name: string, value: boolean, options?: CookieOptions ): void {
+	public set( name: string, value: boolean, options?: CookieOptions ): void {
 		if ( value ) {
 			this.mwCookie.set( name, truthyCookieValue, {
 				expires: options && options.maxAge ? options.maxAge : undefined,
@@ -23,7 +23,7 @@ export default class BooleanMWCookieStore implements CookieStore<boolean> {
 		}
 	}
 
-	get( name: string ): boolean {
+	public get( name: string ): boolean {
 		return this.mwCookie.get( name ) !== null;
 	}
 

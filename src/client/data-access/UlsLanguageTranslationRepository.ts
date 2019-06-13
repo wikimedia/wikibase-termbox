@@ -5,7 +5,7 @@ import { WikibaseContentLanguages } from '@/client/mediawiki/MwWindow';
 export default class UlsLanguageTranslationRepository implements LanguageTranslationRepository {
 
 	private contentLanguages: WikibaseContentLanguages;
-	constructor( contentLanguages: WikibaseContentLanguages ) {
+	public constructor( contentLanguages: WikibaseContentLanguages ) {
 		this.contentLanguages = contentLanguages;
 	}
 

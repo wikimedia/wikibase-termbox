@@ -8,7 +8,7 @@ export default class UlsLanguageRepository implements LanguageRepository {
 	private contentLanguages: WikibaseContentLanguages;
 	private directionalities: UlsData;
 
-	constructor( contentLanguages: WikibaseContentLanguages, directionalities: UlsData ) {
+	public constructor( contentLanguages: WikibaseContentLanguages, directionalities: UlsData ) {
 		this.contentLanguages = contentLanguages;
 		this.directionalities = directionalities;
 	}

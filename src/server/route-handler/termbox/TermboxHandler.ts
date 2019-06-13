@@ -7,7 +7,7 @@ export default class TermboxHandler {
 
 	private validator: CoercingQueryValidator;
 
-	constructor( validator: CoercingQueryValidator ) {
+	public constructor( validator: CoercingQueryValidator ) {
 		this.validator = validator;
 	}
 

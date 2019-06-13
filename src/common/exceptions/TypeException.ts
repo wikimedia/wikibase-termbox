@@ -1,5 +1,5 @@
 export default class TypeException extends TypeError {
-	constructor( message?: string ) {
+	public constructor( message?: string ) {
 		super();
 		if ( typeof message !== 'undefined' ) {
 			this.message = message;

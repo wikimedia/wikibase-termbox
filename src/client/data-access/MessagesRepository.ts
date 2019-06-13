@@ -8,7 +8,7 @@ export default class MessagesRepository implements MessagesRepositoryInterface {
 	private mwMessages: MwMessages;
 	private messageKeys: MessageKey[];
 
-	constructor( messageResolver: MwMessages, messageKeys: MessageKey[] ) {
+	public constructor( messageResolver: MwMessages, messageKeys: MessageKey[] ) {
 		this.mwMessages = messageResolver;
 		this.messageKeys = messageKeys;
 	}

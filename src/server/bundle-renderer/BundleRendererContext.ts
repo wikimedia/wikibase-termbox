@@ -8,7 +8,7 @@ export default class BundleRendererContext {
 	 */
 	public readonly request: TermboxRequest;
 
-	constructor( services: BundleRendererServices, request: TermboxRequest ) {
+	public constructor( services: BundleRendererServices, request: TermboxRequest ) {
 		this.services = services;
 		this.request = request;
 	}

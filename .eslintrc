@@ -26,6 +26,7 @@
 		"filenames/match-exported": "error",
 		"prefer-const": "error",
 		"object-shorthand": [ "error", "always" ],
+		"@typescript-eslint/explicit-member-accessibility": [ "error", { "accessibility": "explicit" } ],
 
 		// problematic in TypeScript / ES6
 		"no-unused-vars": "off",

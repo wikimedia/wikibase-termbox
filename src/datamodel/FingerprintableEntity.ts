@@ -8,7 +8,7 @@ export default class FingerprintableEntity implements Fingerprintable {
 	public readonly descriptions: TermList;
 	public readonly aliases: AliasesList;
 
-	constructor(
+	public constructor(
 		id: string,
 		labels: TermList,
 		descriptions: TermList,
