@@ -1,0 +1,9 @@
+[Unit]
+Description=Restart termbox.service, if new updates are available or if the service is not running
+
+[Service]
+Type=oneshot
+ExecStart={{ PATH }}/restarter.sh
+
+[Install]
+WantedBy=multi-user.target

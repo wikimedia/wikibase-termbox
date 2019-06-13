@@ -1,0 +1,11 @@
+[Unit]
+Description= update timer for termbox server side rendering
+Documentation=https://gerrit.wikimedia.org/r/admin/projects/wikibase/termbox
+
+[Timer]
+Persistent=true
+OnCalendar=minutely
+Unit=termbox-updater.service
+
+[Install]
+WantedBy=multi-user.target

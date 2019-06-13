@@ -8,4 +8,3 @@ Do not change the following manually
 
 * `/srv/termbox/updater.sh`, regularly checks for, downloads and tags the latest image
 * `/lib/systemd/system/termbox.service`, systemd service definition
-
