@@ -18,7 +18,8 @@ import newConfigMixin from '@/components/mixins/newConfigMixin';
 import DispatchingUserPreferenceRepository from '@/common/data-access/DispatchingUserPreferenceRepository';
 import { UserPreference } from '@/common/UserPreference';
 import CookieUserPreferenceRepository from '@/client/data-access/CookieUserPreferenceRepository';
-import BooleanMWCookieStore from '@/client/data-access/BooleanMWCookieStore';
+import BooleanCookieStore from '@/client/data-access/BooleanCookieStore';
+import StringMWCookieStore from '@/client/data-access/StringMWCookieStore';
 
 Vue.config.productionTip = false;
 Vue.mixin( newConfigMixin(
@@ -74,7 +75,7 @@ services.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, en
 
 services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
 	[ UserPreference.HIDE_ANON_EDIT_WARNING ]: new CookieUserPreferenceRepository<boolean>(
-		new BooleanMWCookieStore( ( window as MwWindow ).mw.cookie ),
+		new BooleanCookieStore( new StringMWCookieStore( ( window as MwWindow ).mw.cookie ) ),
 		'wikibase-no-anonymouseditwarning',
 		{ maxAge: 60 * 60 * 24 * 365 * 10 },
 	),
