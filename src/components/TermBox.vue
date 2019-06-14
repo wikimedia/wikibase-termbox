@@ -65,6 +65,7 @@ import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import { UserPreference } from '@/common/UserPreference';
 import User from '@/store/user/User';
+import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
 @Component( {
 	components: {
@@ -103,6 +104,11 @@ export default class TermBox extends mixins( Messages ) {
 	@namespace( NS_USER ).State( ( state: User ) => state.preferences[ UserPreference.HIDE_ANON_EDIT_WARNING ] )
 	public hideAnonEditWarning!: boolean;
 
+	@namespace( NS_USER ).State( ( state: User ) => state.preferences[ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION ] )
+	public acknowledgedCopyrightVersion!: string;
+
+	private config!: ConfigOptions;
+
 	public showEditWarning = false;
 
 	public showLicenseAgreement = false;
@@ -116,7 +122,11 @@ export default class TermBox extends mixins( Messages ) {
 	}
 
 	public saveOrShowLicenseAgreement(): void {
-		this.showLicenseAgreement = true;
+		if ( this.acknowledgedCopyrightVersion && this.acknowledgedCopyrightVersion === this.config.copyrightVersion ) {
+			this.save();
+		} else {
+			this.showLicenseAgreement = true;
+		}
 	}
 
 	public save(): void {

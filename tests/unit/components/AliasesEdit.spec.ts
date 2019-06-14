@@ -96,7 +96,7 @@ describe( 'AliasesEdit', () => {
 			const wrapper = getShallowMountedAliasEdit(
 				[ 'foo' ],
 				'',
-				{ textFieldCharacterLimit: maxLength, licenseAgreementInnerHtml: '' },
+				{ textFieldCharacterLimit: maxLength } as ConfigOptions,
 			);
 			expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 		} );

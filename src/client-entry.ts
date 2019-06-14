@@ -20,12 +20,19 @@ import { UserPreference } from '@/common/UserPreference';
 import CookieUserPreferenceRepository from '@/client/data-access/CookieUserPreferenceRepository';
 import BooleanCookieStore from '@/client/data-access/BooleanCookieStore';
 import StringMWCookieStore from '@/client/data-access/StringMWCookieStore';
+import DelegatingUserPreferenceRepository from '@/common/data-access/DelegatingUserPreferenceRepository';
+import CompoundUserPreferenceRepository from '@/common/data-access/CompoundUserPreferenceRepository';
+import MWUserOptionsReadingSingleUserPreferenceRepository
+	from '@/client/data-access/MWUserOptionsReadingSingleUserPreferenceRepository';
+import AxiosWritingSingleUserPreferenceRepository
+	from '@/client/data-access/AxiosWritingSingleUserPreferenceRepository';
 
 Vue.config.productionTip = false;
 Vue.mixin( newConfigMixin(
 	{
 		textFieldCharacterLimit: ( window as MwWindow ).mw.config.get( 'wbMultiLingualStringLimit' ),
 		licenseAgreementInnerHtml: ( window as MwWindow ).mw.config.get( 'wbCopyright' ).messageHtml,
+		copyrightVersion: ( window as MwWindow ).mw.config.get( 'wbCopyright' ).version,
 	},
 ) );
 
@@ -78,6 +85,24 @@ services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
 		new BooleanCookieStore( new StringMWCookieStore( ( window as MwWindow ).mw.cookie ) ),
 		'wikibase-no-anonymouseditwarning',
 		{ maxAge: 60 * 60 * 24 * 365 * 10 },
+	),
+	[ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION ]: new DelegatingUserPreferenceRepository(
+		new CompoundUserPreferenceRepository(
+			new MWUserOptionsReadingSingleUserPreferenceRepository(
+				'wb-acknowledgedcopyrightversion',
+				( window as MwWindow ).mw.user.options,
+			),
+			new AxiosWritingSingleUserPreferenceRepository(
+				'wb-acknowledgedcopyrightversion',
+				axios,
+			),
+		),
+		new CookieUserPreferenceRepository<string | null>(
+			new StringMWCookieStore( ( window as MwWindow ).mw.cookie ),
+			'wb.acknowledgedcopyrightversion',
+			{ maxAge: 60 * 60 * 24 * 365 * 10 },
+		),
+		userName,
 	),
 } ) );
 

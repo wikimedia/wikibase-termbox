@@ -9,7 +9,7 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
-import newConfigMixin from '@/components/mixins/newConfigMixin';
+import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -98,12 +98,9 @@ describe( 'LabelEdit', () => {
 				languageCode: 'en',
 			},
 			mixins: [
-				newConfigMixin(
-					{
-						textFieldCharacterLimit: maxLength,
-						licenseAgreementInnerHtml: '',
-					},
-				) ],
+				newConfigMixin( {
+					textFieldCharacterLimit: maxLength,
+				} as ConfigOptions ) ],
 		} );
 
 		expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );

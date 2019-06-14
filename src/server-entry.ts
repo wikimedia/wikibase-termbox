@@ -22,8 +22,10 @@ import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages }
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 Vue.mixin( newConfigMixin( {
-	textFieldCharacterLimit: 0, // edit mode is not reachable on the server side
-	licenseAgreementInnerHtml: '', // edit mode is not reachable on the server side
+	// As of now all config values concern edit mode exclusively, which is not reachable on the server side
+	textFieldCharacterLimit: 0,
+	licenseAgreementInnerHtml: '',
+	copyrightVersion: '',
 } ) );
 
 export default ( context: BundleRendererContext ) => {

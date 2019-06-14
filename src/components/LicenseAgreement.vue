@@ -4,11 +4,14 @@
 			<!-- TODO license header goes here -->
 		</h4>
 		<p class="wb-ui-license-agreement__message" v-html="config.licenseAgreementInnerHtml" />
+		<p class="wb-ui-license-agreement__persist">
+			<Checkbox v-model="doNotShowAgain" :label="message( MESSAGE_KEYS.LICENSE_AGREEMENT_ACCEPT_PERSIST )" />
+		</p>
 		<div class="wb-ui-license-agreement__button-group">
 			<EventEmittingButton
 				type="primaryProgressive"
 				:message="message( MESSAGE_KEYS.PUBLISH )"
-				@click="$emit( 'save' )"
+				@click="savePreferenceAndPublish"
 			/>
 			<EventEmittingButton
 				type="normal"
@@ -23,12 +26,34 @@
 import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
+import Checkbox from '@/components/Checkbox.vue';
+import { namespace } from 'vuex-class';
+import { NS_USER } from '@/store/namespaces';
+import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
+import { UserPreference } from '@/common/UserPreference';
+import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
 @Component( {
-	components: { EventEmittingButton },
+	components: { Checkbox, EventEmittingButton },
 } )
 
-export default class LicenseAgreement extends mixins( Messages ) {}
+export default class LicenseAgreement extends mixins( Messages ) {
+	@namespace( NS_USER ).Action( USER_PREFERENCE_SET )
+	public savePreference!: ( payload: { name: UserPreference, value: string | null } ) => Promise<void>;
+
+	public doNotShowAgain = true;
+
+	private config!: ConfigOptions;
+
+	public savePreferenceAndPublish() {
+		this.$emit( 'save' );
+		this.savePreference( {
+			name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
+			value: this.doNotShowAgain ? this.config.copyrightVersion : null,
+		} );
+	}
+
+}
 </script>
 
 <style lang="scss">

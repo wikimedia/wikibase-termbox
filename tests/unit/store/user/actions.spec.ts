@@ -74,6 +74,7 @@ describe( 'user/actions', () => {
 		const context = newMockStore( {} );
 		const preferenceStubs: { [preference in UserPreference]: any } = {
 			[ UserPreference.HIDE_ANON_EDIT_WARNING ]: true,
+			[ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION ]: 'wikibase-1',
 		};
 		const prefsRepo = {
 			setPreference: jest.fn(),

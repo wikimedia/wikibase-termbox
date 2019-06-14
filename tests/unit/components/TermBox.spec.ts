@@ -43,6 +43,8 @@ import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import createMockableStore from '../store/createMockableStore';
 import { UserPreference } from '@/common/UserPreference';
+import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
+import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
 function shallowMountWithStore( store: Store<any> ) {
 	return shallowMount( TermBox, {
@@ -212,6 +214,37 @@ describe( 'TermBox.vue', () => {
 
 					expect( wrapper.find( LicenseAgreement ).exists() ).toBeTruthy();
 				} );
+
+				it( `saves w/o overlay when ${ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION } is set`, async () => {
+					const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
+					const deactivateEditMode = jest.fn();
+					const copyrightVersion = 'wikibase-1';
+					const store = createMockableStore( {
+						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
+						modules: {
+							[ NS_ENTITY ]: {
+								actions: { [ ENTITY_SAVE ]: entitySave },
+							},
+						},
+					} );
+					setStoreInEditMode( store );
+					store.commit( mutation( NS_USER, USER_SET_PREFERENCE ), {
+						name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
+						value: copyrightVersion,
+					} );
+					const wrapper = shallowMount( TermBox, {
+						store,
+						stubs: { LicenseAgreement, EventEmittingButton, EditTools },
+						mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
+					} );
+
+					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					expect( wrapper.find( LicenseAgreement ).exists() ).toBeFalsy();
+					expect( entitySave ).toHaveBeenCalled();
+
+					await Vue.nextTick();
+					expect( deactivateEditMode ).toHaveBeenCalled();
+				} );
 			} );
 
 			describe( 'Cancel', () => {
@@ -320,6 +353,9 @@ describe( 'TermBox.vue', () => {
 							actions: {
 								[ ENTITY_SAVE ]: mockEntitySave,
 							},
+						},
+						[ NS_USER ]: {
+							actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
 						},
 					},
 					actions: {

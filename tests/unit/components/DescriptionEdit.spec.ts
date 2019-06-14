@@ -11,7 +11,7 @@ import { action } from '@/store/util';
 import { NS_ENTITY } from '@/store/namespaces';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
-import newConfigMixin from '@/components/mixins/newConfigMixin';
+import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 
 function createStoreWithLanguage( language: Language ) {
 	const store = createStore();
@@ -90,8 +90,7 @@ describe( 'DescriptionEdit', () => {
 			mixins: [
 				newConfigMixin( {
 					textFieldCharacterLimit: maxLength,
-					licenseAgreementInnerHtml: '',
-				} ) ],
+				} as ConfigOptions ) ],
 		} );
 
 		expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );

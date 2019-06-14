@@ -15,5 +15,6 @@
 	"wikibase-anonymouseditwarning-dismiss-button": "Ohne Anmeldung bearbeiten",
 	"wikibase-anonymouseditwarning-dismiss-persist": "Warne mich immer, wenn ich nicht eingeloggt bin.",
 	"login": "Anmelden",
-	"createaccount": "Benutzerkonto anlegen"
+	"createaccount": "Benutzerkonto anlegen",
+	"wikibase-shortcopyrightwarning-accept-persist": "Ich stimme den Nutzungsbedingungen für meine zukünftigen Bearbeitungen zu. Zeige diese Nachricht nicht erneut an."
 }

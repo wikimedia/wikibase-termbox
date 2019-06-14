@@ -21,6 +21,7 @@ if ( typeof process.env.LISTENING_TO_UNHANDLED_REJECTION === 'undefined' ) {
 Vue.mixin( newConfigMixin( {
 	textFieldCharacterLimit: 0,
 	licenseAgreementInnerHtml: '',
+	copyrightVersion: '',
 } ) );
 
 jest.spyOn( global.console, 'error' ).mockImplementation( ( ...args: any[] ) => {

@@ -16,4 +16,5 @@ export enum MessageKey {
 	EDIT_WARNING_DISMISS_PERSIST = 'wikibase-anonymouseditwarning-dismiss-persist',
 	LOGIN = 'login',
 	CREATE_ACCOUNT = 'createaccount',
+	LICENSE_AGREEMENT_ACCEPT_PERSIST = 'wikibase-shortcopyrightwarning-accept-persist',
 }
