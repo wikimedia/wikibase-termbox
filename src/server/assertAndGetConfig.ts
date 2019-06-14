@@ -7,7 +7,11 @@ interface Spec {
 	}
 }
 
-export default function ( spec: Spec, config: { [ index: string ]: any }, logger: Logger ): Required<Config> {
+export default function (
+	spec: Spec,
+	config: { [ index: string ]: any },
+	logger: Logger,
+): Required<Config> {
 	const result: any = {};
 
 	Object.keys( spec ).forEach( ( name ) => {

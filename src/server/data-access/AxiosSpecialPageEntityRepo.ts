@@ -13,7 +13,10 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 	private axios: AxiosInstance;
 	private entityInitializer: EntityInitializerInterface;
 
-	public constructor( axios: AxiosInstance, entityInitializer: EntityInitializerInterface ) {
+	public constructor(
+		axios: AxiosInstance,
+		entityInitializer: EntityInitializerInterface,
+	) {
 		this.axios = axios;
 		this.entityInitializer = entityInitializer;
 	}
