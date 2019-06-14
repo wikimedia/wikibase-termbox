@@ -120,6 +120,7 @@ export default class TermBox extends mixins( Messages ) {
 	}
 
 	public save(): void {
+		this.closeLicenseAgreement();
 		this.saveEntity()
 			.then( () => {
 				this.deactivateEditMode();

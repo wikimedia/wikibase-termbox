@@ -338,6 +338,7 @@ describe( 'TermBox.vue', () => {
 				entitySavePromise.then( () => {
 					expect( mockDeactivateEditMode ).toHaveBeenCalled();
 				} );
+				expect( wrapper.find( Modal ).exists() ).toBeFalsy();
 			} );
 
 			it( 'can be aborted', async () => {
@@ -348,7 +349,6 @@ describe( 'TermBox.vue', () => {
 
 				expect( wrapper.find( Modal ).exists() ).toBeFalsy();
 			} );
-
 		} );
 
 		it( 'renders publish and cancel in edit mode', () => {
