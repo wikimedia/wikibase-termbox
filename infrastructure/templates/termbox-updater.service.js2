@@ -4,6 +4,8 @@ Description=Restart termbox.service, if new updates are available or if the serv
 [Service]
 Type=oneshot
 ExecStart={{ PATH }}/restarter.sh
+TimeoutStartSec={{ TIMEOUT }}
+StartLimitBurst=1
 
 [Install]
 WantedBy=multi-user.target
