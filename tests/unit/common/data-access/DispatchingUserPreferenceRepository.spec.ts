@@ -10,31 +10,31 @@ describe( 'DispatchingUserPreferenceRepository', () => {
 	it( 'dispatches getPreference to the corresponding repository', () => {
 		const preference = UserPreference.HIDE_ANON_EDIT_WARNING;
 		const expectedValue = 'some';
-		const specificPreferenceRepo = {
+		const singlePreferenceRepo = {
 			getPreference: jest.fn().mockResolvedValue( expectedValue ),
 		};
 		const repo = newDispatchingUserPreferenceRepository( {
-			[ preference ]: specificPreferenceRepo,
+			[ preference ]: singlePreferenceRepo,
 		} );
 
 		return repo.getPreference( preference ).then( ( value ) => {
-			expect( specificPreferenceRepo.getPreference ).toHaveBeenCalledWith( preference );
+			expect( singlePreferenceRepo.getPreference ).toHaveBeenCalled();
 			expect( value ).toBe( expectedValue );
 		} );
 	} );
 
 	it( 'dispatches setPreference to the corresponding repository', () => {
 		const preference = UserPreference.HIDE_ANON_EDIT_WARNING;
-		const value = 'some';
-		const specificPreferenceRepo = {
+		const value = false;
+		const singlePreferenceRepo = {
 			setPreference: jest.fn().mockReturnValue( Promise.resolve() ),
 		};
 		const repo = newDispatchingUserPreferenceRepository( {
-			[ preference ]: specificPreferenceRepo,
+			[ preference ]: singlePreferenceRepo,
 		} );
 
 		return repo.setPreference( preference, value ).then( () => {
-			expect( specificPreferenceRepo.setPreference ).toHaveBeenCalledWith( preference, value );
+			expect( singlePreferenceRepo.setPreference ).toHaveBeenCalledWith( value );
 		} );
 	} );
 
