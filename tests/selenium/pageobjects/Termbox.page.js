@@ -47,8 +47,9 @@ class TermboxPage extends Page {
 
 	static get EDIT_TOOLS_SELECTORS() {
 		return {
-			ENTER_EDIT_MODE: '.wb-ui-event-emitting-button--edit',
-			CANCEL_EDIT_MODE: '.wb-ui-event-emitting-button--cancel',
+			EDIT: '.wb-ui-event-emitting-button--edit',
+			PUBLISH: '.wb-ui-event-emitting-button--publish',
+			CANCEL: '.wb-ui-event-emitting-button--cancel',
 		};
 	}
 
@@ -74,6 +75,7 @@ class TermboxPage extends Page {
 	static get OVERLAYS() {
 		return {
 			IP_WARNING: '.wb-ui-modal__content .wb-ui-anon-edit-warning',
+			LICENSE_AGREEMENT: '.wb-ui-modal__content .wb-ui-license-agreement',
 		};
 	}
 
@@ -81,6 +83,13 @@ class TermboxPage extends Page {
 		return {
 			DISMISS: TermboxPage.OVERLAYS.IP_WARNING + ' .wb-ui-event-emitting-button--normal',
 			CHECKBOX: TermboxPage.OVERLAYS.IP_WARNING + ' input + label',
+		};
+	}
+
+	static get LICENSE_AGREEMENT() {
+		return {
+			SAVE: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' .wb-ui-event-emitting-button--primaryProgressive',
+			Cancel: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' .wb-ui-event-emitting-button--normal',
 		};
 	}
 
@@ -242,6 +251,10 @@ class TermboxPage extends Page {
 		this.openItemPage( entityId, primaryLanguage );
 	}
 
+	clearStorage() {
+		browser.deleteCookie();
+	}
+
 	get isTermboxPage() {
 		return $( TermboxPage.TERMBOX_PAGE ).isExisting();
 	}
@@ -327,7 +340,7 @@ class TermboxPage extends Page {
 	}
 
 	get editButton() {
-		return $( TermboxPage.EDIT_TOOLS_SELECTORS.ENTER_EDIT_MODE );
+		return $( TermboxPage.EDIT_TOOLS_SELECTORS.EDIT );
 	}
 
 	get hasEditButton() {
@@ -335,11 +348,19 @@ class TermboxPage extends Page {
 	}
 
 	get cancelButton() {
-		return $( TermboxPage.EDIT_TOOLS_SELECTORS.CANCEL_EDIT_MODE );
+		return $( TermboxPage.EDIT_TOOLS_SELECTORS.CANCEL );
 	}
 
 	get hasCancelButton() {
 		return this.cancelButton.isExisting() && this.cancelButton.isVisible();
+	}
+
+	get publishButton() {
+		return $( TermboxPage.EDIT_TOOLS_SELECTORS.PUBLISH );
+	}
+
+	get hasPublishButton() {
+		return this.publishButton.isExisting() && this.publishButton.isVisible();
 	}
 
 	get isInEditmode() {
@@ -378,6 +399,22 @@ class TermboxPage extends Page {
 		return this.ipWarningCheckbox.isVisible();
 	}
 
+	get licenseAgreement() {
+		return $( TermboxPage.OVERLAYS.LICENSE_AGREEMENT );
+	}
+
+	get hasLicenseAgreement() {
+		return this.licenseAgreement.isExisting() && this.licenseAgreement.isVisible();
+	}
+
+	clickCancelLicenseAgreement() {
+		$( TermboxPage.LICENSE_AGREEMENT.Cancel ).click();
+	}
+
+	clickSaveLicenseAgreement() {
+		$( TermboxPage.LICENSE_AGREEMENT.SAVE ).click();
+	}
+
 	clickInMoreLanguagesButton() {
 		this.inMoreLanguagesButton.click();
 	}
@@ -394,6 +431,10 @@ class TermboxPage extends Page {
 		this.cancelButton.click();
 	}
 
+	clickPublishButton() {
+		this.publishButton.click();
+	}
+
 	clickWithoutSignIn() {
 		this.withoutSignInButton.click();
 	}
@@ -404,6 +445,22 @@ class TermboxPage extends Page {
 
 	switchToEditmode() {
 		this.clickEditButton();
+	}
+
+	switchToEditmodeSkipWarning() {
+		this.switchToEditmode();
+		this.ipWarningEventuallyAppears();
+		if ( this.hasIPWarning ) {
+			this.clickWithoutSignIn();
+		}
+	}
+
+	waitForLicenseOverlayToAppear( skip = false ) {
+		this.licenseAgreement.waitForExist( 3000, skip );
+	}
+
+	waitUntilSaved() {
+		this.editButton.waitForExist( 3000 );
 	}
 }
 
