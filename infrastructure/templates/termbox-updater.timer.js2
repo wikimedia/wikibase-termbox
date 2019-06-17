@@ -4,7 +4,7 @@ Documentation=https://gerrit.wikimedia.org/r/admin/projects/wikibase/termbox
 
 [Timer]
 Persistent=true
-OnCalendar=minutely
+OnCalendar=*:0/15
 Unit=termbox-updater.service
 
 [Install]
