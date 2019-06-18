@@ -8,6 +8,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { MEDIAWIKI_INDEX_SCRIPT } from '@/common/constants';
 import HttpStatus from 'http-status-codes';
 import EntityInitializerInterface from '@/common/EntityInitializerInterface';
+import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 const axiosMock = new MockAdapter( axios );
 
@@ -163,8 +164,9 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR );
 			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId, revision ).catch( ( reason: Error ) => {
-				expect( reason ).toBeInstanceOf( TechnicalProblem );
-				expect( reason.message ).toEqual( 'Error: Request failed with status code 500' );
+				expect( reason ).toBeInstanceOf( AxiosTechnicalProblem );
+				expect( ( reason as AxiosTechnicalProblem ).getContext().message )
+					.toEqual( 'Request failed with status code 500' );
 				done();
 			} );
 		} );

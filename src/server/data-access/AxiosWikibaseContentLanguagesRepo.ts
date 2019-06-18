@@ -3,6 +3,7 @@ import TranslationLanguageNotFound from '@/common/data-access/error/TranslationL
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages } from './WikibaseContentLanguagesRepo';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
+import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 export default class AxiosWikibaseContentLanguagesRepo implements WikibaseContentLanguagesRepo {
 	private axios: AxiosInstance;
@@ -50,7 +51,7 @@ export default class AxiosWikibaseContentLanguagesRepo implements WikibaseConten
 					resolve( data.query.wbcontentlanguages );
 				} )
 				.catch( ( error: AxiosError ) => {
-					reject( new TechnicalProblem( error.toString() ) );
+					reject( new AxiosTechnicalProblem( error ) );
 				} );
 		} );
 

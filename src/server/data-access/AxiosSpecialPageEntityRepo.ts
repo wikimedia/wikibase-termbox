@@ -6,6 +6,7 @@ import EntityInitializerInterface from '@/common/EntityInitializerInterface';
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { MEDIAWIKI_INDEX_SCRIPT } from '@/common/constants';
 import HttpStatus from 'http-status-codes';
+import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 	public static readonly SPECIAL_PAGE = 'Special:EntityData';
@@ -64,7 +65,7 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 						reject( new EntityNotFound( 'Entity flagged missing in response.' ) );
 						return;
 					}
-					reject( new TechnicalProblem( error.toString() ) );
+					reject( new AxiosTechnicalProblem( error ) );
 				} );
 		} );
 	}
