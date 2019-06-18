@@ -13,7 +13,7 @@ export default function buildOpenApiSpec( healthCheckQuery: string|null, validat
 	// expects an unmodified parsed query string.
 	const rejection = validator.coerceAndValidate( { query: JSON.parse( JSON.stringify( query ) ) } );
 	if ( rejection ) {
-		throw new InvalidRequest( 'Request errors', rejection.errors );
+		throw new InvalidRequest( rejection.errors );
 
 	}
 	openApiSpec.paths[ '/termbox' ].get[ 'x-monitor' ] = true;

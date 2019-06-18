@@ -1,8 +1,8 @@
-export default class InvalidRequest extends Error {
-	public readonly info: any;
+import ContextError from '@/common/error/ContextError';
+import { OpenAPIRequestValidatorError } from 'openapi-request-validator';
 
-	public constructor( message: string, info: any ) {
-		super( message );
-		this.info = info;
+export default class InvalidRequest extends ContextError {
+	public constructor( errors: OpenAPIRequestValidatorError[] ) {
+		super( 'Request errors', { errors } );
 	}
 }

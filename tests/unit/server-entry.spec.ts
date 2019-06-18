@@ -61,12 +61,14 @@ describe( 'server-entry', () => {
 
 	it( 'converts bundle internal EntityNotFound exception to DTO', ( done ) => {
 		const ssrContext = newFineBundleRendererContext();
-
-		mockBuildApp.mockReturnValue( Promise.reject( new EntityNotFound( 'bad entity id' ) ) );
+		const errorMessage = 'bad entity id';
+		const entityNotFoundError = new EntityNotFound( errorMessage, { entity: 'Q123', revision: 234 } );
+		mockBuildApp.mockReturnValue( Promise.reject( entityNotFoundError ) );
 
 		serverEntry( ssrContext ).catch( ( err ) => {
 			expect( err ).toBeInstanceOf( BundleBoundaryPassingException );
 			expect( err.reason ).toBe( ErrorReason.EntityNotFound );
+			expect( err.getContext() ).toEqual( entityNotFoundError.getContext() );
 			done();
 		} );
 	} );

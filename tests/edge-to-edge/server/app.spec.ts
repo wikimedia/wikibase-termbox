@@ -431,8 +431,14 @@ describe( 'Termbox SSR', () => {
 			return request( app ).get( '/termbox' ).query( query ).then( ( response ) => {
 				expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 				expect( response.text ).toContain( 'Bad request' );
-				const errors = JSON.parse( response.text.match( '.*Errors: (.+)' )![ 1 ]! );
+				const errors = JSON.parse( response.text.match( '.*Errors: (.+)' )![ 1 ]! ).errors;
 				expect( errors.map( ( e: any ) => e.path ).sort() ).toEqual( reasons.sort() );
+
+				// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
+				expect( logger.log ).toHaveBeenCalledTimes( 1 );
+				expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'info/service' );
+				const loggedErrors = logger.log.mock.calls[ 0 ][ 1 ].errors;
+				expect( loggedErrors.map( ( e: any ) => e.path ).sort() ).toEqual( reasons.sort() );
 			} );
 		},
 	);
@@ -481,7 +487,12 @@ describe( 'Termbox SSR', () => {
 		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 			expect( response.text ).toContain( 'Bad request. Language not existing' );
-			expect( logger.log ).not.toBeCalled();
+
+			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'info/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].requestedLanguage ).toBe( language );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].responseLanguages ).toBeTruthy();
 			done();
 		} );
 	} );
@@ -515,6 +526,12 @@ describe( 'Termbox SSR', () => {
 		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
+
+			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'info/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].entity ).toBe( entityId );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].revision ).toBe( revision );
 		} );
 	} );
 

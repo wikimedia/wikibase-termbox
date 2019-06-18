@@ -75,9 +75,9 @@ export default ( context: BundleRendererContext ) => {
 
 	return buildApp( context.request ).catch( ( err: any ) => {
 		if ( err instanceof EntityNotFound ) {
-			throw new BundleBoundaryPassingException( ErrorReason.EntityNotFound );
+			throw new BundleBoundaryPassingException( ErrorReason.EntityNotFound, err.getContext() );
 		} else if ( err instanceof TranslationLanguageNotFound ) {
-			throw new BundleBoundaryPassingException( ErrorReason.LanguageNotFound );
+			throw new BundleBoundaryPassingException( ErrorReason.LanguageNotFound, err.getContext() );
 		}
 
 		throw err;

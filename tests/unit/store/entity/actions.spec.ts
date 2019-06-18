@@ -92,7 +92,7 @@ describe( 'entity/actions', () => {
 		it( 'propagates lookup rejection', ( done ) => {
 			const entityId = 'Q1';
 			const revision = 4711;
-			const error = new EntityNotFound( 'Entity not found' );
+			const error = new EntityNotFound( 'Entity not found', {} );
 			services.setEntityRepository( {
 				getFingerprintableEntity: ( thisEntityId: string ) => {
 					expect( thisEntityId ).toBe( entityId );

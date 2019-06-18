@@ -15,11 +15,7 @@ export default class TermboxHandler {
 		return new Promise( ( resolve, reject ) => {
 			const rejection = this.validator.coerceAndValidate( request );
 			if ( rejection ) {
-				reject(
-					new InvalidRequest(
-						'Request errors', rejection.errors,
-					),
-				);
+				reject( new InvalidRequest( rejection.errors ) );
 				return;
 			}
 
