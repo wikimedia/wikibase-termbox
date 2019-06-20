@@ -69,6 +69,7 @@
     "eslint-config-wikimedia": "^0.11.0",
     "eslint-plugin-filenames": "^1.3.2",
     "eslint-plugin-vue": "^5.2.2",
+    "eslint-plugin-wdio": "^5.7.8",
     "fork-ts-checker-webpack-plugin": "^1.3.5",
     "gonzales-pe": "^4.2.4",
     "jest-dom": "^2.1.1",
