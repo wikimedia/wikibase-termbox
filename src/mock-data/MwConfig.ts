@@ -24,8 +24,8 @@ export default class MwConfig {
 			title=Wikidata:Copyrights&amp;action=edit&amp;redlink=1"
 			title="Wikidata:Copyrights (page does not exist)">terms of use</a>,
 			and you irrevocably agree to release your contribution under the <a
-			href="https://creativecommons.org/publicdomain/zero/1.0/">
-			Creative Commons CC0 License</a>.`,
+			href="https://creativecommons.org/publicdomain/zero/1.0/"
+			class="external">Creative Commons CC0 License</a>.`,
 				version: 'wikibase-1',
 			},
 		};

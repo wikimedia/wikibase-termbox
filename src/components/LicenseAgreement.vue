@@ -47,6 +47,14 @@ export default class LicenseAgreement extends mixins( Messages ) {}
 		padding: 8px 8px 8px 48px;
 		margin: 16px -8px 0 -8px;
 		line-height: 1.2;
+
+		.external {
+			// The following compensates for styling originating from the MinervaNeue skin that got partially reset.
+			// A better approach (e.g. whitelisting elements from resetting, see
+			// https://gerrit.wikimedia.org/r/c/wikibase/termbox/+/518041) should be revisited should this codebase
+			// become skin-agnostic.
+			padding-right: 13px;
+		}
 	}
 
 	&__button-group {
