@@ -53,6 +53,15 @@ export default class LicenseAgreement extends mixins( Messages ) {
 		} );
 	}
 
+	public mounted() {
+		this.$el.querySelectorAll( '.wb-ui-license-agreement__message a' ).forEach( ( $link ) => {
+			$link.setAttribute( 'target', '_blank' );
+
+			// protect older browsers from a window.opener vulnerability: https://mathiasbynens.github.io/rel-noopener/
+			$link.setAttribute( 'rel', `${ $link.getAttribute( 'rel' ) || '' } noopener noreferrer` );
+		} );
+	}
+
 }
 </script>
 

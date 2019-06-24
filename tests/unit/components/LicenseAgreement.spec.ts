@@ -27,9 +27,8 @@ describe( 'LicenseAgreement', () => {
 	} );
 
 	it( 'has a message, which can contain html', () => {
-		const expectedMessage = 'Accept our agreement. <a href="#">See here</a> [...]';
+		const expectedMessage = 'Accept our agreement. <strong>See here</strong> [...]';
 		const wrapper = shallowMount( LicenseAgreement, {
-			stubs: { EventEmittingButton },
 			mixins: [
 				newConfigMixin( {
 					licenseAgreementInnerHtml: expectedMessage,
@@ -41,7 +40,23 @@ describe( 'LicenseAgreement', () => {
 		} );
 
 		expect( wrapper.find( '.wb-ui-license-agreement__message' ).element.innerHTML ).toBe( expectedMessage );
-		expect( wrapper.find( '.wb-ui-license-agreement__message>a' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.wb-ui-license-agreement__message > strong' ).exists() ).toBeTruthy();
+	} );
+
+	it( 'ensures links open in a new tab', () => {
+		const wrapper = shallowMount( LicenseAgreement, {
+			mixins: [
+				newConfigMixin( {
+					licenseAgreementInnerHtml: `Please agree to our
+						<a href="https://creativecommons.org/" rel="nofollow">terms of use</a>`,
+				} as ConfigOptions ),
+				mockMessageMixin( {} ),
+			],
+		} );
+
+		const link = wrapper.find( '.wb-ui-license-agreement__message > a' );
+		expect( link.attributes( 'target' ) ).toBe( '_blank' );
+		expect( link.attributes( 'rel' ) ).toBe( 'nofollow noopener noreferrer' );
 	} );
 
 	it( 'has a publish button which emits save', () => {
