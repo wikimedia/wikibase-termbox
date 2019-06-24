@@ -42,7 +42,7 @@ module.exports = {
 			minimize: !TARGET_NODE, // needed for comparison of `.constructor.name`s
 		},
 	} ),
-	chainWebpack: config => {
+	chainWebpack: ( config ) => {
 		config.optimization.delete( 'splitChunks' );
 
 		if ( process.env.NODE_ENV === 'production' ) {
@@ -67,7 +67,7 @@ module.exports = {
 		config.module
 			.rule( 'vue' )
 			.use( 'vue-loader' )
-			.tap( options =>
+			.tap( ( options ) =>
 				Object.assign( options, {
 					optimizeSSR: false,
 				} ) );
