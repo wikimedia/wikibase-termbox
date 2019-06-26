@@ -90,6 +90,7 @@ class TermboxPage extends Page {
 		return {
 			SAVE: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' .wb-ui-event-emitting-button--primaryProgressive',
 			Cancel: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' .wb-ui-event-emitting-button--normal',
+			CHECKBOX: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' input + label',
 		};
 	}
 
@@ -209,6 +210,10 @@ class TermboxPage extends Page {
 
 	openItemPage( entityId, primaryLanguage = 'en' ) {
 		super.openTitle( `Item:${ entityId }`, { useformat: 'mobile', uselang: primaryLanguage } );
+		this.waitForPageToLoad();
+	}
+
+	waitForPageToLoad() {
 		browser.waitForVisible( TermboxPage.ENDOFPAGE );
 	}
 
@@ -405,6 +410,10 @@ class TermboxPage extends Page {
 
 	get hasLicenseAgreement() {
 		return this.licenseAgreement.isExisting() && this.licenseAgreement.isVisible();
+	}
+
+	get licenseAgreementCheckbox() {
+		return $( TermboxPage.LICENSE_AGREEMENT.CHECKBOX );
 	}
 
 	clickCancelLicenseAgreement() {

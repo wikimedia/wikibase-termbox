@@ -445,6 +445,33 @@ describe( 'Termbox', () => {
 				TermboxPage.waitUntilSaved();
 				assert.ok( TermboxPage.isInReadmode );
 			} );
+
+			it( 'does not appear a second time by default', () => {
+				TermboxPage.clickPublishButton();
+				TermboxPage.waitForLicenseOverlayToAppear();
+				TermboxPage.clickSaveLicenseAgreement();
+
+				browser.refresh();
+				TermboxPage.waitForPageToLoad();
+
+				TermboxPage.switchToEditmodeSkipWarning();
+				TermboxPage.clickPublishButton();
+				assert.strictEqual( TermboxPage.hasLicenseAgreement, false );
+			} );
+
+			it( 'gets shown again after reload when unchecking the "remember my choice" checkbox', () => {
+				TermboxPage.clickPublishButton();
+				TermboxPage.waitForLicenseOverlayToAppear();
+				TermboxPage.licenseAgreementCheckbox.click();
+				TermboxPage.clickSaveLicenseAgreement();
+
+				browser.refresh();
+				TermboxPage.waitForPageToLoad();
+
+				TermboxPage.switchToEditmodeSkipWarning();
+				TermboxPage.clickPublishButton();
+				assert.strictEqual( TermboxPage.hasLicenseAgreement, true );
+			} );
 		} );
 
 		describe( 'switch to Readmode', () => {
