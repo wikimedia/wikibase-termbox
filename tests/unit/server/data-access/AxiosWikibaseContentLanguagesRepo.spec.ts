@@ -6,6 +6,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 import HttpStatus from 'http-status-codes';
+import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 const axiosMock = new MockAdapter( axios );
 
@@ -171,8 +172,9 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
-				expect( reason ).toBeInstanceOf( TechnicalProblem );
-				expect( reason.message ).toEqual( 'Error: Request failed with status code 500' );
+				expect( reason ).toBeInstanceOf( AxiosTechnicalProblem );
+				expect( ( reason as AxiosTechnicalProblem ).getContext().message )
+					.toEqual( 'Request failed with status code 500' );
 				done();
 			} );
 		} );

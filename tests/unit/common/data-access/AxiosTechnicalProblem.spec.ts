@@ -1,9 +1,8 @@
-import AxiosErrorLogger from '@/server/axios/AxiosErrorLogger';
-import { AxiosError, AxiosRequestConfig } from 'axios';
+import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
-describe( 'AxiosErrorLogger', () => {
-	it( 'writes to the provided logger', () => {
+describe( 'AxiosTechnicalProblem', () => {
 
+	it( 'builds the error context from AxiosError', () => {
 		const testErrorMessage = 'A test error message';
 		const testRequestHeaders = { Host: 'wiki.example.com' };
 		const testPath = '/path/test';
@@ -14,7 +13,7 @@ describe( 'AxiosErrorLogger', () => {
 		const mockError = {
 			name: 'mockError',
 			message: testErrorMessage,
-			config: jest.fn() as any as AxiosRequestConfig,
+			config: {},
 			request: {
 				_headers: testRequestHeaders,
 				path: testPath,
@@ -22,19 +21,13 @@ describe( 'AxiosErrorLogger', () => {
 			response: {
 				status: testStatus,
 				statusText: testStatusText,
-				config: jest.fn() as any as AxiosRequestConfig,
+				config: {},
 				headers: testResponseHeaders,
 				data: testData,
 			},
-		} as AxiosError;
-		const providedLogger = {
-			log: jest.fn(),
 		};
-		const logger = new AxiosErrorLogger( providedLogger, 'error/service' );
 
-		logger.log( mockError );
-
-		expect( providedLogger.log ).toBeCalledWith( 'error/service', {
+		expect( ( new AxiosTechnicalProblem( mockError ) ).getContext() ).toEqual( {
 			message: testErrorMessage,
 			request: {
 				headers: testRequestHeaders,
@@ -48,4 +41,5 @@ describe( 'AxiosErrorLogger', () => {
 			},
 		} );
 	} );
+
 } );

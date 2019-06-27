@@ -12,7 +12,6 @@ import assertAndGetConfig from './assertAndGetConfig';
 import { getAxios } from './axios/axiosFactory';
 import getMwUserAgentString from './axios/getMwUserAgentString';
 import packageInfo from '@/../package.json';
-import AxiosErrorLogger from './axios/AxiosErrorLogger';
 
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
@@ -45,7 +44,6 @@ export default ( options: ServiceRunnerOptions ) => {
 			config.WIKIBASE_REPO_HOSTNAME_ALIAS,
 			config.MEDIAWIKI_REQUEST_TIMEOUT,
 			getMwUserAgentString( packageInfo ),
-			new AxiosErrorLogger( logger, 'error/service' ),
 		),
 		logger,
 		new LRUCache( {

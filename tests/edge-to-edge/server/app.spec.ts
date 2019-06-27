@@ -20,8 +20,6 @@ import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEnt
 import CoercingQueryValidator from '@/server/route-handler/termbox/CoercingQueryValidator';
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
-import errorLoggingInterceptor from '@/server/axios/errorLoggingInterceptor';
-import AxiosErrorLogger from '@/server/axios/AxiosErrorLogger';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -51,9 +49,6 @@ const testAxios = axios.create( {
 		...GLOBAL_REQUEST_PARAMS,
 	},
 } );
-testAxios.interceptors.response.use( ...errorLoggingInterceptor(
-	new AxiosErrorLogger( logger, 'error/service' ),
-) );
 const services = new BundleRendererServices(
 	testAxios,
 	logger,
@@ -213,7 +208,7 @@ describe( 'Termbox SSR', () => {
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].toString() ).toEqual( 'Error: result not well formed.' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ] ).toEqual( { message: 'result not well formed.' } );
 
 			done();
 		} );
@@ -228,6 +223,7 @@ describe( 'Termbox SSR', () => {
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
+		const responseMessage = 'upstream system error';
 		nock( WIKIBASE_TEST_HOST )
 			.get( WIKIBASE_TEST_INDEX_PATH )
 			.query( {
@@ -236,7 +232,7 @@ describe( 'Termbox SSR', () => {
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
+			.reply( HttpStatus.INTERNAL_SERVER_ERROR, responseMessage );
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
@@ -248,12 +244,9 @@ describe( 'Termbox SSR', () => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
-			expect( logger.log ).toHaveBeenCalledTimes( 2 );
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( 'upstream system error' );
-			expect( logger.log.mock.calls[ 1 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 1 ][ 1 ].toString() )
-				.toEqual( 'Error: Error: Request failed with status code 500' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( responseMessage );
 
 			done();
 		} );
@@ -266,6 +259,7 @@ describe( 'Termbox SSR', () => {
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
+		const responseText = 'upstream system error';
 		nock( WIKIBASE_TEST_HOST )
 			.get( WIKIBASE_TEST_API_PATH )
 			.query( {
@@ -276,7 +270,7 @@ describe( 'Termbox SSR', () => {
 				uselang: language,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.INTERNAL_SERVER_ERROR, 'upstream system error' );
+			.reply( HttpStatus.INTERNAL_SERVER_ERROR, responseText );
 		nockSuccessfulMessagesLoading( language );
 		nockSuccessfulEntityLoading( entityId, revision );
 
@@ -290,12 +284,46 @@ describe( 'Termbox SSR', () => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
-			expect( logger.log ).toHaveBeenCalledTimes( 2 );
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( 'upstream system error' );
-			expect( logger.log.mock.calls[ 1 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 1 ][ 1 ].toString() )
-				.toEqual( 'Error: Error: Request failed with status code 500' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( responseText );
+
+			done();
+		} );
+	} );
+
+	it( 'renders Server Error when requesting /termbox and message backend request fails', ( done ) => {
+		const entityId = 'Q64';
+		const revision = REVISION_MATCHING_ENTITY;
+		const language = 'de';
+		const responseText = 'upstream system error';
+
+		nock( WIKIBASE_TEST_HOST )
+			.get( WIKIBASE_TEST_API_PATH )
+			.query( {
+				action: 'query',
+				meta: 'allmessages',
+				ammessages: Object.values( MessageKey ).join( '|' ),
+				amlang: language,
+				...GLOBAL_REQUEST_PARAMS,
+			} )
+			.reply( HttpStatus.INTERNAL_SERVER_ERROR, responseText );
+		nockSuccessfulEntityLoading( entityId, revision );
+		nockSuccessfulLanguageLoading( language );
+
+		request( app ).get( '/termbox' ).query( {
+			entity: entityId,
+			revision,
+			language,
+			editLink: '/some/' + entityId,
+			preferredLanguages: 'de|en|pl|zh|fr|ar',
+		} ).then( ( response ) => {
+			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
+			expect( response.text ).toContain( 'Technical problem' );
+
+			expect( logger.log ).toHaveBeenCalledTimes( 1 );
+			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
+			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( responseText );
 
 			done();
 		} );
@@ -487,10 +515,6 @@ describe( 'Termbox SSR', () => {
 		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
-			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
-			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( backendErrorMessage );
 		} );
 	} );
 
@@ -523,10 +547,6 @@ describe( 'Termbox SSR', () => {
 		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
-			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
-			expect( logger.log ).toHaveBeenCalledTimes( 1 );
-			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].response.data ).toBe( backendErrorMessage );
 		} );
 	} );
 

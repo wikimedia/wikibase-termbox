@@ -6,6 +6,7 @@ import MessagesRepository from '@/common/data-access/MessagesRepository';
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 import { MessageKey } from '@/common/MessageKey';
+import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 interface ResponseMessageSuccess {
 	name: MessageKey;
@@ -58,7 +59,7 @@ export default class AxiosWikibaseMessagesRepo implements MessagesRepository {
 					}
 				} )
 				.catch( ( error: AxiosError ) => {
-					reject( new TechnicalProblem( error.toString() ) );
+					reject( new AxiosTechnicalProblem( error ) );
 				} );
 		} );
 	}
