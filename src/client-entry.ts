@@ -99,7 +99,7 @@ services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
 		),
 		new CookieUserPreferenceRepository<string | null>(
 			new StringMWCookieStore( ( window as MwWindow ).mw.cookie ),
-			'wb.acknowledgedcopyrightversion',
+			'wikibase.acknowledgedcopyrightversion',
 			{ maxAge: 60 * 60 * 24 * 365 * 10 },
 		),
 		userName,
