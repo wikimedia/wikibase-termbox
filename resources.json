@@ -17,6 +17,7 @@
 		"wikibase-anonymouseditwarning-dismiss-persist",
 		"login",
 		"createaccount",
-		"wikibase-shortcopyrightwarning-accept-persist"
+		"wikibase-shortcopyrightwarning-accept-persist",
+		"wikibase-shortcopyrightwarning-heading"
 	]
 }
