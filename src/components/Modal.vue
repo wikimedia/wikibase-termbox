@@ -23,7 +23,7 @@ export default class Modal extends Vue {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background: rgba( 0, 0, 0, 0.25 );
+	background: rgba( 255, 255, 255, 0.5 );
 
 	&__content {
 		font-family: $font-family-sans;
