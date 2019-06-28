@@ -54,7 +54,10 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 					}
 
 					if ( !( id in data.entities ) ) {
-						reject( new EntityNotFound( 'result does not contain relevant entity.' ) );
+						reject( new EntityNotFound( 'result does not contain relevant entity.', {
+							entity: id,
+							revision,
+						} ) );
 						return;
 					}
 
@@ -62,7 +65,10 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 				} )
 				.catch( ( error: AxiosError ) => {
 					if ( error.response && error.response.status === HttpStatus.NOT_FOUND ) {
-						reject( new EntityNotFound( 'Entity flagged missing in response.' ) );
+						reject( new EntityNotFound( 'Entity flagged missing in response.', {
+							entity: id,
+							revision,
+						} ) );
 						return;
 					}
 					reject( new AxiosTechnicalProblem( error ) );

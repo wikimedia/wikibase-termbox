@@ -1,1 +1,3 @@
-export default class EntityNotFound extends Error {}
+import ContextError from '@/common/error/ContextError';
+
+export default class EntityNotFound extends ContextError {}

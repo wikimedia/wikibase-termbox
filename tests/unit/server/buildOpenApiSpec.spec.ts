@@ -116,7 +116,7 @@ describe( 'buildOpenApiSpec', () => {
 			expect( false ).toBe( true ); // expected exception did not happen
 		} catch ( e ) {
 			expect( e ).toBeInstanceOf( InvalidRequest );
-			expect( e.info ).toBe( errors );
+			expect( e.getContext() ).toEqual( { message: e.message, errors } );
 		}
 	} );
 

@@ -51,13 +51,16 @@ export default ( services: BundleRendererServices ) => {
 			.catch( ( err ) => {
 				if ( err instanceof InvalidRequest ) {
 					response.status( HttpStatus.BAD_REQUEST )
-						.send( 'Bad request\nErrors: ' + JSON.stringify( err.info ) );
+						.send( 'Bad request\nErrors: ' + JSON.stringify( err.getContext() ) );
+					services.logger.log( 'info/service', err.getContext() );
 				} else if ( err.constructor.name === BundleBoundaryPassingException.name ) {
 					if ( err.reason === ErrorReason.EntityNotFound ) {
 						response.status( HttpStatus.NOT_FOUND ).send( 'Entity not found' );
 					} else if ( err.reason === ErrorReason.LanguageNotFound ) {
 						response.status( HttpStatus.BAD_REQUEST ).send( 'Bad request. Language not existing' );
 					}
+
+					services.logger.log( 'info/service', err.getContext() );
 				} else {
 					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
 					services.logger.log( 'error/service', err.getContext() );
