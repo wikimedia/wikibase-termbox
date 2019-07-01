@@ -1,14 +1,22 @@
 /* eslint-disable no-underscore-dangle */
 import { createStore } from '@/store';
-import { StoreOptions } from 'vuex';
+import { ActionTree, GetterTree, MutationTree, StoreOptions } from 'vuex';
+
+type HotUpdatableStoreProperties = {
+	getters?: GetterTree<any, any>;
+	mutations?: MutationTree<any>;
+	actions?: ActionTree<any, any>;
+
+	modules?: Record<string, HotUpdatableStoreProperties>;
+}
 
 function getModuleOverrides(
 	defaults: StoreOptions<any>,
-	overrides: StoreOptions<any> = {},
+	overrides: HotUpdatableStoreProperties = {},
 ) {
 	return {
 		namespaced: true,
-		state: Object.assign( {}, defaults.state, overrides.state ),
+		state: defaults.state,
 		getters: Object.assign( {}, defaults.getters, overrides.getters ),
 		mutations: Object.assign( {}, defaults.mutations, overrides.mutations ),
 		actions: Object.assign( {}, defaults.actions, overrides.actions ),
@@ -29,7 +37,7 @@ function assertOverride( defaultValue: any, override: any, message: string ) {
 /**
  * creates a real store instance with individually overridable module properties
  */
-export default function createMockableStore( overrides: StoreOptions<any> ) {
+export default function createMockableStore( overrides: HotUpdatableStoreProperties ) {
 	const store = createStore();
 	const storeModules = ( store as any )._modules.root._children;
 
