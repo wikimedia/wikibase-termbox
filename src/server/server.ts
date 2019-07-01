@@ -16,7 +16,7 @@ import packageInfo from '@/../package.json';
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
 	const config = assertAndGetConfig(
-		options.environment,
+		options.config,
 		logger,
 	);
 

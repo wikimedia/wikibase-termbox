@@ -11,7 +11,7 @@ export interface Config {
 }
 
 interface ServiceRunnerOptions {
-	environment: NodeJS.ProcessEnv;
+	config: NodeJS.ProcessEnv;
 	logger: Logger;
 }
 

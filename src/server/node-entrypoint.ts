@@ -3,7 +3,7 @@ import ServiceRunnerOptions from './ServiceRunnerOptions';
 
 /* eslint-disable no-console */
 const options: ServiceRunnerOptions = {
-	environment: process.env,
+	config: process.env,
 	logger: console,
 };
 server( options );
