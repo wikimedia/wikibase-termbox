@@ -50,12 +50,11 @@ describe( 'server-entry', () => {
 		} );
 	} );
 
-	it( 'uses axios from services', ( done ) => {
+	it( 'uses axios from services', () => {
 		const ssrContext = newFineBundleRendererContext();
 
-		serverEntry( ssrContext ).then( () => {
-			expect( getAxios ).toBeCalledTimes( 2 );
-			done();
+		return serverEntry( ssrContext ).then( () => {
+			expect( getAxios ).toBeCalledTimes( 1 );
 		} );
 	} );
 

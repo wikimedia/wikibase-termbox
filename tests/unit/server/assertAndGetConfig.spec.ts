@@ -13,10 +13,6 @@ function getMockLogger() {
 
 describe( 'assertAndGetConfig', () => {
 
-	afterEach( () => {
-		jest.clearAllMocks();
-	} );
-
 	it( 'returns valid config and logs when all params are valid', () => {
 		const logger = getMockLogger();
 		const envVars = {

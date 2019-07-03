@@ -29,4 +29,5 @@ module.exports = {
 	],
 	testURL: 'http://localhost/',
 	preset: 'ts-jest',
+	clearMocks: true,
 };

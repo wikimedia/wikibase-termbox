@@ -171,8 +171,6 @@ describe( 'Termbox SSR', () => {
 	afterEach( () => {
 		nock.cleanAll();
 		nock.enableNetConnect();
-
-		logger.log.mockClear();
 	} );
 
 	it( 'renders Server Error when requesting /termbox and entity backend emits malformed response', ( done ) => {
