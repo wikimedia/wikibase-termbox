@@ -18,6 +18,7 @@ storiesOf( 'LicenseAgreement', module )
 			[ MessageKey.PUBLISH ]: 'asinus',
 			[ MessageKey.CANCEL ]: 'dolor',
 			[ MessageKey.LICENSE_HEADER ]: 'adipisici elit',
+			[ MessageKey.LICENSE_AGREEMENT_ACCEPT_PERSIST ]: 'Quis aute iure reprehenderit in voluptate velit esse',
 		};
 
 		return {
