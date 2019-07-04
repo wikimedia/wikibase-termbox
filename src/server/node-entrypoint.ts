@@ -5,5 +5,11 @@ import ServiceRunnerOptions from './ServiceRunnerOptions';
 const options: ServiceRunnerOptions = {
 	config: process.env,
 	logger: console,
+	metrics: {
+		timing(): void {
+			console.log( 'metrics: ', JSON.stringify( arguments ) );
+		},
+		normalizeName: ( name ) => name,
+	},
 };
 server( options );

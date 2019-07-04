@@ -46,6 +46,7 @@ export default ( options: ServiceRunnerOptions ) => {
 			getMwUserAgentString( packageInfo ),
 		),
 		logger,
+		options.metrics,
 		new LRUCache( {
 			max: 1000,
 			maxAge: config.MESSAGES_CACHE_MAX_AGE,

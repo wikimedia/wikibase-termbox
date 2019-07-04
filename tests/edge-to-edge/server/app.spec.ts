@@ -20,6 +20,7 @@ import AxiosSpecialPageEntityRepo from '@/server/data-access/AxiosSpecialPageEnt
 import CoercingQueryValidator from '@/server/route-handler/termbox/CoercingQueryValidator';
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
+import Metrics from '@/server/Metrics';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -37,6 +38,10 @@ const WIKIBASE_TEST_INDEX_PATH = '/' + MEDIAWIKI_INDEX_SCRIPT;
 const logger = {
 	log: jest.fn(),
 };
+const metrics: Metrics = {
+	timing: jest.fn(),
+	normalizeName: jest.fn(),
+};
 
 const messageCache = { has() {}, set() {}, get() {} };
 const languageCache = { has() {}, set() {}, get() {} };
@@ -52,6 +57,7 @@ const testAxios = axios.create( {
 const services = new BundleRendererServices(
 	testAxios,
 	logger,
+	metrics,
 	messageCache as any,
 	languageCache as any,
 	new CoercingQueryValidator(

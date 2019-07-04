@@ -1,4 +1,5 @@
 import Logger from './Logger';
+import Metrics from './Metrics';
 
 export interface Config {
 	WIKIBASE_REPO: string,
@@ -13,6 +14,7 @@ export interface Config {
 interface ServiceRunnerOptions {
 	config: NodeJS.ProcessEnv;
 	logger: Logger;
+	metrics: Metrics;
 }
 
 export default ServiceRunnerOptions;
