@@ -6,6 +6,7 @@ import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import Modal from '@/components/Modal.vue';
+import Overlay from '@/components/Overlay.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import { createStore } from '@/store';
@@ -49,7 +50,7 @@ import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixi
 function shallowMountWithStore( store: Store<any> ) {
 	return shallowMount( TermBox, {
 		store,
-		stubs: { EditTools, EventEmittingButton, LicenseAgreement },
+		stubs: { EditTools, EventEmittingButton, LicenseAgreement, Overlay, Modal },
 	} );
 }
 
@@ -132,17 +133,19 @@ describe( 'TermBox.vue', () => {
 				} );
 
 				describe( 'AnonEditWarning', () => {
-					it( 'is shown for anonymous users', async () => {
+					it( 'is shown in a modal overlay for anonymous users', async () => {
 						const store = createStore();
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						const wrapper = shallowMount( TermBox, {
 							store,
-							stubs: { EditTools, EventEmittingButton, AnonEditWarning },
+							stubs: { EditTools, EventEmittingButton, Overlay, Modal, AnonEditWarning },
 						} );
 
 						await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
-						expect( wrapper.find( AnonEditWarning ).exists() ).toBeTruthy();
+						expect(
+							wrapper.find( '.wb-ui-overlay .wb-ui-modal' ).find( AnonEditWarning ).exists(),
+						).toBeTruthy();
 					} );
 
 					it( 'is not shown for logged in users', async () => {
@@ -207,12 +210,14 @@ describe( 'TermBox.vue', () => {
 					expect( publish.props( 'message' ) ).toBe( message );
 				} );
 
-				it( 'shows the LicenseAgreement overlay when clicked', async () => {
+				it( 'shows the LicenseAgreement in a modal overlay when clicked', async () => {
 					const wrapper = shallowMountWithStore( createStoreInEditMode() );
 
 					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 
-					expect( wrapper.find( LicenseAgreement ).exists() ).toBeTruthy();
+					expect(
+						wrapper.find( '.wb-ui-overlay .wb-ui-modal' ).find( LicenseAgreement ).exists(),
+					).toBeTruthy();
 				} );
 
 				it( `saves w/o overlay when ${ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION } is set`, async () => {

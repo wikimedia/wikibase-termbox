@@ -1,15 +1,15 @@
 import { shallowMount } from '@vue/test-utils';
-import Modal from '@/components/Modal.vue';
+import Overlay from '@/components/Overlay.vue';
 
-describe( 'Modal', () => {
+describe( 'Overlay', () => {
 	it( 'gets content through the default slot', () => {
 		const content = 'o hai';
-		const wrapper = shallowMount( Modal, {
+		const wrapper = shallowMount( Overlay, {
 			slots: {
 				default: content,
 			},
 		} );
 
-		expect( wrapper.find( '.wb-ui-modal' ).text() ).toBe( content );
+		expect( wrapper.find( '.wb-ui-overlay' ).text() ).toBe( content );
 	} );
 } );
