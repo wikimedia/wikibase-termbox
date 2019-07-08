@@ -3,7 +3,9 @@ import Metrics from './Metrics';
 
 export default function reportResponseTimeMetrics( metrics: Metrics ) {
 	return ( request: express.Request, response: express.Response, time: number ) => {
-		const normalizedPath = metrics.normalizeName( request.path );
+		const normalizedPath = metrics.normalizeName(
+			request.path.replace( /^\//, '' ) || 'root',
+		);
 
 		metrics.timing( [
 			`${ normalizedPath }.${ request.method }.ALL`,
