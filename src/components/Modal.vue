@@ -1,8 +1,6 @@
 <template>
 	<div class="wb-ui-modal">
-		<div class="wb-ui-modal__content">
-			<slot />
-		</div>
+		<slot />
 	</div>
 </template>
 
@@ -17,21 +15,11 @@ export default class Modal extends Vue {
 
 <style lang="scss">
 .wb-ui-modal {
-	z-index: 999;
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	background: rgba( 255, 255, 255, 0.5 );
-
-	&__content {
-		font-family: $font-family-sans;
-		margin: 0 auto;
-		max-width: 375px;
-		padding: 16px;
-		background: #fff;
-		box-shadow: 0 4px 6px rgba( 0, 0, 0, 0.25 );
-	}
+	font-family: $font-family-sans;
+	margin: 0 auto;
+	max-width: 375px;
+	padding: 16px;
+	background: #fff;
+	box-shadow: 0 4px 6px rgba( 0, 0, 0, 0.25 );
 }
 </style>

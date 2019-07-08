@@ -29,12 +29,16 @@
 						/>
 					</template>
 				</EditTools>
-				<Modal v-if="showEditWarning">
-					<AnonEditWarning @dismiss="showEditWarning = false" />
-				</Modal>
-				<Modal v-if="showLicenseAgreement">
-					<LicenseAgreement @cancel="closeLicenseAgreement()" @save="save()" />
-				</Modal>
+				<Overlay v-if="showEditWarning">
+					<Modal>
+						<AnonEditWarning @dismiss="showEditWarning = false" />
+					</Modal>
+				</Overlay>
+				<Overlay v-if="showLicenseAgreement">
+					<Modal>
+						<LicenseAgreement @cancel="closeLicenseAgreement()" @save="save()" />
+					</Modal>
+				</Overlay>
 			</div>
 		</div>
 
@@ -66,9 +70,11 @@ import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import { UserPreference } from '@/common/UserPreference';
 import User from '@/store/user/User';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
+import Overlay from '@/components/Overlay.vue';
 
 @Component( {
 	components: {
+		Overlay,
 		AnonEditWarning,
 		LicenseAgreement,
 		Modal,
