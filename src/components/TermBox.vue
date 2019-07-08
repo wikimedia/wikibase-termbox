@@ -39,6 +39,7 @@
 						<LicenseAgreement @cancel="closeLicenseAgreement()" @save="save()" />
 					</Modal>
 				</Overlay>
+				<Overlay v-if="isSaving" />
 			</div>
 		</div>
 
@@ -119,6 +120,8 @@ export default class TermBox extends mixins( Messages ) {
 
 	public showLicenseAgreement = false;
 
+	public isSaving = false;
+
 	public edit() {
 		if ( !this.hideAnonEditWarning ) {
 			this.showEditWarningForAnonymousUser();
@@ -136,10 +139,14 @@ export default class TermBox extends mixins( Messages ) {
 	}
 
 	public save(): void {
+		this.isSaving = true;
 		this.closeLicenseAgreement();
 		this.saveEntity()
 			.then( () => {
 				this.deactivateEditMode();
+			} )
+			.finally( () => {
+				this.isSaving = false;
 			} );
 	}
 

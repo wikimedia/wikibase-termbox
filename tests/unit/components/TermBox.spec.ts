@@ -422,4 +422,32 @@ describe( 'TermBox.vue', () => {
 		expect( wrapper.find( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
 	} );
 
+	it( 'shows an overlay while saving', async () => {
+		const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
+		const copyrightVersion = 'wikibase-1';
+		const store = createMockableStore( {
+			modules: {
+				[ NS_ENTITY ]: {
+					actions: { [ ENTITY_SAVE ]: entitySave },
+				},
+			},
+		} );
+		setStoreInEditMode( store );
+		store.commit( mutation( NS_USER, USER_SET_PREFERENCE ), {
+			name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
+			value: copyrightVersion,
+		} );
+		const wrapper = shallowMount( TermBox, {
+			store,
+			stubs: { LicenseAgreement, EventEmittingButton, EditTools },
+			mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
+		} );
+
+		await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+		expect( wrapper.find( Overlay ).exists() ).toBeTruthy();
+
+		await Vue.nextTick();
+		expect( wrapper.find( Overlay ).exists() ).toBeFalsy();
+	} );
+
 } );
