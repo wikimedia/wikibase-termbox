@@ -1,4 +1,4 @@
-import { action, mutation } from '@/store/util';
+import { action, mutation, getters } from '@/store/util';
 
 describe( 'util', () => {
 
@@ -10,6 +10,11 @@ describe( 'util', () => {
 	it( 'mutation', () => {
 		expect( mutation( 'omg', 'wtf' ) ).toBe( 'omg/wtf' );
 		expect( mutation( 'omg', 'wtf', 'bbq' ) ).toBe( 'omg/wtf/bbq' );
+	} );
+
+	it( 'getters', () => {
+		expect( getters( 'lorem', 'ipsum' ) ).toBe( 'lorem/ipsum' );
+		expect( getters( 'lorem', 'ipsum', 'dolor' ) ).toBe( 'lorem/ipsum/dolor' );
 	} );
 
 } );

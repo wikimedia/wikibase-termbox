@@ -109,22 +109,23 @@ describe( 'LabelEdit', () => {
 	describe( 'directionality and language code', () => {
 
 		it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
-			const language = { code: 'en', directionality: 'ltr' };
-			const inlanguageDirective = jest.fn();
+			const languageCode = 'en';
+			const language = { code: languageCode, directionality: 'ltr' };
+			const inlanguage = jest.fn();
 			const store = createStoreWithLanguage( language );
 			shallowMount( LabelEdit, {
 				propsData: {
-					label: { language: 'en', value: 'meep' },
-					languageCode: 'en',
+					label: { language: languageCode, value: 'meep' },
+					languageCode,
 				},
 				store,
 				directives: {
-					inlanguage: inlanguageDirective,
+					inlanguage,
 				},
 			} );
 
-			expect( inlanguageDirective ).toBeCalledTimes( 1 );
-			expect( inlanguageDirective.mock.calls[ 0 ][ 1 ].value ).toBe( language );
+			expect( inlanguage ).toHaveBeenCalledTimes( 1 );
+			expect( inlanguage.mock.calls[ 0 ][ 1 ].value ).toBe( languageCode );
 		} );
 
 	} );

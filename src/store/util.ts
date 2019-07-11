@@ -1,9 +1,10 @@
 /**
  * @param namespacesAndName namespace1, namespace2, ..., mutationOrActionName
  */
-function buildActionOrMutationName( ...namespacesAndName: string[] ): string {
+function namespaceJoin( ...namespacesAndName: string[] ): string {
 	return namespacesAndName.join( '/' );
 }
 
-export const action = buildActionOrMutationName;
-export const mutation = buildActionOrMutationName;
+export const action = namespaceJoin;
+export const mutation = namespaceJoin;
+export const getters = namespaceJoin;

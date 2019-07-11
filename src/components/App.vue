@@ -1,5 +1,5 @@
 <template>
-	<section class="wikibase-entitytermsview" :dir="directionality">
+	<section class="wikibase-entitytermsview" v-inlanguage="primaryLanguage">
 		<TermBox />
 	</section>
 </template>
@@ -19,7 +19,6 @@ import {
 import TermboxRequest from '@/common/TermboxRequest';
 import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { LINKS_INIT } from '@/store/links/actionTypes';
-import Language from '@/datamodel/Language';
 import { action } from '@/store/util';
 import { namespace } from 'vuex-class';
 
@@ -49,13 +48,6 @@ export default class App extends Vue {
 
 	@namespace( NS_USER ).State( 'primaryLanguage' )
 	public primaryLanguage!: string;
-
-	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
-	public getLanguageByCode!: ( code: string ) => Language;
-
-	get directionality() {
-		return this.getLanguageByCode( this.primaryLanguage ).directionality;
-	}
 
 }
 </script>

@@ -19,12 +19,9 @@
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
-import { NS_LANGUAGE } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import Term from '@/datamodel/Term';
 import { Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import Language from '@/datamodel/Language';
 
 @Component
 export default class Label extends mixins( Messages ) {
@@ -34,11 +31,8 @@ export default class Label extends mixins( Messages ) {
 	@Prop( { required: false, default: false, type: Boolean } )
 	public isPrimary!: boolean;
 
-	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
-	public getLanguageByCode!: ( language: string ) => Language;
-
 	get language() {
-		return this.getLanguageByCode( this.label.language );
+		return this.label.language;
 	}
 
 }

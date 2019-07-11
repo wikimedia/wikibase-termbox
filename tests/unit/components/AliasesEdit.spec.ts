@@ -200,27 +200,28 @@ describe( 'AliasesEdit', () => {
 		} );
 
 		it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
-			const language = { code: 'de', directionality: 'ltr' };
-			const inlanguageDirective = jest.fn();
+			const languageCode = 'de';
+			const language = { code: languageCode, directionality: 'ltr' };
+			const inlanguage = jest.fn();
 			const store = createStoreWithLanguage( language );
 			shallowMount( AliasesEdit, {
 				propsData: {
 					aliases: [
-						{ language: language.code, value: 'hello' },
-						{ language: language.code, value: 'hello2' },
+						{ language: languageCode, value: 'hello' },
+						{ language: languageCode, value: 'hello2' },
 					],
-					languageCode: 'de',
+					languageCode,
 				},
 				store,
 				directives: {
-					inlanguage: inlanguageDirective,
+					inlanguage,
 				},
 			} );
 
-			expect( inlanguageDirective ).toBeCalledTimes( 3 );
-			expect( inlanguageDirective.mock.calls[ 0 ][ 1 ].value ).toBe( language );
-			expect( inlanguageDirective.mock.calls[ 1 ][ 1 ].value ).toBe( language );
-			expect( inlanguageDirective.mock.calls[ 2 ][ 1 ].value ).toBe( language );
+			expect( inlanguage ).toHaveBeenCalledTimes( 3 );
+			expect( inlanguage.mock.calls[ 0 ][ 1 ].value ).toBe( languageCode );
+			expect( inlanguage.mock.calls[ 1 ][ 1 ].value ).toBe( languageCode );
+			expect( inlanguage.mock.calls[ 2 ][ 1 ].value ).toBe( languageCode );
 		} );
 
 		it( 'transforms non-existent aliases into an alias list with one empty string', () => {

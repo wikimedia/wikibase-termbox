@@ -51,8 +51,6 @@ import Description from '@/components/Description.vue';
 import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import Aliases from '@/components/Aliases.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
-import Language from '@/datamodel/Language';
-import { namespace } from 'vuex-class';
 import { Prop } from 'vue-property-decorator';
 
 @Component( {
@@ -83,9 +81,6 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 
 	@Prop( { required: false, default: false, type: Boolean } )
 	public isPrimary!: boolean;
-
-	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
-	public getLanguageByCode!: ( languageCode: string ) => Language;
 
 }
 </script>

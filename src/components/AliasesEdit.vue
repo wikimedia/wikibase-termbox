@@ -6,7 +6,7 @@
 		<li v-for="( value, index ) in aliasValues" :key="keys[ index ]" class="wb-ui-aliases-edit__item">
 			<TermTextField
 				class="wb-ui-aliases-edit__alias"
-				v-inlanguage="language"
+				v-inlanguage="languageCode"
 				:value="value"
 				@input="value => aliasInput( index, value )"
 				@focus.native="setFocus()"
@@ -20,11 +20,10 @@
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
-import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
+import { NS_ENTITY } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import Language from '@/datamodel/Language';
 import Term from '@/datamodel/Term';
 import TermTextField from '@/components/TermTextField.vue';
 import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
@@ -37,9 +36,6 @@ export default class AliasesEdit extends mixins( Messages ) {
 
 	@Prop( { required: true, type: String } )
 	public languageCode!: string;
-
-	@namespace( NS_LANGUAGE ).Getter( 'getByCode' )
-	public getLanguageByCode!: ( language: string ) => Language;
 
 	@namespace( NS_ENTITY ).Action( ENTITY_ALIASES_EDIT )
 	public editAliases!: ( payload: { language: string, aliasValues: string[] } ) => void;
@@ -117,10 +113,6 @@ export default class AliasesEdit extends mixins( Messages ) {
 
 	private isBottomBlankField( index: number ) {
 		return index === this.aliasValues.length - 1;
-	}
-
-	get language() {
-		return this.getLanguageByCode( this.languageCode );
 	}
 
 }

@@ -69,20 +69,21 @@ describe( 'Aliases', () => {
 	} );
 
 	it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
+		const languageCode = 'en';
 		const language = { code: 'en', directionality: 'ltr' };
-		const inlanguageDirective = jest.fn();
+		const inlanguage = jest.fn();
 		const store = createStoreWithLanguage( language );
 
 		shallowMount( Aliases, {
-			propsData: { aliases: [ { language: language.code, value: 'hello' } ] },
+			propsData: { aliases: [ { language: languageCode, value: 'hello' } ] },
 			store,
 			directives: {
-				inlanguage: inlanguageDirective,
+				inlanguage,
 			},
 		} );
 
-		expect( inlanguageDirective ).toBeCalledTimes( 1 );
-		expect( inlanguageDirective.mock.calls[ 0 ][ 1 ].value ).toBe( language );
+		expect( inlanguage ).toHaveBeenCalledTimes( 1 );
+		expect( inlanguage.mock.calls[ 0 ][ 1 ].value ).toBe( languageCode );
 	} );
 
 } );

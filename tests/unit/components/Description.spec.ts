@@ -47,19 +47,20 @@ describe( 'Description', () => {
 	describe( 'directionality and language code', () => {
 
 		it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
-			const language = { code: 'ar', directionality: 'rtl' };
-			const inlanguageDirective = jest.fn();
+			const languageCode = 'ar';
+			const language = { code: languageCode, directionality: 'rtl' };
+			const inlanguage = jest.fn();
 			const store = createStoreWithLanguage( language );
 			shallowMount( Description, {
-				propsData: { description: { language: language.code, value: 'bla' } },
+				propsData: { description: { language: languageCode, value: 'bla' } },
 				store,
 				directives: {
-					inlanguage: inlanguageDirective,
+					inlanguage,
 				},
 			} );
 
-			expect( inlanguageDirective ).toBeCalledTimes( 1 );
-			expect( inlanguageDirective.mock.calls[ 0 ][ 1 ].value ).toBe( language );
+			expect( inlanguage ).toHaveBeenCalledTimes( 1 );
+			expect( inlanguage.mock.calls[ 0 ][ 1 ].value ).toBe( languageCode );
 		} );
 
 		it( 'does not add directionality markup for missing description', () => {

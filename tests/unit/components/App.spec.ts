@@ -37,20 +37,20 @@ describe( 'App.vue', () => {
 		expect( wrapper.classes() ).toContain( 'wikibase-entitytermsview' );
 	} );
 
-	test.each( [
-		[ 'en', 'ltr' ],
-		[ 'ar', 'rtl' ],
-	] )(
-		'includes the user language (%s) directionality (%s) in its root element',
-		( lang: string, directionality: string ) => {
-			const store = newInitializedStore();
-			const wrapper = shallowMount( App, { store, localVue } );
+	it( 'delegates language attribute rendering to the v-inlanguage directive', () => {
+		const languageCode = 'ar';
+		const inlanguage = jest.fn();
 
-			store.commit( mutation( NS_USER, USER_LANGUAGE_INIT ), lang );
+		shallowMount( App, {
+			store: newInitializedStore(),
+			directives: {
+				inlanguage,
+			},
+		} );
 
-			expect( wrapper.attributes( 'dir' ) ).toBe( directionality );
-		},
-	);
+		expect( inlanguage ).toHaveBeenCalledTimes( 1 );
+		expect( inlanguage.mock.calls[ 0 ][ 1 ].value ).toBe( languageCode );
+	} );
 
 	it( 'loads required data in asyncData', () => {
 		const entity = 'Q123';
