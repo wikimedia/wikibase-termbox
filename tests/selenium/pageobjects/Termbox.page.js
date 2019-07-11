@@ -74,8 +74,8 @@ class TermboxPage extends Page {
 
 	static get OVERLAYS() {
 		return {
-			IP_WARNING: '.wb-ui-modal__content .wb-ui-anon-edit-warning',
-			LICENSE_AGREEMENT: '.wb-ui-modal__content .wb-ui-license-agreement',
+			IP_WARNING: '.wb-ui-modal .wb-ui-anon-edit-warning',
+			LICENSE_AGREEMENT: '.wb-ui-modal .wb-ui-license-agreement',
 		};
 	}
 
