@@ -1,4 +1,4 @@
-'use strict'; // eslint-disable-line filenames/match-exported
+'use strict';
 
 const assert = require( 'assert' );
 const TermboxPage = require( '../pageobjects/Termbox.page' );
@@ -42,7 +42,7 @@ function verifyMonolingualFingerprintSection(
 	} );
 }
 
-function termboxSpec() {
+describe( 'Termbox', () => {
 	const primaryLanguage = 'de';
 	let fingerprint, allEnteredLanguages, id;
 
@@ -492,9 +492,4 @@ function termboxSpec() {
 			} );
 		} );
 	} );
-}
-
-describe( 'Termbox', termboxSpec );
-
-// Exported so we can run from the Wikibase test suite
-module.exports = termboxSpec;
+} );
