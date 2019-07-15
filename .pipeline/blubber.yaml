@@ -16,7 +16,7 @@ variants:
   build:
     base: docker-registry.wikimedia.org/nodejs10-devel
     apt:
-      packages: [ git ] #needed for npm packages from git
+      packages: [ git, build-essential, python-pkgconfig ] # needed for npm install
     node:
       requirements: [ package.json, package-lock.json, build/ ]
   build-server:
