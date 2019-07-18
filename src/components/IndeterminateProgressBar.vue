@@ -29,7 +29,7 @@ export default class IndeterminateProgressBar extends Vue {
 	box-sizing: border-box;
 	border-radius: 2px;
 	overflow: hidden;
-	background: #fff;
+	background-color: #fff;
 }
 
 .wb-ui-indeterminate-progress-bar__bar {

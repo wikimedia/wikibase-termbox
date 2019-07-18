@@ -7,6 +7,7 @@ import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import Modal from '@/components/Modal.vue';
 import Overlay from '@/components/Overlay.vue';
+import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import { createStore } from '@/store';
@@ -422,7 +423,7 @@ describe( 'TermBox.vue', () => {
 		expect( wrapper.find( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
 	} );
 
-	it( 'shows an overlay while saving', async () => {
+	it( 'shows an overlay with indeterminate progress bar while saving', async () => {
 		const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
 		const copyrightVersion = 'wikibase-1';
 		const store = createMockableStore( {
@@ -445,6 +446,7 @@ describe( 'TermBox.vue', () => {
 
 		await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 		expect( wrapper.find( Overlay ).exists() ).toBeTruthy();
+		expect( wrapper.find( IndeterminateProgressBar ).exists() ).toBeTruthy();
 
 		await Vue.nextTick();
 		expect( wrapper.find( Overlay ).exists() ).toBeFalsy();
