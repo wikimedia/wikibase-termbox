@@ -7,10 +7,12 @@ We follow the [BEM](http://getbem.com/) (Block, Element, Modifier) approach to c
 * Block
   * The component name (e.g. button)
 * Element
-  * A semantic name for a node inside a component (e.g. text) 
+  * A semantic name for a node inside a component (e.g. text)
 * Modifier
   * A state of a Block or Element (e.g. disabled)
 
-As the output of this project gets integrated into pre-existing HTML that we do not fully control and that was not necessarily developed with consideration for component isolation, there is a chance that the mark-up we create is inadvertently matching selectors of legacy styles. To lower the chance of this happening we are using a prefix for all our classes: `wb-ui-`.
+In addition we are using a prefix for all our classes: `wb-ui-`. This approach reduces the chances of our styles inadvertently matching 3rd party/legacy mark-up with which we integrate.
 
-The above example would yield a class `wb-ui-button__text--disabled`
+The above example would yield a class `wb-ui-button__text--disabled`.
+
+The output of this project gets integrated into pre-existing pages that we do not fully control and the styles of which were not necessarily developed with consideration for component isolation. Additionally, browsers bring about their own default CSS for many HTML elements. To reduce the likeliness that the mark-up we create is inadvertently matching selectors of 3rd party/legacy styles we [employ](../src/components/App.vue) so-called ["reset CSS"](https://www.npmjs.com/package/reset-css) which undoes (within the realms of possibility) notorious styles for many elements.
