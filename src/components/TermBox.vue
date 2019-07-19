@@ -39,7 +39,9 @@
 						<LicenseAgreement @cancel="closeLicenseAgreement()" @save="save()" />
 					</Modal>
 				</Overlay>
-				<Overlay v-if="isSaving" />
+				<Overlay v-if="isSaving">
+					<IndeterminateProgressBar />
+				</Overlay>
 			</div>
 		</div>
 
@@ -72,9 +74,11 @@ import { UserPreference } from '@/common/UserPreference';
 import User from '@/store/user/User';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import Overlay from '@/components/Overlay.vue';
+import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
 
 @Component( {
 	components: {
+		IndeterminateProgressBar,
 		Overlay,
 		AnonEditWarning,
 		LicenseAgreement,
