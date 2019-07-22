@@ -3,7 +3,8 @@
 		<div
 			class="wb-ui-indeterminate-progress-bar__bar"
 			aria-busy="true"
-			aria-live="polite" />
+			aria-live="polite"
+		/>
 	</div>
 </template>
 
