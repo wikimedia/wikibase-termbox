@@ -34,10 +34,7 @@ export default class IndeterminateProgressBar extends Vue {
 
 .wb-ui-indeterminate-progress-bar__bar {
 	animation: wb-ui-indeterminate-progress-bar__bar--slide 2s infinite linear;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-image: $svg-progressbar-wikidata-logo;
+	background-color: $color-primary;
 	width: 40%;
 	height: 100%;
 	display: block;
