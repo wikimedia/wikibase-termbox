@@ -15,7 +15,7 @@ function mockMwEnv(
 	getUrl: any = null,
 ) {
 	( window as MwWindow ).mw = {
-		config: { get( key ) {
+		config: { get( key: string ) {
 			switch ( key ) {
 				case 'wgUserLanguage':
 					return language;

@@ -1,10 +1,7 @@
+import MwConfig from '@/client/mediawiki/MwConfig';
 import HookHandler from '@/client/mediawiki/HookHandler';
 import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKey } from '@/common/MessageKey';
-
-interface MwConfig {
-	get( key: string ): any;
-}
 
 type MwTitle = new( title: string, namespace: number ) => any;
 
