@@ -24,12 +24,16 @@ $color-checkbox: $wmui-color-base100;
 $warning-message-background: $wmui-color-yellow90;
 $warning-message-border: $wmui-color-yellow50;
 
+$error-message-background: $wmui-color-red90;
+$error-message-border: $wmui-color-red50;
+
 $svg-pen: url( ../../assets/pen.svg );
 $svg-publish: url( ../../assets/transparent_checkmark_in_accent50_circle.svg );
 $svg-cancel: url( ../../assets/close.svg );
 $svg-in-more-languages: url( ../../assets/arrow_in_circle_grey_up.svg );
 $svg-all-entered-languages: url( ../../assets/double_arrow_in_circle_grey_up.svg );
 $svg-warning: url( ../../assets/warning_sign.svg );
+$svg-error: url( ../../assets/error_sign.svg );
 $svg-check: url( ../../assets/check.svg );
 $svg-progressbar-wikidata-logo: url( ../../assets/progressbar_wikidata_logo.svg );
 

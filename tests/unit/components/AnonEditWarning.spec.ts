@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Checkbox from '@/components/Checkbox.vue';
+import IconMessageBox from '@/components/IconMessageBox.vue';
 import mockMessageMixin from '../store/mockMessageMixin';
 import { MessageKey } from '@/common/MessageKey';
 import { createStore } from '@/store';
@@ -48,8 +49,8 @@ describe( 'AnonEditWarning', () => {
 			} ) ],
 		} );
 
-		expect( wrapper.find( '.wb-ui-anon-edit-warning__message' ).text() )
-			.toBe( expectedMessage );
+		expect( wrapper.find( IconMessageBox ).props( 'type' ) ).toBe( 'warning' );
+		expect( wrapper.find( IconMessageBox ).text() ).toBe( expectedMessage );
 	} );
 
 	it( 'has a login button acting as link that also causes preference persistence', () => {

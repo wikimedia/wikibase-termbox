@@ -3,9 +3,9 @@
 		<h4 class="wb-ui-anon-edit-warning__heading">
 			{{ message( MESSAGE_KEYS.EDIT_WARNING_HEADING ) }}
 		</h4>
-		<p class="wb-ui-anon-edit-warning__message">
+		<IconMessageBox type="warning">
 			{{ message( MESSAGE_KEYS.EDIT_WARNING_MESSAGE ) }}
-		</p>
+		</IconMessageBox>
 		<p class="wb-ui-anon-edit-warning__persist">
 			<Checkbox
 				v-model="warnRecurringly"
@@ -51,9 +51,10 @@ import Checkbox from '@/components/Checkbox.vue';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 import { action } from '@/store/util';
+import IconMessageBox from '@/components/IconMessageBox.vue';
 
 @Component( {
-	components: { Checkbox, EventEmittingButton },
+	components: { IconMessageBox, Checkbox, EventEmittingButton },
 } )
 export default class AnonEditWarning extends mixins( Messages ) {
 
@@ -85,14 +86,6 @@ export default class AnonEditWarning extends mixins( Messages ) {
 		text-align: center;
 		font-weight: bold;
 		margin-top: 10px;
-	}
-
-	&__message {
-		background: $warning-message-background $svg-warning no-repeat 16px 8px;
-		border: 1px solid $warning-message-border;
-		padding: 8px 8px 8px 48px;
-		margin: 16px -8px 0 -8px;
-		line-height: 1.2;
 	}
 
 	&__button-group {

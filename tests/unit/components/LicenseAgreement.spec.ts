@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Checkbox from '@/components/Checkbox.vue';
+import IconMessageBox from '@/components/IconMessageBox.vue';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 import { MessageKey } from '@/common/MessageKey';
@@ -39,8 +40,9 @@ describe( 'LicenseAgreement', () => {
 			],
 		} );
 
-		expect( wrapper.find( '.wb-ui-license-agreement__message' ).element.innerHTML ).toBe( expectedMessage );
-		expect( wrapper.find( '.wb-ui-license-agreement__message > strong' ).exists() ).toBeTruthy();
+		expect( wrapper.find( IconMessageBox ).props( 'type' ) ).toBe( 'warning' );
+		expect( wrapper.find( IconMessageBox ).element.innerHTML ).toBe( expectedMessage );
+		expect( wrapper.find( IconMessageBox ).find( 'strong' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'ensures links open in a new tab', () => {
