@@ -102,7 +102,7 @@ services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
 			'wikibase.acknowledgedcopyrightversion',
 			{ maxAge: 60 * 60 * 24 * 365 * 10 },
 		),
-		userName,
+		userName !== null,
 	),
 } ) );
 
