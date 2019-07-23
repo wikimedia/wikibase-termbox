@@ -210,11 +210,13 @@ class TermboxPage extends Page {
 
 	openItemPage( entityId, primaryLanguage = 'en' ) {
 		super.openTitle( `Item:${ entityId }`, { useformat: 'mobile', uselang: primaryLanguage } );
-		this.waitForPageToLoad();
+		this.waitForTermboxToLoad();
 	}
 
-	waitForPageToLoad() {
-		browser.waitForVisible( TermboxPage.ENDOFPAGE );
+	waitForTermboxToLoad() {
+		// The "all entered languages" section only exists in the client-side rendered markup,
+		// and is omitted from the server-side markup. Once it exists Termbox should be fully interactive.
+		this.allEnteredLanguagesButton.waitForExist();
 	}
 
 	wikiLogin() {

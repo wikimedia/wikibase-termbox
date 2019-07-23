@@ -452,7 +452,7 @@ describe( 'Termbox', () => {
 				TermboxPage.clickSaveLicenseAgreement();
 
 				browser.refresh();
-				TermboxPage.waitForPageToLoad();
+				TermboxPage.waitForTermboxToLoad();
 
 				TermboxPage.switchToEditmodeSkipWarning();
 				TermboxPage.clickPublishButton();
@@ -466,7 +466,7 @@ describe( 'Termbox', () => {
 				TermboxPage.clickSaveLicenseAgreement();
 
 				browser.refresh();
-				TermboxPage.waitForPageToLoad();
+				TermboxPage.waitForTermboxToLoad();
 
 				TermboxPage.switchToEditmodeSkipWarning();
 				TermboxPage.clickPublishButton();
