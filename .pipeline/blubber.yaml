@@ -1,4 +1,4 @@
-version: v3
+version: v4
 
 base: docker-registry.wikimedia.org/nodejs10-slim
 
@@ -15,6 +15,7 @@ lives:
 variants:
   build:
     base: docker-registry.wikimedia.org/nodejs10-devel
+    copies: [local]
     apt:
       packages: [ git, build-essential, python-pkgconfig ] # needed for npm install
     node:
@@ -33,7 +34,7 @@ variants:
     node:
       env: production
   production:
-    artifacts:
+    copies:
       - from: install-prod
         source: /opt/lib/node_modules
         destination: /srv/service/node_modules
