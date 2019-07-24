@@ -5,7 +5,8 @@ describe( 'AxiosTechnicalProblem', () => {
 	it( 'builds the error context from AxiosError', () => {
 		const testErrorMessage = 'A test error message';
 		const testRequestHeaders = { Host: 'wiki.example.com' };
-		const testPath = '/path/test';
+		const testUrl = 'https://some/wiki/api.php';
+		const testParams = { action: 'yes' };
 		const testStatus = 1234;
 		const testStatusText = 'foo';
 		const testResponseHeaders = { SomeHeader: 'goat' };
@@ -13,11 +14,12 @@ describe( 'AxiosTechnicalProblem', () => {
 		const mockError = {
 			name: 'mockError',
 			message: testErrorMessage,
-			config: {},
-			request: {
-				_headers: testRequestHeaders,
-				path: testPath,
+			config: {
+				headers: testRequestHeaders,
+				url: testUrl,
+				params: testParams,
 			},
+			request: {},
 			response: {
 				status: testStatus,
 				statusText: testStatusText,
@@ -31,7 +33,8 @@ describe( 'AxiosTechnicalProblem', () => {
 			message: testErrorMessage,
 			request: {
 				headers: testRequestHeaders,
-				path: testPath,
+				url: testUrl,
+				params: testParams,
 			},
 			response: {
 				status: testStatus,
