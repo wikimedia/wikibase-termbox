@@ -4,3 +4,4 @@ serverBuild/
 serverDist/
 
 !.eslintrc.js
+!/.storybook
