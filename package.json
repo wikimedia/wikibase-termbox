@@ -11,7 +11,7 @@
     "fix": "vue-cli-service lint .",
     "prepare": "node build/wikimedia-ui-base.js",
     "test": "npm-run-all test:*",
-    "test:lint": "vue-cli-service lint --no-fix . && stylelint --syntax scss 'src/**/*.(vue|scss)'",
+    "test:lint": "vue-cli-service lint --no-fix --max-warnings 0 . && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "vue-cli-service test:unit",
     "test:distnodiff": "npm run build -- --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.main.js /tmp/dist/wikibase.termbox.main.js",
     "storybook": "start-storybook",
