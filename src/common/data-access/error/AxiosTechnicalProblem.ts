@@ -5,7 +5,8 @@ type AxiosErrorContext = {
 	message: string;
 	request?: {
 		headers: object;
-		path?: string;
+		url?: string;
+		params: any;
 	};
 	response?: {
 		status: number;
@@ -29,9 +30,9 @@ export default class AxiosTechnicalProblem extends Error implements LoggableErro
 		const payload: AxiosErrorContext = { message: this.error.message };
 		if ( request !== undefined ) {
 			payload.request = {
-				// eslint-disable-next-line no-underscore-dangle
-				headers: this.error.request._headers,
-				path: this.error.request.path,
+				headers: this.error.config.headers,
+				url: this.error.config.url,
+				params: this.error.config.params,
 			};
 		}
 		if ( response !== undefined ) {
