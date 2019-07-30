@@ -24,6 +24,7 @@ logging:
   sampled_levels:
     'trace/webrequest': 0.2
   streams:
+    - type: stdout
     # Use gelf-stream -> logstash
     - type: gelf
       host: '{env(LOGSTASH_HOST,logstash1003.eqiad.wmnet)}'
