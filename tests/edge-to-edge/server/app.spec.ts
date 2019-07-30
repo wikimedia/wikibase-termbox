@@ -496,7 +496,6 @@ describe( 'Termbox SSR', () => {
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'info/service' );
 			expect( logger.log.mock.calls[ 0 ][ 1 ].requestedLanguage ).toBe( language );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].responseLanguages ).toBeTruthy();
 			done();
 		} );
 	} );
