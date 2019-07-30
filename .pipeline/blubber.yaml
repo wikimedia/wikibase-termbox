@@ -35,6 +35,15 @@ variants:
       env: production
   production:
     copies:
+      - from: build-server
+        source: /opt/lib/config.yaml
+        destination: /srv/service/config.yaml
+      - from: build-server
+        source: /opt/lib/package.json
+        destination: /srv/service/package.json
+      - from: build-server
+        source: /opt/lib/openapi.json
+        destination: /srv/service/openapi.json
       - from: install-prod
         source: /opt/lib/node_modules
         destination: /srv/service/node_modules
