@@ -42,6 +42,16 @@
 				<Overlay v-if="isSaving">
 					<IndeterminateProgressBar />
 				</Overlay>
+				<MessageBanner v-if="showSavingError">
+					<template #heading>
+						{{ message( MESSAGE_KEYS.SAVE_ERROR_HEADING ) }}
+					</template>
+					<template #message>
+						<IconMessageBox type="error">
+							{{ message( MESSAGE_KEYS.SAVE_ERROR_MESSAGE ) }}
+						</IconMessageBox>
+					</template>
+				</MessageBanner>
 			</div>
 		</div>
 
@@ -75,9 +85,13 @@ import User from '@/store/user/User';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import Overlay from '@/components/Overlay.vue';
 import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
+import MessageBanner from '@/components/MessageBanner.vue';
+import IconMessageBox from '@/components/IconMessageBox.vue';
 
 @Component( {
 	components: {
+		IconMessageBox,
+		MessageBanner,
 		IndeterminateProgressBar,
 		Overlay,
 		AnonEditWarning,
@@ -126,6 +140,8 @@ export default class TermBox extends mixins( Messages ) {
 
 	public isSaving = false;
 
+	public showSavingError = false;
+
 	public edit() {
 		if ( !this.hideAnonEditWarning ) {
 			this.showEditWarningForAnonymousUser();
@@ -147,11 +163,19 @@ export default class TermBox extends mixins( Messages ) {
 		this.closeLicenseAgreement();
 		this.saveEntity()
 			.then( () => {
-				this.deactivateEditMode();
+				this.deactivateEditModeAndDismissErrors();
+			} )
+			.catch( () => {
+				this.showSavingError = true;
 			} )
 			.finally( () => {
 				this.isSaving = false;
 			} );
+	}
+
+	private deactivateEditModeAndDismissErrors() {
+		this.showSavingError = false;
+		this.deactivateEditMode();
 	}
 
 	public closeLicenseAgreement() {
@@ -161,7 +185,7 @@ export default class TermBox extends mixins( Messages ) {
 	public cancel(): void {
 		this.rollbackEntity()
 			.then( () => {
-				this.deactivateEditMode();
+				this.deactivateEditModeAndDismissErrors();
 			} );
 	}
 

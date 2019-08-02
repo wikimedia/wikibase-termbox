@@ -18,4 +18,6 @@ export enum MessageKey {
 	CREATE_ACCOUNT = 'createaccount',
 	LICENSE_AGREEMENT_ACCEPT_PERSIST = 'wikibase-shortcopyrightwarning-accept-persist',
 	LICENSE_HEADER = 'wikibase-shortcopyrightwarning-heading',
+	SAVE_ERROR_HEADING = 'wikibase-entity-save-error-heading',
+	SAVE_ERROR_MESSAGE = 'wikibase-entity-save-error-message',
 }
