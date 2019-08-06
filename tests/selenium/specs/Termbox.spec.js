@@ -34,7 +34,7 @@ function verifyMonolingualFingerprintSection(
 		}
 
 		assert.strictEqual(
-			verifier( counter ),
+			verifier( counter ).getText(),
 			getter( fingerprintSection[ language ] )
 		);
 
@@ -65,11 +65,11 @@ describe( 'Termbox', () => {
 			} );
 
 			it( 'is in Readmode', () => {
-				assert.ok( TermboxPage.isInReadmode );
+				assert.ok( TermboxPage.isInReadMode );
 			} );
 
 			it( 'has a edit button', () => {
-				assert.ok( TermboxPage.hasEditButton );
+				assert.ok( TermboxPage.editButton.isVisible() );
 			} );
 
 			describe( 'Primary Monolingualfingerprint', () => {
@@ -79,28 +79,28 @@ describe( 'Termbox', () => {
 
 				it( 'has a language name', () => {
 					assert.strictEqual(
-						TermboxPage.primaryLanguageName,
+						TermboxPage.primaryLanguageName.getText(),
 						TermboxPage.availableLanguages[ primaryLanguage ]
 					);
 				} );
 
 				it( 'has an item label', () => {
 					assert.strictEqual(
-						TermboxPage.primaryLabel,
+						TermboxPage.primaryLabel.getText(),
 						fingerprint.labels[ primaryLanguage ].value
 					);
 				} );
 
 				it( 'has a item description', () => {
 					assert.strictEqual(
-						TermboxPage.primaryDescription,
+						TermboxPage.primaryDescription.getText(),
 						fingerprint.descriptions[ primaryLanguage ].value
 					);
 				} );
 
 				it( 'has item aliases', () => {
 					assert.strictEqual(
-						TermboxPage.primaryAliases,
+						TermboxPage.primaryAliases.getText(),
 						getAliasValues( fingerprint.aliases[ primaryLanguage ] )
 					);
 				} );
@@ -130,11 +130,11 @@ describe( 'Termbox', () => {
 				} );
 
 				it( 'has a button', () => {
-					assert.ok( TermboxPage.hasInMoreLanguagesButton );
+					assert.ok( TermboxPage.inMoreLanguagesButton.isVisible() );
 				} );
 
 				it( 'is expanded', () => {
-					assert.ok( TermboxPage.inMoreLanguagesIsExpanded );
+					assert.ok( TermboxPage.inMoreLanguages.isVisible() );
 				} );
 
 				it( 'contains language names', () => {
@@ -179,7 +179,7 @@ describe( 'Termbox', () => {
 				} );
 
 				it( 'contains in All-Entered-Languages button', () => {
-					assert.ok( TermboxPage.hasAllEnteredLanguagesButton );
+					assert.ok( TermboxPage.allEnteredLanguagesButton.isVisible() );
 				} );
 			} );
 
@@ -189,7 +189,7 @@ describe( 'Termbox', () => {
 				} );
 
 				it( 'is collapsed', () => {
-					assert.strictEqual( TermboxPage.allEnteredLanguagesIsExpanded, false );
+					assert.strictEqual( TermboxPage.allEnteredLanguages.isVisible(), false );
 				} );
 			} );
 		} );
@@ -199,19 +199,19 @@ describe( 'Termbox', () => {
 				describe( 'is collapsed after clicking In-More-Languages button', () => {
 					before( () => {
 						TermboxPage.openItemPage( id, primaryLanguage );
-						TermboxPage.clickInMoreLanguagesButton();
+						TermboxPage.inMoreLanguagesButton.click();
 					} );
 
 					it( 'has still a button after collapsing', () => {
-						assert.ok( TermboxPage.hasInMoreLanguagesButton );
+						assert.ok( TermboxPage.inMoreLanguagesButton.isVisible() );
 					} );
 
 					it( 'is collapsed after clicking', () => {
-						assert.strictEqual( TermboxPage.inMoreLanguagesIsExpanded, false );
+						assert.strictEqual( TermboxPage.inMoreLanguages.isVisible(), false );
 					} );
 
 					it( 'has no All-Entered-Languages button', () => {
-						assert.strictEqual( TermboxPage.hasAllEnteredLanguagesButton, false );
+						assert.strictEqual( TermboxPage.allEnteredLanguagesButton.isVisible(), false );
 					} );
 
 				} );
@@ -219,20 +219,20 @@ describe( 'Termbox', () => {
 				describe( 'is expanded after clicking In-More-Languages button twice', () => {
 					before( () => {
 						TermboxPage.openItemPage( id, primaryLanguage );
-						TermboxPage.clickInMoreLanguagesButton();
-						TermboxPage.clickInMoreLanguagesButton();
+						TermboxPage.inMoreLanguagesButton.click();
+						TermboxPage.inMoreLanguagesButton.click();
 					} );
 
 					it( 'has still a button after expanding', () => {
-						assert.ok( TermboxPage.hasInMoreLanguagesButton );
+						assert.ok( TermboxPage.inMoreLanguagesButton.isVisible() );
 					} );
 
 					it( 'is expanded after clicking', () => {
-						assert.ok( TermboxPage.inMoreLanguagesIsExpanded );
+						assert.ok( TermboxPage.inMoreLanguages.isVisible() );
 					} );
 
 					it( 'has a All-Entered-Languages button', () => {
-						assert.ok( TermboxPage.hasAllEnteredLanguagesButton );
+						assert.ok( TermboxPage.allEnteredLanguagesButton.isVisible() );
 					} );
 				} );
 			} );
@@ -244,8 +244,7 @@ describe( 'Termbox', () => {
 
 					before( () => {
 						TermboxPage.openItemPage( id, primaryLanguage );
-						TermboxPage.clickAllEnteredLanguagesButton();
-
+						TermboxPage.allEnteredLanguagesButton.click();
 						allEnteredLanguages.forEach( ( language ) => {
 							if ( TermboxPage.nonPreferredLanguages.indexOf( language ) !== -1 ) {
 								selectedAllEnteredLanguages.push( language );
@@ -259,19 +258,19 @@ describe( 'Termbox', () => {
 					} );
 
 					it( 'has still a In-More-Languages button', () => {
-						assert.ok( TermboxPage.hasInMoreLanguagesButton );
+						assert.ok( TermboxPage.inMoreLanguagesButton.isVisible() );
 					} );
 
 					it( 'has still a All-Entered-Languages button', () => {
-						assert.ok( TermboxPage.hasAllEnteredLanguagesButton );
+						assert.ok( TermboxPage.allEnteredLanguagesButton.isVisible() );
 					} );
 
 					it( 'has still a In-More-Languages section', () => {
-						assert.ok( TermboxPage.inMoreLanguagesIsExpanded );
+						assert.ok( TermboxPage.inMoreLanguages.isVisible() );
 					} );
 
 					it( 'has a All-Entered-Languages section', () => {
-						assert.ok( TermboxPage.allEnteredLanguagesIsExpanded );
+						assert.ok( TermboxPage.allEnteredLanguages.isVisible() );
 					} );
 
 					it( 'contains language names', () => {
@@ -318,24 +317,24 @@ describe( 'Termbox', () => {
 				describe( 'is collapsed after clicking All-Entered-Languages button twice', () => {
 					before( () => {
 						TermboxPage.openItemPage( id );
-						TermboxPage.clickAllEnteredLanguagesButton();
-						TermboxPage.clickAllEnteredLanguagesButton();
+						TermboxPage.allEnteredLanguagesButton.click();
+						TermboxPage.allEnteredLanguagesButton.click();
 					} );
 
 					it( 'has still a In-More-Languages button', () => {
-						assert.ok( TermboxPage.hasInMoreLanguagesButton );
+						assert.ok( TermboxPage.inMoreLanguagesButton.isVisible() );
 					} );
 
 					it( 'has still a All-Entered-Languages button', () => {
-						assert.ok( TermboxPage.hasAllEnteredLanguagesButton );
+						assert.ok( TermboxPage.allEnteredLanguagesButton.isVisible() );
 					} );
 
 					it( 'has still a In-More-Languages section', () => {
-						assert.ok( TermboxPage.inMoreLanguagesIsExpanded );
+						assert.ok( TermboxPage.inMoreLanguages.isVisible() );
 					} );
 
 					it( 'has no All-Entered-Languages section', () => {
-						assert.strictEqual( TermboxPage.allEnteredLanguagesIsExpanded, false );
+						assert.strictEqual( TermboxPage.allEnteredLanguages.isVisible(), false );
 					} );
 				} );
 			} );
@@ -348,8 +347,8 @@ describe( 'Termbox', () => {
 			} );
 
 			it( 'has switched to Editmode after clicking the EditButton', () => {
-				TermboxPage.clickEditButton();
-				assert.ok( TermboxPage.isInEditmode );
+				TermboxPage.editButton.click();
+				assert.ok( TermboxPage.isInEditMode );
 			} );
 		} );
 	} );
@@ -358,42 +357,40 @@ describe( 'Termbox', () => {
 		describe( 'as non logged in user', () => {
 			before( () => {
 				TermboxPage.logoutAndOpen( id );
-				TermboxPage.switchToEditmode();
-				TermboxPage.ipWarningEventuallyAppears();
+				TermboxPage.editButton.click();
 			} );
 
 			it( 'is in Editmode', () => {
-				assert.ok( TermboxPage.isInEditmode );
+				assert.ok( TermboxPage.isInEditMode );
 			} );
 
 			it( 'shows the ip warning overlay if user has not opted out (default)', () => {
-				assert.ok( TermboxPage.hasIPWarning );
-				assert.ok( TermboxPage.hasIpWarningCheckbox );
+				assert.ok( TermboxPage.anonEditWarning.isVisible() );
+				assert.ok( TermboxPage.anonEditWarningCheckbox.isVisible() );
 			} );
 
 			it( 'does not show ip warning overlay again if user has opted out', () => {
-				TermboxPage.clickIpWarningCheckbox();
-				TermboxPage.clickWithoutSignIn();
-
+				TermboxPage.anonEditWarningCheckbox.click();
+				TermboxPage.anonEditWarningDismissButton.click();
 				TermboxPage.logoutAndOpen( id );
-				TermboxPage.clickEditButton();
-				assert.ok( TermboxPage.ipWarningDoesNotAppear() );
+				TermboxPage.editButton.click();
+
+				assert.ok( TermboxPage.anonEditWarning.waitForExist( null, true ) );
 			} );
 
 			it( 'has a Cancel button', () => {
-				assert.ok( TermboxPage.hasCancelButton );
+				assert.ok( TermboxPage.cancelButton.isVisible() );
 			} );
 
 			describe( 'ip warning overlay', () => {
 				before( () => {
 					TermboxPage.logoutAndOpen( id );
-					TermboxPage.switchToEditmode();
-					TermboxPage.ipWarningEventuallyAppears();
+					TermboxPage.editButton.click();
 				} );
 
 				it( 'disappears after clicking anonymous editing', () => {
-					TermboxPage.clickWithoutSignIn();
-					assert.strictEqual( TermboxPage.hasIPWarning, false );
+					TermboxPage.anonEditWarningDismissButton.click();
+					assert.strictEqual( TermboxPage.anonEditWarning.isExisting(), false );
 				} );
 			} );
 		} );
@@ -401,90 +398,90 @@ describe( 'Termbox', () => {
 		describe( 'as logged in user', () => {
 			before( () => {
 				TermboxPage.loginAndOpen( id );
-				TermboxPage.switchToEditmode();
+				TermboxPage.editButton.click();
 			} );
 
 			it( 'is in Editmode', () => {
-				assert.ok( TermboxPage.isInEditmode );
+				assert.ok( TermboxPage.isInEditMode );
 			} );
 
 			it( 'shows no ip warning overlay', () => {
-				assert.strictEqual( TermboxPage.hasIPWarning, false );
+				assert.strictEqual( TermboxPage.anonEditWarning.isExisting(), false );
 			} );
 
 			it( 'has a Cancel button', () => {
-				assert.ok( TermboxPage.hasCancelButton );
+				assert.ok( TermboxPage.cancelButton.isVisible() );
 			} );
 		} );
 
 		describe( 'license agreement', () => {
 			beforeEach( () => {
 				TermboxPage.openItemPage( id );
-				TermboxPage.switchToEditmodeSkipWarning();
+				TermboxPage.switchToEditModeSkipWarning();
 			} );
 
 			it( 'is shown, after clicking publish', () => {
-				TermboxPage.clickPublishButton();
-				TermboxPage.waitForLicenseOverlayToAppear();
-				assert.ok( TermboxPage.hasLicenseAgreement );
+				TermboxPage.publishButton.click();
+				assert.ok( TermboxPage.licenseOverlay.waitForExist() );
 			} );
 
 			it( 'disappears, after clicking cancel and goes back to Editmode', () => {
-				TermboxPage.clickPublishButton();
-				TermboxPage.waitForLicenseOverlayToAppear();
-				TermboxPage.clickCancelLicenseAgreement();
-				assert.strictEqual( TermboxPage.hasLicenseAgreement, false );
-				assert.ok( TermboxPage.isInEditmode );
+				TermboxPage.publishButton.click();
+				TermboxPage.licenseOverlay.waitForExist();
+				TermboxPage.licenseOverlayCancelButton.click();
+
+				assert.strictEqual( TermboxPage.licenseOverlay.isExisting(), false );
+				assert.ok( TermboxPage.isInEditMode );
 			} );
 
 			it( 'disappears, after clicking publish and goes to Readmode', () => {
-				TermboxPage.clickPublishButton();
-				TermboxPage.waitForLicenseOverlayToAppear();
-				TermboxPage.clickSaveLicenseAgreement();
-				assert.strictEqual( TermboxPage.hasLicenseAgreement, false );
+				TermboxPage.publishButton.click();
+				TermboxPage.licenseOverlay.waitForExist();
+				TermboxPage.licenseOverlaySaveButton.click();
+
+				assert.strictEqual( TermboxPage.licenseOverlay.isExisting(), false );
 				TermboxPage.waitUntilSaved();
-				assert.ok( TermboxPage.isInReadmode );
+				assert.ok( TermboxPage.isInReadMode );
 			} );
 
 			it( 'does not appear a second time by default', () => {
-				TermboxPage.clickPublishButton();
-				TermboxPage.waitForLicenseOverlayToAppear();
-				TermboxPage.clickSaveLicenseAgreement();
-
+				TermboxPage.publishButton.click();
+				TermboxPage.licenseOverlay.waitForExist();
+				TermboxPage.licenseOverlaySaveButton.click();
 				browser.refresh();
 				TermboxPage.waitForTermboxToLoad();
 
-				TermboxPage.switchToEditmodeSkipWarning();
-				TermboxPage.clickPublishButton();
-				assert.strictEqual( TermboxPage.hasLicenseAgreement, false );
+				TermboxPage.switchToEditModeSkipWarning();
+				TermboxPage.publishButton.click();
+
+				assert.strictEqual( TermboxPage.licenseOverlay.isExisting(), false );
 			} );
 
 			it( 'gets shown again after reload when unchecking the "remember my choice" checkbox', () => {
-				TermboxPage.clickPublishButton();
-				TermboxPage.waitForLicenseOverlayToAppear();
-				TermboxPage.licenseAgreementCheckbox.click();
-				TermboxPage.clickSaveLicenseAgreement();
-
+				TermboxPage.publishButton.click();
+				TermboxPage.licenseOverlay.waitForExist();
+				TermboxPage.licenseOverlayCheckbox.click();
+				TermboxPage.licenseOverlaySaveButton.click();
 				browser.refresh();
 				TermboxPage.waitForTermboxToLoad();
 
-				TermboxPage.switchToEditmodeSkipWarning();
-				TermboxPage.clickPublishButton();
-				assert.strictEqual( TermboxPage.hasLicenseAgreement, true );
+				TermboxPage.switchToEditModeSkipWarning();
+				TermboxPage.publishButton.click();
+
+				assert.ok( TermboxPage.licenseOverlay.isVisible() );
 			} );
 		} );
 
 		describe( 'switch to Readmode', () => {
 			before( () => {
 				TermboxPage.loginAndOpen( id );
-				TermboxPage.switchToEditmode();
-				TermboxPage.ipWarningEventuallyAppears();
+				TermboxPage.editButton.click();
 			} );
 
 			it( 'has switched to Readmode after clicking the CancelButton', () => {
-				TermboxPage.clickWithoutSignIn();
-				TermboxPage.clickCancelButton();
-				assert.ok( TermboxPage.isInReadmode );
+				TermboxPage.anonEditWarningDismissButton.click();
+				TermboxPage.cancelButton.click();
+				assert.ok( TermboxPage.isInReadMode );
 			} );
 
 			after( () => {
