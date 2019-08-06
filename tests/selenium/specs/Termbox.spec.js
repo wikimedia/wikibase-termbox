@@ -2,7 +2,7 @@
 
 const assert = require( 'assert' );
 const TermboxPage = require( '../pageobjects/Termbox.page' );
-const WikibaseApi = require( '../../../../../../repo/tests/selenium/wdio-wikibase/wikibase.api' );
+const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 
 function getAliasValues( itemAliases ) {
 	const aliases = [];
