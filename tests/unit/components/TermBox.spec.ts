@@ -10,6 +10,8 @@ import Overlay from '@/components/Overlay.vue';
 import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import LicenseAgreement from '@/components/LicenseAgreement.vue';
+import MessageBanner from '@/components/MessageBanner.vue';
+import IconMessageBox from '@/components/IconMessageBox.vue';
 import { createStore } from '@/store';
 import {
 	NS_ENTITY,
@@ -249,6 +251,91 @@ describe( 'TermBox.vue', () => {
 					expect( entitySave ).toHaveBeenCalled();
 
 					await Vue.nextTick();
+					expect( deactivateEditMode ).toHaveBeenCalled();
+				} );
+
+				it( 'shows an error message when saving fails', async () => {
+					const entitySave = jest.fn().mockReturnValue( Promise.reject() );
+					const deactivateEditMode = jest.fn();
+					const copyrightVersion = 'wikibase-1';
+					const store = createMockableStore( {
+						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
+						modules: {
+							[ NS_ENTITY ]: {
+								actions: { [ ENTITY_SAVE ]: entitySave },
+							},
+						},
+					} );
+					setStoreInEditMode( store );
+					store.commit( mutation( NS_USER, USER_SET_PREFERENCE ), {
+						name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
+						value: copyrightVersion,
+					} );
+					window.scrollBy = jest.fn(); // used in MessageBanner
+					const errorHeading = 'something went wrong';
+					const errorMessage = 'oopsie. try clicking the button again';
+					const wrapper = shallowMount( TermBox, {
+						store,
+						stubs: { EditTools, EventEmittingButton, MessageBanner },
+						mixins: [
+							newConfigMixin( { copyrightVersion } as ConfigOptions ),
+							mockMessageMixin( {
+								[ MessageKey.SAVE_ERROR_HEADING ]: errorHeading,
+								[ MessageKey.SAVE_ERROR_MESSAGE ]: errorMessage,
+							} ),
+						],
+					} );
+
+					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					await Vue.nextTick();
+
+					expect( entitySave ).toHaveBeenCalled();
+					const messageBanner = wrapper.find( MessageBanner );
+					expect( messageBanner.exists() ).toBeTruthy();
+					expect( messageBanner.text() ).toContain( errorHeading );
+
+					const errorMessageBox = messageBanner.find( IconMessageBox );
+					expect( errorMessageBox.props( 'type' ) ).toBe( 'error' );
+					expect( errorMessageBox.text() ).toBe( errorMessage );
+
+					expect( deactivateEditMode ).not.toHaveBeenCalled();
+				} );
+
+				it( 'removes the error if saving was successful at the second attempt', async () => {
+					const entitySave = jest.fn()
+						.mockReturnValueOnce( Promise.reject() )
+						.mockReturnValueOnce( Promise.resolve() );
+					const deactivateEditMode = jest.fn();
+					const copyrightVersion = 'wikibase-1';
+					const store = createMockableStore( {
+						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
+						modules: {
+							[ NS_ENTITY ]: {
+								actions: { [ ENTITY_SAVE ]: entitySave },
+							},
+						},
+					} );
+					setStoreInEditMode( store );
+					store.commit( mutation( NS_USER, USER_SET_PREFERENCE ), {
+						name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
+						value: copyrightVersion,
+					} );
+					const wrapper = shallowMount( TermBox, {
+						store,
+						stubs: { EditTools, EventEmittingButton },
+						mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
+					} );
+
+					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					await Vue.nextTick();
+
+					expect( entitySave ).toHaveBeenCalledTimes( 1 );
+					expect( wrapper.find( MessageBanner ).exists() ).toBeTruthy();
+
+					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					await Vue.nextTick();
+
+					expect( wrapper.find( MessageBanner ).exists() ).toBeFalsy();
 					expect( deactivateEditMode ).toHaveBeenCalled();
 				} );
 			} );

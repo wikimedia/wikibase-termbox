@@ -18,6 +18,8 @@
 		"login",
 		"createaccount",
 		"wikibase-shortcopyrightwarning-accept-persist",
-		"wikibase-shortcopyrightwarning-heading"
+		"wikibase-shortcopyrightwarning-heading",
+		"wikibase-entity-save-error-heading",
+		"wikibase-entity-save-error-message"
 	]
 }

@@ -17,5 +17,7 @@
 	"login": "Anmelden",
 	"createaccount": "Benutzerkonto anlegen",
 	"wikibase-shortcopyrightwarning-accept-persist": "Ich stimme den Nutzungsbedingungen für meine zukünftigen Bearbeitungen zu. Zeige diese Nachricht nicht erneut an.",
-	"wikibase-shortcopyrightwarning-heading": "Lizenzzuordnung"
+	"wikibase-shortcopyrightwarning-heading": "Lizenzzuordnung",
+	"wikibase-entity-save-error-heading": "Etwas ist etwas schiefgelaufen",
+	"wikibase-entity-save-error-message": "Deine Änderungen konnten nicht veröffentlicht werden. Du kannst versuchen den Button erneut zu klicken."
 }
