@@ -43,7 +43,8 @@ export default class MessageBanner extends Vue {
 	background-color: #fff;
 	z-index: 1;
 	font-family: $font-family-sans;
-	box-shadow: 0 4px 6px rgba( 0, 0, 0, 0.25 );
+	box-shadow: 0 2px 2px 0 rgba( 0, 0, 0, 0.25 );
+	border-bottom: 1px solid $wmui-color-base50;
 
 	h4 {
 		text-align: center;
@@ -53,7 +54,7 @@ export default class MessageBanner extends Vue {
 
 	&__content {
 		width: 90%;
-		max-width: 492px;
+		max-width: 50em;
 		margin: 0 auto 16px;
 	}
 }
