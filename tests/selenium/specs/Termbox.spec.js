@@ -2,6 +2,7 @@
 
 const assert = require( 'assert' );
 const TermboxPage = require( '../pageobjects/Termbox.page' );
+const LoginPage = require( 'wdio-mediawiki/LoginPage' );
 const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 
 function getAliasValues( itemAliases ) {
@@ -47,15 +48,14 @@ describe( 'Termbox', () => {
 	let fingerprint, allEnteredLanguages, id;
 
 	before( () => {
-		TermboxPage.wikiLogin();
+		LoginPage.loginAdmin();
 		TermboxPage.readLanguageData( primaryLanguage );
 		[ fingerprint, allEnteredLanguages ] = TermboxPage.createTestItem( [ primaryLanguage ] );
 		id = browser.call( () => WikibaseApi.createItem( '', fingerprint ) );
-		TermboxPage.wikiLogout();
 	} );
 
-	afterEach( () => {
-		TermboxPage.clearStorage();
+	beforeEach( () => {
+		browser.deleteCookie();
 	} );
 
 	describe( 'Readmode', () => {
@@ -355,8 +355,8 @@ describe( 'Termbox', () => {
 
 	describe( 'Editmode after clicking the edit button', () => {
 		describe( 'as non logged in user', () => {
-			before( () => {
-				TermboxPage.logoutAndOpen( id );
+			beforeEach( () => {
+				TermboxPage.openItemPage( id );
 				TermboxPage.editButton.click();
 			} );
 
@@ -372,19 +372,23 @@ describe( 'Termbox', () => {
 			it( 'does not show ip warning overlay again if user has opted out', () => {
 				TermboxPage.anonEditWarningCheckbox.click();
 				TermboxPage.anonEditWarningDismissButton.click();
-				TermboxPage.logoutAndOpen( id );
+
+				browser.refresh();
+				TermboxPage.waitForTermboxToLoad();
 				TermboxPage.editButton.click();
 
 				assert.ok( TermboxPage.anonEditWarning.waitForExist( null, true ) );
 			} );
 
 			it( 'has a Cancel button', () => {
+				TermboxPage.anonEditWarningDismissButton.click();
+
 				assert.ok( TermboxPage.cancelButton.isVisible() );
 			} );
 
 			describe( 'ip warning overlay', () => {
 				before( () => {
-					TermboxPage.logoutAndOpen( id );
+					TermboxPage.openItemPage( id );
 					TermboxPage.editButton.click();
 				} );
 
@@ -397,7 +401,8 @@ describe( 'Termbox', () => {
 
 		describe( 'as logged in user', () => {
 			before( () => {
-				TermboxPage.loginAndOpen( id );
+				LoginPage.loginAdmin();
+				TermboxPage.openItemPage( id );
 				TermboxPage.editButton.click();
 			} );
 
@@ -474,7 +479,7 @@ describe( 'Termbox', () => {
 
 		describe( 'switch to Readmode', () => {
 			before( () => {
-				TermboxPage.loginAndOpen( id );
+				TermboxPage.openItemPage( id );
 				TermboxPage.editButton.click();
 			} );
 
@@ -482,10 +487,6 @@ describe( 'Termbox', () => {
 				TermboxPage.anonEditWarningDismissButton.click();
 				TermboxPage.cancelButton.click();
 				assert.ok( TermboxPage.isInReadMode );
-			} );
-
-			after( () => {
-				TermboxPage.wikiLogout();
 			} );
 		} );
 	} );
