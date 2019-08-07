@@ -26,52 +26,19 @@ class TermboxPage extends Page {
 		return !this.isInEditMode;
 	}
 
-	get primaryLanguageName() {
-		return $( '.wb-ui-termbox__primary .wb-ui-monolingualfingerprintview__language' );
+	getMonolingualFingerprintsInSection( section ) {
+		return section.$$( '.wb-ui-monolingualfingerprintview' ).map( ( monolingualFingerprint ) => {
+			return {
+				language: monolingualFingerprint.$( '.wb-ui-monolingualfingerprintview__language' ),
+				label: monolingualFingerprint.$( '.wb-ui-label' ),
+				description: monolingualFingerprint.$( '.wb-ui-description' ),
+				aliases: monolingualFingerprint.$$( '.wb-ui-aliases__alias' ),
+			};
+		} );
 	}
 
-	get primaryLabel() {
-		return $( '.wb-ui-label--primary' );
-	}
-
-	get primaryDescription() {
-		return $( '.wb-ui-termbox__primary .wb-ui-description' );
-	}
-
-	get primaryAliases() {
-		return $( '.wb-ui-termbox__primary .wb-ui-aliases' );
-	}
-
-	inMoreLanguagesLanguageName( index ) {
-		return $$( '.wb-ui-in-more-languages .wb-ui-monolingualfingerprintview__language' )[ index ];
-	}
-
-	inMoreLanguagesLabel( index ) {
-		return $$( '.wb-ui-in-more-languages .wb-ui-label' )[ index ];
-	}
-
-	inMoreLanguagesDescription( index ) {
-		return $$( '.wb-ui-in-more-languages .wb-ui-description' )[ index ];
-	}
-
-	inMoreLanguagesAliases( index ) {
-		return $$( '.wb-ui-in-more-languages .wb-ui-aliases' )[ index ];
-	}
-
-	allEnteredLanguagesLanguageName( index ) {
-		return $$( '.wb-ui-all-entered-languages .wb-ui-monolingualfingerprintview__language' )[ index ];
-	}
-
-	allEnteredLanguagesLabel( index ) {
-		return $$( '.wb-ui-all-entered-languages .wb-ui-label' )[ index ];
-	}
-
-	allEnteredLanguagesDescription( index ) {
-		return $$( '.wb-ui-all-entered-languages .wb-ui-description' )[ index ];
-	}
-
-	allEnteredLanguagesAliases( index ) {
-		return $$( '.wb-ui-all-entered-languages .wb-ui-aliases' )[ index ];
+	get primaryMonolingualFingerprint() {
+		return $( '.wb-ui-termbox__primary' );
 	}
 
 	get allEnteredLanguages() {
@@ -80,6 +47,14 @@ class TermboxPage extends Page {
 
 	get allEnteredLanguagesButton() {
 		return $( '.wb-ui-all-entered-languages-expandable__switch' );
+	}
+
+	get inMoreLanguages() {
+		return $( '.wb-ui-in-more-languages' );
+	}
+
+	get inMoreLanguagesButton() {
+		return $( '.wb-ui-in-more-languages-expandable__switch' );
 	}
 
 	get licenseOverlay() {
@@ -108,14 +83,6 @@ class TermboxPage extends Page {
 
 	get anonEditWarningDismissButton() {
 		return this.anonEditWarning.$( '.wb-ui-event-emitting-button--normal' );
-	}
-
-	get inMoreLanguages() {
-		return $( '.wb-ui-in-more-languages' );
-	}
-
-	get inMoreLanguagesButton() {
-		return $( '.wb-ui-in-more-languages-expandable__switch' );
 	}
 
 	openItemPage( entityId, primaryLanguage = 'en' ) {

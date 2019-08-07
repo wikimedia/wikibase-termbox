@@ -7,41 +7,20 @@ const createTermsInLanguages = require( '../createTermsInLanguages' );
 const LoginPage = require( 'wdio-mediawiki/LoginPage' );
 const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 
-function getAliasValues( itemAliases ) {
-	const aliases = [];
-	itemAliases.forEach( ( monolingualFingerprintAliases ) => {
-		aliases.push( monolingualFingerprintAliases.value );
-	} );
-	return aliases.join( ' ' );
-}
-
-function getLabelOrDescritpionValues( itemLabelOrDescription ) {
-	return itemLabelOrDescription.value;
-}
-
-function getLanguageName( itemLanguageName ) {
-	return itemLanguageName;
-}
-
-function verifyMonolingualFingerprintSection(
-	fingerprintSection,
-	languageCodes,
-	verifier,
-	getter,
-	limit = -1
-) {
-	let counter = 0;
-	languageCodes.forEach( ( language ) => {
-		if ( limit > 0 && counter === limit ) {
-			return;
-		}
-
+function assertMonolingualFingerprintHasTermsInLanguage( elements, expectedTerms, language ) {
+	assert.strictEqual(
+		elements.label.getText(),
+		expectedTerms.labels[ language ].value
+	);
+	assert.strictEqual(
+		elements.description.getText(),
+		expectedTerms.descriptions[ language ].value
+	);
+	expectedTerms.aliases[ language ].forEach( ( { value: alias }, j ) => {
 		assert.strictEqual(
-			verifier( counter ).getText(),
-			getter( fingerprintSection[ language ] )
+			elements.aliases[ j ].getText(),
+			alias
 		);
-
-		counter++;
 	} );
 }
 
@@ -82,41 +61,25 @@ describe( 'Termbox', () => {
 					TermboxPage.openItemPage( id, useLangParam );
 				} );
 
-				it( 'has a language name', () => {
+				it( 'contains the expected language with respective terms', () => {
+					const primaryFingerprint = TermboxPage.getMonolingualFingerprintsInSection(
+						TermboxPage.primaryMonolingualFingerprint
+					)[ 0 ];
+
 					assert.strictEqual(
-						TermboxPage.primaryLanguageName.getText(),
+						primaryFingerprint.language.getText(),
 						termboxLanguages.getContentLanguages()[ useLangParam ]
 					);
-				} );
-
-				it( 'has an item label', () => {
-					assert.strictEqual(
-						TermboxPage.primaryLabel.getText(),
-						terms.labels[ useLangParam ].value
-					);
-				} );
-
-				it( 'has a item description', () => {
-					assert.strictEqual(
-						TermboxPage.primaryDescription.getText(),
-						terms.descriptions[ useLangParam ].value
-					);
-				} );
-
-				it( 'has item aliases', () => {
-					assert.strictEqual(
-						TermboxPage.primaryAliases.getText(),
-						getAliasValues( terms.aliases[ useLangParam ] )
+					assertMonolingualFingerprintHasTermsInLanguage(
+						primaryFingerprint,
+						terms,
+						useLangParam
 					);
 				} );
 			} );
 
 			describe( 'In More Languages', () => {
-				const limit = 4;
-				let inMoreLanguages;
-
 				before( () => {
-					inMoreLanguages = termboxLanguages.getPreferredLanguages().slice( 1 );
 					TermboxPage.openItemPage( id, useLangParam );
 				} );
 
@@ -128,45 +91,23 @@ describe( 'Termbox', () => {
 					assert.ok( TermboxPage.inMoreLanguages.isVisible() );
 				} );
 
-				it( 'contains language names', () => {
-					verifyMonolingualFingerprintSection(
-						termboxLanguages.getContentLanguages(),
-						inMoreLanguages,
-						TermboxPage.inMoreLanguagesLanguageName,
-						getLanguageName,
-						limit
-					);
-				} );
-
-				it( 'contains item labels', () => {
-					verifyMonolingualFingerprintSection(
-						terms.labels,
-						inMoreLanguages,
-						TermboxPage.inMoreLanguagesLabel,
-						getLabelOrDescritpionValues,
-						limit
-					);
-				} );
-
-				it( 'contains item descriptions', () => {
-					verifyMonolingualFingerprintSection(
-						terms.descriptions,
-						inMoreLanguages,
-						TermboxPage.inMoreLanguagesDescription,
-						getLabelOrDescritpionValues,
-						limit
-					);
-				} );
-
-				it( 'contains item aliases', () => {
-					verifyMonolingualFingerprintSection(
-						terms.aliases,
-						inMoreLanguages,
-						TermboxPage.inMoreLanguagesAliases,
-						getAliasValues,
-						limit
+				it( 'contains the expected languages with respective terms', () => {
+					const expectedLanguages = termboxLanguages.getPreferredLanguages().slice( 1 );
+					const monolingualFingerprints = TermboxPage.getMonolingualFingerprintsInSection(
+						TermboxPage.inMoreLanguages
 					);
 
+					expectedLanguages.forEach( ( language, i ) => {
+						assert.strictEqual(
+							monolingualFingerprints[ i ].language.getText(),
+							termboxLanguages.getContentLanguages()[ language ]
+						);
+						assertMonolingualFingerprintHasTermsInLanguage(
+							monolingualFingerprints[ i ],
+							terms,
+							language
+						);
+					} );
 				} );
 
 				it( 'contains in All-Entered-Languages button', () => {
@@ -230,11 +171,7 @@ describe( 'Termbox', () => {
 
 			describe( 'All-Entered-Languages', () => {
 				describe( 'is expanded after clicking All-Entered-Languages button', () => {
-					const limit = 4;
-					let allEnteredLanguages;
-
 					before( () => {
-						allEnteredLanguages = termboxLanguages.getNonPreferredLanguages().slice( 0, 2 );
 						TermboxPage.openItemPage( id, useLangParam );
 						TermboxPage.allEnteredLanguagesButton.click();
 					} );
@@ -255,44 +192,23 @@ describe( 'Termbox', () => {
 						assert.ok( TermboxPage.allEnteredLanguages.isVisible() );
 					} );
 
-					it( 'contains language names', () => {
-						verifyMonolingualFingerprintSection(
-							termboxLanguages.getContentLanguages(),
-							allEnteredLanguages,
-							TermboxPage.allEnteredLanguagesLanguageName,
-							getLanguageName,
-							limit
+					it( 'contains the expected languages with respective terms', () => {
+						const expectedLanguages = termboxLanguages.getNonPreferredLanguages().slice( 0, 2 );
+						const monolingualFingerprints = TermboxPage.getMonolingualFingerprintsInSection(
+							TermboxPage.allEnteredLanguages
 						);
-					} );
 
-					it( 'contains item labels', () => {
-						verifyMonolingualFingerprintSection(
-							terms.labels,
-							allEnteredLanguages,
-							TermboxPage.allEnteredLanguagesLabel,
-							getLabelOrDescritpionValues,
-							limit
-						);
-					} );
-
-					it( 'contains item descriptions', () => {
-						verifyMonolingualFingerprintSection(
-							terms.descriptions,
-							allEnteredLanguages,
-							TermboxPage.allEnteredLanguagesDescription,
-							getLabelOrDescritpionValues,
-							limit
-						);
-					} );
-
-					it( 'contains item aliases', () => {
-						verifyMonolingualFingerprintSection(
-							terms.aliases,
-							allEnteredLanguages,
-							TermboxPage.allEnteredLanguagesAliases,
-							getAliasValues,
-							limit
-						);
+						expectedLanguages.forEach( ( language, i ) => {
+							assert.strictEqual(
+								monolingualFingerprints[ i ].language.getText(),
+								termboxLanguages.getContentLanguages()[ language ]
+							);
+							assertMonolingualFingerprintHasTermsInLanguage(
+								monolingualFingerprints[ i ],
+								terms,
+								language
+							);
+						} );
 					} );
 				} );
 
