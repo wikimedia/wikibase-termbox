@@ -1,6 +1,5 @@
 'use strict';
 const Page = require( 'wdio-mediawiki/Page' );
-const LoginPage = require( 'wdio-mediawiki/LoginPage' );
 const MWUtil = require( 'wdio-mediawiki/Util' );
 
 class TermboxPage extends Page {
@@ -120,19 +119,6 @@ class TermboxPage extends Page {
 		return $( '.wb-ui-in-more-languages-expandable__switch' );
 	}
 
-	static get USER_LOGOUT() {
-		return '[href*="title=Special:UserLogout"]';
-	}
-
-	static get ENDOFPAGE() {
-		return '#footer-places-privacy';
-	}
-
-	constructor() {
-		super();
-		this.isLoggedIn = false;
-	}
-
 	/**
 	 * @param primaryLanguage Used to determine the language in which the language names will be read
 	 */
@@ -247,49 +233,6 @@ class TermboxPage extends Page {
 		// The "all entered languages" section only exists in the client-side rendered markup,
 		// and is omitted from the server-side markup. Once it exists Termbox should be fully interactive.
 		this.allEnteredLanguagesButton.waitForExist();
-	}
-
-	wikiLogin() {
-		if ( this.isLoggedIn ) {
-			return;
-		}
-
-		LoginPage.open();
-		$( TermboxPage.ENDOFPAGE ).waitForVisible( 3000 );
-
-		if ( !$( '.warning' ).isVisible() ) {
-			LoginPage.loginAdmin();
-		}
-
-		this.isLoggedIn = true;
-	}
-
-	loginAndOpen( entityId, primaryLanguage ) {
-		this.wikiLogin();
-		this.openItemPage( entityId, primaryLanguage );
-	}
-
-	wikiLogout() {
-		if ( !this.isLoggedIn ) {
-			return;
-		}
-
-		LoginPage.open();
-		$( TermboxPage.ENDOFPAGE ).waitForVisible( 3000 );
-		if ( $( '.warning' ).isVisible() ) {
-			browser.url( $( TermboxPage.USER_LOGOUT ).getAttribute( 'href' ) );
-		}
-
-		this.isLoggedIn = false;
-	}
-
-	logoutAndOpen( entityId, primaryLanguage ) {
-		this.wikiLogout();
-		this.openItemPage( entityId, primaryLanguage );
-	}
-
-	clearStorage() {
-		browser.deleteCookie();
 	}
 
 	switchToEditModeSkipWarning() {
