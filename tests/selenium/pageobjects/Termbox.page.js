@@ -4,94 +4,124 @@ const LoginPage = require( 'wdio-mediawiki/LoginPage' );
 const MWUtil = require( 'wdio-mediawiki/Util' );
 
 class TermboxPage extends Page {
-	static get TERMBOX_PAGE() {
-		return '.wb-ui-termbox';
+	get isTermboxPage() {
+		return $( '.wb-ui-termbox' ).isExisting();
 	}
 
-	static get PRIMARY_LANGUAGES_SELECTORS() {
-		return {
-			LANGUAGE_NAME: '.wb-ui-termbox__primary .wb-ui-monolingualfingerprintview__language',
-			LABEL: '.wb-ui-label--primary',
-			DESCRIPTION: '.wb-ui-termbox__primary .wb-ui-description',
-			ALIASES: '.wb-ui-termbox__primary .wb-ui-aliases',
-			ALIAS: '.wb-ui-termbox__primary .wb-ui-aliases wb-ui-aliases__alias',
-		};
+	get editButton() {
+		return $( '.wb-ui-event-emitting-button--edit' );
 	}
 
-	static get IN_MORE_LANGUAGES_SELECTORS() {
-		return {
-			LANGUAGE_NAME: '.wb-ui-in-more-languages .wb-ui-monolingualfingerprintview__language',
-			LABEL: '.wb-ui-in-more-languages .wb-ui-label',
-			DESCRIPTION: '.wb-ui-in-more-languages .wb-ui-description',
-			ALIASES: '.wb-ui-in-more-languages .wb-ui-aliases',
-			ALIAS: '.wb-ui-in-more-languages .wb-ui-aliases wb-ui-aliases__alias',
-		};
+	get cancelButton() {
+		return $( '.wb-ui-event-emitting-button--cancel' );
 	}
 
-	static get ALL_ENTERED_LANGUAGES_SELECTORS() {
-		return {
-			LANGUAGE_NAME: '.wb-ui-all-entered-languages .wb-ui-monolingualfingerprintview__language',
-			LABEL: '.wb-ui-all-entered-languages .wb-ui-label',
-			DESCRIPTION: '.wb-ui-all-entered-languages .wb-ui-description',
-			ALIASES: '.wb-ui-all-entered-languages .wb-ui-aliases',
-			ALIAS: '.wb-ui-all-entered-languages .wb-ui-aliases wb-ui-aliases__alias',
-		};
+	get publishButton() {
+		return $( '.wb-ui-event-emitting-button--publish' );
 	}
 
-	static get EXPANDABLE_SECTION_BUTTONS() {
-		return {
-			IN_MORE_LANGUAGES: '.wb-ui-in-more-languages-expandable__switch',
-			IN_ALL_ENTERED_LANGUAGES: '.wb-ui-all-entered-languages-expandable__switch',
-		};
+	get isInEditMode() {
+		return this.publishButton.isExisting();
 	}
 
-	static get EDIT_TOOLS_SELECTORS() {
-		return {
-			EDIT: '.wb-ui-event-emitting-button--edit',
-			PUBLISH: '.wb-ui-event-emitting-button--publish',
-			CANCEL: '.wb-ui-event-emitting-button--cancel',
-		};
+	get isInReadMode() {
+		return !this.isInEditMode;
+	}
+
+	get primaryLanguageName() {
+		return $( '.wb-ui-termbox__primary .wb-ui-monolingualfingerprintview__language' );
+	}
+
+	get primaryLabel() {
+		return $( '.wb-ui-label--primary' );
+	}
+
+	get primaryDescription() {
+		return $( '.wb-ui-termbox__primary .wb-ui-description' );
+	}
+
+	get primaryAliases() {
+		return $( '.wb-ui-termbox__primary .wb-ui-aliases' );
+	}
+
+	inMoreLanguagesLanguageName( index ) {
+		return $$( '.wb-ui-in-more-languages .wb-ui-monolingualfingerprintview__language' )[ index ];
+	}
+
+	inMoreLanguagesLabel( index ) {
+		return $$( '.wb-ui-in-more-languages .wb-ui-label' )[ index ];
+	}
+
+	inMoreLanguagesDescription( index ) {
+		return $$( '.wb-ui-in-more-languages .wb-ui-description' )[ index ];
+	}
+
+	inMoreLanguagesAliases( index ) {
+		return $$( '.wb-ui-in-more-languages .wb-ui-aliases' )[ index ];
+	}
+
+	allEnteredLanguagesLanguageName( index ) {
+		return $$( '.wb-ui-all-entered-languages .wb-ui-monolingualfingerprintview__language' )[ index ];
+	}
+
+	allEnteredLanguagesLabel( index ) {
+		return $$( '.wb-ui-all-entered-languages .wb-ui-label' )[ index ];
+	}
+
+	allEnteredLanguagesDescription( index ) {
+		return $$( '.wb-ui-all-entered-languages .wb-ui-description' )[ index ];
+	}
+
+	allEnteredLanguagesAliases( index ) {
+		return $$( '.wb-ui-all-entered-languages .wb-ui-aliases' )[ index ];
+	}
+
+	get allEnteredLanguages() {
+		return $( '.wb-ui-all-entered-languages' );
+	}
+
+	get allEnteredLanguagesButton() {
+		return $( '.wb-ui-all-entered-languages-expandable__switch' );
+	}
+
+	get licenseOverlay() {
+		return $( '.wb-ui-modal .wb-ui-license-agreement' );
+	}
+
+	get licenseOverlaySaveButton() {
+		return this.licenseOverlay.$( '.wb-ui-event-emitting-button--primaryProgressive' );
+	}
+
+	get licenseOverlayCancelButton() {
+		return this.licenseOverlay.$( '.wb-ui-event-emitting-button--normal' );
+	}
+
+	get licenseOverlayCheckbox() {
+		return this.licenseOverlay.$( 'input + label' );
+	}
+
+	get anonEditWarning() {
+		return $( '.wb-ui-modal .wb-ui-anon-edit-warning' );
+	}
+
+	get anonEditWarningCheckbox() {
+		return this.anonEditWarning.$( 'input + label' );
+	}
+
+	get anonEditWarningDismissButton() {
+		return this.anonEditWarning.$( '.wb-ui-event-emitting-button--normal' );
+	}
+
+	get inMoreLanguages() {
+		return $( '.wb-ui-in-more-languages' );
+	}
+
+	get inMoreLanguagesButton() {
+		return $( '.wb-ui-in-more-languages-expandable__switch' );
 	}
 
 	static get USER_LOGOUT() {
 		return '[href*="title=Special:UserLogout"]';
-	}
-
-	static get EXPANDABLE_SECTIONS() {
-		return {
-			IN_MORE_LANGUAGES: '.wb-ui-in-more-languages',
-			ALL_ENTERED_LANGUAGES: '.wb-ui-all-entered-languages',
-		};
-	}
-
-	static get EDIT_FIELDS_SECLECTORS() {
-		return {
-			LABEL: '.wb-ui-label-edit',
-			DESCRIPTION: '.wb-ui-description-edit',
-			ALIASES: '.wb-ui-aliases-edit',
-		};
-	}
-
-	static get OVERLAYS() {
-		return {
-			IP_WARNING: '.wb-ui-modal .wb-ui-anon-edit-warning',
-			LICENSE_AGREEMENT: '.wb-ui-modal .wb-ui-license-agreement',
-		};
-	}
-
-	static get IP_WARNING() {
-		return {
-			DISMISS: TermboxPage.OVERLAYS.IP_WARNING + ' .wb-ui-event-emitting-button--normal',
-			CHECKBOX: TermboxPage.OVERLAYS.IP_WARNING + ' input + label',
-		};
-	}
-
-	static get LICENSE_AGREEMENT() {
-		return {
-			SAVE: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' .wb-ui-event-emitting-button--primaryProgressive',
-			Cancel: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' .wb-ui-event-emitting-button--normal',
-			CHECKBOX: TermboxPage.OVERLAYS.LICENSE_AGREEMENT + ' input + label',
-		};
 	}
 
 	static get ENDOFPAGE() {
@@ -262,217 +292,17 @@ class TermboxPage extends Page {
 		browser.deleteCookie();
 	}
 
-	get isTermboxPage() {
-		return $( TermboxPage.TERMBOX_PAGE ).isExisting();
-	}
-
-	get primaryLanguageName() {
-		return $( TermboxPage.PRIMARY_LANGUAGES_SELECTORS.LANGUAGE_NAME ).getText();
-	}
-
-	get primaryLabel() {
-		return $( TermboxPage.PRIMARY_LANGUAGES_SELECTORS.LABEL ).getText();
-	}
-
-	get primaryDescription() {
-		return $( TermboxPage.PRIMARY_LANGUAGES_SELECTORS.DESCRIPTION ).getText();
-	}
-
-	get primaryAliases() {
-		return $( TermboxPage.PRIMARY_LANGUAGES_SELECTORS.ALIASES ).getText();
-	}
-
-	get inMoreLanguages() {
-		return $( TermboxPage.EXPANDABLE_SECTIONS.IN_MORE_LANGUAGES );
-	}
-
-	get inMoreLanguagesButton() {
-		return $( TermboxPage.EXPANDABLE_SECTION_BUTTONS.IN_MORE_LANGUAGES );
-	}
-
-	get hasInMoreLanguagesButton() {
-		return this.inMoreLanguagesButton.isExisting() && this.inMoreLanguagesButton.isVisible();
-	}
-
-	get inMoreLanguagesIsExpanded() {
-		return this.inMoreLanguages.isExisting() && this.inMoreLanguages.isVisible();
-	}
-
-	inMoreLanguagesLanguageName( index ) {
-		return $$( TermboxPage.IN_MORE_LANGUAGES_SELECTORS.LANGUAGE_NAME )[ index ].getText();
-	}
-
-	inMoreLanguagesLabel( index ) {
-		return $$( TermboxPage.IN_MORE_LANGUAGES_SELECTORS.LABEL )[ index ].getText();
-	}
-
-	inMoreLanguagesDescription( index ) {
-		return $$( TermboxPage.IN_MORE_LANGUAGES_SELECTORS.DESCRIPTION )[ index ].getText();
-	}
-
-	inMoreLanguagesAliases( index ) {
-		return $$( TermboxPage.IN_MORE_LANGUAGES_SELECTORS.ALIASES )[ index ].getText();
-	}
-
-	get allEnteredLanguages() {
-		return $( TermboxPage.EXPANDABLE_SECTIONS.ALL_ENTERED_LANGUAGES );
-	}
-
-	get allEnteredLanguagesButton() {
-		return $( TermboxPage.EXPANDABLE_SECTION_BUTTONS.IN_ALL_ENTERED_LANGUAGES );
-	}
-
-	get hasAllEnteredLanguagesButton() {
-		return this.allEnteredLanguagesButton.isExisting() && this.allEnteredLanguagesButton.isVisible();
-	}
-
-	get allEnteredLanguagesIsExpanded() {
-		return this.allEnteredLanguages.isExisting() && this.allEnteredLanguages.isVisible();
-	}
-
-	allEnteredLanguagesLanguageName( index ) {
-		return $$( TermboxPage.ALL_ENTERED_LANGUAGES_SELECTORS.LANGUAGE_NAME )[ index ].getText();
-	}
-
-	allEnteredLanguagesLabel( index ) {
-		return $$( TermboxPage.ALL_ENTERED_LANGUAGES_SELECTORS.LABEL )[ index ].getText();
-	}
-
-	allEnteredLanguagesDescription( index ) {
-		return $$( TermboxPage.ALL_ENTERED_LANGUAGES_SELECTORS.DESCRIPTION )[ index ].getText();
-	}
-
-	allEnteredLanguagesAliases( index ) {
-		return $$( TermboxPage.ALL_ENTERED_LANGUAGES_SELECTORS.ALIASES )[ index ].getText();
-	}
-
-	get editButton() {
-		return $( TermboxPage.EDIT_TOOLS_SELECTORS.EDIT );
-	}
-
-	get hasEditButton() {
-		return this.editButton.isExisting() && this.editButton.isVisible();
-	}
-
-	get cancelButton() {
-		return $( TermboxPage.EDIT_TOOLS_SELECTORS.CANCEL );
-	}
-
-	get hasCancelButton() {
-		return this.cancelButton.isExisting() && this.cancelButton.isVisible();
-	}
-
-	get publishButton() {
-		return $( TermboxPage.EDIT_TOOLS_SELECTORS.PUBLISH );
-	}
-
-	get hasPublishButton() {
-		return this.publishButton.isExisting() && this.publishButton.isVisible();
-	}
-
-	get isInEditmode() {
-		return $( TermboxPage.EDIT_FIELDS_SECLECTORS.LABEL ).isExisting();
-	}
-
-	get isInReadmode() {
-		return !this.isInEditmode;
-	}
-
-	get ipWarning() {
-		return $( TermboxPage.OVERLAYS.IP_WARNING );
-	}
-
-	ipWarningEventuallyAppears() {
-		return this.ipWarning.waitForExist( 3000 );
-	}
-
-	ipWarningDoesNotAppear() {
-		return this.ipWarning.waitForExist( 1000, true );
-	}
-
-	get hasIPWarning() {
-		return this.ipWarning.isExisting() && this.ipWarning.isVisible();
-	}
-
-	get withoutSignInButton() {
-		return $( TermboxPage.IP_WARNING.DISMISS );
-	}
-
-	get ipWarningCheckbox() {
-		return $( TermboxPage.IP_WARNING.CHECKBOX );
-	}
-
-	get hasIpWarningCheckbox() {
-		return this.ipWarningCheckbox.isVisible();
-	}
-
-	get licenseAgreement() {
-		return $( TermboxPage.OVERLAYS.LICENSE_AGREEMENT );
-	}
-
-	get hasLicenseAgreement() {
-		return this.licenseAgreement.isExisting() && this.licenseAgreement.isVisible();
-	}
-
-	get licenseAgreementCheckbox() {
-		return $( TermboxPage.LICENSE_AGREEMENT.CHECKBOX );
-	}
-
-	clickCancelLicenseAgreement() {
-		$( TermboxPage.LICENSE_AGREEMENT.Cancel ).click();
-	}
-
-	clickSaveLicenseAgreement() {
-		$( TermboxPage.LICENSE_AGREEMENT.SAVE ).click();
-	}
-
-	clickInMoreLanguagesButton() {
-		this.inMoreLanguagesButton.click();
-	}
-
-	clickAllEnteredLanguagesButton() {
-		this.allEnteredLanguagesButton.click();
-	}
-
-	clickEditButton() {
+	switchToEditModeSkipWarning() {
 		this.editButton.click();
-	}
-
-	clickCancelButton() {
-		this.cancelButton.click();
-	}
-
-	clickPublishButton() {
-		this.publishButton.click();
-	}
-
-	clickWithoutSignIn() {
-		this.withoutSignInButton.click();
-	}
-
-	clickIpWarningCheckbox() {
-		this.ipWarningCheckbox.click();
-	}
-
-	switchToEditmode() {
-		this.clickEditButton();
-	}
-
-	switchToEditmodeSkipWarning() {
-		this.switchToEditmode();
-		this.ipWarningEventuallyAppears();
-		if ( this.hasIPWarning ) {
-			this.clickWithoutSignIn();
+		if ( this.anonEditWarning.isExisting() ) {
+			this.anonEditWarningDismissButton.click();
 		}
-	}
-
-	waitForLicenseOverlayToAppear( skip = false ) {
-		this.licenseAgreement.waitForExist( 3000, skip );
 	}
 
 	waitUntilSaved() {
 		this.editButton.waitForExist( 3000 );
 	}
+
 }
 
 module.exports = new TermboxPage();
