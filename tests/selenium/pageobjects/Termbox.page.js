@@ -81,6 +81,10 @@ class TermboxPage extends Page {
 		return this.anonEditWarning.$( '.wb-ui-event-emitting-button--normal' );
 	}
 
+	get errorBanner() {
+		return $( '.wb-ui-message-banner .wb-ui-icon-message-box--error' );
+	}
+
 	openItemPage( entityId, primaryLanguage = 'en' ) {
 		super.openTitle( `Item:${ entityId }`, { useformat: 'mobile', uselang: primaryLanguage } );
 		this.waitForTermboxToLoad();
