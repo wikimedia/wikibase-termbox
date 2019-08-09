@@ -33,6 +33,16 @@ class TermboxPage extends Page {
 		} );
 	}
 
+	getEditableMonolingualFingerprintsInSection( section ) {
+		return section.$$( '.wb-ui-monolingualfingerprintview' ).map( ( monolingualFingerprint ) => {
+			return {
+				label: monolingualFingerprint.$( '.wb-ui-label-edit' ),
+				description: monolingualFingerprint.$( '.wb-ui-description-edit' ),
+				getNthAlias: ( n ) => monolingualFingerprint.$$( '.wb-ui-aliases-edit__alias' )[ n ],
+			};
+		} );
+	}
+
 	get primaryMonolingualFingerprint() {
 		return $( '.wb-ui-termbox__primary' );
 	}
