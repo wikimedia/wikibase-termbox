@@ -1,6 +1,5 @@
 'use strict';
 const Page = require( 'wdio-mediawiki/Page' );
-const MWUtil = require( 'wdio-mediawiki/Util' );
 
 class TermboxPage extends Page {
 	get isTermboxPage() {
@@ -117,111 +116,6 @@ class TermboxPage extends Page {
 
 	get inMoreLanguagesButton() {
 		return $( '.wb-ui-in-more-languages-expandable__switch' );
-	}
-
-	/**
-	 * @param primaryLanguage Used to determine the language in which the language names will be read
-	 */
-	readLanguageData( primaryLanguage ) {
-		super.openTitle( '', { uselang: primaryLanguage } );
-
-		browser.waitUntil( () => {
-			return browser.execute( () => {
-				return ( typeof window.mw.loader === 'object' && typeof window.mw.loader.using === 'function' );
-			} ).value === true;
-		} );
-
-		this.readAvailableLanguages();
-		this.readUserLanguages();
-		this.deriveOtherLanguages();
-	}
-
-	/**
-	 * @private
-	 */
-	readAvailableLanguages() {
-		this.availableLanguages = browser.executeAsync( ( done ) => {
-			window.mw.loader.using( [ 'wikibase.WikibaseContentLanguages' ], () => {
-				done( new window.wb.WikibaseContentLanguages().getAllPairs() );
-			} );
-		} ).value;
-	}
-
-	readUserLanguages() {
-		this.preferredLanguages = browser.executeAsync( ( done ) => {
-			window.mw.loader.using( [ 'ext.uls.mediawiki', 'wikibase.getUserLanguages' ], () => {
-				done( window.wb.getUserLanguages() );
-			} );
-		} ).value;
-	}
-
-	getCurrentPreferredLanguages( limit = -1 ) {
-		if ( limit < 0 ) {
-			return [ ...this.preferredLanguages ];
-		} else {
-			return this.preferredLanguages.slice( 0, limit );
-		}
-	}
-
-	deriveOtherLanguages() {
-		const nonPreferredLanguages = Object.keys( this.availableLanguages );
-		let index;
-		this.preferredLanguages.forEach( ( key ) => {
-			index = nonPreferredLanguages.indexOf( key );
-			if ( index !== -1 ) {
-				nonPreferredLanguages.splice( index, 1 );
-			}
-		} );
-		this.nonPreferredLanguages = nonPreferredLanguages;
-	}
-
-	getCurrentNonPreferredLanguages( limit = -1 ) {
-		if ( limit < 0 ) {
-			return this.nonPreferredLanguages;
-		} else {
-			return this.nonPreferredLanguages.slice( 0, limit );
-		}
-	}
-
-	makeTerm( language ) {
-		return {
-			language,
-			value: MWUtil.getTestString(),
-		};
-	}
-
-	makeEntityFingerprint( languageCodes ) {
-		const monolingualFingerprint = {
-			labels: {},
-			descriptions: {},
-			aliases: {},
-		};
-
-		let aliases;
-		languageCodes.forEach( ( language ) => {
-			monolingualFingerprint.labels[ language ] = this.makeTerm( language );
-			monolingualFingerprint.descriptions[ language ] = this.makeTerm( language );
-			aliases = [];
-			aliases.push( this.makeTerm( language ) );
-			aliases.push( this.makeTerm( language ) );
-			aliases.push( this.makeTerm( language ) );
-			monolingualFingerprint.aliases[ language ] = aliases;
-		} );
-
-		return monolingualFingerprint;
-	}
-
-	/**
-	 * @var preferredLimit | int | it should be greater than 1
-	 */
-	createTestItem( mustContain = [], preferredLimit = 2, nonPreferredLimit = 2 ) {
-		const languages = [ ...( new Set( [
-			...( this.getCurrentPreferredLanguages( preferredLimit ) ),
-			...( this.getCurrentNonPreferredLanguages( nonPreferredLimit ) ),
-			...mustContain,
-		] ) ) ];
-
-		return [ this.makeEntityFingerprint( languages ), languages ];
 	}
 
 	openItemPage( entityId, primaryLanguage = 'en' ) {

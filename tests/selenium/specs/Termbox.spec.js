@@ -2,6 +2,8 @@
 
 const assert = require( 'assert' );
 const TermboxPage = require( '../pageobjects/Termbox.page' );
+const TermboxLanguages = require( '../TermboxLanguages' );
+const createTermsInLanguages = require( '../createTermsInLanguages' );
 const LoginPage = require( 'wdio-mediawiki/LoginPage' );
 const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 
@@ -44,14 +46,17 @@ function verifyMonolingualFingerprintSection(
 }
 
 describe( 'Termbox', () => {
-	const primaryLanguage = 'de';
-	let fingerprint, allEnteredLanguages, id;
+	const useLangParam = 'de';
+	let terms, id, termboxLanguages;
 
 	before( () => {
-		LoginPage.loginAdmin();
-		TermboxPage.readLanguageData( primaryLanguage );
-		[ fingerprint, allEnteredLanguages ] = TermboxPage.createTestItem( [ primaryLanguage ] );
-		id = browser.call( () => WikibaseApi.createItem( '', fingerprint ) );
+		termboxLanguages = TermboxLanguages.initWithUseLang( useLangParam );
+		terms = createTermsInLanguages(
+			[ useLangParam ]
+				.concat( termboxLanguages.getPreferredLanguages() )
+				.concat( termboxLanguages.getNonPreferredLanguages().slice( 0, 2 ) )
+		);
+		id = browser.call( () => WikibaseApi.createItem( '', terms ) );
 	} );
 
 	beforeEach( () => {
@@ -61,7 +66,7 @@ describe( 'Termbox', () => {
 	describe( 'Readmode', () => {
 		describe( 'on entry', () => {
 			before( () => {
-				TermboxPage.openItemPage( id, primaryLanguage );
+				TermboxPage.openItemPage( id, useLangParam );
 			} );
 
 			it( 'is in Readmode', () => {
@@ -74,59 +79,45 @@ describe( 'Termbox', () => {
 
 			describe( 'Primary Monolingualfingerprint', () => {
 				before( () => {
-					TermboxPage.openItemPage( id, primaryLanguage );
+					TermboxPage.openItemPage( id, useLangParam );
 				} );
 
 				it( 'has a language name', () => {
 					assert.strictEqual(
 						TermboxPage.primaryLanguageName.getText(),
-						TermboxPage.availableLanguages[ primaryLanguage ]
+						termboxLanguages.getContentLanguages()[ useLangParam ]
 					);
 				} );
 
 				it( 'has an item label', () => {
 					assert.strictEqual(
 						TermboxPage.primaryLabel.getText(),
-						fingerprint.labels[ primaryLanguage ].value
+						terms.labels[ useLangParam ].value
 					);
 				} );
 
 				it( 'has a item description', () => {
 					assert.strictEqual(
 						TermboxPage.primaryDescription.getText(),
-						fingerprint.descriptions[ primaryLanguage ].value
+						terms.descriptions[ useLangParam ].value
 					);
 				} );
 
 				it( 'has item aliases', () => {
 					assert.strictEqual(
 						TermboxPage.primaryAliases.getText(),
-						getAliasValues( fingerprint.aliases[ primaryLanguage ] )
+						getAliasValues( terms.aliases[ useLangParam ] )
 					);
 				} );
 			} );
 
 			describe( 'In More Languages', () => {
-				const preferredLanguages = [];
 				const limit = 4;
+				let inMoreLanguages;
 
 				before( () => {
-					TermboxPage.openItemPage( id, primaryLanguage );
-					const currentPreferredLanguages = TermboxPage.getCurrentPreferredLanguages( 3 );
-					// we have to remove the primary language, which is the first item in the chain
-					currentPreferredLanguages.shift();
-
-					// this might happen depending on your geolocation and the configured primaryLanguage
-					if ( currentPreferredLanguages.length === 0 ) {
-						// eslint-disable-next-line no-console, max-len
-						console.warn( 'There are no preferred languages, therefore the testset will fail. Please adjust the wdio config, which runs on this tests.' );
-					}
-
-					currentPreferredLanguages.forEach( ( language ) => {
-						if ( allEnteredLanguages.indexOf( language ) !== -1 ) {
-							preferredLanguages.push( language );
-						}
-					} );
+					inMoreLanguages = termboxLanguages.getPreferredLanguages().slice( 1 );
+					TermboxPage.openItemPage( id, useLangParam );
 				} );
 
 				it( 'has a button', () => {
@@ -139,8 +130,8 @@ describe( 'Termbox', () => {
 
 				it( 'contains language names', () => {
 					verifyMonolingualFingerprintSection(
-						TermboxPage.availableLanguages,
-						preferredLanguages,
+						termboxLanguages.getContentLanguages(),
+						inMoreLanguages,
 						TermboxPage.inMoreLanguagesLanguageName,
 						getLanguageName,
 						limit
@@ -149,8 +140,8 @@ describe( 'Termbox', () => {
 
 				it( 'contains item labels', () => {
 					verifyMonolingualFingerprintSection(
-						fingerprint.labels,
-						preferredLanguages,
+						terms.labels,
+						inMoreLanguages,
 						TermboxPage.inMoreLanguagesLabel,
 						getLabelOrDescritpionValues,
 						limit
@@ -159,8 +150,8 @@ describe( 'Termbox', () => {
 
 				it( 'contains item descriptions', () => {
 					verifyMonolingualFingerprintSection(
-						fingerprint.descriptions,
-						preferredLanguages,
+						terms.descriptions,
+						inMoreLanguages,
 						TermboxPage.inMoreLanguagesDescription,
 						getLabelOrDescritpionValues,
 						limit
@@ -169,8 +160,8 @@ describe( 'Termbox', () => {
 
 				it( 'contains item aliases', () => {
 					verifyMonolingualFingerprintSection(
-						fingerprint.aliases,
-						preferredLanguages,
+						terms.aliases,
+						inMoreLanguages,
 						TermboxPage.inMoreLanguagesAliases,
 						getAliasValues,
 						limit
@@ -198,7 +189,7 @@ describe( 'Termbox', () => {
 			describe( 'In More Languages', () => {
 				describe( 'is collapsed after clicking In-More-Languages button', () => {
 					before( () => {
-						TermboxPage.openItemPage( id, primaryLanguage );
+						TermboxPage.openItemPage( id, useLangParam );
 						TermboxPage.inMoreLanguagesButton.click();
 					} );
 
@@ -218,7 +209,7 @@ describe( 'Termbox', () => {
 
 				describe( 'is expanded after clicking In-More-Languages button twice', () => {
 					before( () => {
-						TermboxPage.openItemPage( id, primaryLanguage );
+						TermboxPage.openItemPage( id, useLangParam );
 						TermboxPage.inMoreLanguagesButton.click();
 						TermboxPage.inMoreLanguagesButton.click();
 					} );
@@ -240,21 +231,12 @@ describe( 'Termbox', () => {
 			describe( 'All-Entered-Languages', () => {
 				describe( 'is expanded after clicking All-Entered-Languages button', () => {
 					const limit = 4;
-					const selectedAllEnteredLanguages = [];
+					let allEnteredLanguages;
 
 					before( () => {
-						TermboxPage.openItemPage( id, primaryLanguage );
+						allEnteredLanguages = termboxLanguages.getNonPreferredLanguages().slice( 0, 2 );
+						TermboxPage.openItemPage( id, useLangParam );
 						TermboxPage.allEnteredLanguagesButton.click();
-						allEnteredLanguages.forEach( ( language ) => {
-							if ( TermboxPage.nonPreferredLanguages.indexOf( language ) !== -1 ) {
-								selectedAllEnteredLanguages.push( language );
-							}
-						} );
-						// this might happen depending on your geolocation and the configured primaryLanguage
-						if ( selectedAllEnteredLanguages.length === 0 ) {
-							// eslint-disable-next-line no-console, max-len
-							console.warn( 'There are no non prefrred languages, therefore the testset will fail. Please adjust the wdio config, which runs on this tests.' );
-						}
 					} );
 
 					it( 'has still a In-More-Languages button', () => {
@@ -275,8 +257,8 @@ describe( 'Termbox', () => {
 
 					it( 'contains language names', () => {
 						verifyMonolingualFingerprintSection(
-							TermboxPage.availableLanguages,
-							selectedAllEnteredLanguages,
+							termboxLanguages.getContentLanguages(),
+							allEnteredLanguages,
 							TermboxPage.allEnteredLanguagesLanguageName,
 							getLanguageName,
 							limit
@@ -285,8 +267,8 @@ describe( 'Termbox', () => {
 
 					it( 'contains item labels', () => {
 						verifyMonolingualFingerprintSection(
-							fingerprint.labels,
-							selectedAllEnteredLanguages,
+							terms.labels,
+							allEnteredLanguages,
 							TermboxPage.allEnteredLanguagesLabel,
 							getLabelOrDescritpionValues,
 							limit
@@ -295,8 +277,8 @@ describe( 'Termbox', () => {
 
 					it( 'contains item descriptions', () => {
 						verifyMonolingualFingerprintSection(
-							fingerprint.descriptions,
-							selectedAllEnteredLanguages,
+							terms.descriptions,
+							allEnteredLanguages,
 							TermboxPage.allEnteredLanguagesDescription,
 							getLabelOrDescritpionValues,
 							limit
@@ -305,8 +287,8 @@ describe( 'Termbox', () => {
 
 					it( 'contains item aliases', () => {
 						verifyMonolingualFingerprintSection(
-							fingerprint.aliases,
-							selectedAllEnteredLanguages,
+							terms.aliases,
+							allEnteredLanguages,
 							TermboxPage.allEnteredLanguagesAliases,
 							getAliasValues,
 							limit
