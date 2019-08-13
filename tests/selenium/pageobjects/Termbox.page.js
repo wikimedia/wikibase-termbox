@@ -2,10 +2,6 @@
 const Page = require( 'wdio-mediawiki/Page' );
 
 class TermboxPage extends Page {
-	get isTermboxPage() {
-		return $( '.wb-ui-termbox' ).isExisting();
-	}
-
 	get editButton() {
 		return $( '.wb-ui-event-emitting-button--edit' );
 	}
