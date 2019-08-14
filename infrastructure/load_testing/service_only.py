@@ -16,7 +16,7 @@ class UserBehaviour(TaskSet):
         csvfile = open('revisions.csv', newline='')
         self.revisionReader = csv.DictReader(csvfile)
 
-    @task(2)
+    @task(1)
     def renderTermbox(self):
         entityRevision = next(self.revisionReader)
         self.client.get('/termbox?language={lang}&entity={entity}&revision={revision}&editLink=sdfsf&preferredLanguages={preflangs}'.format(
