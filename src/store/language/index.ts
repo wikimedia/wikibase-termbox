@@ -10,10 +10,8 @@ export default function (): Module<LanguageState, any> {
 		languages: {},
 	};
 
-	const namespaced = true;
-
 	return {
-		namespaced,
+		namespaced: true,
 		actions,
 		state,
 		getters,

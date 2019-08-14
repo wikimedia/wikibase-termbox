@@ -9,9 +9,8 @@ export default function (): Module<Messages, any> {
 		messages: {},
 	};
 
-	const namespaced = true;
 	return {
-		namespaced,
+		namespaced: true,
 		state,
 		getters,
 		mutations,

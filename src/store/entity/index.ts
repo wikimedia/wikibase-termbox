@@ -15,10 +15,8 @@ export default function (): Module<EntityState, any> {
 		isEditable: false,
 	};
 
-	const namespaced = true;
-
 	return {
-		namespaced,
+		namespaced: true,
 		state,
 		getters,
 		mutations,

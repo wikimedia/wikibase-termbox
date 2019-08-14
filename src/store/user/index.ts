@@ -12,10 +12,8 @@ export default function (): Module<User, any> {
 		preferences: {},
 	};
 
-	const namespaced = true;
-
 	return {
-		namespaced,
+		namespaced: true,
 		state,
 		actions,
 		getters,
