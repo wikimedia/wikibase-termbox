@@ -87,6 +87,7 @@
     "reset-css": "^4.0.1",
     "sass-loader": "^7.2.0",
     "sast": "^0.8.1",
+    "storybook-addon-vue-info": "^1.2.3",
     "stylelint": "^9.10.1",
     "stylelint-config-wikimedia": "^0.6.0",
     "stylelint-processor-html": "^1.0.0",

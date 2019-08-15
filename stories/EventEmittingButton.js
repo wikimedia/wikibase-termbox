@@ -2,10 +2,18 @@ import { storiesOf } from '@storybook/vue';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 
 storiesOf( 'EventEmittingButton', module )
-	.add( 'edit', () => ( {
-		components: { EventEmittingButton },
-		template: '<EventEmittingButton type="edit" message="edit" />',
-	} ) )
+	.add(
+		'edit',
+		() => ( {
+			components: { EventEmittingButton },
+			template: '<EventEmittingButton type="edit" message="edit" />',
+		} ),
+		{
+			info: {
+				summary: 'A CTA for the user to edit data',
+			},
+		},
+	)
 	.add( 'cancel', () => ( {
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="cancel" message="cancel" />',

@@ -41,5 +41,11 @@ module.exports = async ( { config } ) => {
 		enforce: 'pre',
 	} );
 
+	config.module.rules.push( {
+		test: /\.vue$/,
+		loader: 'storybook-addon-vue-info/loader',
+		enforce: 'post',
+	} );
+
 	return config;
 };
