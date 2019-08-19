@@ -10,10 +10,10 @@ storiesOf( 'Checkbox', module )
 				<Checkbox v-model="aChecked" :label="aChecked ? 'Checked!' : 'Not checked!'" />
 				<Checkbox v-model="bChecked" :label="bChecked ? 'Checked!' : 'Not checked!'" />
 			</p>`,
-	} ) )
+	} ), { info: true } )
 	.add( 'with value', () => ( {
 		data() { return { isChecked: false }; },
 		components: { Checkbox },
 		// eslint-disable-next-line max-len
 		template: '<Checkbox v-model="isChecked" :html-value="\'A value\'" :label="isChecked ? \'Checked!\' : \'Not checked!\'" />',
-	} ) );
+	} ), { info: true } );

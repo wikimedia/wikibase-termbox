@@ -10,7 +10,7 @@ storiesOf( 'IconMessageBox', module )
 					Terrible things happened!
 				</IconMessageBox>
 			</div>`,
-	} ) )
+	} ), { info: true } )
 	.add( 'warning', () => ( {
 		components: { IconMessageBox },
 		template:
@@ -19,4 +19,4 @@ storiesOf( 'IconMessageBox', module )
 					Somewhat bad things happened!
 				</IconMessageBox>
 			</div>`,
-	} ) );
+	} ), { info: true } );

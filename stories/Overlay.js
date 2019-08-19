@@ -11,7 +11,7 @@ storiesOf( 'Overlay', module )
 			<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 			<Overlay />
 		</div>`,
-	} ) )
+	} ), { info: true } )
 	.add( 'with a modal', () => ( {
 		components: { Overlay, Modal },
 		template: `<div>
@@ -21,7 +21,11 @@ storiesOf( 'Overlay', module )
 				<Modal>Modals and Overlays integrate nicely.</Modal>
 			</Overlay>
 		</div>`,
-	} ) )
+	} ), {
+		info: {
+			components: { Overlay },
+		},
+	} )
 	.add( 'with an indeterminate progress bar', () => ( {
 		components: { Overlay, IndeterminateProgressBar },
 		template: `<div>
@@ -31,4 +35,8 @@ storiesOf( 'Overlay', module )
 				<IndeterminateProgressBar />
 			</Overlay>
 			</div>`,
-	} ) );
+	} ), {
+		info: {
+			components: { Overlay },
+		},
+	} );

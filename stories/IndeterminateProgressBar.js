@@ -8,4 +8,4 @@ storiesOf( 'IndeterminateProgressBar', module )
 			`<div>
 				<IndeterminateProgressBar />
 			</div>`,
-	} ) );
+	} ), { info: true } );

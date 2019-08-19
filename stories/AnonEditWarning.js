@@ -25,4 +25,8 @@ storiesOf( 'AnonEditWarning', module )
 			},
 			template: '<Modal><AnonEditWarning /></Modal>',
 		};
+	}, {
+		info: {
+			components: { AnonEditWarning },
+		},
 	} );

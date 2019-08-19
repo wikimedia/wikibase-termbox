@@ -17,23 +17,23 @@ storiesOf( 'EventEmittingButton', module )
 	.add( 'cancel', () => ( {
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="cancel" message="cancel" />',
-	} ) )
+	} ), { info: true } )
 	.add( 'publish', () => ( {
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="publish" message="publish" />',
-	} ) )
+	} ), { info: true } )
 	.add( 'normal', () => ( {
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="normal" message="normal" />',
-	} ) )
+	} ), { info: true } )
 	.add( 'primaryProgressive', () => ( {
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="primaryProgressive" message="primaryProgressive" />',
-	} ) )
+	} ), { info: true } )
 	.add( 'framelessProgressive', () => ( {
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="framelessProgressive" message="framelessProgressive" />',
-	} ) )
+	} ), { info: true } )
 	.add( 'framelessProgressive as link', () => ( {
 		components: { EventEmittingButton },
 		template: `<EventEmittingButton
@@ -42,4 +42,4 @@ storiesOf( 'EventEmittingButton', module )
 			href="https://www.wikidata.org/"
 			:preventDefault="false"
 			target="_blank" />`,
-	} ) );
+	} ), { info: true } );
