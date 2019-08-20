@@ -112,6 +112,10 @@ function nockSuccessfulLanguageLoading( inLanguage: string ) {
 						code: 'fr',
 						name: 'Français',
 					},
+					'es-419': {
+						code: 'es-419',
+						name: 'español de América Latina',
+					},
 				},
 			},
 		} );
@@ -674,6 +678,25 @@ describe( 'Termbox SSR', () => {
 			} );
 		} );
 
+		it( 'does not fail for language codes containing numeric characters', () => {
+			const entity = 'Q64';
+			const revision = REVISION_MATCHING_ENTITY;
+			const language = 'es-419';
+
+			nockSuccessfulLanguageLoading( language );
+			nockSuccessfulMessagesLoading( language );
+			nockSuccessfulEntityLoading( entity, revision );
+
+			return request( app ).get( '/termbox' ).query( {
+				entity,
+				revision,
+				language,
+				editLink: '/some/' + entity,
+				preferredLanguages: language,
+			} ).then( ( response: request.Response ) => {
+				expectSuccessfulRequest( response );
+			} );
+		} );
 	} );
 
 } );

@@ -49,7 +49,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "pattern": "^[a-z]{2}[a-z-]*$"
+              "pattern": "^[a-z]{2}[a-z0-9-]*$"
             }
           },
           {
@@ -89,7 +89,7 @@
               "items": {
                 "type": "string",
                 "maxLength": 20,
-                "pattern": "^[a-z]{2}[a-z-]*$"
+                "pattern": "^[a-z]{2}[a-z0-9-]*$"
               }
             }
           }
