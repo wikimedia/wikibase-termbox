@@ -8,7 +8,7 @@ export default class ContextError extends Error implements LoggableError {
 		this.context = context;
 	}
 
-	public getContext(): any {
+	public getContext(): object {
 		return {
 			message: this.message,
 			...this.context,

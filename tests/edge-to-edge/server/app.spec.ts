@@ -21,6 +21,7 @@ import CoercingQueryValidator from '@/server/route-handler/termbox/CoercingQuery
 import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 import Metrics from '@/server/Metrics';
+import qs from 'querystring';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -183,12 +184,19 @@ describe( 'Termbox SSR', () => {
 		nock.enableNetConnect();
 	} );
 
-	it( 'renders Server Error when requesting /termbox and entity backend emits malformed response', ( done ) => {
+	it( 'renders Server Error when requesting /termbox and entity backend emits malformed response', () => {
 		const entityId = 'Q64';
 		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'de';
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
+		const pathAndQuery = `/termbox?${ qs.stringify( {
+			entity: entityId,
+			revision,
+			language,
+			editLink,
+			preferredLanguages,
+		} ) }`;
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -204,21 +212,16 @@ describe( 'Termbox SSR', () => {
 				malformed: 'yes',
 			} );
 
-		request( app ).get( '/termbox' ).query( {
-			entity: entityId,
-			revision,
-			language,
-			editLink,
-			preferredLanguages,
-		} ).then( ( response ) => {
+		return request( app ).get( pathAndQuery ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'error/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ] ).toEqual( { message: 'result not well formed.' } );
 
-			done();
+			const errorContext = logger.log.mock.calls[ 0 ][ 1 ];
+			expect( errorContext.message ).toBe( 'result not well formed.' );
+			expect( errorContext.url ).toContain( pathAndQuery );
 		} );
 	} );
 
@@ -436,7 +439,9 @@ describe( 'Termbox SSR', () => {
 	] )(
 		'renders Bad Request when requesting /termbox with defunct query #%# (%o) having known faults (%o)',
 		( query: object, reasons: string[] ) => {
-			return request( app ).get( '/termbox' ).query( query ).then( ( response ) => {
+			const pathAndQuery = `/termbox?${ qs.stringify( query ) }`;
+
+			return request( app ).get( pathAndQuery ).then( ( response ) => {
 				expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 				expect( response.text ).toContain( 'Bad request' );
 				const errors = JSON.parse( response.text.match( '.*Errors: (.+)' )![ 1 ]! ).errors;
@@ -445,8 +450,10 @@ describe( 'Termbox SSR', () => {
 				// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
 				expect( logger.log ).toHaveBeenCalledTimes( 1 );
 				expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'info/service' );
-				const loggedErrors = logger.log.mock.calls[ 0 ][ 1 ].errors;
-				expect( loggedErrors.map( ( e: any ) => e.path ).sort() ).toEqual( reasons.sort() );
+
+				const errorContext = logger.log.mock.calls[ 0 ][ 1 ];
+				expect( errorContext.url ).toContain( pathAndQuery );
+				expect( errorContext.errors.map( ( e: any ) => e.path ).sort() ).toEqual( reasons.sort() );
 			} );
 		},
 	);

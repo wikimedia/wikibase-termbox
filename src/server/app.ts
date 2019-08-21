@@ -13,6 +13,14 @@ import inlanguage from './directives/inlanguage';
 import packageInfo from '@/../package.json';
 import InfoHandler from './route-handler/_info/InfoHandler';
 import reportResponseTimeMetrics from './reportResponseTimeMetrics';
+import LoggableError from '@/common/error/LoggableError';
+
+function buildErrorContextWithUrl( error: LoggableError, request: Request ) {
+	return {
+		...error.getContext(),
+		url: request.url,
+	};
+}
 
 export default ( services: BundleRendererServices ) => {
 
@@ -55,7 +63,7 @@ export default ( services: BundleRendererServices ) => {
 				if ( err instanceof InvalidRequest ) {
 					response.status( HttpStatus.BAD_REQUEST )
 						.send( 'Bad request\nErrors: ' + JSON.stringify( err.getContext() ) );
-					services.logger.log( 'info/service', err.getContext() );
+					services.logger.log( 'info/service', buildErrorContextWithUrl( err, request ) );
 				} else if ( err.constructor.name === BundleBoundaryPassingException.name ) {
 					if ( err.reason === ErrorReason.EntityNotFound ) {
 						response.status( HttpStatus.NOT_FOUND ).send( 'Entity not found' );
@@ -66,7 +74,7 @@ export default ( services: BundleRendererServices ) => {
 					services.logger.log( 'info/service', err.getContext() );
 				} else {
 					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
-					services.logger.log( 'error/service', err.getContext() );
+					services.logger.log( 'error/service', buildErrorContextWithUrl( err, request ) );
 				}
 			} );
 	} );

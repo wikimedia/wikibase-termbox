@@ -53,7 +53,7 @@ describe( 'TermboxHandler', () => {
 				query: {},
 			} ).catch( ( reason: InvalidRequest ) => {
 				expect( reason ).toBeInstanceOf( InvalidRequest );
-				expect( reason.getContext().errors ).toBe( errors );
+				expect( ( reason.getContext() as any ).errors ).toBe( errors );
 			} );
 		} );
 

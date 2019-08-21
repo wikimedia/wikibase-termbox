@@ -1,5 +1,5 @@
 interface LoggableError {
-	getContext(): any;
+	getContext(): object;
 }
 
 export default LoggableError;
