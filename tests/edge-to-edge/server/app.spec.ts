@@ -464,6 +464,13 @@ describe( 'Termbox SSR', () => {
 		const language = 'ylq';
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
+		const pathAndQuery = `/termbox?${ qs.stringify( {
+			entity: entityId,
+			revision,
+			language,
+			editLink,
+			preferredLanguages,
+		} ) }`;
 
 		nockSuccessfulEntityLoading( entityId, revision );
 		nockSuccessfulMessagesLoading( language );
@@ -493,20 +500,17 @@ describe( 'Termbox SSR', () => {
 				},
 			} );
 
-		request( app ).get( '/termbox' ).query( {
-			entity: entityId,
-			revision,
-			language,
-			editLink,
-			preferredLanguages,
-		} ).then( ( response ) => {
+		request( app ).get( pathAndQuery ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
 			expect( response.text ).toContain( 'Bad request. Language not existing' );
 
 			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'info/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].requestedLanguage ).toBe( language );
+
+			const errorContext = logger.log.mock.calls[ 0 ][ 1 ];
+			expect( errorContext.requestedLanguage ).toBe( language );
+			expect( errorContext.url ).toContain( pathAndQuery );
 			done();
 		} );
 	} );
@@ -518,6 +522,13 @@ describe( 'Termbox SSR', () => {
 		const editLink = '/some/' + entityId;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 		const backendErrorMessage = '<html><body><h1>Not Found</h1></body></html>';
+		const pathAndQuery = `/termbox?${ qs.stringify( {
+			entity: entityId,
+			revision,
+			language,
+			editLink,
+			preferredLanguages,
+		} ) }`;
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -531,21 +542,18 @@ describe( 'Termbox SSR', () => {
 			} )
 			.reply( HttpStatus.NOT_FOUND, backendErrorMessage );
 
-		return request( app ).get( '/termbox' ).query( {
-			entity: entityId,
-			revision,
-			language,
-			editLink,
-			preferredLanguages,
-		} ).then( ( response ) => {
+		return request( app ).get( pathAndQuery ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
 
 			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
 			expect( logger.log.mock.calls[ 0 ][ 0 ] ).toBe( 'info/service' );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].entity ).toBe( entityId );
-			expect( logger.log.mock.calls[ 0 ][ 1 ].revision ).toBe( revision );
+
+			const errorContext = logger.log.mock.calls[ 0 ][ 1 ];
+			expect( errorContext.entity ).toBe( entityId );
+			expect( errorContext.revision ).toBe( revision );
+			expect( errorContext.url ).toContain( pathAndQuery );
 		} );
 	} );
 

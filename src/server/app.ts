@@ -71,7 +71,7 @@ export default ( services: BundleRendererServices ) => {
 						response.status( HttpStatus.BAD_REQUEST ).send( 'Bad request. Language not existing' );
 					}
 
-					services.logger.log( 'info/service', err.getContext() );
+					services.logger.log( 'info/service', buildErrorContextWithUrl( err, request ) );
 				} else {
 					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
 					services.logger.log( 'error/service', buildErrorContextWithUrl( err, request ) );
