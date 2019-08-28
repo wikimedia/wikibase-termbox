@@ -1,5 +1,6 @@
 @import '_variables';
-@import '_font-helper';
+@import '_calculate-rem';
+@import './mixins/_fontSize';
 @import './mixins/_hyphens';
 @import './mixins/_toggleButton';
 @import './mixins/_shrinkingFlexElement';
