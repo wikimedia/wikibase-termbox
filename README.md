@@ -143,9 +143,9 @@ docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e WI
 
 Changes to this project that are successfully merged into the main line (master) are automatically run through a so called [service pipeline job](https://integration.wikimedia.org/ci/job/service-pipeline-test-and-publish/) which builds the production variant and publishes the resulting image under a descriptive name as a [tag in the docker registry](https://docker-registry.wikimedia.org/v2/wikimedia/wikibase-termbox/tags/list).
 
-You can reference these tags directly when spinning up a container - the simplest conceivable way to reproduce a production setup at a given moment in time; e.g. to reproduce a reported bug.
+You can reference these tags directly when spinning up a container - the simplest conceivable way to reproduce a production setup at a given moment in time; e.g. to reproduce a reported bug. Note that in the command below, a service-runner `config.yaml` is mounted into the container to get logs and metrics printed to stdout. Otherwise the service would attempt to connect to statsd and logstash, and fail if they're not available.
 
 ```sh
-docker run --rm -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e WIKIBASE_REPO_HOSTNAME_ALIAS=www.wikidata.org -e SSR_PORT=3030 docker-registry.wikimedia.org/wikimedia/wikibase-termbox:2019-04-25-184504-production
+docker run --rm -v $(pwd)/config.debug.yaml:/srv/service/config.yaml -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e WIKIBASE_REPO_HOSTNAME_ALIAS=www.wikidata.org -e SSR_PORT=3030 docker-registry.wikimedia.org/wikimedia/wikibase-termbox:2019-08-24-040743-production
 ```
 
