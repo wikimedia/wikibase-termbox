@@ -6,11 +6,12 @@ import IconMessageBox from '@/components/IconMessageBox.vue';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 import { MessageKey } from '@/common/MessageKey';
-import createMockableStore from '../store/createMockableStore';
+import hotUpdateDeep from '../store/hotUpdateDeep';
 import { NS_USER } from '@/store/namespaces';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
+import { createStore } from '@/store';
 
 describe( 'LicenseAgreement', () => {
 
@@ -65,7 +66,7 @@ describe( 'LicenseAgreement', () => {
 		const buttonLabel = 'publish';
 		const wrapper = shallowMount( LicenseAgreement, {
 			stubs: { EventEmittingButton },
-			store: createMockableStore( {
+			store: hotUpdateDeep( createStore(), {
 				modules: {
 					[ NS_USER ]: {
 						actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
@@ -126,7 +127,7 @@ describe( 'LicenseAgreement', () => {
 				mockMessageMixin(),
 				newConfigMixin( { copyrightVersion } as ConfigOptions ),
 			],
-			store: createMockableStore( {
+			store: hotUpdateDeep( createStore(), {
 				modules: {
 					[ NS_USER ]: {
 						actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },
@@ -148,7 +149,7 @@ describe( 'LicenseAgreement', () => {
 		const wrapper = shallowMount( LicenseAgreement, {
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin() ],
-			store: createMockableStore( {
+			store: hotUpdateDeep( createStore(), {
 				modules: {
 					[ NS_USER ]: {
 						actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },

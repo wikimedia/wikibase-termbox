@@ -13,7 +13,7 @@ import { mutation } from '@/store/util';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
-import createMockableStore from '../store/createMockableStore';
+import hotUpdateDeep from '../store/hotUpdateDeep';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
 	const store = createStore();
@@ -135,7 +135,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 		const languageTranslation = 'Teutonic';
 
 		const getTranslationInUserLanguage = jest.fn().mockReturnValue( languageTranslation );
-		const store = createMockableStore( {
+		const store = hotUpdateDeep( createStore(), {
 			modules: {
 				[ NS_LANGUAGE ]: {
 					getters: {

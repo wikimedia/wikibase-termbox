@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { createStore } from '@/store';
-import { ActionTree, GetterTree, MutationTree, StoreOptions } from 'vuex';
+import { ActionTree, GetterTree, MutationTree, StoreOptions, Store } from 'vuex';
 
 type HotUpdatableStoreProperties = {
 	getters?: GetterTree<any, any>;
@@ -35,10 +34,11 @@ function assertOverride( defaultValue: any, override: any, message: string ) {
 }
 
 /**
- * creates a real store instance with individually overridable module properties
+ * Overrides a store instance's individual properties
+ * In contrast to real hotUpdate() this can replace parts of modules
+ * cf. https://vuex.vuejs.org/guide/hot-reload.html
  */
-export default function createMockableStore( overrides: HotUpdatableStoreProperties ) {
-	const store = createStore();
+export default function hotUpdateDeep( store: Store<any>, overrides: HotUpdatableStoreProperties ) {
 	const storeModules = ( store as any )._modules.root._children;
 
 	assertOverride(

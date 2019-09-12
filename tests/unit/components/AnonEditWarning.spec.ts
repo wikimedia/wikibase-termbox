@@ -12,7 +12,7 @@ import {
 	NS_LINKS,
 	NS_USER,
 } from '@/store/namespaces';
-import createMockableStore from '../store/createMockableStore';
+import hotUpdateDeep from '../store/hotUpdateDeep';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 
@@ -143,7 +143,7 @@ describe( 'AnonEditWarning', () => {
 		it( 'as true when warnRecurringly is false', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: createMockableStore( {
+				store: hotUpdateDeep( createStore(), {
 					modules: {
 						[ NS_USER ]: {
 							actions: {
@@ -172,7 +172,7 @@ describe( 'AnonEditWarning', () => {
 		it( 'as false when warnRecurringly is true', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: createMockableStore( {
+				store: hotUpdateDeep( createStore(), {
 					modules: {
 						[ NS_USER ]: {
 							actions: {

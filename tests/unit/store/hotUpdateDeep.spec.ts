@@ -1,18 +1,23 @@
-import createMockableStore from './createMockableStore';
-import Vuex from 'vuex';
+import hotUpdateDeep from './hotUpdateDeep';
+import Vuex, { Store } from 'vuex';
+import Vue from 'vue';
 import { action } from '@/store/util';
 
-describe( 'tests/createMockableStore', () => {
+Vue.use( Vuex );
+
+describe( 'hotUpdateDeep', () => {
 
 	it( 'returns a Vuex.Store', () => {
-		expect( createMockableStore( {} ) ).toBeInstanceOf( Vuex.Store );
+		const realStore = new Store<any>( {} );
+		expect( hotUpdateDeep( realStore, {} ) ).toBeInstanceOf( Store );
 	} );
 
 	it( 'can add a getter to the root store', () => {
 		const myGetterName = 'fictional';
 		const myGetterReturnValue = 'bar';
 		const myGetter = jest.fn().mockReturnValue( myGetterReturnValue );
-		const store = createMockableStore( {
+		const realStore = new Store<any>( {} );
+		const store = hotUpdateDeep( realStore, {
 			getters: {
 				[ myGetterName ]: myGetter,
 			},
@@ -23,11 +28,23 @@ describe( 'tests/createMockableStore', () => {
 
 	it( 'can add an action to a store module', () => {
 		const realModuleName = 'messages'; // this must exist in the real store
+		const realActionName = 'read';
+		const realActionValue = 'value';
 
 		const myActionName = 'fictional';
 		const myActionResolveValue = 'yes';
 		const myAction = jest.fn().mockResolvedValue( myActionResolveValue );
-		const store = createMockableStore( {
+		const realStore = new Store<any>( {
+			modules: {
+				[ realModuleName ]: {
+					namespaced: true,
+					actions: {
+						[ realActionName ]: () => Promise.resolve( realActionValue ),
+					},
+				},
+			},
+		} );
+		const store = hotUpdateDeep( realStore, {
 			modules: {
 				[ realModuleName ]: {
 					actions: {
@@ -37,12 +54,14 @@ describe( 'tests/createMockableStore', () => {
 			},
 		} );
 
+		expect( store.dispatch( action( realModuleName, realActionName ) ) ).resolves.toEqual( realActionValue );
 		expect( store.dispatch( action( realModuleName, myActionName ) ) ).resolves.toEqual( myActionResolveValue );
 	} );
 
 	it( 'throws when trying to override a store module not existing in reality', () => {
 		expect( () => {
-			createMockableStore( {
+			const realStore = new Store<any>( {} );
+			hotUpdateDeep( realStore, {
 				modules: {
 					sausage: {
 						getters: {

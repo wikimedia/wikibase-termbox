@@ -45,7 +45,7 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import Vue from 'vue';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
-import createMockableStore from '../store/createMockableStore';
+import hotUpdateDeep from '../store/hotUpdateDeep';
 import { UserPreference } from '@/common/UserPreference';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
@@ -118,7 +118,7 @@ describe( 'TermBox.vue', () => {
 
 				it( 'emitted edit event puts store into editMode', async () => {
 					const mockActivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-					const store = createMockableStore( {
+					const store = hotUpdateDeep( createStore(), {
 						actions: {
 							[ EDITMODE_ACTIVATE ]: mockActivateEditMode,
 						},
@@ -227,7 +227,7 @@ describe( 'TermBox.vue', () => {
 					const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
 					const deactivateEditMode = jest.fn();
 					const copyrightVersion = 'wikibase-1';
-					const store = createMockableStore( {
+					const store = hotUpdateDeep( createStore(), {
 						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
 						modules: {
 							[ NS_ENTITY ]: {
@@ -258,7 +258,7 @@ describe( 'TermBox.vue', () => {
 					const entitySave = jest.fn().mockReturnValue( Promise.reject() );
 					const deactivateEditMode = jest.fn();
 					const copyrightVersion = 'wikibase-1';
-					const store = createMockableStore( {
+					const store = hotUpdateDeep( createStore(), {
 						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
 						modules: {
 							[ NS_ENTITY ]: {
@@ -307,7 +307,7 @@ describe( 'TermBox.vue', () => {
 						.mockReturnValueOnce( Promise.resolve() );
 					const deactivateEditMode = jest.fn();
 					const copyrightVersion = 'wikibase-1';
-					const store = createMockableStore( {
+					const store = hotUpdateDeep( createStore(), {
 						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
 						modules: {
 							[ NS_ENTITY ]: {
@@ -362,7 +362,7 @@ describe( 'TermBox.vue', () => {
 					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
 					const entityRollbackPromise = Promise.resolve();
 					const mockEntityRollback = jest.fn().mockReturnValue( entityRollbackPromise );
-					const store = createMockableStore( {
+					const store = hotUpdateDeep( createStore(), {
 						actions: {
 							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
 						},
@@ -440,7 +440,7 @@ describe( 'TermBox.vue', () => {
 				const entitySavePromise = Promise.resolve();
 				const mockEntitySave = jest.fn().mockReturnValue( entitySavePromise );
 				const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-				const store = createMockableStore( {
+				const store = hotUpdateDeep( createStore(), {
 					modules: {
 						[ NS_ENTITY ]: {
 							actions: {
@@ -513,7 +513,7 @@ describe( 'TermBox.vue', () => {
 	it( 'shows an overlay with indeterminate progress bar while saving', async () => {
 		const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
 		const copyrightVersion = 'wikibase-1';
-		const store = createMockableStore( {
+		const store = hotUpdateDeep( createStore(), {
 			modules: {
 				[ NS_ENTITY ]: {
 					actions: { [ ENTITY_SAVE ]: entitySave },
