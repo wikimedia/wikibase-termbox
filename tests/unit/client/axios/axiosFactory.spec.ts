@@ -59,7 +59,7 @@ describe( 'getAxios', () => {
 
 	it( 'should return an Axios instance that has the correct baseURL', () => {
 		const somePath = 'somePath';
-		axiosMock.onGet( mockRequestBaseURL + '/' + somePath ).reply( HttpStatus.OK );
+		axiosMock.onGet( `${mockRequestBaseURL}/${somePath}` ).reply( HttpStatus.OK );
 		return axios.get( somePath ).then( ( response ) => {
 			expect( response.status ).toEqual( HttpStatus.OK );
 		} );

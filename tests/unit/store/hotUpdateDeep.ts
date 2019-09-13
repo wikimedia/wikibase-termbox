@@ -29,7 +29,7 @@ function assertOverride( defaultValue: any, override: any, message: string ) {
 		override &&
 		Object.keys( override ).every( ( m ) => { return defaultKeys.indexOf( m ) !== -1; } ) === false
 	) {
-		throw new Error( message + ' Valid options: ' + defaultKeys.join( ', ' ) );
+		throw new Error( `${message} Valid options: ${defaultKeys.join( ', ' )}` );
 	}
 }
 

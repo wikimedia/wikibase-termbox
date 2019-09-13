@@ -27,11 +27,11 @@ export default function ( processEnv: NodeJS.ProcessEnv, logger: Logger ): Confi
 	const { error, value: config } = schema.validate( processEnv );
 
 	if ( error ) {
-		logger.log( 'fatal/service', 'Failed parsing env vars: ' + error.toString() );
+		logger.log( 'fatal/service', `Failed parsing env vars: ${error.toString()}` );
 		process.exit( 1 );
 	}
 
-	logger.log( 'info/service', 'Set config to: ' + JSON.stringify( config! ) );
+	logger.log( 'info/service', `Set config to: ${JSON.stringify( config! )}` );
 
 	return config as any;
 }

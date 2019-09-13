@@ -49,7 +49,7 @@ export default class TermTextField extends Vue {
 		textarea.style.height = '0';
 		const border = this.getPropertyValueInPx( textarea, 'border-top-width' )
 			+ this.getPropertyValueInPx( textarea, 'border-bottom-width' );
-		textarea.style.height = ( this.$el.scrollHeight + border ) + 'px';
+		textarea.style.height = `${this.$el.scrollHeight + border}px`;
 	}
 
 	private getPropertyValueInPx( element: HTMLElement, property: string ) {

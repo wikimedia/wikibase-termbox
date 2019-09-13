@@ -38,8 +38,8 @@ describe( 'assertAndGetConfig', () => {
 		};
 		expect( result ).toEqual( expectedConfig );
 
-		expect( logger.log ).toHaveBeenCalledWith( 'info/service', 'Set config to: ' +
-			JSON.stringify( expectedConfig ) );
+		expect( logger.log ).toHaveBeenCalledWith( 'info/service', `Set config to: ${
+			JSON.stringify( expectedConfig )}` );
 	} );
 
 	it.each( [
@@ -70,7 +70,7 @@ describe( 'assertAndGetConfig', () => {
 			expect.anything(),
 		);
 		expect( logger.log.mock.calls[ 0 ][ 1 ] )
-			.toContain( `Failed parsing env vars: ValidationError: child "${ missingVarName }" fails` );
+			.toContain( `Failed parsing env vars: ValidationError: child "${missingVarName}" fails` );
 		expect( exit ).toHaveBeenCalled();
 	} );
 
@@ -100,7 +100,7 @@ describe( 'assertAndGetConfig', () => {
 		expect( result ).toEqual( expectedConfig );
 		expect( logger.log ).toHaveBeenCalledWith(
 			'info/service',
-			'Set config to: ' + JSON.stringify( expectedConfig ),
+			`Set config to: ${JSON.stringify( expectedConfig )}`,
 		);
 	} );
 

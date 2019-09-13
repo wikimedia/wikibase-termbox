@@ -38,9 +38,9 @@ describe( 'reportResponseTimeMetrics', () => {
 		expect( metrics.normalizeName ).toHaveBeenCalledWith( normalizedPath );
 
 		const stats = metrics.timing.mock.calls[ 0 ][ 0 ];
-		expect( stats ).toContain( `${ statName }.${ request.method }.ALL` );
-		expect( stats ).toContain( `${ statName }.${ request.method }.${ response.statusCode }` );
-		expect( stats ).toContain( `${ statName }.${ request.method }.2xx` );
+		expect( stats ).toContain( `${statName}.${request.method}.ALL` );
+		expect( stats ).toContain( `${statName}.${request.method}.${response.statusCode}` );
+		expect( stats ).toContain( `${statName}.${request.method}.2xx` );
 	} );
 
 	it.each( [

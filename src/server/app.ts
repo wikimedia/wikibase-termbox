@@ -62,7 +62,7 @@ export default ( services: BundleRendererServices ) => {
 			.catch( ( err ) => {
 				if ( err instanceof InvalidRequest ) {
 					response.status( HttpStatus.BAD_REQUEST )
-						.send( 'Bad request\nErrors: ' + JSON.stringify( err.getContext() ) );
+						.send( `Bad request\nErrors: ${JSON.stringify( err.getContext() )}` );
 					services.logger.log( 'info/service', buildErrorContextWithUrl( err, request ) );
 				} else if ( err.constructor.name === BundleBoundaryPassingException.name ) {
 					if ( err.reason === ErrorReason.EntityNotFound ) {

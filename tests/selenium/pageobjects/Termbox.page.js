@@ -96,7 +96,7 @@ class TermboxPage extends Page {
 	}
 
 	openItemPage( entityId, primaryLanguage = 'en' ) {
-		super.openTitle( `Item:${ entityId }`, { useformat: 'mobile', uselang: primaryLanguage } );
+		super.openTitle( `Item:${entityId}`, { useformat: 'mobile', uselang: primaryLanguage } );
 		this.waitForTermboxToLoad();
 	}
 

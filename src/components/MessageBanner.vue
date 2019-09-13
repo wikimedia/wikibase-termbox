@@ -22,13 +22,13 @@ export default class MessageBanner extends Vue {
 	mounted() {
 		this.bannerHeight = this.$el.scrollHeight;
 		const currentPadding = parseInt( window.getComputedStyle( document.body ).getPropertyValue( 'padding-top' ) );
-		document.body.style.paddingTop = currentPadding + this.bannerHeight + 'px';
+		document.body.style.paddingTop = `${currentPadding + this.bannerHeight}px`;
 		window.scrollBy( 0, this.bannerHeight );
 	}
 
 	beforeDestroy() {
 		const currentPadding = parseInt( window.getComputedStyle( document.body ).getPropertyValue( 'padding-top' ) );
-		document.body.style.paddingTop = currentPadding - this.bannerHeight + 'px';
+		document.body.style.paddingTop = `${currentPadding - this.bannerHeight}px`;
 		window.scrollBy( 0, -this.bannerHeight );
 	}
 }

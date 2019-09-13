@@ -8,7 +8,7 @@ import newMockStore from './newMockStore';
 
 describe( 'root/actions', () => {
 	describe( EDITMODE_ACTIVATE, () => {
-		it( `commits to ${ EDITMODE_SET }`, () => {
+		it( `commits to ${EDITMODE_SET}`, () => {
 
 			const context = newMockStore( {
 				commit: jest.fn(),
@@ -23,7 +23,7 @@ describe( 'root/actions', () => {
 	} );
 
 	describe( EDITMODE_DEACTIVATE, () => {
-		it( `commits to ${ EDITMODE_SET }`, () => {
+		it( `commits to ${EDITMODE_SET}`, () => {
 
 			const context = newMockStore( {
 				commit: jest.fn(),

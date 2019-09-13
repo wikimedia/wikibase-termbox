@@ -165,7 +165,7 @@ describe( 'TermBox.vue', () => {
 						expect( wrapper.find( AnonEditWarning ).exists() ).toBeFalsy();
 					} );
 
-					it( `is not shown if ${ UserPreference.HIDE_ANON_EDIT_WARNING } is set`, async () => {
+					it( `is not shown if ${UserPreference.HIDE_ANON_EDIT_WARNING} is set`, async () => {
 						const store = createStore();
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						store.commit(
@@ -223,7 +223,7 @@ describe( 'TermBox.vue', () => {
 					).toBeTruthy();
 				} );
 
-				it( `saves w/o overlay when ${ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION } is set`, async () => {
+				it( `saves w/o overlay when ${UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION} is set`, async () => {
 					const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
 					const deactivateEditMode = jest.fn();
 					const copyrightVersion = 'wikibase-1';

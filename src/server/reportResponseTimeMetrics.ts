@@ -8,9 +8,9 @@ export default function reportResponseTimeMetrics( metrics: Metrics ) {
 		);
 
 		metrics.timing( [
-			`${ normalizedPath }.${ request.method }.ALL`,
-			`${ normalizedPath }.${ request.method }.${ response.statusCode }`,
-			`${ normalizedPath }.${ request.method }.${ Math.floor( response.statusCode / 100 ) }xx`,
+			`${normalizedPath}.${request.method}.ALL`,
+			`${normalizedPath}.${request.method}.${response.statusCode}`,
+			`${normalizedPath}.${request.method}.${Math.floor( response.statusCode / 100 )}xx`,
 		], time );
 	};
 }

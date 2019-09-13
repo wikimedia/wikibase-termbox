@@ -31,7 +31,7 @@ export default class Checkbox extends Vue {
 	@Prop( { required: false, type: String } )
 	public htmlValue!: string;
 
-	public id = `wb-ui-${ Math.round( Math.random() * 10000 ) }`;// see:https://github.com/vuejs/vue/issues/5886
+	public id = `wb-ui-${Math.round( Math.random() * 10000 )}`;// see:https://github.com/vuejs/vue/issues/5886
 }
 </script>
 <style lang="scss">

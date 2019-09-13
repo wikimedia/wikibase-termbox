@@ -33,8 +33,8 @@ Vue.config.productionTip = false;
 Vue.config.devtools = false;
 
 const WIKIBASE_TEST_HOST = 'http://mw.testonly.localhost';
-const WIKIBASE_TEST_API_PATH = '/' + MEDIAWIKI_API_SCRIPT;
-const WIKIBASE_TEST_INDEX_PATH = '/' + MEDIAWIKI_INDEX_SCRIPT;
+const WIKIBASE_TEST_API_PATH = `/${MEDIAWIKI_API_SCRIPT}`;
+const WIKIBASE_TEST_INDEX_PATH = `/${MEDIAWIKI_INDEX_SCRIPT}`;
 
 const logger = {
 	log: jest.fn(),
@@ -188,15 +188,15 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'de';
-		const editLink = '/some/' + entityId;
+		const editLink = `/some/${entityId}`;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
-		const pathAndQuery = `/termbox?${ qs.stringify( {
+		const pathAndQuery = `/termbox?${qs.stringify( {
 			entity: entityId,
 			revision,
 			language,
 			editLink,
 			preferredLanguages,
-		} ) }`;
+		} )}`;
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -267,7 +267,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'de';
-		const editLink = '/some/' + entityId;
+		const editLink = `/some/${entityId}`;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 
 		const responseText = 'upstream system error';
@@ -326,7 +326,7 @@ describe( 'Termbox SSR', () => {
 			entity: entityId,
 			revision,
 			language,
-			editLink: '/some/' + entityId,
+			editLink: `/some/${entityId}`,
 			preferredLanguages: 'de|en|pl|zh|fr|ar',
 		} ).then( ( response ) => {
 			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
@@ -439,7 +439,7 @@ describe( 'Termbox SSR', () => {
 	] )(
 		'renders Bad Request when requesting /termbox with defunct query #%# (%o) having known faults (%o)',
 		( query: object, reasons: string[] ) => {
-			const pathAndQuery = `/termbox?${ qs.stringify( query ) }`;
+			const pathAndQuery = `/termbox?${qs.stringify( query )}`;
 
 			return request( app ).get( pathAndQuery ).then( ( response ) => {
 				expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
@@ -462,15 +462,15 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const revision = REVISION_MATCHING_ENTITY;
 		const language = 'ylq';
-		const editLink = '/some/' + entityId;
+		const editLink = `/some/${entityId}`;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
-		const pathAndQuery = `/termbox?${ qs.stringify( {
+		const pathAndQuery = `/termbox?${qs.stringify( {
 			entity: entityId,
 			revision,
 			language,
 			editLink,
 			preferredLanguages,
-		} ) }`;
+		} )}`;
 
 		nockSuccessfulEntityLoading( entityId, revision );
 		nockSuccessfulMessagesLoading( language );
@@ -519,16 +519,16 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q63';
 		const revision = REVISION_NOT_MATCHING_ENTITY;
 		const language = 'de';
-		const editLink = '/some/' + entityId;
+		const editLink = `/some/${entityId}`;
 		const preferredLanguages = 'de|en|pl|zh|fr|ar';
 		const backendErrorMessage = '<html><body><h1>Not Found</h1></body></html>';
-		const pathAndQuery = `/termbox?${ qs.stringify( {
+		const pathAndQuery = `/termbox?${qs.stringify( {
 			entity: entityId,
 			revision,
 			language,
 			editLink,
 			preferredLanguages,
-		} ) }`;
+		} )}`;
 
 		nockSuccessfulLanguageLoading( language );
 		nockSuccessfulMessagesLoading( language );
@@ -561,7 +561,7 @@ describe( 'Termbox SSR', () => {
 		const entityId = 'Q64';
 		const revision = REVISION_NOT_MATCHING_ENTITY;
 		const language = 'de';
-		const editLink = '/some/' + entityId;
+		const editLink = `/some/${entityId}`;
 		const preferredLanguages = 'de|en';
 		const backendErrorMessage = `<h1>Not Found</h1><p>Can't show revision ${revision} of entity ${entityId}.</p>`;
 
@@ -595,7 +595,7 @@ describe( 'Termbox SSR', () => {
 			const entityId = 'Q64';
 			const revision = REVISION_MATCHING_ENTITY;
 			const language = 'de';
-			const editLink = '/some/' + entityId;
+			const editLink = `/some/${entityId}`;
 
 			nockSuccessfulLanguageLoading( language );
 			nockSuccessfulMessagesLoading( language );
@@ -654,7 +654,7 @@ describe( 'Termbox SSR', () => {
 				entity: entityId,
 				revision,
 				language,
-				editLink: '/some/' + entityId,
+				editLink: `/some/${entityId}`,
 				preferredLanguages,
 			} ).then( ( response ) => {
 				expectSuccessfulRequest( response );
@@ -683,7 +683,7 @@ describe( 'Termbox SSR', () => {
 				entity,
 				revision,
 				language,
-				editLink: '/some/' + entity,
+				editLink: `/some/${entity}`,
 				preferredLanguages: 'de|en|fr',
 			} ).then( ( response: request.Response ) => {
 				expectSuccessfulRequest( response );
@@ -706,7 +706,7 @@ describe( 'Termbox SSR', () => {
 				entity,
 				revision,
 				language,
-				editLink: '/some/' + entity,
+				editLink: `/some/${entity}`,
 				preferredLanguages: language,
 			} ).then( ( response: request.Response ) => {
 				expectSuccessfulRequest( response );

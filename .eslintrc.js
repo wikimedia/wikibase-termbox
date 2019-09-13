@@ -55,12 +55,6 @@ module.exports = {
 		} ],
 
 		'no-restricted-properties': 'off',
-
-		/* remove the following if
-		 * https://github.com/wikimedia/eslint-config-wikimedia/pull/171
-		 * is active in eslint-config-wikimedia
-		 */
-		'prefer-const': 'error',
 	},
 	overrides: {
 		files: [ '**/*.ts' ],

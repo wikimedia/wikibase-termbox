@@ -6,7 +6,7 @@ import axiosLib from 'axios';
 describe( 'getAxios', () => {
 	it( 'should return an Axios instance that makes requests with the correct baseURL', () => {
 		const mockWikiHostSubPath = 'w';
-		const mockRepo = 'http://test.wiki.example.com/' + mockWikiHostSubPath;
+		const mockRepo = `http://test.wiki.example.com/${mockWikiHostSubPath}`;
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
@@ -14,7 +14,7 @@ describe( 'getAxios', () => {
 		const axiosMock = new MockAdapter( axios );
 
 		const somePath = 'somePath';
-		axiosMock.onGet( 'http://' + mockRepoHostAlias + '/' + mockWikiHostSubPath + '/' + somePath )
+		axiosMock.onGet( `http://${mockRepoHostAlias}/${mockWikiHostSubPath}/${somePath}` )
 			.reply( HttpStatus.OK );
 
 		return axios.get( somePath ).then( ( response ) => {
@@ -24,14 +24,14 @@ describe( 'getAxios', () => {
 
 	it( 'should return an Axios instance that makes requests with the right UserAgent', () => {
 		const mockWikiHostSubPath = 'w';
-		const mockRepo = 'http://test.wiki.example.com/' + mockWikiHostSubPath;
+		const mockRepo = `http://test.wiki.example.com/${mockWikiHostSubPath}`;
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
 		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
 		const axiosMock = new MockAdapter( axios );
 		const somePath = 'somePath';
-		axiosMock.onGet( 'http://' + mockRepoHostAlias + '/' + mockWikiHostSubPath + '/' + somePath )
+		axiosMock.onGet( `http://${mockRepoHostAlias}/${mockWikiHostSubPath}/${somePath}` )
 			.reply( HttpStatus.OK );
 
 		return axios.get( somePath ).then( () => {

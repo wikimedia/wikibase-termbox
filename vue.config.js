@@ -82,7 +82,7 @@ module.exports = {
 	devServer: {
 		proxy: {
 			'^/csrMWProxy': {
-				target: repoProtocol + '//' + repoHost,
+				target: `${repoProtocol}//${repoHost}`,
 				pathRewrite: { '^/csrMWProxy': repoScriptPath },
 			},
 		},

@@ -12,7 +12,7 @@ export default function ( name: string, defaultValue: string ): string {
 	const value = searchParams.get( name );
 	if ( value === null || value.trim() === '' ) {
 		searchParams.set( name, defaultValue );
-		window.open( '?' + searchParams.toString(), '_self' );
+		window.open( `?${searchParams.toString()}`, '_self' );
 		return;
 	}
 	return value;

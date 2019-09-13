@@ -186,7 +186,7 @@ describe( 'entity/actions', () => {
 	} );
 
 	describe( ENTITY_ALIASES_EDIT, () => {
-		it( `commits to ${ ENTITY_ALIASES_EDIT_MUTATION }`, () => {
+		it( `commits to ${ENTITY_ALIASES_EDIT_MUTATION}`, () => {
 			const context = newMockStore( {
 				commit: jest.fn(),
 			} );
