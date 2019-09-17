@@ -1,7 +1,7 @@
 import Description from '@/components/Description.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
-import { mutation } from '@/store/util';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { MessageKey } from '@/common/MessageKey';

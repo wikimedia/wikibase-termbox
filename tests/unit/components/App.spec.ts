@@ -10,7 +10,7 @@ import { LANGUAGE_PREFERENCE, USER_NAME_SET, USER_PREFERENCES_INIT } from '@/sto
 import { LINKS_INIT } from '@/store/links/actionTypes';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { LANGUAGE_INIT as USER_LANGUAGE_INIT } from '@/store/user/mutationTypes';
-import { action, mutation } from '@/store/util';
+import { action, mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );

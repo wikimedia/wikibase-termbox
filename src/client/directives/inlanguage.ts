@@ -1,7 +1,7 @@
 import Language from '@/datamodel/Language';
 import { DirectiveBinding } from 'vue/types/options';
 import { VNode } from 'vue/types/vnode';
-import { getters } from '@/store/util';
+import { getter } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_LANGUAGE } from '@/store/namespaces';
 
 export default function inlanguage( el: HTMLElement, binding: DirectiveBinding, vnode: VNode ) {
@@ -14,7 +14,7 @@ export default function inlanguage( el: HTMLElement, binding: DirectiveBinding, 
 
 	const languageCode: string = binding.value;
 	const language: Language | null = vnode.context.$store
-		.getters[ getters( NS_LANGUAGE, 'getByCode' ) ]( languageCode );
+		.getters[ getter( NS_LANGUAGE, 'getByCode' ) ]( languageCode );
 
 	if ( language ) {
 		el.setAttribute( 'lang', language.code );

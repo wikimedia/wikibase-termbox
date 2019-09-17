@@ -29,7 +29,7 @@ import {
 	USER_SET_NAME,
 	USER_SET_PREFERENCE,
 } from '@/store/user/mutationTypes';
-import { mutation } from '@/store/util';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import {
 	EDITMODE_ACTIVATE,
 	EDITMODE_DEACTIVATE,
@@ -45,7 +45,7 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import Vue from 'vue';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
-import hotUpdateDeep from '../store/hotUpdateDeep';
+import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 import { UserPreference } from '@/common/UserPreference';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';

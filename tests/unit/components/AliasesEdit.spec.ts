@@ -3,7 +3,7 @@ import TermTextField from '@/components/TermTextField.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
 import { mount, shallowMount, Wrapper } from '@vue/test-utils';
 import { createStore } from '@/store';
-import { action, mutation } from '@/store/util';
+import { action, mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';

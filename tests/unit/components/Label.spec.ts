@@ -1,7 +1,7 @@
 import Label from '@/components/Label.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
-import { mutation } from '@/store/util';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import { MessageKey } from '@/common/MessageKey';
 import Language from '@/datamodel/Language';

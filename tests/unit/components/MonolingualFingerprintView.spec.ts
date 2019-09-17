@@ -9,11 +9,11 @@ import AliasesEdit from '@/components/AliasesEdit.vue';
 import { createStore } from '@/store';
 import { NS_LANGUAGE, NS_ENTITY } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
-import { mutation } from '@/store/util';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
-import hotUpdateDeep from '../store/hotUpdateDeep';
+import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
 	const store = createStore();

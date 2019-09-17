@@ -1,6 +1,6 @@
 import { VNode, VNodeDirective } from 'vue';
 import Language from '@/datamodel/Language';
-import { getters } from '@/store/util';
+import { getter } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_LANGUAGE } from '@/store/namespaces';
 
 export default function inlanguage( vnode: VNode, directiveMeta: VNodeDirective ) {
@@ -13,7 +13,7 @@ export default function inlanguage( vnode: VNode, directiveMeta: VNodeDirective 
 
 	const languageCode: string = directiveMeta.value;
 	const language: Language | null = vnode.context.$store
-		.getters[ getters( NS_LANGUAGE, 'getByCode' ) ]( languageCode );
+		.getters[ getter( NS_LANGUAGE, 'getByCode' ) ]( languageCode );
 
 	if ( language && vnode.data ) {
 		const attributes = vnode.data.attrs || {};

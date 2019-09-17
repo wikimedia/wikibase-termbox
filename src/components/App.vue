@@ -19,7 +19,7 @@ import {
 import TermboxRequest from '@/common/TermboxRequest';
 import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { LINKS_INIT } from '@/store/links/actionTypes';
-import { action } from '@/store/util';
+import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { namespace } from 'vuex-class';
 
 @Component( {

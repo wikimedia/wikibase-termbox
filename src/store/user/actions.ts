@@ -18,7 +18,7 @@ import {
 	NS_MESSAGES,
 } from '@/store/namespaces';
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
-import { action } from '@/store/util';
+import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { UserPreference } from '@/common/UserPreference';
 import { services } from '@/common/TermboxServices';
 

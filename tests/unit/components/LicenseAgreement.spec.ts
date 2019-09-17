@@ -6,7 +6,7 @@ import IconMessageBox from '@/components/IconMessageBox.vue';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 import { MessageKey } from '@/common/MessageKey';
-import hotUpdateDeep from '../store/hotUpdateDeep';
+import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 import { NS_USER } from '@/store/namespaces';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';

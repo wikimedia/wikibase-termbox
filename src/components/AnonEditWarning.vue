@@ -50,7 +50,7 @@ import {
 import Checkbox from '@/components/Checkbox.vue';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
-import { action } from '@/store/util';
+import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 
 @Component( {

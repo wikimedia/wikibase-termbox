@@ -6,7 +6,7 @@ import {
 	NS_USER,
 } from '@/store/namespaces';
 import { LANGUAGE_INIT, SECONDARY_LANGUAGES_INIT } from '@/store/user/mutationTypes';
-import { mutation } from '@/store/util';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_ENTITY } from '@/store/namespaces';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';

@@ -6,13 +6,13 @@ import IconMessageBox from '@/components/IconMessageBox.vue';
 import mockMessageMixin from '../store/mockMessageMixin';
 import { MessageKey } from '@/common/MessageKey';
 import { createStore } from '@/store';
-import { mutation } from '@/store/util';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { LINKS_UPDATE } from '@/store/links/mutationTypes';
 import {
 	NS_LINKS,
 	NS_USER,
 } from '@/store/namespaces';
-import hotUpdateDeep from '../store/hotUpdateDeep';
+import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 

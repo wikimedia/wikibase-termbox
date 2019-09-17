@@ -4,7 +4,7 @@ import AllEnteredLanguagesExpandable from '@/components/AllEnteredLanguagesExpan
 import { shallowMount, WrapperArray } from '@vue/test-utils';
 import { SECONDARY_LANGUAGES_INIT } from '@/store/user/mutationTypes';
 import { createStore } from '@/store';
-import { mutation } from '@/store/util';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_USER } from '@/store/namespaces';
 
 describe( 'InMoreLanguages', () => {
