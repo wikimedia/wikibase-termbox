@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import init from '@/client/init';
 import TermboxRequest from '@/common/TermboxRequest';
-import { services } from '@/common/TermboxServices';
+import TermboxServices from '@/common/TermboxServices';
 import UlsLanguageTranslationRepository from '@/client/data-access/UlsLanguageTranslationRepository';
 import UlsLanguageRepository from '@/client/data-access/UlsLanguageRepository';
 import MessagesRepository from '@/client/data-access/MessagesRepository';
@@ -38,6 +38,7 @@ Vue.mixin( newConfigMixin(
 
 const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
 const entityInitializer = new EntityInitializer();
+const services = new TermboxServices();
 
 services.setLanguageTranslationRepository(
 	new UlsLanguageTranslationRepository(
@@ -107,5 +108,5 @@ services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
 } ) );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
-	buildAndAttemptHydration( termboxRequest, '.wikibase-entitytermsview' );
+	buildAndAttemptHydration( termboxRequest, '.wikibase-entitytermsview', services );
 } );

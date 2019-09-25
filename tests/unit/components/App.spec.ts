@@ -11,12 +11,13 @@ import { LINKS_INIT } from '@/store/links/actionTypes';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { LANGUAGE_INIT as USER_LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { action, mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
+import emptyServices from '../emptyServices';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 
 function newInitializedStore() {
-	const store = createStore();
+	const store = createStore( emptyServices as any );
 
 	store.commit( mutation( NS_USER, USER_LANGUAGE_INIT ), 'ar' );
 	store.commit(

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
+import TermboxServices from '@/common/TermboxServices';
 import createEntity from './entity';
 import createUser from './user';
 import createLanguage from './language';
@@ -18,7 +19,7 @@ import {
 
 Vue.use( Vuex );
 
-export function createStore() {
+export function createStore( services: TermboxServices ) {
 	const state: Root = {
 		editMode: false,
 	};
@@ -28,11 +29,22 @@ export function createStore() {
 		mutations,
 		actions,
 		modules: {
-			[ NS_ENTITY ]: createEntity(),
-			[ NS_USER ]: createUser(),
-			[ NS_LANGUAGE ]: createLanguage(),
+			[ NS_ENTITY ]: createEntity(
+				services.getEntityRepository(),
+				services.getEntityEditabilityResolver(),
+				services.getWritingEntityRepository(),
+			),
+			[ NS_USER ]: createUser(
+				services.getUserPreferenceRepository(),
+			),
+			[ NS_LANGUAGE ]: createLanguage(
+				services.getLanguageRepository(),
+				services.getLanguageTranslationRepository(),
+			),
 			[ NS_LINKS ]: createLinks(),
-			[ NS_MESSAGES ]: createMessages(),
+			[ NS_MESSAGES ]: createMessages(
+				services.getMessagesRepository(),
+			),
 		},
 		strict: process.env.NODE_ENV !== 'production',
 	};

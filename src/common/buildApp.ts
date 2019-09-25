@@ -1,10 +1,11 @@
 import App from '@/components/App.vue';
 import { createStore } from '@/store';
+import TermboxServices from '@/common/TermboxServices';
 import TermboxRequest from '@/common/TermboxRequest';
 import getChildComponents from './getChildComponents';
 
-export default ( termboxRequest: TermboxRequest ) => {
-	const store = createStore();
+export default ( termboxRequest: TermboxRequest, services: TermboxServices ) => {
+	const store = createStore( services );
 	const app = new App( {
 		store,
 	} );

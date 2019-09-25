@@ -1,4 +1,4 @@
-import { actions } from '@/store/user/actions';
+import actions from '@/store/user/actions';
 import {
 	LANGUAGE_PREFERENCE,
 	USER_NAME_SET,
@@ -20,7 +20,6 @@ import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 import { UserPreference } from '@/common/UserPreference';
-import { services } from '@/common/TermboxServices';
 
 describe( 'user/actions', () => {
 	describe( LANGUAGE_PREFERENCE, () => {
@@ -36,7 +35,9 @@ describe( 'user/actions', () => {
 
 			const preferredLanguages = [ 'de', 'en', 'fr', 'zh', 'pl', 'hu' ];
 
-			actions[ LANGUAGE_PREFERENCE ]( context, { primaryLanguage, preferredLanguages } ).then( () => {
+			actions(
+				{} as any,
+			)[ LANGUAGE_PREFERENCE ]( context, { primaryLanguage, preferredLanguages } ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_INIT,
 					primaryLanguage,
@@ -65,7 +66,9 @@ describe( 'user/actions', () => {
 	it( USER_NAME_SET, () => {
 		const context = newMockStore( {} );
 		const name = 'Lord Voldemort';
-		actions[ USER_NAME_SET ]( context, name );
+		actions(
+			{} as any,
+		)[ USER_NAME_SET ]( context, name );
 
 		expect( context.commit ).toHaveBeenCalledWith( USER_SET_NAME, name );
 	} );
@@ -82,9 +85,10 @@ describe( 'user/actions', () => {
 				( preference: UserPreference ) => Promise.resolve( preferenceStubs[ preference ] ),
 			),
 		};
-		services.setUserPreferenceRepository( prefsRepo );
 
-		return actions[ USER_PREFERENCES_INIT ]( context ).then( () => {
+		return actions(
+			prefsRepo,
+		)[ USER_PREFERENCES_INIT ]( context ).then( () => {
 			Object.values( UserPreference ).forEach( ( preference: UserPreference ) => {
 				expect( prefsRepo.getPreference ).toHaveBeenCalledWith( preference );
 				expect( context.commit ).toHaveBeenCalledWith(
@@ -101,11 +105,12 @@ describe( 'user/actions', () => {
 			setPreference: jest.fn().mockReturnValue( Promise.resolve() ),
 			getPreference: jest.fn(),
 		};
-		services.setUserPreferenceRepository( prefsRepo );
 		const preferenceName = UserPreference.HIDE_ANON_EDIT_WARNING;
 		const preferenceValue = true;
 
-		return actions[ USER_PREFERENCE_SET ]( context, { name: preferenceName, value: preferenceValue } ).then( () => {
+		return actions(
+			prefsRepo,
+		)[ USER_PREFERENCE_SET ]( context, { name: preferenceName, value: preferenceValue } ).then( () => {
 			expect( prefsRepo.setPreference ).toHaveBeenCalledWith( preferenceName, preferenceValue );
 			expect( context.commit ).toHaveBeenCalledWith(
 				USER_SET_PREFERENCE,

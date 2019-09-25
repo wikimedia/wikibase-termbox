@@ -10,12 +10,13 @@ import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_ENTITY } from '@/store/namespaces';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import emptyServices from '../emptyServices';
 
 describe( 'AllEnteredLanguages', () => {
 
 	it( 'passes language prop to MonolingualFingerprintView', () => {
 		const language = 'de';
-		const store = createStore();
+		const store = createStore( emptyServices as any );
 		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), new FingerprintableEntity(
 			'Q42',
 			{ [ language ]: { language, value: 'kartoffel' } },
@@ -29,7 +30,7 @@ describe( 'AllEnteredLanguages', () => {
 	} );
 
 	it( 'does not contain the primary user language', () => {
-		const store = createStore();
+		const store = createStore( emptyServices as any );
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
 
 		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), new FingerprintableEntity(
@@ -49,7 +50,7 @@ describe( 'AllEnteredLanguages', () => {
 	} );
 
 	it( 'does not contain the secondary user languages', () => {
-		const store = createStore();
+		const store = createStore( emptyServices as any );
 		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), [ 'en', 'fr' ] );
 
 		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), new FingerprintableEntity(

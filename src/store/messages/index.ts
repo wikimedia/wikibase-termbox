@@ -2,9 +2,12 @@ import { Module } from 'vuex';
 import Messages from '@/store/messages/Messages';
 import { getters } from '@/store/messages/getters';
 import { mutations } from '@/store/messages/mutations';
-import { actions } from '@/store/messages/actions';
+import createActions from '@/store/messages/actions';
+import MessagesRepository from '@/common/data-access/MessagesRepository';
 
-export default function (): Module<Messages, any> {
+export default function (
+	messagesRepository: MessagesRepository,
+): Module<Messages, any> {
 	const state: Messages = {
 		messages: {},
 	};
@@ -14,6 +17,6 @@ export default function (): Module<Messages, any> {
 		state,
 		getters,
 		mutations,
-		actions,
+		actions: createActions( messagesRepository ),
 	};
 }

@@ -10,7 +10,7 @@ jest.mock( '@/common/getChildComponents', () => ( {
 const mockCreateStore = jest.fn();
 jest.mock( '@/store', () => ( {
 	__esModule: true,
-	createStore: () => mockCreateStore(),
+	createStore: ( services: any ) => mockCreateStore( services ),
 } ) );
 
 describe( 'buildApp', () => {
@@ -24,9 +24,11 @@ describe( 'buildApp', () => {
 			preferredLanguages: [ 'de', 'en', 'fr', 'it', 'pl' ],
 			userName: null,
 		};
+		const services = new ( jest.fn() )();
+
 		mockGetChildComponents.mockReturnValue( [] );
 
-		return buildApp( request ).then( ( app ) => {
+		return buildApp( request, services ).then( ( app ) => {
 			expect( app ).toBeInstanceOf( App );
 		} );
 	} );
@@ -40,6 +42,7 @@ describe( 'buildApp', () => {
 			preferredLanguages: [ 'en', 'de', 'fr', 'it', 'pl' ],
 			userName: null,
 		};
+		const services = new ( jest.fn() )();
 
 		const mockAsyncData1 = jest.fn();
 		const mockAsyncData2 = jest.fn();
@@ -54,7 +57,7 @@ describe( 'buildApp', () => {
 
 		mockGetChildComponents.mockReturnValue( [ mockComponent1, mockComponent2, {} ] );
 
-		return buildApp( request ).then( ( app ) => {
+		return buildApp( request, services ).then( ( app ) => {
 			expect( mockAsyncData1 ).toBeCalledWith( store, request );
 			expect( mockAsyncData2 ).toBeCalledWith( store, request );
 
@@ -62,4 +65,24 @@ describe( 'buildApp', () => {
 		} );
 	} );
 
+	it( 'creates the store with the given services', () => {
+		const request = {
+			language: 'en',
+			entityId: 'Q123',
+			revision: 31510,
+			links: { editLinkUrl: '/edit/Q123', loginLinkUrl: '/login', signUpLinkUrl: '/signup' },
+			preferredLanguages: [ 'en', 'de', 'fr', 'it', 'pl' ],
+			userName: null,
+		};
+		const services = new ( jest.fn() )();
+
+		const store = {};
+		mockCreateStore.mockReturnValue( store );
+
+		return buildApp( request, services ).then( ( app ) => {
+			expect( mockCreateStore ).toHaveBeenCalledWith( services );
+
+			expect( app ).toBeInstanceOf( App );
+		} );
+	} );
 } );

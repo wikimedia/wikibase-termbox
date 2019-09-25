@@ -20,48 +20,55 @@ import {
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { UserPreference } from '@/common/UserPreference';
-import { services } from '@/common/TermboxServices';
+import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
 
-export const actions = {
+export default function actions(
+	userPreferenceRepository: UserPreferenceRepository,
+) {
+	return {
+		[ LANGUAGE_PREFERENCE ](
+			context: ActionContext<User, any>,
+			{ primaryLanguage, preferredLanguages }: { primaryLanguage: string, preferredLanguages: string[] },
+		): Promise<[ void, void ]> {
+			context.commit( LANGUAGE_INIT, primaryLanguage );
 
-	[ LANGUAGE_PREFERENCE ](
-		context: ActionContext<User, any>,
-		{ primaryLanguage, preferredLanguages }: { primaryLanguage: string, preferredLanguages: string[] },
-	): Promise<[ void, void ]> {
-		context.commit( LANGUAGE_INIT, primaryLanguage );
+			context.commit( SECONDARY_LANGUAGES_INIT, preferredLanguages.filter( ( languageKey: string ) => {
+				return languageKey !== primaryLanguage;
+			} ) );
 
-		context.commit( SECONDARY_LANGUAGES_INIT, preferredLanguages.filter( ( languageKey: string ) => {
-			return languageKey !== primaryLanguage;
-		} ) );
+			return Promise.all( [
+				context.dispatch( action( NS_MESSAGES, MESSAGES_INIT ), primaryLanguage, { root: true } ),
+				context.dispatch(
+					action( NS_LANGUAGE, ENSURE_AVAILABLE_IN_LANGUAGE ),
+					primaryLanguage,
+					{ root: true },
+				),
+			] );
+		},
 
-		return Promise.all( [
-			context.dispatch( action( NS_MESSAGES, MESSAGES_INIT ), primaryLanguage, { root: true } ),
-			context.dispatch( action( NS_LANGUAGE, ENSURE_AVAILABLE_IN_LANGUAGE ), primaryLanguage, { root: true } ),
-		] );
-	},
+		[ USER_NAME_SET ]( context: ActionContext<User, any>, name: string ) {
+			context.commit( USER_SET_NAME, name );
+		},
 
-	[ USER_NAME_SET ]( context: ActionContext<User, any>, name: string ) {
-		context.commit( USER_SET_NAME, name );
-	},
+		[ USER_PREFERENCES_INIT ]( context: ActionContext<User, any> ): Promise<void[]> {
+			return Promise.all( Object.values( UserPreference ).map( ( preference ) => {
+				return userPreferenceRepository.getPreference( preference )
+					.then( ( value ) => context.commit(
+						USER_SET_PREFERENCE,
+						{ name: preference, value },
+					) );
+			} ) );
+		},
 
-	[ USER_PREFERENCES_INIT ]( context: ActionContext<User, any> ): Promise<void[]> {
-		return Promise.all( Object.values( UserPreference ).map( ( preference ) => {
-			return services.getUserPreferenceRepository().getPreference( preference )
-				.then( ( value ) => context.commit(
-					USER_SET_PREFERENCE,
-					{ name: preference, value },
-				) );
-		} ) );
-	},
-
-	[ USER_PREFERENCE_SET ](
-		context: ActionContext<User, any>,
-		{ name, value }: { name: UserPreference, value: any },
-	) {
-		return services.getUserPreferenceRepository().setPreference( name, value ).then( () => {
-			// Only write to the store if persisting the preference was successful in order to avoid inconsistencies
-			// between store and preference repository.
-			context.commit( USER_SET_PREFERENCE, { name, value } );
-		} );
-	},
-};
+		[ USER_PREFERENCE_SET ](
+			context: ActionContext<User, any>,
+			{ name, value }: { name: UserPreference, value: any },
+		) {
+			return userPreferenceRepository.setPreference( name, value ).then( () => {
+				// Only write to the store if persisting the preference was successful in order to avoid inconsistencies
+				// between store and preference repository.
+				context.commit( USER_SET_PREFERENCE, { name, value } );
+			} );
+		},
+	};
+}

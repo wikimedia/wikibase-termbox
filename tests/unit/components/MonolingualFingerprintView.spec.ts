@@ -14,9 +14,10 @@ import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
 import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
+import emptyServices from '../emptyServices';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
-	const store = createStore();
+	const store = createStore( emptyServices as any );
 	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
 		[ languageCode ]: { code: languageCode, directionality: 'ltr' },
 	} );
@@ -39,7 +40,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 
 			const language = { code: 'de', directionality: 'ltr' };
 
-			const store = createStore();
+			const store = createStore( emptyServices as any );
 			store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
 			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
 			store.commit( EDITMODE_SET, false );
@@ -69,7 +70,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			const languageCode = 'de';
 			const language = { code: languageCode, directionality: 'ltr' };
 
-			const store = createStore();
+			const store = createStore( emptyServices as any );
 			store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
 			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
 			store.commit( EDITMODE_SET, true );
@@ -135,7 +136,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 		const languageTranslation = 'Teutonic';
 
 		const getTranslationInUserLanguage = jest.fn().mockReturnValue( languageTranslation );
-		const store = hotUpdateDeep( createStore(), {
+		const store = hotUpdateDeep( createStore( emptyServices as any ), {
 			modules: {
 				[ NS_LANGUAGE ]: {
 					getters: {

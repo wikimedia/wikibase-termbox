@@ -1,10 +1,9 @@
-import { actions } from '@/store/language/actions';
+import actions from '@/store/language/actions';
 import { LANGUAGE_INIT, ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import {
 	LANGUAGE_TRANSLATION_UPDATE,
 	LANGUAGE_UPDATE,
 } from '@/store/language/mutationTypes';
-import { services } from '@/common/TermboxServices';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
 import LanguageCollection from '@/datamodel/LanguageCollection';
 import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
@@ -28,15 +27,18 @@ describe( 'language/actions', () => {
 			};
 			const getLanguagesMock = jest.fn();
 			getLanguagesMock.mockResolvedValue( languages );
-			services.setLanguageRepository( {
+			const languageRepository = {
 				getLanguages: getLanguagesMock,
-			} );
+			};
 			const commitMock = jest.fn();
 			const context = newMockStore( {
 				commit: commitMock,
 			} );
 
-			actions[ LANGUAGE_INIT ]( context ).then( () => {
+			actions(
+				languageRepository,
+				{ getLanguagesInLanguage: jest.fn() },
+			)[ LANGUAGE_INIT ]( context ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_UPDATE,
 					languages,
@@ -55,18 +57,21 @@ describe( 'language/actions', () => {
 					en: 'Englisch',
 				},
 			};
-			services.setLanguageTranslationRepository( {
+			const languageTranslationRepository = {
 				getLanguagesInLanguage: ( thisInLanguage: string ) => {
 					expect( thisInLanguage ).toBe( inLanguage );
 					return Promise.resolve( translations );
 				},
-			} );
+			};
 			const commitMock = jest.fn();
 			const context = newMockStore( {
 				commit: commitMock,
 			} );
 
-			actions[ ENSURE_AVAILABLE_IN_LANGUAGE ]( context, inLanguage ).then( () => {
+			actions(
+				{ getLanguages: jest.fn() },
+				languageTranslationRepository,
+			)[ ENSURE_AVAILABLE_IN_LANGUAGE ]( context, inLanguage ).then( () => {
 				expect( commitMock ).toBeCalledWith(
 					LANGUAGE_TRANSLATION_UPDATE,
 					translations,

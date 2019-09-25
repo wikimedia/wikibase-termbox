@@ -1,10 +1,17 @@
 import { Module } from 'vuex';
 import EntityState from '@/store/entity/EntityState';
+import EntityRepository from '@/common/data-access/EntityRepository';
+import EntityEditabilityResolver from '@/common/data-access/EntityEditabilityResolver';
+import WritingEntityRepository from '@/common/data-access/WritingEntityRepository';
 import { getters } from '@/store/entity/getters';
 import { mutations } from '@/store/entity/mutations';
-import { actions } from '@/store/entity/actions';
+import createActions from '@/store/entity/actions';
 
-export default function (): Module<EntityState, any> {
+export default function (
+	entityRepository: EntityRepository,
+	entityEditabilityResolver: EntityEditabilityResolver,
+	writingEntityRepository: WritingEntityRepository,
+): Module<EntityState, any> {
 	const state: EntityState = {
 		id: '',
 		baseRevision: 0,
@@ -20,6 +27,10 @@ export default function (): Module<EntityState, any> {
 		state,
 		getters,
 		mutations,
-		actions,
+		actions: createActions(
+			entityRepository,
+			entityEditabilityResolver,
+			writingEntityRepository,
+		),
 	};
 }

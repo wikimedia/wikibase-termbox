@@ -1,7 +1,6 @@
-import { actions } from '@/store/messages/actions';
+import actions from '@/store/messages/actions';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutationTypes';
-import { services } from '@/common/TermboxServices';
 import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 import { MessageKey } from '@/common/MessageKey';
 
@@ -16,15 +15,17 @@ describe( 'messages/actions', () => {
 				},
 			};
 
-			services.setMessagesRepository( {
+			const messagesRepository = {
 				getMessagesInLanguage: () => Promise.resolve( mockMessages ),
-			} );
+			};
 
 			const context = newMockStore( {
 				commit: jest.fn(),
 			} );
 
-			actions[ MESSAGES_INIT ]( context, 'de' ).then( () => {
+			actions(
+				messagesRepository,
+			)[ MESSAGES_INIT ]( context, 'de' ).then( () => {
 				expect( context.commit ).toBeCalledWith(
 					MESSAGES_INIT_MUTATION,
 					mockMessages,

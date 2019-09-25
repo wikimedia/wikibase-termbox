@@ -15,12 +15,13 @@ import {
 import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
+import emptyServices from '../emptyServices';
 
 const LOGIN_URL = '/login';
 const SIGNUP_URL = '/signup';
 
 function createStoreWithLinks() {
-	const store = createStore();
+	const store = createStore( emptyServices as any );
 	store.commit( mutation( NS_LINKS, LINKS_UPDATE ), { loginLinkUrl: LOGIN_URL, signUpLinkUrl: SIGNUP_URL } );
 	return store;
 }
@@ -30,7 +31,7 @@ describe( 'AnonEditWarning', () => {
 	it( 'has a heading', () => {
 		const expectedHeading = 'you are not logged in';
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStore(),
+			store: createStore( emptyServices as any ),
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_HEADING ]: expectedHeading,
 			} ) ],
@@ -43,7 +44,7 @@ describe( 'AnonEditWarning', () => {
 	it( 'has a warning message', () => {
 		const expectedMessage = 'Your IP address will be publicly visible. [...]';
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStore(),
+			store: createStore( emptyServices as any ),
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_MESSAGE ]: expectedMessage,
 			} ) ],
@@ -103,7 +104,7 @@ describe( 'AnonEditWarning', () => {
 		const buttonLabel = 'edit w/o login';
 		const persistUserPreference = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStore(),
+			store: createStore( emptyServices as any ),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_DISMISS_BUTTON ]: buttonLabel,
@@ -122,7 +123,7 @@ describe( 'AnonEditWarning', () => {
 	} );
 
 	it( 'has a checkbox that is checked by default', () => {
-		const wrapper = shallowMount( AnonEditWarning, { store: createStore() } );
+		const wrapper = shallowMount( AnonEditWarning, { store: createStore( emptyServices as any ) } );
 
 		expect( wrapper.find( Checkbox ).props( 'value' ) ).toBeTruthy();
 	} );
@@ -143,7 +144,7 @@ describe( 'AnonEditWarning', () => {
 		it( 'as true when warnRecurringly is false', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: hotUpdateDeep( createStore(), {
+				store: hotUpdateDeep( createStore( emptyServices as any ), {
 					modules: {
 						[ NS_USER ]: {
 							actions: {
@@ -172,7 +173,7 @@ describe( 'AnonEditWarning', () => {
 		it( 'as false when warnRecurringly is true', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: hotUpdateDeep( createStore(), {
+				store: hotUpdateDeep( createStore( emptyServices as any ), {
 					modules: {
 						[ NS_USER ]: {
 							actions: {

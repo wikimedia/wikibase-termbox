@@ -1,5 +1,6 @@
 import serverEntry from '@/server-entry';
 import TermboxRequest from '@/common/TermboxRequest';
+import TermboxServices from '@/common/TermboxServices';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
 import BundleRendererContext from '@/server/bundle-renderer/BundleRendererContext';
@@ -8,8 +9,27 @@ import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServi
 const mockBuildApp = jest.fn();
 jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
-	default: ( termboxRequest: TermboxRequest ) => mockBuildApp( termboxRequest ),
+	default: (
+		termboxRequest: TermboxRequest,
+		services: TermboxServices,
+	) => mockBuildApp( termboxRequest, services ),
 } ) );
+
+const mockServices = {
+	setLanguageTranslationRepository: jest.fn(),
+	setLanguageRepository: jest.fn(),
+	setEntityRepository: jest.fn(),
+	setMessagesRepository: jest.fn(),
+	setEntityEditabilityResolver: jest.fn(),
+	setWritingEntityRepository: jest.fn(),
+	setUserPreferenceRepository: jest.fn(),
+};
+jest.mock( '@/common/TermboxServices', () => {
+	return jest.fn().mockImplementation( () => {
+		return mockServices;
+	} );
+} );
+
 const getAxios = jest.fn();
 function getMockBundleRendererServices() {
 	const services = {} as BundleRendererServices;
@@ -44,8 +64,27 @@ describe( 'server-entry', () => {
 		mockBuildApp.mockResolvedValue( 'hello' );
 
 		serverEntry( ssrContext ).then( ( html ) => {
-			expect( mockBuildApp ).toBeCalledWith( ssrContext.request );
+			expect( mockBuildApp ).toBeCalledWith(
+				ssrContext.request,
+				mockServices,
+			);
 			expect( html ).toBe( result );
+			done();
+		} );
+	} );
+
+	it( 'setup the service container', ( done ) => {
+		const ssrContext = newFineBundleRendererContext();
+
+		mockBuildApp.mockResolvedValue( 'hello' );
+		serverEntry( ssrContext ).then( () => {
+			expect( mockServices.setEntityEditabilityResolver ).toHaveBeenCalledTimes( 1 );
+			expect( mockServices.setEntityRepository ).toHaveBeenCalledTimes( 1 );
+			expect( mockServices.setLanguageRepository ).toHaveBeenCalledTimes( 1 );
+			expect( mockServices.setLanguageTranslationRepository ).toHaveBeenCalledTimes( 1 );
+			expect( mockServices.setMessagesRepository ).toHaveBeenCalledTimes( 1 );
+			expect( mockServices.setWritingEntityRepository ).toHaveBeenCalledTimes( 1 );
+			expect( mockServices.setUserPreferenceRepository ).toHaveBeenCalledTimes( 1 );
 			done();
 		} );
 	} );

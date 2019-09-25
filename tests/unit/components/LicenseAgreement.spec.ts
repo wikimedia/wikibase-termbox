@@ -12,6 +12,7 @@ import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import { createStore } from '@/store';
+import emptyServices from '../emptyServices';
 
 describe( 'LicenseAgreement', () => {
 
@@ -66,7 +67,7 @@ describe( 'LicenseAgreement', () => {
 		const buttonLabel = 'publish';
 		const wrapper = shallowMount( LicenseAgreement, {
 			stubs: { EventEmittingButton },
-			store: hotUpdateDeep( createStore(), {
+			store: hotUpdateDeep( createStore( emptyServices as any ), {
 				modules: {
 					[ NS_USER ]: {
 						actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
@@ -127,7 +128,7 @@ describe( 'LicenseAgreement', () => {
 				mockMessageMixin(),
 				newConfigMixin( { copyrightVersion } as ConfigOptions ),
 			],
-			store: hotUpdateDeep( createStore(), {
+			store: hotUpdateDeep( createStore( emptyServices as any ), {
 				modules: {
 					[ NS_USER ]: {
 						actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },
@@ -149,7 +150,7 @@ describe( 'LicenseAgreement', () => {
 		const wrapper = shallowMount( LicenseAgreement, {
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin() ],
-			store: hotUpdateDeep( createStore(), {
+			store: hotUpdateDeep( createStore( emptyServices as any ), {
 				modules: {
 					[ NS_USER ]: {
 						actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },

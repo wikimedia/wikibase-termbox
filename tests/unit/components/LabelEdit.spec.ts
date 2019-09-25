@@ -10,9 +10,10 @@ import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
+import emptyServices from '../emptyServices';
 
 function createStoreWithLanguage( language: Language ) {
-	const store = createStore();
+	const store = createStore( emptyServices as any );
 	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
 		[ language.code ]: language,
 	} );

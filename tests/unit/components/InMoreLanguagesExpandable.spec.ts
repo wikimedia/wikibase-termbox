@@ -5,11 +5,12 @@ import { createStore } from '@/store';
 import { MessageKey } from '@/common/MessageKey';
 import { render } from '@vue/server-test-utils';
 import mockMessageMixin from '../store/mockMessageMixin';
+import emptyServices from '../emptyServices';
 
 describe( 'InMoreLanguagesExpandable', () => {
 
 	it( 'should show the user\'s secondary languages by default', () => {
-		const store = createStore();
+		const store = createStore( emptyServices as any );
 		const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 		expect( wrapper.find( InMoreLanguages ).exists() ).toBeTruthy();
 	} );
@@ -26,7 +27,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 		} );
 
 		it( 'toggle collapses/expands the user\'s secondary languages on click', () => {
-			const store = createStore();
+			const store = createStore( emptyServices as any );
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 			wrapper.find( '.wb-ui-in-more-languages-expandable__switch' ).trigger( 'click' );
 
@@ -37,7 +38,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 	describe( 'client/server-specific appearance', () => {
 
 		it( 'has an additional class to appear unclickable when rendered on the server-side', () => {
-			const store = createStore();
+			const store = createStore( emptyServices as any );
 			// render returns a cheerio wrapper, not a string as the d.ts claims
 			// https://vue-test-utils.vuejs.org/api/render.html#render
 			const $button = ( render( InMoreLanguagesExpandable, { store } ) as any )
@@ -46,7 +47,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 		} );
 
 		it( 'has no extra class when mounted on the client side', () => {
-			const store = createStore();
+			const store = createStore( emptyServices as any );
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
 			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch' )
 				.classes( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( false );

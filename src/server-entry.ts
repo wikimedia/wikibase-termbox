@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import buildApp from '@/common/buildApp';
-import { services } from './common/TermboxServices';
+import TermboxServices from './common/TermboxServices';
 import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
 import EntityInitializer from './common/EntityInitializer';
 import BundleBoundaryPassingException, { ErrorReason } from '@/server/exceptions/BundleBoundaryPassingException';
@@ -20,6 +20,7 @@ import MessageTranslationCollection from './datamodel/MessageTranslationCollecti
 import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages }
 	from '@/server/data-access/WikibaseContentLanguagesRepo';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
+import EntityRevision from '@/datamodel/EntityRevision';
 
 Vue.mixin( newConfigMixin( {
 	// As of now all config values concern edit mode exclusively, which is not reachable on the server side
@@ -29,6 +30,7 @@ Vue.mixin( newConfigMixin( {
 } ) );
 
 export default ( context: BundleRendererContext ) => {
+	const services = new TermboxServices();
 	const axios = context.services.axios;
 
 	const axiosLanguages = new AxiosWikibaseContentLanguagesRepo( axios );
@@ -74,8 +76,15 @@ export default ( context: BundleRendererContext ) => {
 		setPreference: () => Promise.resolve(),
 		getPreference: () => Promise.resolve(),
 	} );
+	services.setWritingEntityRepository( {
+		// ssr does not perform any writing
+		saveEntity: () => ( new Error( 'No valid path for SSR.' ) ) as unknown as Promise<EntityRevision>,
+	} );
 
-	return buildApp( context.request ).catch( ( err: any ) => {
+	return buildApp(
+		context.request,
+		services,
+	).catch( ( err: any ) => {
 		if ( err instanceof EntityNotFound ) {
 			throw new BundleBoundaryPassingException( ErrorReason.EntityNotFound, err.getContext() );
 		} else if ( err instanceof TranslationLanguageNotFound ) {

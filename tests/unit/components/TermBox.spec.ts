@@ -49,6 +49,7 @@ import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 import { UserPreference } from '@/common/UserPreference';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
+import emptyServices from '../emptyServices';
 
 function shallowMountWithStore( store: Store<any> ) {
 	return shallowMount( TermBox, {
@@ -63,7 +64,7 @@ function setStoreInEditMode( store: Store<any> ) {
 }
 
 function createStoreInEditMode() {
-	const store = createStore();
+	const store = createStore( emptyServices as any );
 
 	setStoreInEditMode( store );
 
@@ -73,7 +74,7 @@ function createStoreInEditMode() {
 describe( 'TermBox.vue', () => {
 
 	it( 'contains a MonolingualFingerprintView of the user\'s primary language', () => {
-		const store = createStore();
+		const store = createStore( emptyServices as any );
 		const userLanguage = 'en';
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
 		const wrapper = shallowMount( TermBox, { store } );
@@ -87,7 +88,7 @@ describe( 'TermBox.vue', () => {
 	describe( 'EditTools', () => {
 		describe( 'given the entity is editable', () => {
 			it( 'are there', () => {
-				const store = createStore();
+				const store = createStore( emptyServices as any );
 				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 				const wrapper = shallowMount( TermBox, { store } );
 
@@ -96,7 +97,7 @@ describe( 'TermBox.vue', () => {
 
 			describe( 'EditPen', () => {
 				it( 'is there with correct link', () => {
-					const store = createStore();
+					const store = createStore( emptyServices as any );
 					const editLinkUrl = '/edit/Q42';
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( NS_LINKS, LINKS_UPDATE ), { editLinkUrl } );
@@ -118,7 +119,7 @@ describe( 'TermBox.vue', () => {
 
 				it( 'emitted edit event puts store into editMode', async () => {
 					const mockActivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-					const store = hotUpdateDeep( createStore(), {
+					const store = hotUpdateDeep( createStore( emptyServices as any ), {
 						actions: {
 							[ EDITMODE_ACTIVATE ]: mockActivateEditMode,
 						},
@@ -137,7 +138,7 @@ describe( 'TermBox.vue', () => {
 
 				describe( 'AnonEditWarning', () => {
 					it( 'is shown in a modal overlay for anonymous users', async () => {
-						const store = createStore();
+						const store = createStore( emptyServices as any );
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						const wrapper = shallowMount( TermBox, {
 							store,
@@ -152,7 +153,7 @@ describe( 'TermBox.vue', () => {
 					} );
 
 					it( 'is not shown for logged in users', async () => {
-						const store = createStore();
+						const store = createStore( emptyServices as any );
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						store.commit( mutation( NS_USER, USER_SET_NAME ), 'Lord Voldemort' );
 						const wrapper = shallowMount( TermBox, {
@@ -166,7 +167,7 @@ describe( 'TermBox.vue', () => {
 					} );
 
 					it( `is not shown if ${UserPreference.HIDE_ANON_EDIT_WARNING} is set`, async () => {
-						const store = createStore();
+						const store = createStore( emptyServices as any );
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						store.commit(
 							mutation( NS_USER, USER_SET_PREFERENCE ),
@@ -184,7 +185,7 @@ describe( 'TermBox.vue', () => {
 
 					it( 'can be dismissed', () => {
 						const wrapper = shallowMount( TermBox, {
-							store: createStore(),
+							store: createStore( emptyServices as any ),
 							data: () => ( { showEditWarning: true } ),
 						} );
 
@@ -197,7 +198,7 @@ describe( 'TermBox.vue', () => {
 
 			describe( 'Publish', () => {
 				it( 'is there in edit mode', () => {
-					const store = createStore();
+					const store = createStore( emptyServices as any );
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( EDITMODE_SET ), true );
 					const message = 'publish';
@@ -227,7 +228,7 @@ describe( 'TermBox.vue', () => {
 					const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
 					const deactivateEditMode = jest.fn();
 					const copyrightVersion = 'wikibase-1';
-					const store = hotUpdateDeep( createStore(), {
+					const store = hotUpdateDeep( createStore( emptyServices as any ), {
 						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
 						modules: {
 							[ NS_ENTITY ]: {
@@ -258,7 +259,7 @@ describe( 'TermBox.vue', () => {
 					const entitySave = jest.fn().mockReturnValue( Promise.reject() );
 					const deactivateEditMode = jest.fn();
 					const copyrightVersion = 'wikibase-1';
-					const store = hotUpdateDeep( createStore(), {
+					const store = hotUpdateDeep( createStore( emptyServices as any ), {
 						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
 						modules: {
 							[ NS_ENTITY ]: {
@@ -307,7 +308,7 @@ describe( 'TermBox.vue', () => {
 						.mockReturnValueOnce( Promise.resolve() );
 					const deactivateEditMode = jest.fn();
 					const copyrightVersion = 'wikibase-1';
-					const store = hotUpdateDeep( createStore(), {
+					const store = hotUpdateDeep( createStore( emptyServices as any ), {
 						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
 						modules: {
 							[ NS_ENTITY ]: {
@@ -342,7 +343,7 @@ describe( 'TermBox.vue', () => {
 
 			describe( 'Cancel', () => {
 				it( 'is there in edit mode', () => {
-					const store = createStore();
+					const store = createStore( emptyServices as any );
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( EDITMODE_SET ), true );
 					const message = 'cancel';
@@ -362,7 +363,7 @@ describe( 'TermBox.vue', () => {
 					const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
 					const entityRollbackPromise = Promise.resolve();
 					const mockEntityRollback = jest.fn().mockReturnValue( entityRollbackPromise );
-					const store = hotUpdateDeep( createStore(), {
+					const store = hotUpdateDeep( createStore( emptyServices as any ), {
 						actions: {
 							[ EDITMODE_DEACTIVATE ]: mockDeactivateEditMode,
 						},
@@ -391,7 +392,7 @@ describe( 'TermBox.vue', () => {
 				} );
 
 				it( 'resets the entity to its state before editing started', async () => {
-					const store = createStore();
+					const store = createStore( emptyServices as any );
 
 					const originalLabel = 'Kartoffel';
 					const entity = newFingerprintable( {
@@ -440,7 +441,7 @@ describe( 'TermBox.vue', () => {
 				const entitySavePromise = Promise.resolve();
 				const mockEntitySave = jest.fn().mockReturnValue( entitySavePromise );
 				const mockDeactivateEditMode = jest.fn().mockReturnValue( Promise.resolve() );
-				const store = hotUpdateDeep( createStore(), {
+				const store = hotUpdateDeep( createStore( emptyServices as any ), {
 					modules: {
 						[ NS_ENTITY ]: {
 							actions: {
@@ -481,7 +482,7 @@ describe( 'TermBox.vue', () => {
 		} );
 
 		it( 'renders publish and cancel in edit mode', () => {
-			const store = createStore();
+			const store = createStore( emptyServices as any );
 			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 			store.commit( mutation( EDITMODE_SET ), true );
 
@@ -495,7 +496,7 @@ describe( 'TermBox.vue', () => {
 		} );
 
 		it( 'given the entity is not editable are not there', () => {
-			const store = createStore();
+			const store = createStore( emptyServices as any );
 			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), false );
 			const wrapper = shallowMount( TermBox, { store } );
 
@@ -504,7 +505,7 @@ describe( 'TermBox.vue', () => {
 	} );
 
 	it( 'shows a list of the user\'s top secondary languages', () => {
-		const store = createStore();
+		const store = createStore( emptyServices as any );
 		const wrapper = shallowMount( TermBox, { store } );
 
 		expect( wrapper.find( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
@@ -513,7 +514,7 @@ describe( 'TermBox.vue', () => {
 	it( 'shows an overlay with indeterminate progress bar while saving', async () => {
 		const entitySave = jest.fn().mockReturnValue( Promise.resolve() );
 		const copyrightVersion = 'wikibase-1';
-		const store = hotUpdateDeep( createStore(), {
+		const store = hotUpdateDeep( createStore( emptyServices as any ), {
 			modules: {
 				[ NS_ENTITY ]: {
 					actions: { [ ENTITY_SAVE ]: entitySave },

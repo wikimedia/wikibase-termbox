@@ -22,7 +22,15 @@ storiesOf( 'LicenseAgreement', module )
 		};
 
 		return {
-			store: createStore(),
+			store: createStore( {
+				getEntityRepository() {},
+				getEntityEditabilityResolver() {},
+				getWritingEntityRepository() {},
+				getUserPreferenceRepository() {},
+				getLanguageRepository() {},
+				getLanguageTranslationRepository() {},
+				getMessagesRepository() {},
+			} ),
 
 			components: {
 				LicenseAgreement: stubMessagesMixin( LicenseAgreement, messages ),

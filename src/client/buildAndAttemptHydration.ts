@@ -1,9 +1,14 @@
 import buildApp from '@/common/buildApp';
+import TermboxServices from '@/common/TermboxServices';
 import TermboxRequest from '@/common/TermboxRequest';
 
-export default function buildAndAttemptHydration( termboxRequest: TermboxRequest, termboxRootSelector: string ) {
+export default function buildAndAttemptHydration(
+	termboxRequest: TermboxRequest,
+	termboxRootSelector: string,
+	services: TermboxServices,
+) {
 	const buildAndMount = () => {
-		return buildApp( termboxRequest ).then( ( app ) => {
+		return buildApp( termboxRequest, services ).then( ( app ) => {
 			app.$mount( termboxRootSelector );
 		} );
 	};

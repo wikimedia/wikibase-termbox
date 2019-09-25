@@ -100,9 +100,3 @@ export default class TermboxServices {
 	}
 
 }
-
-const services = new TermboxServices();
-
-export {
-	services,
-};

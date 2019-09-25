@@ -1,4 +1,4 @@
-import { actions } from '@/store/entity/actions';
+import actions from '@/store/entity/actions';
 import {
 	ENTITY_INIT,
 	ENTITY_ALIASES_EDIT,
@@ -18,7 +18,6 @@ import {
 	ENTITY_REVISION_UPDATE,
 	ENTITY_ROLLBACK as ENTITY_ROLLBACK_MUTATION,
 } from '@/store/entity/mutationTypes';
-import { services } from '@/common/TermboxServices';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
@@ -27,34 +26,27 @@ import EntityRevision from '@/datamodel/EntityRevision';
 
 describe( 'entity/actions', () => {
 	describe( ENTITY_INIT, () => {
-		beforeEach( () => {
-			services.setEntityEditabilityResolver( {
-				isEditable: () => Promise.resolve( true ),
-			} );
-			services.setEntityRepository( {
-				getFingerprintableEntity: () => Promise.resolve(
-					new FingerprintableEntity( 'Q123', {}, {}, {} ),
-				),
-			} );
-		} );
-
 		it( `commits to ${ENTITY_UPDATE} on successful FingerprintableEntity lookup`, ( done ) => {
 			const entityId = 'Q42';
 			const revision = 4711;
 
 			const entity = new FingerprintableEntity( entityId, {}, {}, {} );
-			services.setEntityRepository( {
+			const entityRepository = {
 				getFingerprintableEntity: ( thisEntityId: string, thisRevision: number ) => {
 					expect( thisEntityId ).toBe( entityId );
 					expect( thisRevision ).toBe( revision );
 					return Promise.resolve( entity );
 				},
-			} );
+			};
 			const context = newMockStore( {
 				commit: jest.fn(),
 			} );
 
-			actions[ ENTITY_INIT ]( context, { entity: entityId, revision } ).then( () => {
+			actions(
+				entityRepository,
+				{ isEditable: jest.fn() },
+				{ saveEntity: jest.fn() },
+			)[ ENTITY_INIT ]( context, { entity: entityId, revision } ).then( () => {
 				expect( context.commit ).toBeCalledWith(
 					ENTITY_UPDATE,
 					entity,
@@ -65,15 +57,19 @@ describe( 'entity/actions', () => {
 
 		it( `commits to ${EDITABILITY_UPDATE} on successful lookup and editability resolution`, () => {
 			const isEditable = true;
-			services.setEntityEditabilityResolver( {
+			const entityEditabilityResolver = {
 				isEditable: () => Promise.resolve( isEditable ),
-			} );
+			};
 
 			const context = newMockStore( {
 				commit: jest.fn(),
 			} );
 
-			return actions[ ENTITY_INIT ]( context, { entity: 'Q123', revision: 4711 } ).then( () => {
+			return actions(
+				{ getFingerprintableEntity: jest.fn() },
+				entityEditabilityResolver,
+				{ saveEntity: jest.fn() },
+			)[ ENTITY_INIT ]( context, { entity: 'Q123', revision: 4711 } ).then( () => {
 				expect( context.commit ).toHaveBeenCalledWith( EDITABILITY_UPDATE, isEditable );
 			} );
 		} );
@@ -84,7 +80,11 @@ describe( 'entity/actions', () => {
 				commit: jest.fn(),
 			} );
 
-			return actions[ ENTITY_INIT ]( context, { entity: 'Q123', revision } ).then( () => {
+			return actions(
+				{ getFingerprintableEntity: jest.fn() },
+				{ isEditable: jest.fn() },
+				{ saveEntity: jest.fn() },
+			)[ ENTITY_INIT ]( context, { entity: 'Q123', revision } ).then( () => {
 				expect( context.commit ).toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, revision );
 			} );
 		} );
@@ -93,14 +93,18 @@ describe( 'entity/actions', () => {
 			const entityId = 'Q1';
 			const revision = 4711;
 			const error = new EntityNotFound( 'Entity not found', {} );
-			services.setEntityRepository( {
+			const entityRepository = {
 				getFingerprintableEntity: ( thisEntityId: string ) => {
 					expect( thisEntityId ).toBe( entityId );
 					return Promise.reject( error );
 				},
-			} );
+			};
 
-			actions[ ENTITY_INIT ]( newMockStore( {} ), { entity: entityId, revision } )
+			actions(
+				entityRepository,
+				{ isEditable: jest.fn() },
+				{ saveEntity: jest.fn() },
+			)[ ENTITY_INIT ]( newMockStore( {} ), { entity: entityId, revision } )
 				.catch( ( thisError: Error ) => {
 					expect( thisError ).toBe( error );
 					done();
@@ -127,9 +131,12 @@ describe( 'entity/actions', () => {
 			const writingRepository = {
 				saveEntity: jest.fn().mockResolvedValue( new ( jest.fn() )() ),
 			};
-			services.setWritingEntityRepository( writingRepository );
 
-			return actions[ ENTITY_SAVE ]( newMockStore( { state } ) ).then( () => {
+			return actions(
+				{ getFingerprintableEntity: jest.fn() },
+				{ isEditable: jest.fn() },
+				writingRepository,
+			)[ ENTITY_SAVE ]( newMockStore( { state } ) ).then( () => {
 				expect( writingRepository.saveEntity ).toBeCalledWith( entity, baseRevision );
 			} );
 		} );
@@ -142,10 +149,13 @@ describe( 'entity/actions', () => {
 			const writingRepository = {
 				saveEntity: jest.fn().mockResolvedValue( responseEntityRevision ),
 			};
-			services.setWritingEntityRepository( writingRepository );
 			const store = { commit: jest.fn() };
 
-			return actions[ ENTITY_SAVE ]( newMockStore( store ) ).then( () => {
+			return actions(
+				{ getFingerprintableEntity: jest.fn() },
+				{ isEditable: jest.fn() },
+				writingRepository,
+			)[ ENTITY_SAVE ]( newMockStore( store ) ).then( () => {
 				expect( store.commit )
 					.toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, responseEntityRevision.revisionId );
 				expect( store.commit ).toHaveBeenCalledWith( ENTITY_UPDATE, responseEntityRevision.entity );
@@ -161,7 +171,11 @@ describe( 'entity/actions', () => {
 			} );
 
 			const newTerm = { language: 'en', value: 'goat' };
-			actions[ ENTITY_LABEL_EDIT ]( context, newTerm );
+			actions(
+				{ getFingerprintableEntity: jest.fn() },
+				{ isEditable: jest.fn() },
+				{ saveEntity: jest.fn() },
+			)[ ENTITY_LABEL_EDIT ]( context, newTerm );
 			expect( commitMock ).toHaveBeenLastCalledWith(
 				ENTITY_SET_LABEL_MUTATION,
 				newTerm,
@@ -177,7 +191,11 @@ describe( 'entity/actions', () => {
 			} );
 
 			const newTerm = { language: 'en', value: 'domesticated mammal raised primarily for its milk' };
-			actions[ ENTITY_DESCRIPTION_EDIT ]( context, newTerm );
+			actions(
+				{ getFingerprintableEntity: jest.fn() },
+				{ isEditable: jest.fn() },
+				{ saveEntity: jest.fn() },
+			)[ ENTITY_DESCRIPTION_EDIT ]( context, newTerm );
 			expect( commitMock ).toHaveBeenLastCalledWith(
 				ENTITY_SET_DESCRIPTION_MUTATION,
 				newTerm,
@@ -196,7 +214,11 @@ describe( 'entity/actions', () => {
 			const termString2 = 'spud';
 			const expectedTerms = [ { language, value: termString1 }, { language, value: termString2 } ];
 
-			actions[ ENTITY_ALIASES_EDIT ](
+			actions(
+				{ getFingerprintableEntity: jest.fn() },
+				{ isEditable: jest.fn() },
+				{ saveEntity: jest.fn() },
+			)[ ENTITY_ALIASES_EDIT ](
 				context,
 				{ language, aliasValues: [ termString1, termString2 ] },
 			);
@@ -211,7 +233,11 @@ describe( 'entity/actions', () => {
 		const context = newMockStore( { commit: jest.fn() } );
 		const payload = { languageCode: 'en', index: 5 };
 
-		actions[ ENTITY_ALIAS_REMOVE ]( context, payload );
+		actions(
+			{ getFingerprintableEntity: jest.fn() },
+			{ isEditable: jest.fn() },
+			{ saveEntity: jest.fn() },
+		)[ ENTITY_ALIAS_REMOVE ]( context, payload );
 
 		expect( context.commit ).toHaveBeenCalledWith( ENTITY_REMOVE_ALIAS, payload );
 	} );
@@ -219,7 +245,11 @@ describe( 'entity/actions', () => {
 	it( `${ENTITY_ROLLBACK} commits to ${ENTITY_ROLLBACK_MUTATION}`, () => {
 		const context = newMockStore( { commit: jest.fn() } );
 
-		actions[ ENTITY_ROLLBACK ]( context );
+		actions(
+			{ getFingerprintableEntity: jest.fn() },
+			{ isEditable: jest.fn() },
+			{ saveEntity: jest.fn() },
+		)[ ENTITY_ROLLBACK ]( context );
 
 		expect( context.commit ).toHaveBeenCalledWith( ENTITY_ROLLBACK_MUTATION );
 	} );
