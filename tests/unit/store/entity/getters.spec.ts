@@ -13,39 +13,6 @@ function newMinimalStore( fields: any ): EntityState {
 
 describe( 'entity/Getters', () => {
 
-	it( 'has an id', () => {
-		expect( getters.id( newMinimalStore( { id: 'Q123' } ), null, null, null ) )
-			.toBe( 'Q123' );
-	} );
-
-	it( 'has labels', () => {
-		const labels = { en: { language: 'en', value: 'potato' } };
-
-		expect( getters.labels(
-			newMinimalStore( { labels } ), null, null, null,
-		) ).toBe( labels );
-	} );
-
-	it( 'has descriptions', () => {
-		const descriptions = { en: { language: 'en', value: 'root vegetable' } };
-
-		expect( getters.descriptions(
-			newMinimalStore( { descriptions } ), null, null, null,
-		) ).toBe( descriptions );
-	} );
-
-	it( 'has aliases', () => {
-		const aliases = {
-			en: [
-				{ language: 'en', value: 'p0tato' },
-				{ language: 'en', value: 'potat0' },
-			],
-		};
-		expect( getters.aliases(
-			newMinimalStore( { aliases } ), null, null, null,
-		) ).toBe( aliases );
-	} );
-
 	describe( 'getLabelByLanguage', () => {
 
 		it( 'returns the label for the given language', () => {
