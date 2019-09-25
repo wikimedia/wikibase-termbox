@@ -4,8 +4,6 @@
 $base-font-size: 16px; // assumed browser default
 $base-font-size-desired: 14px;
 
-$color-light-azureish-gray: $wmui-color-base30;
-$color-dark-azureish-gray: $wmui-color-base20;
 $color-light-gray: #dfdfdf;
 $color-black: #000;
 $color-moderate-red: #a55858;
@@ -16,6 +14,10 @@ $alias-edit-focus-color: $wmui-color-base20;
 
 $padding-vertical-base: #{ 6px / $base-font-size-desired }em;
 $padding-horizontal-base: #{ 12px / $base-font-size-desired }em;
+
+$content-padding-left: 0.5em;
+
+$background-shift-left: 16px;
 
 $size-input-binary: #{ 20px / $base-font-size-desired }em;
 $border-color-input-binary: $wmui-color-base30;
@@ -30,8 +32,7 @@ $error-message-border: $wmui-color-red50;
 $svg-pen: url( ../../assets/pen.svg );
 $svg-publish: url( ../../assets/transparent_checkmark_in_accent50_circle.svg );
 $svg-cancel: url( ../../assets/close.svg );
-$svg-in-more-languages: url( ../../assets/arrow_in_circle_grey_up.svg );
-$svg-all-entered-languages: url( ../../assets/double_arrow_in_circle_grey_up.svg );
+$svg-arrow-up-base20: url( ../../assets/arrow_up_base20.svg );
 $svg-warning: url( ../../assets/warning_sign.svg );
 $svg-error: url( ../../assets/error_sign.svg );
 $svg-check: url( ../../assets/check.svg );

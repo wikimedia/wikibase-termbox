@@ -2,42 +2,27 @@
 	display: flex;
 	height: 48px;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	position: relative;
 	text-decoration: none;
 
-	&:before {
-		border-top: 1px solid $color-light-gray;
-		content: '';
-		margin-right: 64px;
-		position: absolute;
-		top: 50%;
-		left: 0;
-		right: 0;
-		bottom: 0;
-	}
-
 	> span {
 		position: relative;
-		background: #fff;
-		color: $color-light-azureish-gray;
+		color: $wmui-color-base20;
 		font-weight: bold;
 		font-family: $font-family-sans;
-		padding-left: 0.5em;
-		padding-right: 0.5em;
+		margin-left: 1em;
 	}
 
-	&:after {
-		background: #fff $svg 50% 50% no-repeat;
-		width: 32px;
-		height: 32px;
+	&:before {
+		background: $svg 50% 50% no-repeat;
+		width: 20px;
+		height: 20px;
 		content: '';
-		position: absolute;
-		right: 0;
 		transform: scaleY( -1 );
 	}
 
-	&--expanded:after {
+	&--expanded:before {
 		transform: scaleY( 1 );
 	}
 
@@ -45,22 +30,12 @@
 		pointer-events: none;
 		cursor: default;
 
-		&:after {
+		&:before {
 			content: none;
 		}
 	}
 
 	@include media-breakpoint-up(md) {
 		justify-content: inherit;
-
-		> span {
-			margin-left: 56px;
-		}
-	}
-
-	@include media-breakpoint-up(lg) {
-		> span {
-			margin-left: 202px;
-		}
 	}
 }

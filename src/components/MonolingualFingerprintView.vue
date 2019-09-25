@@ -89,6 +89,7 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 .wb-ui-monolingualfingerprintview {
 	$block: #{&};
 	margin-top: 32px;
+	padding-left: $content-padding-left;
 
 	&:first-child {
 		margin-top: 0;
@@ -96,7 +97,7 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 
 	&__language {
 		@include fontSize( 13px );
-		color: $color-dark-azureish-gray;
+		color: $wmui-color-base20;
 		font-family: $font-family-sans;
 	}
 

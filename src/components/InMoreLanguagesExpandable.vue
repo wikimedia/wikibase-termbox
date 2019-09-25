@@ -41,9 +41,12 @@ export default class InMoreLanguagesExpandable extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-in-more-languages-expandable {
+	background-color: $wmui-color-base90;
+
 	&__switch {
-		@include toggle-button($svg-in-more-languages);
+		@include toggle-button($svg-arrow-up-base20);
 		margin-top: 32px;
+		padding-left: $content-padding-left;
 	}
 }
 </style>

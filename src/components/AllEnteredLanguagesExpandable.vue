@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!isServerRendered">
+	<div v-if="!isServerRendered" class="wb-ui-all-entered-languages-expandable">
 		<a
 			:href="link"
 			class="wb-ui-all-entered-languages-expandable__switch"
@@ -41,8 +41,11 @@ export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-all-entered-languages-expandable {
+	background-color: $wmui-color-base80;
+
 	&__switch {
-		@include toggle-button($svg-all-entered-languages);
+		@include toggle-button($svg-arrow-up-base20);
+		padding-left: $content-padding-left;
 	}
 }
 </style>

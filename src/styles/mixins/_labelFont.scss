@@ -1,5 +1,5 @@
 @mixin labelFont( $primary-selector ) {
-	color: $color-black;
+	color: $wmui-color-base10;
 	line-height: 1.3em;
 	font-family: $font-family-serif;
 	font-weight: bold;
