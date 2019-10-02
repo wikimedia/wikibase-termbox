@@ -4,6 +4,7 @@ export enum MessageKey {
 	CANCEL = 'wikibase-cancel',
 	ALIAS_SEPARATOR = 'wikibase-aliases-separator',
 	ALL_LANGUAGES = 'wikibase-entitytermsforlanguagelistview-more',
+	FEWER_LANGUAGES = 'wikibase-entitytermsforlanguagelistview-less',
 	IN_MORE_LANGUAGES = 'wikibase-entitytermsview-entitytermsforlanguagelistview-toggler',
 	MISSING_LABEL = 'wikibase-label-empty',
 	MISSING_DESCRIPTION = 'wikibase-description-empty',

@@ -18,6 +18,20 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		expect( button.text() ).toBe( buttonText );
 	} );
 
+	it( 'has two toggle buttons after being expanded', () => {
+		const buttonText = 'fewer languages';
+		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
+			mixins: [ mockMessageMixin( { [ MessageKey.FEWER_LANGUAGES ]: buttonText } ) ],
+		} );
+
+		wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
+
+		const buttons = wrapper.findAll( '.wb-ui-all-entered-languages-expandable__switch > span' );
+		expect( buttons.length ).toBe( 2 );
+		expect( buttons.at( 0 ).text() ).toBe( buttonText );
+		expect( buttons.at( 1 ).text() ).toBe( buttonText );
+	} );
+
 	it( 'does not expand all entered languages by default', () => {
 		const wrapper = shallowMount(
 			AllEnteredLanguagesExpandable,
@@ -26,14 +40,19 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
 	} );
 
-	it( 'expands all entered languages on click', () => {
+	it( 'expands and collapses all entered languages on consecutive clicks', () => {
 		const wrapper = shallowMount(
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin() ] },
 		);
+
 		wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
 
 		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeTruthy();
+
+		wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
+
+		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
 	} );
 
 	it( 'is not shown when rendered on the server', () => {

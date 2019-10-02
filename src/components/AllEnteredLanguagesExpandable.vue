@@ -6,10 +6,20 @@
 			:class="{ 'wb-ui-all-entered-languages-expandable__switch--expanded': isExpanded }"
 			@click.prevent="toggleShowAllLanguages()"
 		>
-			<span>{{ message( MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
+			<span>{{ message( isExpanded ? MESSAGE_KEYS.FEWER_LANGUAGES : MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
 		</a>
 
 		<AllEnteredLanguages v-if="isExpanded" />
+
+		<a
+			v-if="isExpanded"
+			:href="link"
+			class="wb-ui-all-entered-languages-expandable__switch"
+			:class="{ 'wb-ui-all-entered-languages-expandable__switch--expanded': isExpanded }"
+			@click.prevent="toggleShowAllLanguages()"
+		>
+			<span>{{ message( isExpanded ? MESSAGE_KEYS.FEWER_LANGUAGES : MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
+		</a>
 	</div>
 </template>
 

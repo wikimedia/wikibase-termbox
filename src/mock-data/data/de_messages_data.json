@@ -3,6 +3,7 @@
 	"wikibase-publish": "veröffentlichen",
 	"wikibase-aliases-separator": "|",
 	"wikibase-entitytermsforlanguagelistview-more": "Alle eingegebenen Sprachen",
+	"wikibase-entitytermsforlanguagelistview-less": "Weniger Sprachen",
 	"wikibase-entitytermsview-entitytermsforlanguagelistview-toggler": "In weiteren Sprachen",
 	"wikibase-label-empty": "Keine Bezeichnung vorhanden",
 	"wikibase-description-empty": "Keine Beschreibung vorhanden",
