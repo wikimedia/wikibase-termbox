@@ -1,11 +1,17 @@
 <template>
 	<div class="wb-ui-termbox">
-		<div class="wb-ui-termbox__primary">
-			<MonolingualFingerprintView
-				class="wb-ui-termbox__primary-inner"
-				:language-code="primaryLanguage"
-				:is-primary="true"
-			/>
+		<div class="wb-ui-termbox__layout">
+			<div class="wb-ui-termbox__content">
+				<div class="wb-ui-termbox__primary">
+					<MonolingualFingerprintView
+						class="wb-ui-termbox__primary-inner"
+						:language-code="primaryLanguage"
+						:is-primary="true"
+					/>
+				</div>
+
+				<InMoreLanguagesExpandable />
+			</div>
 			<div class="wb-ui-termbox__actions">
 				<EditTools v-if="isEditable" :edit-mode="editMode">
 					<template #read>
@@ -54,8 +60,6 @@
 				</MessageBanner>
 			</div>
 		</div>
-
-		<InMoreLanguagesExpandable />
 	</div>
 </template>
 
@@ -198,12 +202,17 @@ export default class TermBox extends mixins( Messages ) {
 
 <style lang="scss">
 .wb-ui-termbox {
-	&__primary {
+	&__layout {
 		display: flex;
 	}
 
-	&__primary-inner {
+	&__content {
 		@include shrinking-flex-element();
+		flex: 1;
+	}
+
+	&__primary {
+		display: flex;
 	}
 
 	&__actions {
