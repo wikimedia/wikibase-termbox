@@ -37,4 +37,9 @@ export default class AllEnteredLanguages extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.wb-ui-all-entered-languages {
+	padding-bottom: $padding-vertical-wide;
+	padding-top: $padding-vertical-wide;
+}
+</style>
