@@ -121,6 +121,7 @@ export default class AliasesEdit extends mixins( Messages ) {
 <style lang="scss">
 .wb-ui-aliases-edit {
 	@include termInputStandaloneField();
+	background-color: $color-white;
 	overflow-y: visible;
 	padding: 1px 3px;
 
