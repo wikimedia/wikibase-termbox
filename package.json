@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",
-    "@wmde/vuex-helpers": "^0.1.2",
     "axios": "^0.18.1",
     "compression": "^1.7.4",
     "core-js": "^2.6.9",
@@ -65,6 +64,7 @@
     "@vue/cli-service": "^3.11.0",
     "@vue/server-test-utils": "^1.0.0-beta.29",
     "@vue/test-utils": "^1.0.0-beta.29",
+    "@wmde/vuex-helpers": "^0.1.2",
     "axios-mock-adapter": "^1.17.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
