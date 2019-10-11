@@ -4,7 +4,7 @@ import {
 	EDITMODE_DEACTIVATE,
 } from '@/store/actionTypes';
 import { EDITMODE_SET } from '@/store/mutationTypes';
-import newMockStore from './newMockStore';
+import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 
 describe( 'root/actions', () => {
 	describe( EDITMODE_ACTIVATE, () => {

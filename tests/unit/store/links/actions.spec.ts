@@ -2,7 +2,7 @@ import { LINKS_INIT } from '@/store/links/actionTypes';
 import { LINKS_UPDATE } from '@/store/links/mutationTypes';
 import { actions } from '@/store/links/actions';
 import TermboxLinks from '@/common/TermboxLinks';
-import newMockStore from '../newMockStore';
+import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 
 describe( 'links/actions', () => {
 	describe( LINKS_INIT, () => {

@@ -7,7 +7,7 @@ import {
 import { services } from '@/common/TermboxServices';
 import LanguageTranslations from '@/datamodel/LanguageTranslations';
 import LanguageCollection from '@/datamodel/LanguageCollection';
-import newMockStore from '../newMockStore';
+import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 
 describe( 'language/actions', () => {
 	describe( LANGUAGE_INIT, () => {

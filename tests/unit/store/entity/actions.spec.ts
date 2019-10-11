@@ -21,7 +21,7 @@ import {
 import { services } from '@/common/TermboxServices';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
-import newMockStore from '../newMockStore';
+import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 import newFingerprintable from '../../../newFingerprintable';
 import EntityRevision from '@/datamodel/EntityRevision';
 

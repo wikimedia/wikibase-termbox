@@ -18,7 +18,7 @@ import {
 import { ENSURE_AVAILABLE_IN_LANGUAGE } from '@/store/language/actionTypes';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
-import newMockStore from '../newMockStore';
+import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 import { UserPreference } from '@/common/UserPreference';
 import { services } from '@/common/TermboxServices';
 

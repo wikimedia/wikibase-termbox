@@ -2,7 +2,7 @@ import { actions } from '@/store/messages/actions';
 import { MESSAGES_INIT } from '@/store/messages/actionTypes';
 import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutationTypes';
 import { services } from '@/common/TermboxServices';
-import newMockStore from '../newMockStore';
+import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 import { MessageKey } from '@/common/MessageKey';
 
 describe( 'messages/actions', () => {
