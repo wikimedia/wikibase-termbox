@@ -5,6 +5,7 @@
 			class="wb-ui-all-entered-languages-expandable__switch"
 			:class="{ 'wb-ui-all-entered-languages-expandable__switch--expanded': isExpanded }"
 			@click.prevent="toggleShowAllLanguages()"
+			ref="allEnteredLanguagesSwitch"
 		>
 			<span>{{ message( isExpanded ? MESSAGE_KEYS.FEWER_LANGUAGES : MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
 		</a>
@@ -16,7 +17,8 @@
 			:href="link"
 			class="wb-ui-all-entered-languages-expandable__switch"
 			:class="{ 'wb-ui-all-entered-languages-expandable__switch--expanded': isExpanded }"
-			@click.prevent="toggleShowAllLanguages()"
+			@click.prevent="closeAllLanguages()"
+			ref="allEnteredLanguagesClose"
 		>
 			<span>{{ message( isExpanded ? MESSAGE_KEYS.FEWER_LANGUAGES : MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
 		</a>
@@ -32,6 +34,10 @@ import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
 	components: { AllEnteredLanguages },
 } )
 export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
+	$refs!: {
+		allEnteredLanguagesSwitch: HTMLElement,
+		allEnteredLanguagesClose: HTMLElement
+	}
 
 	public isExpanded = false;
 
@@ -41,6 +47,14 @@ export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
 
 	public toggleShowAllLanguages() {
 		this.isExpanded = !this.isExpanded;
+	}
+
+	public closeAllLanguages() {
+		this.isExpanded = false;
+		this.$nextTick( () => {
+			this.$refs.allEnteredLanguagesSwitch.focus( { preventScroll: true } );
+			this.$refs.allEnteredLanguagesSwitch.scrollIntoView( { block: 'center', behavior: 'smooth' } );
+		} );
 	}
 
 	public beforeMount() {

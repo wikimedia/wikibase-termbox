@@ -7,29 +7,86 @@ import { MessageKey } from '@/common/MessageKey';
 
 describe( 'AllEnteredLanguagesExpandable', () => {
 
-	it( 'has a toggle button', () => {
-		const buttonText = 'all entered languages';
+	it( 'has a switch button', () => {
+		const buttonTextCollapsed = 'all entered languages';
+		const buttonTextExpanded = 'fewer languages';
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
-			mixins: [ mockMessageMixin( { [ MessageKey.ALL_LANGUAGES ]: buttonText } ) ],
+			mixins: [ mockMessageMixin( {
+				[ MessageKey.ALL_LANGUAGES ]: buttonTextCollapsed,
+				[ MessageKey.FEWER_LANGUAGES ]: buttonTextExpanded,
+			} ) ],
 		} );
 
-		const button = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch > span' );
-		expect( button.exists() ).toBeTruthy();
-		expect( button.text() ).toBe( buttonText );
+		const switchButton = wrapper.find( { ref: 'allEnteredLanguagesSwitch' } );
+		expect( switchButton.exists() ).toBeTruthy();
+		expect( switchButton.text() ).toBe( buttonTextCollapsed );
+
+		switchButton.trigger( 'click' );
+		expect( switchButton.exists() ).toBeTruthy();
+		expect( switchButton.text() ).toBe( buttonTextExpanded );
 	} );
 
-	it( 'has two toggle buttons after being expanded', () => {
+	it( 'expands and collapses all entered languages on consecutive clicks on switch button', () => {
+		const wrapper = shallowMount(
+			AllEnteredLanguagesExpandable,
+			{ mixins: [ mockMessageMixin() ] },
+		);
+		const switchButton = wrapper.find( { ref: 'allEnteredLanguagesSwitch' } );
+
+		switchButton.trigger( 'click' );
+
+		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeTruthy();
+
+		switchButton.trigger( 'click' );
+
+		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
+	} );
+
+	it( 'has close button after being expanded', () => {
 		const buttonText = 'fewer languages';
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
 			mixins: [ mockMessageMixin( { [ MessageKey.FEWER_LANGUAGES ]: buttonText } ) ],
 		} );
 
-		wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
+		wrapper.find( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
 
-		const buttons = wrapper.findAll( '.wb-ui-all-entered-languages-expandable__switch > span' );
-		expect( buttons.length ).toBe( 2 );
-		expect( buttons.at( 0 ).text() ).toBe( buttonText );
-		expect( buttons.at( 1 ).text() ).toBe( buttonText );
+		const closeButton = wrapper.find( { ref: 'allEnteredLanguagesClose' } );
+		expect( closeButton.exists() ).toBeTruthy();
+		expect( closeButton.text() ).toBe( buttonText );
+	} );
+
+	it( 'collapses and hides close button when close button clicked', () => {
+		// scroll* functions are not defined in JSDOM, need to mock it
+		Element.prototype.scrollIntoView = jest.fn();
+
+		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
+			mixins: [ mockMessageMixin() ],
+		} );
+
+		wrapper.find( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
+		wrapper.find( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
+
+		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
+		expect( wrapper.find( { ref: 'allEnteredLanguagesClose' } ).exists() ).toBeFalsy();
+	} );
+
+	it( 'scrolls to switch button and focuses on it when close button clicked', async () => {
+		// scroll* functions are not defined in JSDOM, need to mock it
+		Element.prototype.scrollIntoView = jest.fn();
+
+		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
+			mixins: [ mockMessageMixin() ],
+		} );
+
+		const switchButton = wrapper.find( { ref: 'allEnteredLanguagesSwitch' } );
+		const switchButtonScrollIntoViewSpy = jest.spyOn( switchButton.element, 'scrollIntoView' );
+		switchButton.trigger( 'click' );
+
+		wrapper.find( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
+		await wrapper.vm.$nextTick();
+
+		expect( document.activeElement ).toBe( switchButton.element );
+		expect( switchButtonScrollIntoViewSpy ).toHaveBeenCalled();
 	} );
 
 	it( 'does not expand all entered languages by default', () => {
@@ -37,21 +94,6 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin() ] },
 		);
-		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
-	} );
-
-	it( 'expands and collapses all entered languages on consecutive clicks', () => {
-		const wrapper = shallowMount(
-			AllEnteredLanguagesExpandable,
-			{ mixins: [ mockMessageMixin() ] },
-		);
-
-		wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
-
-		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeTruthy();
-
-		wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
-
 		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
 	} );
 
