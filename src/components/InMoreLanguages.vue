@@ -1,6 +1,12 @@
 <template>
 	<div class="wb-ui-in-more-languages">
-		<MonolingualFingerprintView v-for="language in secondaryLanguages" :language-code="language" :key="language" />
+		<div class="wb-ui-in-more-languages__terms">
+			<MonolingualFingerprintView
+				v-for="language in secondaryLanguages"
+				:language-code="language"
+				:key="language"
+			/>
+		</div>
 		<AllEnteredLanguagesExpandable />
 	</div>
 </template>
@@ -22,4 +28,9 @@ export default class InMoreLanguages extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.wb-ui-in-more-languages__terms {
+	padding-bottom: $padding-vertical-wide;
+	padding-top: $padding-vertical-wide;
+}
+</style>
