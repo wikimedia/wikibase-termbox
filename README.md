@@ -7,7 +7,7 @@ To dive into the development documentation please refer to the [docs folder](./d
 In a nutshell, this project provides the following functionalities:
 
 1. when run as server ("SSR") provides an HTTP API that is consumed by wikibase [TermboxRemoteRenderer](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/view/src/Termbox/Renderer/TermboxRemoteRenderer.php) to shows the HTML result on wikibase entity pages
-2. contains a `dist/` folder with auto-generated JavaScript and CSS files, that are consumed by a MediaWiki component called [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader), to be used in the frontend on wikibase entity pages. The configuration for this can be seen in [resources.php](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/view/lib/resources.php).
+2. contains a `dist/` folder with auto-generated JavaScript and CSS files, that are consumed by a MediaWiki component called [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader), to be used in the frontend on wikibase entity pages. The configuration for this can be seen in [resources.php](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/view/resources.php).
 3. contains the tools to facilitate development of the termbox application and components used inside of it
 
 ## How this connects to Wikibase
