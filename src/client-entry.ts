@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import init from '@/client/init';
-import buildApp from '@/common/buildApp';
 import TermboxRequest from '@/common/TermboxRequest';
 import { services } from '@/common/TermboxServices';
 import UlsLanguageTranslationRepository from '@/client/data-access/UlsLanguageTranslationRepository';
@@ -26,6 +25,7 @@ import MWUserOptionsReadingSingleUserPreferenceRepository
 	from '@/client/data-access/MWUserOptionsReadingSingleUserPreferenceRepository';
 import AxiosWritingSingleUserPreferenceRepository
 	from '@/client/data-access/AxiosWritingSingleUserPreferenceRepository';
+import buildAndAttemptHydration from '@/client/buildAndAttemptHydration';
 
 Vue.config.productionTip = false;
 Vue.mixin( newConfigMixin(
@@ -107,7 +107,5 @@ services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
 } ) );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
-	buildApp( termboxRequest ).then( ( app ) => {
-		app.$mount( '.wikibase-entitytermsview' );
-	} );
+	buildAndAttemptHydration( termboxRequest, '.wikibase-entitytermsview' );
 } );
