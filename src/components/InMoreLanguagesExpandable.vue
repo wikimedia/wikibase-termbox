@@ -29,11 +29,11 @@ export default class InMoreLanguagesExpandable extends mixins( Messages ) {
 
 	public isServerRendered = true;
 
-	public toggleShowMoreLanguages() {
+	public toggleShowMoreLanguages(): void {
 		this.isExpanded = !this.isExpanded;
 	}
 
-	public beforeMount() {
+	public beforeMount(): void {
 		this.isServerRendered = false;
 	}
 }

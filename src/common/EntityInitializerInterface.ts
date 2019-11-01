@@ -1,7 +1,7 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
 interface EntityInitializerInterface {
-	newFromSerialization( entity: any ): FingerprintableEntity;
+	newFromSerialization( entity: unknown ): FingerprintableEntity;
 }
 
 export default EntityInitializerInterface;

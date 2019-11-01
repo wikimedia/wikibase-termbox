@@ -46,8 +46,8 @@ const metrics: Metrics = {
 	normalizeName: jest.fn(),
 };
 
-const messageCache = { has() {}, set() {}, get() {} };
-const languageCache = { has() {}, set() {}, get() {} };
+const messageCache = { has: jest.fn(), set: jest.fn(), get: jest.fn() };
+const languageCache = { has: jest.fn(), set: jest.fn(), get: jest.fn() };
 
 const termboxSpecParameters = openApiJson.paths[ '/termbox' ].get.parameters;
 const testAxios = axios.create( {

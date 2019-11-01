@@ -6,8 +6,8 @@ export default function buildAndAttemptHydration(
 	termboxRequest: TermboxRequest,
 	termboxRootSelector: string,
 	services: TermboxServices,
-) {
-	const buildAndMount = () => {
+): Promise<void> {
+	const buildAndMount = (): Promise<void> => {
 		return buildApp( termboxRequest, services ).then( ( app ) => {
 			app.$mount( termboxRootSelector );
 		} );
@@ -17,7 +17,8 @@ export default function buildAndAttemptHydration(
 		// The cause of the original `$mount` to fail is likely that there is a mismatch between server-side and
 		// client-side rendered markup. In that case, we need to rebuild the app, and mount it without attempting to
 		// hydrate.
-		document.querySelector( termboxRootSelector )!.removeAttribute( 'data-server-rendered' );
+		( document.querySelector( termboxRootSelector ) as Element )
+			.removeAttribute( 'data-server-rendered' );
 		return buildAndMount();
 	} );
 }

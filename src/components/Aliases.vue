@@ -28,7 +28,7 @@ export default class Aliases extends mixins( Messages ) {
 	@Prop( { required: true } )
 	public aliases!: Term[];
 
-	get language() {
+	public get language(): string {
 		return this.aliases[ 0 ].language;
 	}
 

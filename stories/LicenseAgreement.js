@@ -23,7 +23,7 @@ storiesOf( 'LicenseAgreement', module )
 
 		return {
 			store: createStore( {
-				get( ..._params ) {},
+				get: () => ( {} ),
 			} ),
 
 			components: {

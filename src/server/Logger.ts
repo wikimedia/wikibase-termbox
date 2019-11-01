@@ -4,7 +4,7 @@ export type LogLevel =
 	'fatal/service';
 
 interface Logger {
-	log( level: LogLevel, info: any ): void;
+	log( level: LogLevel, info: unknown ): void;
 }
 
 export default Logger;

@@ -15,15 +15,21 @@ export default class ContentLanguagesLanguageTranslationRepo implements Language
 			.then( ( contentLanguages: WikibaseApiContentLanguages ) => {
 				const translations: LanguageTranslations = { [ inLanguage ]: {} };
 				Object.entries( contentLanguages ).forEach( ( [ languageCode, language ] ) => {
-					if ( !( 'name' in language ) ) {
+					if ( !this.isNamedLanguage( language ) ) {
 						throw new TechnicalProblem( 'Name for a language not given.' );
 					}
 
-					translations[ inLanguage ][ languageCode ] = ( language as any ).name as string;
+					translations[ inLanguage ][ languageCode ] = language.name;
 				} );
 
 				return translations;
 			} );
 	}
 
+	private isNamedLanguage( language: unknown ): language is { name: string } {
+		return language &&
+			typeof language === 'object' &&
+			language !== null &&
+			'name' in language;
+	}
 }

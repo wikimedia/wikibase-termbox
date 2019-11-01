@@ -31,7 +31,7 @@ export const mutations: MutationTree<User> = {
 		state.name = name;
 	},
 
-	[ USER_SET_PREFERENCE ]( state: User, { name, value }: { name: UserPreference, value: any } ) {
+	[ USER_SET_PREFERENCE ]( state: User, { name, value }: { name: UserPreference; value: unknown } ) {
 		Vue.set( state.preferences, name, value );
 	},
 };

@@ -23,7 +23,7 @@ export default class DelegatingUserPreferenceRepository<T> implements SingleUser
 		return this.chooseRepository().getPreference();
 	}
 
-	private chooseRepository() {
+	private chooseRepository(): SingleUserPreferenceRepository<T> {
 		return this.useRepoOne ? this.repoOne : this.repoTwo;
 	}
 

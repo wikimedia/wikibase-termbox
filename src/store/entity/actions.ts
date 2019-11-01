@@ -26,65 +26,64 @@ import {
 import Term from '@/datamodel/Term';
 import EntityRevision from '@/datamodel/EntityRevision';
 
-export default function actions(
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export default (
 	entityRepository: EntityRepository,
 	entityEditabilityResolver: EntityEditabilityResolver,
 	writingEntityRepository: WritingEntityRepository,
-) {
-	return {
-		[ ENTITY_INIT ](
-			context: ActionContext<EntityState, any>,
-			payload: { entity: string, revision: number },
-		): Promise<void> {
-			return Promise.all( [
-				entityRepository.getFingerprintableEntity( payload.entity, payload.revision ),
-				entityEditabilityResolver.isEditable( payload.entity ),
-			] ).then( ( [ entity, isEditable ] ) => {
-				context.commit( ENTITY_REVISION_UPDATE, payload.revision );
-				context.commit( ENTITY_UPDATE, entity );
-				context.commit( EDITABILITY_UPDATE, isEditable );
-			} );
-		},
+) => ( {
+	[ ENTITY_INIT ](
+		context: ActionContext<EntityState, any>,
+		payload: { entity: string; revision: number },
+	): Promise<void> {
+		return Promise.all( [
+			entityRepository.getFingerprintableEntity( payload.entity, payload.revision ),
+			entityEditabilityResolver.isEditable( payload.entity ),
+		] ).then( ( [ entity, isEditable ] ) => {
+			context.commit( ENTITY_REVISION_UPDATE, payload.revision );
+			context.commit( ENTITY_UPDATE, entity );
+			context.commit( EDITABILITY_UPDATE, isEditable );
+		} );
+	},
 
-		[ ENTITY_SAVE ]( context: ActionContext<EntityState, any> ): Promise<EntityRevision> {
-			return writingEntityRepository.saveEntity( new FingerprintableEntity(
-				context.state.id,
-				context.state.labels,
-				context.state.descriptions,
-				context.state.aliases,
-			), context.state.baseRevision ).then( ( entityRevision: EntityRevision ) => {
-				context.commit( ENTITY_REVISION_UPDATE, entityRevision.revisionId );
-				context.commit( ENTITY_UPDATE, entityRevision.entity );
+	[ ENTITY_SAVE ]( context: ActionContext<EntityState, any> ): Promise<EntityRevision> {
+		return writingEntityRepository.saveEntity( new FingerprintableEntity(
+			context.state.id,
+			context.state.labels,
+			context.state.descriptions,
+			context.state.aliases,
+		), context.state.baseRevision ).then( ( entityRevision: EntityRevision ) => {
+			context.commit( ENTITY_REVISION_UPDATE, entityRevision.revisionId );
+			context.commit( ENTITY_UPDATE, entityRevision.entity );
 
-				return entityRevision;
-			} );
-		},
+			return entityRevision;
+		} );
+	},
 
-		[ ENTITY_ROLLBACK ]( context: ActionContext<EntityState, any> ): void {
-			context.commit( ENTITY_ROLLBACK_MUTATION );
-		},
+	[ ENTITY_ROLLBACK ]( context: ActionContext<EntityState, any> ): void {
+		context.commit( ENTITY_ROLLBACK_MUTATION );
+	},
 
-		[ ENTITY_LABEL_EDIT ]( context: ActionContext<EntityState, any>, label: Term ): void {
-			context.commit( SET_ENTITY_LABEL_MUTATION, label );
-		},
+	[ ENTITY_LABEL_EDIT ]( context: ActionContext<EntityState, any>, label: Term ): void {
+		context.commit( SET_ENTITY_LABEL_MUTATION, label );
+	},
 
-		[ ENTITY_ALIASES_EDIT ](
-			context: ActionContext<EntityState, any>,
-			{ language, aliasValues }: { language: string, aliasValues: string[] },
-		): void {
-			const terms: Term[] = aliasValues.map( ( alias ) => ( { language, value: alias } ) );
-			context.commit( ENTITY_ALIASES_EDIT_MUTATION, { language, terms } );
-		},
+	[ ENTITY_ALIASES_EDIT ](
+		context: ActionContext<EntityState, any>,
+		{ language, aliasValues }: { language: string; aliasValues: string[] },
+	): void {
+		const terms: Term[] = aliasValues.map( ( alias ) => ( { language, value: alias } ) );
+		context.commit( ENTITY_ALIASES_EDIT_MUTATION, { language, terms } );
+	},
 
-		[ ENTITY_ALIAS_REMOVE ](
-			context: ActionContext<EntityState, any>,
-			payload: { languageCode: string, index: number },
-		) {
-			context.commit( ENTITY_REMOVE_ALIAS, payload );
-		},
+	[ ENTITY_ALIAS_REMOVE ](
+		context: ActionContext<EntityState, any>,
+		payload: { languageCode: string; index: number },
+	) {
+		context.commit( ENTITY_REMOVE_ALIAS, payload );
+	},
 
-		[ ENTITY_DESCRIPTION_EDIT ]( context: ActionContext<EntityState, any>, description: Term ): void {
-			context.commit( SET_ENTITY_DESCRIPTION_MUTATION, description );
-		},
-	};
-}
+	[ ENTITY_DESCRIPTION_EDIT ]( context: ActionContext<EntityState, any>, description: Term ): void {
+		context.commit( SET_ENTITY_DESCRIPTION_MUTATION, description );
+	},
+} );

@@ -31,7 +31,7 @@ export default class Label extends mixins( Messages ) {
 	@Prop( { required: false, default: false, type: Boolean } )
 	public isPrimary!: boolean;
 
-	get language() {
+	public get language(): string {
 		return this.label.language;
 	}
 

@@ -1,5 +1,5 @@
 interface HookHandler {
-	add: ( hookCallback: ( args: any ) => void ) => void;
+	add: ( hookCallback: ( args: unknown ) => void ) => void;
 }
 
 export default HookHandler;

@@ -4,7 +4,7 @@ import { VNode } from 'vue/types/vnode';
 import { getter } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_LANGUAGE } from '@/store/namespaces';
 
-export default function inlanguage( el: HTMLElement, binding: DirectiveBinding, vnode: VNode ) {
+export default function inlanguage( el: HTMLElement, binding: DirectiveBinding, vnode: VNode ): void {
 	if ( !binding.value ) {
 		return;
 	}

@@ -5,7 +5,7 @@ interface User {
 	primaryLanguage: string;
 	secondaryLanguages: string[];
 
-	preferences: { [ key in UserPreference ]?: any },
+	preferences: { [ key in UserPreference ]?: unknown };
 }
 
 export default User;

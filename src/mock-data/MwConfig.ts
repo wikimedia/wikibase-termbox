@@ -5,8 +5,8 @@ export default class MwConfig {
 		this.language = language;
 	}
 
-	public get( key: string ): any {
-		const config: { [ index: string ]: any } = {
+	public get( key: string ): unknown {
+		const config: { [ index: string ]: unknown } = {
 			wgUserLanguage: this.language,
 			wbEntityId: 'Q64',
 			wgRevisionId: 0,

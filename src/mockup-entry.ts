@@ -16,7 +16,9 @@ const preferredLanguages = getOrEnforceUrlParameter(
 ( window as MwWindow ).mw = {
 	config: new MWConfig( language ),
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
-	Title: class Title { public getUrl() { return `/edit/${entity.id}`; } },
+	Title: class Title {
+		public getUrl(): string { return `/edit/${entity.id}`; }
+	},
 	message,
 	util: {
 		getUrl: ( page ) => `#${page}`,

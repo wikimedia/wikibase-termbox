@@ -17,7 +17,7 @@ type MwConfigValues = {
 	wgRelevantPageIsProbablyEditable: boolean;
 	wgUserName: string | null;
 	wgUserLanguage: string;
-}
+};
 
 interface MwConfig {
 	get<K extends keyof MwConfigValues>( key: K ): MwConfigValues[ K ];

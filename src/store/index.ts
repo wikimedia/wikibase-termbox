@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
+import Vuex, { StoreOptions, Store } from 'vuex';
 import TermboxServices from '@/common/TermboxServices';
 import createEntity from './entity';
 import createUser from './user';
@@ -19,7 +19,7 @@ import {
 
 Vue.use( Vuex );
 
-export function createStore( services: TermboxServices ) {
+export function createStore( services: TermboxServices ): Store<Root> {
 	const state: Root = {
 		editMode: false,
 	};
@@ -49,5 +49,5 @@ export function createStore( services: TermboxServices ) {
 		strict: process.env.NODE_ENV !== 'production',
 	};
 
-	return new Vuex.Store<any>( storeBundle );
+	return new Store<Root>( storeBundle );
 }

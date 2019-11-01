@@ -1,4 +1,4 @@
-export default function formDataRequestTransformation( data: any ) {
+export default function formDataRequestTransformation<T>( data: T ): T | FormData {
 	if ( !data || typeof data !== 'object' || Array.isArray( data ) ) {
 		return data;
 	}

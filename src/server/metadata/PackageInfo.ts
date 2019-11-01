@@ -1,10 +1,10 @@
 interface PackageInfo {
-	name: string
-	version: string
-	author?: string
+	name: string;
+	version: string;
+	author?: string;
 	dependencies?: {
-		[ index: string ]: string,
-	}
+		[ index: string ]: string;
+	};
 }
 
 export default PackageInfo;

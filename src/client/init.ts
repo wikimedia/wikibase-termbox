@@ -1,7 +1,7 @@
 import TermboxRequest from '@/common/TermboxRequest';
 import MwWindow from '@/client/mediawiki/MwWindow';
 
-export default () => {
+export default function (): Promise<TermboxRequest> {
 	return new Promise<TermboxRequest>( ( resolve ) => {
 		const config = ( window as MwWindow ).mw.config;
 		const entityId = config.get( 'wbEntityId' );
@@ -28,4 +28,4 @@ export default () => {
 			config.get( 'wgUserName' ),
 		) );
 	} );
-};
+}

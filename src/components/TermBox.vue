@@ -146,7 +146,7 @@ export default class TermBox extends mixins( Messages ) {
 
 	public showSavingError = false;
 
-	public edit() {
+	public edit(): void {
 		if ( !this.hideAnonEditWarning ) {
 			this.showEditWarningForAnonymousUser();
 		}
@@ -177,12 +177,12 @@ export default class TermBox extends mixins( Messages ) {
 			} );
 	}
 
-	private deactivateEditModeAndDismissErrors() {
+	private deactivateEditModeAndDismissErrors(): void {
 		this.showSavingError = false;
 		this.deactivateEditMode();
 	}
 
-	public closeLicenseAgreement() {
+	public closeLicenseAgreement(): void {
 		this.showLicenseAgreement = false;
 	}
 
@@ -193,7 +193,7 @@ export default class TermBox extends mixins( Messages ) {
 			} );
 	}
 
-	public showEditWarningForAnonymousUser() {
+	public showEditWarningForAnonymousUser(): void {
 		this.showEditWarning = this.userIsAnonymous;
 	}
 

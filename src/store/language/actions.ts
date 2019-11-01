@@ -10,27 +10,26 @@ import LanguageCollection from '@/datamodel/LanguageCollection';
 import LanguageRepository from '@/common/data-access/LanguageRepository';
 import LanguageTranslationRepository from '@/common/data-access/LanguageTranslationRepository';
 
-export default function actions(
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export default (
 	languageRepository: LanguageRepository,
 	languageTranslationRepository: LanguageTranslationRepository,
-) {
-	return {
-		[ LANGUAGE_INIT ]( context: ActionContext<LanguageState, any> ): Promise<void> {
-			return languageRepository.getLanguages()
-				.then( ( languages: LanguageCollection ) => {
-					context.commit( LANGUAGE_UPDATE, languages );
-				} );
-		},
+) => ( {
+	[ LANGUAGE_INIT ]( context: ActionContext<LanguageState, any> ): Promise<void> {
+		return languageRepository.getLanguages()
+			.then( ( languages: LanguageCollection ) => {
+				context.commit( LANGUAGE_UPDATE, languages );
+			} );
+	},
 
-		[ ENSURE_AVAILABLE_IN_LANGUAGE ](
-			context: ActionContext<LanguageState, any>,
-			inLanguage: string,
-		): Promise<void> {
-			return languageTranslationRepository
-				.getLanguagesInLanguage( inLanguage )
-				.then( ( translations: LanguageTranslations ) => {
-					context.commit( LANGUAGE_TRANSLATION_UPDATE, translations );
-				} );
-		},
-	};
-}
+	[ ENSURE_AVAILABLE_IN_LANGUAGE ](
+		context: ActionContext<LanguageState, any>,
+		inLanguage: string,
+	): Promise<void> {
+		return languageTranslationRepository
+			.getLanguagesInLanguage( inLanguage )
+			.then( ( translations: LanguageTranslations ) => {
+				context.commit( LANGUAGE_TRANSLATION_UPDATE, translations );
+			} );
+	},
+} );

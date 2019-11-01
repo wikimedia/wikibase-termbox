@@ -18,14 +18,14 @@ class FakeCache {
 
 }
 
-function generateCacheKey( ...args: any[] ) {
+function generateCacheKey( ...args: unknown[] ) {
 	return JSON.stringify( args );
 }
 
 function newTestService( methodSpy: Function ) {
 	return {
-		methodToBeDecorated() {
-			return methodSpy.apply( this, arguments );
+		methodToBeDecorated( ...args: unknown[] ) {
+			return methodSpy.apply( this, args );
 		},
 	};
 }

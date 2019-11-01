@@ -1,7 +1,7 @@
 import { lockState } from '../lockState';
 import User from '@/store/user/User';
 
-export default function ( user: any = null ): User {
+export default function ( user: object|null = null ): User {
 	let state = {
 		primaryLanguage: '',
 		secondaryLanguages: [],

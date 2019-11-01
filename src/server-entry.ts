@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import App from '@/components/App.vue';
 import buildApp from '@/common/buildApp';
 import TermboxServices from './common/TermboxServices';
 import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
@@ -29,7 +30,7 @@ Vue.mixin( newConfigMixin( {
 	copyrightVersion: '',
 } ) );
 
-export default ( context: BundleRendererContext ) => {
+export default ( context: BundleRendererContext ): Promise<App> => {
 	const services = new TermboxServices();
 	const axios = context.services.axios;
 
@@ -39,7 +40,7 @@ export default ( context: BundleRendererContext ) => {
 			context.services.languageCache,
 			axiosLanguages,
 			axiosLanguages.getContentLanguages,
-		) as any as WikibaseContentLanguagesRepo,
+		) as unknown as WikibaseContentLanguagesRepo,
 	);
 
 	services.set(
@@ -92,7 +93,7 @@ export default ( context: BundleRendererContext ) => {
 	return buildApp(
 		context.request,
 		services,
-	).catch( ( err: any ) => {
+	).catch( ( err: unknown ) => {
 		if ( err instanceof EntityNotFound ) {
 			throw new BundleBoundaryPassingException( ErrorReason.EntityNotFound, err.getContext() );
 		} else if ( err instanceof TranslationLanguageNotFound ) {

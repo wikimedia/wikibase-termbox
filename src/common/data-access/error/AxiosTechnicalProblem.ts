@@ -6,15 +6,15 @@ type AxiosErrorContext = {
 	request?: {
 		headers: object;
 		url?: string;
-		params: any;
+		params: unknown;
 	};
 	response?: {
 		status: number;
 		statusText: string;
 		headers: object;
-		data: any;
-	}
-}
+		data: unknown;
+	};
+};
 
 export default class AxiosTechnicalProblem extends Error implements LoggableError {
 	private error: AxiosError;

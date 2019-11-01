@@ -19,14 +19,14 @@ import Component from 'vue-class-component';
 export default class MessageBanner extends Vue {
 	private bannerHeight = 0;
 
-	mounted() {
+	public mounted(): void {
 		this.bannerHeight = this.$el.scrollHeight;
 		const currentPadding = parseInt( window.getComputedStyle( document.body ).getPropertyValue( 'padding-top' ) );
 		document.body.style.paddingTop = `${currentPadding + this.bannerHeight}px`;
 		window.scrollBy( 0, this.bannerHeight );
 	}
 
-	beforeDestroy() {
+	public beforeDestroy(): void {
 		const currentPadding = parseInt( window.getComputedStyle( document.body ).getPropertyValue( 'padding-top' ) );
 		document.body.style.paddingTop = `${currentPadding - this.bannerHeight}px`;
 		window.scrollBy( 0, -this.bannerHeight );

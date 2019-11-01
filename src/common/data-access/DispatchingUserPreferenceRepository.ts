@@ -3,7 +3,7 @@ import { UserPreference } from '@/common/UserPreference';
 import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
 
 type RepoMapping = {
-	[ Preference in UserPreference ]: SingleUserPreferenceRepository<any>
+	[ Preference in UserPreference ]: SingleUserPreferenceRepository<unknown>
 };
 
 export default class DispatchingUserPreferenceRepository implements UserPreferenceRepository {
@@ -14,11 +14,11 @@ export default class DispatchingUserPreferenceRepository implements UserPreferen
 		this.repoMapping = mapping;
 	}
 
-	public setPreference( preference: UserPreference, value: any ): Promise<void> {
+	public setPreference( preference: UserPreference, value: unknown ): Promise<void> {
 		return this.repoMapping[ preference ].setPreference( value );
 	}
 
-	public getPreference( preference: UserPreference ): Promise<any> {
+	public getPreference( preference: UserPreference ): Promise<unknown> {
 		return this.repoMapping[ preference ].getPreference();
 	}
 

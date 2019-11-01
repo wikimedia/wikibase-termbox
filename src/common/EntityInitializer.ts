@@ -1,13 +1,16 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityInitializerInterface from './EntityInitializerInterface';
+import Fingerprintable from '@/datamodel/Fingerprintable';
 
 export default class EntityInitializer implements EntityInitializerInterface {
 
-	public newFromSerialization( entity: any ) {
+	public newFromSerialization( entity: unknown ): FingerprintableEntity {
 		entity = this.deepClone( entity );
 
-		this.repairEmptyArrays( entity );
-		this.validate( entity );
+		this.repairEmptyArrays( entity as Fingerprintable );
+		if ( !this.isFingerprintableEntity( entity ) ) {
+			throw new Error( 'invalid entity serialization' );
+		}
 
 		return new FingerprintableEntity(
 			entity.id,
@@ -17,26 +20,23 @@ export default class EntityInitializer implements EntityInitializerInterface {
 		);
 	}
 
-	private validate( entity: any ) {
-		if (
-			!entity.id
-			|| this.notObject( entity.labels )
-			|| this.notObject( entity.descriptions )
-			|| this.notObject( entity.aliases )
-		) {
-			throw new Error( 'invalid entity serialization' );
-		}
+	private isFingerprintableEntity( entity: unknown ): entity is FingerprintableEntity {
+		return this.isObject( entity ) &&
+			!!entity.id &&
+			this.isObject( entity.labels ) &&
+			this.isObject( entity.descriptions ) &&
+			this.isObject( entity.aliases );
 	}
 
-	private notObject( field: any ) {
-		return !field || typeof field !== 'object' || Array.isArray( field );
+	private isObject( value: unknown ): value is { [ key: string ]: unknown } {
+		return !!value && typeof value === 'object' && !Array.isArray( value );
 	}
 
 	/**
 	 * This method exists because we're often dealing with entities serialized in PHP,
 	 * which does not do a good job at guessing whether [] is an array (list) or an object.
 	 */
-	private emptyArrayToEmptyObject( field: any ) {
+	private emptyArrayToEmptyObject<T>( field: T ): T | {} {
 		if ( Array.isArray( field ) && field.length === 0 ) {
 			return {};
 		}
@@ -44,11 +44,11 @@ export default class EntityInitializer implements EntityInitializerInterface {
 		return field;
 	}
 
-	private deepClone( original: any ) {
+	private deepClone<T>( original: T ): T {
 		return JSON.parse( JSON.stringify( original ) );
 	}
 
-	private repairEmptyArrays( entity: any ) {
+	private repairEmptyArrays( entity: Fingerprintable ): void {
 		entity.labels = this.emptyArrayToEmptyObject( entity.labels );
 		entity.descriptions = this.emptyArrayToEmptyObject( entity.descriptions );
 		entity.aliases = this.emptyArrayToEmptyObject( entity.aliases );

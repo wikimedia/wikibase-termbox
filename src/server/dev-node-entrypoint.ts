@@ -6,8 +6,8 @@ const options: ServiceRunnerOptions = {
 	config: process.env,
 	logger: console,
 	metrics: {
-		timing(): void {
-			console.log( 'metrics: ', JSON.stringify( arguments ) );
+		timing( ...args ): void {
+			console.log( 'metrics: ', JSON.stringify( args ) );
 		},
 		normalizeName: ( name ) => name,
 	},

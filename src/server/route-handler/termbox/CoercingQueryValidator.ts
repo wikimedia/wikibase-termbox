@@ -12,7 +12,8 @@ export default class CoercingQueryValidator {
 		this.validator = validator;
 	}
 
-	public coerceAndValidate( request: OpenAPI.Request ) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public coerceAndValidate( request: OpenAPI.Request ): any {
 		this.coercer.coerce( request );
 		return this.validator.validate( request );
 	}
