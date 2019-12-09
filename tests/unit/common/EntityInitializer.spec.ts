@@ -52,20 +52,4 @@ describe( 'EntityInitializer', () => {
 		expect( result.aliases ).toEqual( entity.aliases );
 	} );
 
-	it( 'converts empty arrays for labels, descriptions and aliases to empty objects', () => {
-		const entity = {
-			id: 'Q123',
-			type: 'item',
-			labels: [],
-			descriptions: [],
-			aliases: [],
-		};
-
-		const result = newEntityInitializer().newFromSerialization( entity );
-
-		expect( result.labels ).toEqual( {} );
-		expect( result.descriptions ).toEqual( {} );
-		expect( result.aliases ).toEqual( {} );
-	} );
-
 } );
