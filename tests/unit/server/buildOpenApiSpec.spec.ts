@@ -30,12 +30,12 @@ describe( 'buildOpenApiSpec', () => {
 			validator as any,
 		);
 
-		const termboxRouteSpec = spec.paths[ '/termbox' ].get;
+		const termboxRouteSpec = spec.paths[ '/termbox' ].get!;
 
 		expect( termboxRouteSpec[ 'x-monitor' ] ).toBeTruthy();
 		expect( termboxRouteSpec[ 'x-amples' ] ).not.toBeUndefined();
 
-		const xAmples = termboxRouteSpec[ 'x-amples' ][ 0 ];
+		const xAmples = termboxRouteSpec[ 'x-amples' ]![ 0 ]!;
 		expect( xAmples.title ).not.toBeUndefined();
 		expect( xAmples.request ).toEqual( {
 			query: {
@@ -45,10 +45,10 @@ describe( 'buildOpenApiSpec', () => {
 				editLink,
 				preferredLanguages,
 			},
-			response: {
-				status: 200,
-				headers: { 'content-type': 'text/html' },
-			},
+		} );
+		expect( xAmples.response ).toEqual( {
+			status: 200,
+			headers: { 'content-type': 'text/html' },
 		} );
 	} );
 
@@ -78,12 +78,12 @@ describe( 'buildOpenApiSpec', () => {
 			termboxQueryValidator,
 		);
 
-		const termboxRouteSpec = spec.paths[ '/termbox' ].get;
+		const termboxRouteSpec = spec.paths[ '/termbox' ].get!;
 
 		expect( termboxRouteSpec[ 'x-monitor' ] ).toBeTruthy();
 		expect( termboxRouteSpec[ 'x-amples' ] ).not.toBeUndefined();
 
-		const xAmples = termboxRouteSpec[ 'x-amples' ][ 0 ];
+		const xAmples = termboxRouteSpec[ 'x-amples' ]![ 0 ]!;
 		expect( xAmples.title ).not.toBeUndefined();
 		expect( xAmples.request ).toEqual( {
 			query: {
@@ -93,10 +93,10 @@ describe( 'buildOpenApiSpec', () => {
 				editLink,
 				preferredLanguages,
 			},
-			response: {
-				status: 200,
-				headers: { 'content-type': 'text/html' },
-			},
+		} );
+		expect( xAmples.response ).toEqual( {
+			status: 200,
+			headers: { 'content-type': 'text/html' },
 		} );
 	} );
 

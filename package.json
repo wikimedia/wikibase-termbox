@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "WEBPACK_TARGET=dev vue-cli-service serve",
     "doc": "npm run storybook:build",
-    "dev-server": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon serverBuild/server/node-entrypoint.js\"",
+    "dev-server": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon serverBuild/src/server/node-entrypoint.js\"",
     "build": "NODE_ENV=production vue-cli-service build",
     "build-server": "NODE_ENV=production WEBPACK_TARGET=node vue-cli-service build && tsc -p tsconfig.server.json && rm -rf node_modules/.cache",
     "fix": "vue-cli-service lint .",
@@ -19,7 +19,7 @@
     "storybook:build": "build-storybook -o docs/ui"
   },
   "_moduleAliases": {
-    "@": "serverBuild/"
+    "@": "serverBuild/src/"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",

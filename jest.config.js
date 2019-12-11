@@ -12,6 +12,14 @@ module.exports = {
 		'tsx',
 		'vue',
 	],
+	modulePathIgnorePatterns: [
+		// serverBuild/ contains files that are only relevant for the SSR service, but isn't used in tests.
+		// The duplicated package.json in serverBuild/ also caused issues with jest's module loader:
+		// jest-haste-map: @providesModule naming collision:
+		//  Duplicate module name: wikibase-termbox
+		//  Paths: /app/package.json collides with /app/serverBuild/package.json
+		'<rootDir>/serverBuild/',
+	],
 	transform: {
 		'^.+\\.vue$': 'vue-jest',
 		'.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',

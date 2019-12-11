@@ -12,6 +12,7 @@ import assertAndGetConfig from './assertAndGetConfig';
 import { getAxios } from './axios/axiosFactory';
 import getMwUserAgentString from './axios/getMwUserAgentString';
 import packageInfo from '@/../package.json';
+import { Document } from '@/types/server/ServiceCheckerEnabledOpenApiV3';
 
 export default ( options: ServiceRunnerOptions ) => {
 	const logger = options.logger;
@@ -37,6 +38,8 @@ export default ( options: ServiceRunnerOptions ) => {
 		logger.log( 'fatal/service', `HEALTHCHECK_QUERY malformed: ${JSON.stringify( error.info )}. Exiting.` );
 		process.exit( 1 );
 	}
+
+	openApiSpec = openApiSpec as Document;
 
 	const services = new BundleRendererServices(
 		getAxios(

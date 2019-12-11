@@ -56,4 +56,4 @@ variants:
     lives:
       in: /srv/service
     node: { env: production }
-    entrypoint: [ node, "./serverBuild/server/service-runner-entrypoint.js" ]
+    entrypoint: [ node, "./serverBuild/src/server/service-runner-entrypoint.js" ]

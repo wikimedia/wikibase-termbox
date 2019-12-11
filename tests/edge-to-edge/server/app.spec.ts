@@ -22,6 +22,8 @@ import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 import Metrics from '@/server/Metrics';
 import qs from 'querystring';
+import TermList from '@/datamodel/TermList';
+import MessageCollection from '@/datamodel/MessageCollection';
 
 /**
  * edge-to-edge tests are simulating actual requests against the server
@@ -122,11 +124,11 @@ function nockSuccessfulLanguageLoading( inLanguage: string ) {
 		} );
 }
 
-function getApiResponseMessages( keys: string[] ) {
+function getApiResponseMessages( keys: MessageKey[] ) {
 	return keys.map( ( key ) => ( {
 		'name': key,
 		'normalizedname': key,
-		'*': messages[ key ],
+		'*': ( messages as MessageCollection )[ key ],
 	} ) );
 }
 
@@ -167,7 +169,7 @@ function nockSuccessfulEntityLoading( entityId: string, revision: number ) {
 
 function expectLabelInLanguage( $fingerprint: Element, language: string, directionality = 'ltr' ) {
 	const $label = $fingerprint.querySelector( '.wb-ui-label' );
-	expect( $label ).toHaveTextContent( mockQ64.labels[ language ].value );
+	expect( $label ).toHaveTextContent( ( mockQ64.labels as TermList )[ language ].value );
 	expect( $label ).toBeInstanceOf( Element );
 	expect( $label!.getAttribute( 'lang' ) ).toBe( language );
 	expect( $label!.getAttribute( 'dir' ) ).toBe( directionality );

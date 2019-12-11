@@ -60,7 +60,7 @@ dns_cache:
 
 services:
   - name: wikibase-termbox
-    module: ./serverBuild/server/server.js
+    module: ./serverBuild/src/server/server.js
     conf:
       WIKIBASE_REPO: '{env(WIKIBASE_REPO,https://www.wikidata.org/w)}' #use env var with fallback
       WIKIBASE_REPO_HOSTNAME_ALIAS: '{env(WIKIBASE_REPO_HOSTNAME_ALIAS,appservers-ro.discovery.wmnet)}'
