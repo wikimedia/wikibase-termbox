@@ -18,13 +18,7 @@ storiesOf( 'AnonEditWarning', module )
 
 		return {
 			store: createStore( {
-				getEntityRepository() {},
-				getEntityEditabilityResolver() {},
-				getWritingEntityRepository() {},
-				getUserPreferenceRepository() {},
-				getLanguageRepository() {},
-				getLanguageTranslationRepository() {},
-				getMessagesRepository() {},
+				get( ..._params ) {},
 			} ),
 
 			components: {

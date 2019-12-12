@@ -40,72 +40,88 @@ const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages(
 const entityInitializer = new EntityInitializer();
 const services = new TermboxServices();
 
-services.setLanguageTranslationRepository(
+services.set(
+	'languageTranslationRepository',
 	new UlsLanguageTranslationRepository(
 		contentLanguages,
 	),
 );
 
-services.setLanguageRepository(
+services.set(
+	'languageRepository',
 	new UlsLanguageRepository(
 		contentLanguages,
 		( window as MwWindow ).$.uls.data,
 	),
 );
 
-services.setMessagesRepository(
+services.set(
+	'messagesRepository',
 	new MessagesRepository(
 		( window as MwWindow ).mw.message,
 		Object.values( MessageKey ),
 	),
 );
 
-services.setEntityRepository( new EntityRepository(
-	( window as MwWindow ).mw.hook( Hooks.entityLoaded ),
-	entityInitializer,
-) );
+services.set(
+	'entityRepository',
+	new EntityRepository(
+		( window as MwWindow ).mw.hook( Hooks.entityLoaded ),
+		entityInitializer,
+	),
+);
 
-services.setEntityEditabilityResolver( {
-	isEditable() {
-		return Promise.resolve(
-			( window as MwWindow ).mw.config.get( 'wbIsEditView' )
+services.set(
+	'entityEditabilityResolver',
+	{
+		isEditable() {
+			return Promise.resolve(
+				( window as MwWindow ).mw.config.get( 'wbIsEditView' )
 				&& ( window as MwWindow ).mw.config.get( 'wgRelevantPageIsProbablyEditable' ),
-		);
+			);
+		},
 	},
-} );
+);
 
 const repoConfig = ( window as MwWindow ).mw.config.get( 'wbRepo' );
 const baseUrl = repoConfig.scriptPath;
 const userName = ( window as MwWindow ).mw.config.get( 'wgUserName' );
 const axios = getAxios( baseUrl, userName );
 
-services.setWritingEntityRepository( new AxiosWritingEntityRepository( axios, entityInitializer ) );
+services.set(
+	'writingEntityRepository',
+	new AxiosWritingEntityRepository( axios, entityInitializer ),
+);
 
-services.setUserPreferenceRepository( new DispatchingUserPreferenceRepository( {
-	[ UserPreference.HIDE_ANON_EDIT_WARNING ]: new CookieUserPreferenceRepository<boolean>(
-		new BooleanCookieStore( new StringMWCookieStore( ( window as MwWindow ).mw.cookie ) ),
-		'wikibase-no-anonymouseditwarning',
-		{ maxAge: 60 * 60 * 24 * 365 * 10 },
-	),
-	[ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION ]: new DelegatingUserPreferenceRepository(
-		new CompoundUserPreferenceRepository(
-			new MWUserOptionsReadingSingleUserPreferenceRepository(
-				'wb-acknowledgedcopyrightversion',
-				( window as MwWindow ).mw.user.options,
-			),
-			new AxiosWritingSingleUserPreferenceRepository(
-				'wb-acknowledgedcopyrightversion',
-				axios,
-			),
-		),
-		new CookieUserPreferenceRepository<string | null>(
-			new StringMWCookieStore( ( window as MwWindow ).mw.cookie ),
-			'wikibase.acknowledgedcopyrightversion',
+services.set(
+	'userPreferenceRepository',
+	new DispatchingUserPreferenceRepository( {
+		[ UserPreference.HIDE_ANON_EDIT_WARNING ]: new CookieUserPreferenceRepository<boolean>(
+			new BooleanCookieStore( new StringMWCookieStore( ( window as MwWindow ).mw.cookie ) ),
+			'wikibase-no-anonymouseditwarning',
 			{ maxAge: 60 * 60 * 24 * 365 * 10 },
 		),
-		userName !== null,
-	),
-} ) );
+		[ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION ]: new DelegatingUserPreferenceRepository(
+			new CompoundUserPreferenceRepository(
+				new MWUserOptionsReadingSingleUserPreferenceRepository(
+					'wb-acknowledgedcopyrightversion',
+					( window as MwWindow ).mw.user.options,
+				),
+				new AxiosWritingSingleUserPreferenceRepository(
+					'wb-acknowledgedcopyrightversion',
+					axios,
+				),
+			),
+			new CookieUserPreferenceRepository<string | null>(
+				new StringMWCookieStore( ( window as MwWindow ).mw.cookie ),
+				'wikibase.acknowledgedcopyrightversion',
+				{ maxAge: 60 * 60 * 24 * 365 * 10 },
+			),
+			userName !== null,
+		),
+
+	} ),
+);
 
 init().then( ( termboxRequest: TermboxRequest ) => {
 	buildAndAttemptHydration( termboxRequest, '.wikibase-entitytermsview', services );

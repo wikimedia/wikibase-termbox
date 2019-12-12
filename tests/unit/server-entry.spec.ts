@@ -16,13 +16,8 @@ jest.mock( '@/common/buildApp', () => ( {
 } ) );
 
 const mockServices = {
-	setLanguageTranslationRepository: jest.fn(),
-	setLanguageRepository: jest.fn(),
-	setEntityRepository: jest.fn(),
-	setMessagesRepository: jest.fn(),
-	setEntityEditabilityResolver: jest.fn(),
-	setWritingEntityRepository: jest.fn(),
-	setUserPreferenceRepository: jest.fn(),
+	get: jest.fn(),
+	set: jest.fn(),
 };
 jest.mock( '@/common/TermboxServices', () => {
 	return jest.fn().mockImplementation( () => {
@@ -75,16 +70,27 @@ describe( 'server-entry', () => {
 
 	it( 'setup the service container', ( done ) => {
 		const ssrContext = newFineBundleRendererContext();
+		const services = [
+			'entityEditabilityResolver',
+			'entityRepository',
+			'languageRepository',
+			'languageTranslationRepository',
+			'messagesRepository',
+			'userPreferenceRepository',
+			'writingEntityRepository',
+		];
 
 		mockBuildApp.mockResolvedValue( 'hello' );
 		serverEntry( ssrContext ).then( () => {
-			expect( mockServices.setEntityEditabilityResolver ).toHaveBeenCalledTimes( 1 );
-			expect( mockServices.setEntityRepository ).toHaveBeenCalledTimes( 1 );
-			expect( mockServices.setLanguageRepository ).toHaveBeenCalledTimes( 1 );
-			expect( mockServices.setLanguageTranslationRepository ).toHaveBeenCalledTimes( 1 );
-			expect( mockServices.setMessagesRepository ).toHaveBeenCalledTimes( 1 );
-			expect( mockServices.setWritingEntityRepository ).toHaveBeenCalledTimes( 1 );
-			expect( mockServices.setUserPreferenceRepository ).toHaveBeenCalledTimes( 1 );
+			const calledServices = [];
+			expect( mockServices.set ).toHaveBeenCalledTimes( 7 );
+
+			for ( const service of mockServices.set.mock.calls ) {
+				calledServices.push( service[ 0 ] );
+			}
+			calledServices.sort();
+
+			expect( calledServices ).toStrictEqual( services );
 			done();
 		} );
 	} );

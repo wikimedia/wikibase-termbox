@@ -30,20 +30,20 @@ export function createStore( services: TermboxServices ) {
 		actions,
 		modules: {
 			[ NS_ENTITY ]: createEntity(
-				services.getEntityRepository(),
-				services.getEntityEditabilityResolver(),
-				services.getWritingEntityRepository(),
+				services.get( 'entityRepository' ),
+				services.get( 'entityEditabilityResolver' ),
+				services.get( 'writingEntityRepository' ),
 			),
 			[ NS_USER ]: createUser(
-				services.getUserPreferenceRepository(),
+				services.get( 'userPreferenceRepository' ),
 			),
 			[ NS_LANGUAGE ]: createLanguage(
-				services.getLanguageRepository(),
-				services.getLanguageTranslationRepository(),
+				services.get( 'languageRepository' ),
+				services.get( 'languageTranslationRepository' ),
 			),
 			[ NS_LINKS ]: createLinks(),
 			[ NS_MESSAGES ]: createMessages(
-				services.getMessagesRepository(),
+				services.get( 'messagesRepository' ),
 			),
 		},
 		strict: process.env.NODE_ENV !== 'production',

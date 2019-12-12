@@ -42,44 +42,52 @@ export default ( context: BundleRendererContext ) => {
 		) as any as WikibaseContentLanguagesRepo,
 	);
 
-	services.setLanguageTranslationRepository(
+	services.set(
+		'languageTranslationRepository',
 		new ContentLanguagesLanguageTranslationRepo( languageRepo ),
 	);
 
-	services.setLanguageRepository(
+	services.set(
+		'languageRepository',
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
 	const axiosWikibaseMessagesRepo = new AxiosWikibaseMessagesRepo(
 		axios,
 		Object.values( MessageKey ),
 	);
-	services.setMessagesRepository( new CachingMethodDecorator<MessageTranslationCollection>(
-		context.services.messageCache,
-		axiosWikibaseMessagesRepo,
-		axiosWikibaseMessagesRepo.getMessagesInLanguage,
-	) as any as MessagesRepository );
+	services.set( 'messagesRepository',
+		new CachingMethodDecorator<MessageTranslationCollection>(
+			context.services.messageCache,
+			axiosWikibaseMessagesRepo,
+			axiosWikibaseMessagesRepo.getMessagesInLanguage,
+		) as unknown as MessagesRepository );
 
-	services.setEntityRepository(
+	services.set( 'entityRepository',
 		new AxiosSpecialPageEntityRepo(
 			axios,
 			new EntityInitializer(),
-		),
-	);
-	services.setEntityEditabilityResolver( {
-		isEditable() {
-			// hiding elements used for editing is done by the consumer of the SSR service
-			return Promise.resolve( true );
-		},
-	} );
-	services.setUserPreferenceRepository( {
+		) );
+
+	services.set( 'entityEditabilityResolver',
+		{
+			isEditable() {
+				// hiding elements used for editing is done by the consumer of the SSR service
+				return Promise.resolve( true );
+			},
+		} );
+
+	services.set( 'userPreferenceRepository',
+		{
 		// setting and getting user preferences is not relevant for the SSR output for now
-		setPreference: () => Promise.resolve(),
-		getPreference: () => Promise.resolve(),
-	} );
-	services.setWritingEntityRepository( {
+			setPreference: () => Promise.resolve(),
+			getPreference: () => Promise.resolve(),
+		} );
+
+	services.set( 'writingEntityRepository',
+		{
 		// ssr does not perform any writing
-		saveEntity: () => ( new Error( 'No valid path for SSR.' ) ) as unknown as Promise<EntityRevision>,
-	} );
+			saveEntity: () => ( new Error( 'No valid path for SSR.' ) ) as unknown as Promise<EntityRevision>,
+		} );
 
 	return buildApp(
 		context.request,
