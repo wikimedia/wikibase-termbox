@@ -1,5 +1,5 @@
 import DescriptionEdit from '@/components/DescriptionEdit.vue';
-import TermTextField from '@/components/TermTextField.vue';
+import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
@@ -38,7 +38,7 @@ describe( 'DescriptionEdit', () => {
 			store,
 		} );
 
-		const textField = wrapper.find( TermTextField );
+		const textField = wrapper.find( ResizingTextField );
 		expect( textField.props( 'value' ) ).toBe( description );
 
 	} );
@@ -56,7 +56,7 @@ describe( 'DescriptionEdit', () => {
 			store,
 		} );
 		const newDescription = 'a new description';
-		wrapper.find( TermTextField ).vm.$emit( 'input', newDescription );
+		wrapper.find( ResizingTextField ).vm.$emit( 'input', newDescription );
 
 		expect( store.dispatch ).toHaveBeenCalledWith(
 			action( NS_ENTITY, ENTITY_DESCRIPTION_EDIT ),
@@ -77,7 +77,7 @@ describe( 'DescriptionEdit', () => {
 			],
 		} );
 
-		expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
+		expect( wrapper.find( ResizingTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
 	} );
 
 	it( 'passes a maxlength down', () => {
@@ -94,7 +94,7 @@ describe( 'DescriptionEdit', () => {
 				} as ConfigOptions ) ],
 		} );
 
-		expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
+		expect( wrapper.find( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 	} );
 
 	describe( 'directionality and language code', () => {

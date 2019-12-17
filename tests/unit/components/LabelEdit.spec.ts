@@ -1,5 +1,5 @@
 import LabelEdit from '@/components/LabelEdit.vue';
-import TermTextField from '@/components/TermTextField.vue';
+import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { action, mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
@@ -36,7 +36,7 @@ describe( 'LabelEdit', () => {
 			store,
 		} );
 
-		expect( wrapper.find( TermTextField ).props( 'value' ) ).toBe( label );
+		expect( wrapper.find( ResizingTextField ).props( 'value' ) ).toBe( label );
 	} );
 
 	it( `triggers ${ENTITY_LABEL_EDIT} when the label is edited`, () => {
@@ -52,7 +52,7 @@ describe( 'LabelEdit', () => {
 			store,
 		} );
 		const newLabel = 'hello';
-		wrapper.find( TermTextField ).vm.$emit( 'input', newLabel );
+		wrapper.find( ResizingTextField ).vm.$emit( 'input', newLabel );
 
 		expect( store.dispatch ).toHaveBeenCalledWith(
 			action( NS_ENTITY, ENTITY_LABEL_EDIT ),
@@ -87,7 +87,7 @@ describe( 'LabelEdit', () => {
 			],
 		} );
 
-		expect( wrapper.find( TermTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
+		expect( wrapper.find( ResizingTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
 	} );
 
 	it( 'passes a maxlength down', () => {
@@ -104,7 +104,7 @@ describe( 'LabelEdit', () => {
 				} as ConfigOptions ) ],
 		} );
 
-		expect( wrapper.find( TermTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
+		expect( wrapper.find( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 	} );
 
 	describe( 'directionality and language code', () => {

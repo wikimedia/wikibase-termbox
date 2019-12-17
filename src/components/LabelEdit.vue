@@ -1,5 +1,5 @@
 <template>
-	<TermTextField
+	<ResizingTextField
 		class="wb-ui-label-edit"
 		:class="{
 			'wb-ui-label-edit--primary': isPrimary,
@@ -19,10 +19,10 @@ import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Term from '@/datamodel/Term';
 import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
-import TermTextField from '@/components/TermTextField.vue';
+import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 
 @Component( {
-	components: { TermTextField },
+	components: { ResizingTextField },
 } )
 export default class LabelEdit extends mixins( Messages ) {
 	@Prop( { required: true } )

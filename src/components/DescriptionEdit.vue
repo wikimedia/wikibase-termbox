@@ -1,5 +1,5 @@
 <template>
-	<TermTextField
+	<ResizingTextField
 		class="wb-ui-description-edit"
 		v-inlanguage="languageCode"
 		v-model="value"
@@ -16,10 +16,10 @@ import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Term from '@/datamodel/Term';
 import { ENTITY_DESCRIPTION_EDIT } from '@/store/entity/actionTypes';
-import TermTextField from '@/components/TermTextField.vue';
+import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 
 @Component( {
-	components: { TermTextField },
+	components: { ResizingTextField },
 } )
 export default class DescriptionEdit extends mixins( Messages ) {
 	@Prop( { required: true } )

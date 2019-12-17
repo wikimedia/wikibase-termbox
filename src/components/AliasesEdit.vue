@@ -4,7 +4,7 @@
 		:class="{ 'wb-ui-aliases-edit--focus-within' : hasFocus }"
 	>
 		<li v-for="( value, index ) in aliasValues" :key="keys[ index ]" class="wb-ui-aliases-edit__item">
-			<TermTextField
+			<ResizingTextField
 				class="wb-ui-aliases-edit__alias"
 				v-inlanguage="languageCode"
 				:value="value"
@@ -25,10 +25,11 @@ import Messages from '@/components/mixins/Messages';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Term from '@/datamodel/Term';
-import TermTextField from '@/components/TermTextField.vue';
+import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
+
 @Component( {
-	components: { TermTextField },
+	components: { ResizingTextField },
 } )
 export default class AliasesEdit extends mixins( Messages ) {
 	@Prop( { required: true } )
