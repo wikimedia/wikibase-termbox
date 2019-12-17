@@ -88,7 +88,7 @@ import { UserPreference } from '@/common/UserPreference';
 import User from '@/store/user/User';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import Overlay from '@/components/Overlay.vue';
-import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
+import { IndeterminateProgressBar } from '@wmde/wikibase-vuejs-components';
 import MessageBanner from '@/components/MessageBanner.vue';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 

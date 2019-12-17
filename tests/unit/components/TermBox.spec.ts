@@ -7,7 +7,7 @@ import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
 import Modal from '@/components/Modal.vue';
 import Overlay from '@/components/Overlay.vue';
-import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
+import { IndeterminateProgressBar } from '@wmde/wikibase-vuejs-components';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import LicenseAgreement from '@/components/LicenseAgreement.vue';
 import MessageBanner from '@/components/MessageBanner.vue';
