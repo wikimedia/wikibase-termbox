@@ -25,11 +25,11 @@ jest.mock( '@/common/TermboxServices', () => {
 	} );
 } );
 
-const getAxios = jest.fn();
+const axiosFactory = jest.fn();
 function getMockBundleRendererServices() {
 	const services = {} as BundleRendererServices;
 	Object.defineProperty( services, 'axios', {
-		get: getAxios,
+		get: axiosFactory,
 	} );
 	return services;
 }
@@ -99,7 +99,7 @@ describe( 'server-entry', () => {
 		const ssrContext = newFineBundleRendererContext();
 
 		return serverEntry( ssrContext ).then( () => {
-			expect( getAxios ).toBeCalledTimes( 1 );
+			expect( axiosFactory ).toBeCalledTimes( 1 );
 		} );
 	} );
 

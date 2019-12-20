@@ -1,11 +1,11 @@
-import { getAxios } from '@/client/axios/axiosFactory';
+import axiosFactory from '@/client/axios/axiosFactory';
 import MockAdapter from 'axios-mock-adapter';
 import HttpStatus from 'http-status-codes';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 
 const mockRequestBaseURL = 'foo';
 const mockUsername = 'PacMan';
-const axios = getAxios( mockRequestBaseURL, mockUsername );
+const axios = axiosFactory( mockRequestBaseURL, mockUsername );
 const axiosMock = new MockAdapter( axios );
 
 function addMockCSRFReply( axiosMock: MockAdapter ) {
@@ -19,7 +19,7 @@ function addMockCSRFReply( axiosMock: MockAdapter ) {
 	} );
 }
 
-describe( 'getAxios', () => {
+describe( 'axiosFactory', () => {
 	beforeEach( () => {
 		axiosMock.reset();
 	} );

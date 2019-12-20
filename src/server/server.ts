@@ -9,7 +9,7 @@ import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 import buildOpenApiSpec from './buildOpenApiSpec';
 import assertAndGetConfig from './assertAndGetConfig';
-import { getAxios } from './axios/axiosFactory';
+import axiosFactory from './axios/axiosFactory';
 import getMwUserAgentString from './axios/getMwUserAgentString';
 import packageInfo from '@/../package.json';
 import { Document } from '@/types/server/ServiceCheckerEnabledOpenApiV3';
@@ -42,7 +42,7 @@ export default ( options: ServiceRunnerOptions ) => {
 	openApiSpec = openApiSpec as Document;
 
 	const services = new BundleRendererServices(
-		getAxios(
+		axiosFactory(
 			config.WIKIBASE_REPO,
 			config.WIKIBASE_REPO_HOSTNAME_ALIAS,
 			config.MEDIAWIKI_REQUEST_TIMEOUT,
