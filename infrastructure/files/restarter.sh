@@ -16,6 +16,9 @@ if $( sudo systemctl is-active --quiet termbox ); then
 	fi
 
 else
-	echo "Start Termbox"
-	sudo systemctl start termbox
+	# There is a chance that system might have the docker corrupted because of crashes.
+	sudo systemctl restart docker
+	sudo docker stop systemd_termbox || true
+	sudo docker rm -f systemd_termbox || true
+	sudo systemctl restart termbox
 fi
