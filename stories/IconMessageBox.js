@@ -5,25 +5,22 @@ import {
 	text,
 } from '@storybook/addon-knobs';
 
-const label = 'flavour';
-const valuesObj = {
-	error: 'error',
-	warning: 'warning',
-};
-
-const defaultValue = 'error';
-const optionsObj = {
-	display: 'inline-radio',
-};
-
-const groupId = 'flavour';
-
 storiesOf( 'IconMessageBox', module )
 	.add( 'default', () => ( {
 		components: { IconMessageBox },
 		props: {
 			type: {
-				default: options( label, valuesObj, defaultValue, optionsObj, groupId ),
+				default: options(
+					'type',
+					{
+						error: 'error',
+						warning: 'warning',
+					},
+					'error',
+					{
+						display: 'inline-radio',
+					},
+				),
 			},
 			message: {
 				default: text( 'error message', 'Terrible things happened!' ),
