@@ -12,7 +12,7 @@ import { MessageKey } from '@/common/MessageKey';
 import '@/client/directives';
 import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
 import EntityInitializer from '@/common/EntityInitializer';
-import { getAxios } from '@/client/axios/axiosFactory';
+import axiosFactory from '@/client/axios/axiosFactory';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 import DispatchingUserPreferenceRepository from '@/common/data-access/DispatchingUserPreferenceRepository';
 import { UserPreference } from '@/common/UserPreference';
@@ -86,7 +86,7 @@ services.set(
 const repoConfig = ( window as MwWindow ).mw.config.get( 'wbRepo' );
 const baseUrl = repoConfig.scriptPath;
 const userName = ( window as MwWindow ).mw.config.get( 'wgUserName' );
-const axios = getAxios( baseUrl, userName );
+const axios = axiosFactory( baseUrl, userName );
 
 services.set(
 	'writingEntityRepository',

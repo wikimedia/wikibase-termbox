@@ -1,16 +1,16 @@
-import { getAxios } from '@/server/axios/axiosFactory';
+import axiosFactory from '@/server/axios/axiosFactory';
 import MockAdapter from 'axios-mock-adapter';
 import HttpStatus from 'http-status-codes';
 import axiosLib from 'axios';
 
-describe( 'getAxios', () => {
+describe( 'axiosFactory', () => {
 	it( 'should return an Axios instance that makes requests with the correct baseURL', () => {
 		const mockWikiHostSubPath = 'w';
 		const mockRepo = `http://test.wiki.example.com/${mockWikiHostSubPath}`;
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
-		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		const axios = axiosFactory( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
 		const axiosMock = new MockAdapter( axios );
 
 		const somePath = 'somePath';
@@ -28,7 +28,7 @@ describe( 'getAxios', () => {
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
-		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		const axios = axiosFactory( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
 		const axiosMock = new MockAdapter( axios );
 		const somePath = 'somePath';
 		axiosMock.onGet( `http://${mockRepoHostAlias}/${mockWikiHostSubPath}/${somePath}` )
@@ -46,7 +46,7 @@ describe( 'getAxios', () => {
 		const mockRepoHostAlias = 'http://reverse.proxy.test';
 
 		const createMock = jest.spyOn( axiosLib, 'create' );
-		getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		axiosFactory( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
 
 		expect( createMock.mock.calls[ 0 ][ 0 ]!.timeout ).toEqual( 123 );
 	} );
@@ -56,7 +56,7 @@ describe( 'getAxios', () => {
 		const mockTimeout = 123;
 		const mockUserAgentString = 'Secret Agent 1.0';
 		const mockRepoHostAlias = 'reverse.proxy.test';
-		const axios = getAxios( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
+		const axios = axiosFactory( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
 		const axiosMock = new MockAdapter( axios );
 		axiosMock.onGet( 'http://reverse.proxy.test:1111/w/foo' ).reply( HttpStatus.OK );
 		return axios.get( '/foo' ).then( () => {

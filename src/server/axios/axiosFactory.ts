@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 import { URL } from 'url';
 
-export const getAxios = (
+export default function axiosFactory(
 	wikibaseRepo: string,
 	hostnameAlias: string,
 	timeout: number,
 	userAgentString: string,
-) => {
+): AxiosInstance {
 	const baseUrl = new URL( wikibaseRepo );
 	const hostHeader = baseUrl.host;
 	baseUrl.hostname = hostnameAlias;
@@ -21,4 +21,4 @@ export const getAxios = (
 			'Host': hostHeader,
 		},
 	} );
-};
+}
