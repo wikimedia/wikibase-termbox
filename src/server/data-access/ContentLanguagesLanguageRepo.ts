@@ -1,6 +1,6 @@
 import LanguageRepository from '@/common/data-access/LanguageRepository';
 import LanguageCollection from '@/datamodel/LanguageCollection';
-import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages } from './WikibaseContentLanguagesRepo';
+import WikibaseContentLanguagesRepo from './WikibaseContentLanguagesRepo';
 import RtlDetectLib from 'rtl-detect';
 
 export default class ContentLanguagesLanguageRepo implements LanguageRepository {
@@ -12,9 +12,9 @@ export default class ContentLanguagesLanguageRepo implements LanguageRepository 
 
 	public getLanguages(): Promise<LanguageCollection> {
 		return this.languagesRepo.getContentLanguages( null )
-			.then( ( contentLanguages: WikibaseApiContentLanguages ) => {
+			.then( ( contentLanguages ) => {
 				const languages: LanguageCollection = {};
-				Object.entries( contentLanguages ).forEach( ( [ languageCode ] ) => {
+				Object.entries( contentLanguages ).forEach( ( [ languageCode, _language ] ) => {
 					languages[ languageCode ] = {
 						code: languageCode,
 						// this does not do full justice to the directionality question
