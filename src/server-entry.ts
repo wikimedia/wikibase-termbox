@@ -52,43 +52,54 @@ export default ( context: BundleRendererContext ): Promise<App> => {
 		'languageRepository',
 		new ContentLanguagesLanguageRepo( languageRepo ),
 	);
+
 	const axiosWikibaseMessagesRepo = new AxiosWikibaseMessagesRepo(
 		axios,
 		Object.values( MessageKey ),
 	);
-	services.set( 'messagesRepository',
+	services.set(
+		'messagesRepository',
 		new CachingMethodDecorator<MessageTranslationCollection>(
 			context.services.messageCache,
 			axiosWikibaseMessagesRepo,
 			axiosWikibaseMessagesRepo.getMessagesInLanguage,
-		) as unknown as MessagesRepository );
+		) as unknown as MessagesRepository,
+	);
 
-	services.set( 'entityRepository',
+	services.set(
+		'entityRepository',
 		new AxiosSpecialPageEntityRepo(
 			axios,
 			new EntityInitializer(),
-		) );
+		),
+	);
 
-	services.set( 'entityEditabilityResolver',
+	services.set(
+		'entityEditabilityResolver',
 		{
 			isEditable() {
 				// hiding elements used for editing is done by the consumer of the SSR service
 				return Promise.resolve( true );
 			},
-		} );
+		},
+	);
 
-	services.set( 'userPreferenceRepository',
+	services.set(
+		'userPreferenceRepository',
 		{
-		// setting and getting user preferences is not relevant for the SSR output for now
+			// setting and getting user preferences is not relevant for the SSR output for now
 			setPreference: () => Promise.resolve(),
 			getPreference: () => Promise.resolve(),
-		} );
+		},
+	);
 
-	services.set( 'writingEntityRepository',
+	services.set(
+		'writingEntityRepository',
 		{
-		// ssr does not perform any writing
+			// ssr does not perform any writing
 			saveEntity: () => ( new Error( 'No valid path for SSR.' ) ) as unknown as Promise<EntityRevision>,
-		} );
+		},
+	);
 
 	return buildApp(
 		context.request,
