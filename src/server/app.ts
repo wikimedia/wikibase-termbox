@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import compression from 'compression';
 import responseTime from 'response-time';
 import { createBundleRenderer } from 'vue-server-renderer';
@@ -15,14 +15,14 @@ import InfoHandler from './route-handler/_info/InfoHandler';
 import reportResponseTimeMetrics from './reportResponseTimeMetrics';
 import LoggableError from '@/common/error/LoggableError';
 
-function buildErrorContextWithUrl( error: LoggableError, request: Request ) {
+function buildErrorContextWithUrl( error: LoggableError, request: Request ): object {
 	return {
 		...error.getContext(),
 		url: request.url,
 	};
 }
 
-export default ( services: BundleRendererServices ) => {
+export default function ( services: BundleRendererServices ): Application {
 
 	const app = express();
 
@@ -80,4 +80,4 @@ export default ( services: BundleRendererServices ) => {
 	} );
 
 	return app;
-};
+}

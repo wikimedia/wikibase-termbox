@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import LRUCache from 'lru-cache';
 
 /**
@@ -13,14 +15,18 @@ export default class CachingMethodDecorator<V> {
 	 * @param instance - instance to bind the method to
 	 * @param method - method to be decorated
 	 */
-	public constructor( cache: LRUCache<string, V>, instance: any, method: ( ...args: any[] ) => Promise<V> ) {
+	public constructor(
+		cache: LRUCache<string, V>,
+		instance: any,
+		method: ( ...args: any[] ) => Promise<V>,
+	) {
 		this.cache = cache;
 		this.fetch = method.bind( instance );
 
 		( this as any )[ method.name ] = this.getFromCacheOrFetch;
 	}
 
-	private getFromCacheOrFetch( ...args: any[] ) {
+	private getFromCacheOrFetch( ...args: any[] ): Promise<V | undefined> {
 		const cacheKey = this.generateKey( args );
 		if ( this.cache.has( cacheKey ) ) {
 			return Promise.resolve( this.cache.get( cacheKey ) );
@@ -32,7 +38,7 @@ export default class CachingMethodDecorator<V> {
 		} );
 	}
 
-	private generateKey( args: any[] ) {
+	private generateKey( args: unknown[] ): string {
 		return JSON.stringify( args );
 	}
 

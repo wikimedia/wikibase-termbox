@@ -14,7 +14,7 @@ import getMwUserAgentString from './axios/getMwUserAgentString';
 import packageInfo from '@/../package.json';
 import { Document } from '@/types/server/ServiceCheckerEnabledOpenApiV3';
 
-export default ( options: ServiceRunnerOptions ) => {
+export default function ( options: ServiceRunnerOptions ): void {
 	const logger = options.logger;
 	const config = assertAndGetConfig(
 		options.config,
@@ -71,4 +71,4 @@ export default ( options: ServiceRunnerOptions ) => {
 		logger.log( 'info/service', 'Process received SIGINT' );
 		process.exit( 0 );
 	} );
-};
+}

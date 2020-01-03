@@ -22,7 +22,7 @@ Vue.config.ignoredElements.push( 'wb:sectionedit' );
 export default class Sectionedit extends Vue {
 	public isServerRendered = true;
 
-	public beforeMount() {
+	public beforeMount(): void {
 		this.isServerRendered = false;
 	}
 }

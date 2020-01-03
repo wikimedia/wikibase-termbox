@@ -4,7 +4,7 @@ import TermboxServices from '@/common/TermboxServices';
 import TermboxRequest from '@/common/TermboxRequest';
 import getChildComponents from './getChildComponents';
 
-export default ( termboxRequest: TermboxRequest, services: TermboxServices ) => {
+export default ( termboxRequest: TermboxRequest, services: TermboxServices ): Promise<App> => {
 	const store = createStore( services );
 	const app = new App( {
 		store,

@@ -34,10 +34,10 @@ import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
 	components: { AllEnteredLanguages },
 } )
 export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
-	$refs!: {
-		allEnteredLanguagesSwitch: HTMLElement,
-		allEnteredLanguagesClose: HTMLElement
-	}
+	public $refs!: {
+		allEnteredLanguagesSwitch: HTMLElement;
+		allEnteredLanguagesClose: HTMLElement;
+	};
 
 	public isExpanded = false;
 
@@ -45,11 +45,11 @@ export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
 
 	public isServerRendered = true;
 
-	public toggleShowAllLanguages() {
+	public toggleShowAllLanguages(): void {
 		this.isExpanded = !this.isExpanded;
 	}
 
-	public closeAllLanguages() {
+	public closeAllLanguages(): void {
 		this.isExpanded = false;
 		this.$nextTick( () => {
 			this.$refs.allEnteredLanguagesSwitch.focus( { preventScroll: true } );
@@ -57,7 +57,7 @@ export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
 		} );
 	}
 
-	public beforeMount() {
+	public beforeMount(): void {
 		this.isServerRendered = false;
 	}
 }

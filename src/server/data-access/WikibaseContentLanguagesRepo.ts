@@ -1,7 +1,7 @@
 export interface WikibaseApiContentLanguages {
 	[code: string]: {
-		code: string,
-		name: string,
+		code: string;
+		name: string;
 	};
 }
 

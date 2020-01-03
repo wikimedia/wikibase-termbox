@@ -26,7 +26,7 @@ export default class Description extends mixins( Messages ) {
 	@Prop( { required: true } )
 	public description!: Term;
 
-	get language() {
+	public get language(): string {
 		return this.description.language;
 	}
 

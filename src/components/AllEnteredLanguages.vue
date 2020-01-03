@@ -29,7 +29,7 @@ export default class AllEnteredLanguages extends Vue {
 	@namespace( NS_USER ).State( 'secondaryLanguages' )
 	public secondaryLanguages!: string[];
 
-	get allEnteredLanguagesWithoutUserLanguages() {
+	public get allEnteredLanguagesWithoutUserLanguages(): string[] {
 		return this.getAllEnteredLanguageCodes.filter( ( languageKey ) => {
 			return languageKey !== this.primaryLanguage && this.secondaryLanguages.indexOf( languageKey ) === -1;
 		} );

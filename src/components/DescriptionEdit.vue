@@ -31,7 +31,7 @@ export default class DescriptionEdit extends mixins( Messages ) {
 	@namespace( NS_ENTITY ).Action( ENTITY_DESCRIPTION_EDIT )
 	public editDescription!: ( value: Term ) => void;
 
-	get value() {
+	public get value(): string {
 		if ( !this.description ) {
 			return '';
 		} else {
@@ -39,7 +39,7 @@ export default class DescriptionEdit extends mixins( Messages ) {
 		}
 	}
 
-	set value( value ) {
+	public set value( value ) {
 		this.editDescription( { language: this.languageCode, value } );
 	}
 }

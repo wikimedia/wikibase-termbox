@@ -31,7 +31,8 @@ export default function ( processEnv: NodeJS.ProcessEnv, logger: Logger ): Confi
 		process.exit( 1 );
 	}
 
-	logger.log( 'info/service', `Set config to: ${JSON.stringify( config! )}` );
+	logger.log( 'info/service', `Set config to: ${JSON.stringify( config )}` );
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	return config as any;
 }

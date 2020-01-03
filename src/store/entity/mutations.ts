@@ -16,7 +16,7 @@ import Fingerprintable from '@/datamodel/Fingerprintable';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import Term from '@/datamodel/Term';
 
-function getFingerprintProperties( source: Fingerprintable ) {
+function getFingerprintProperties( source: Fingerprintable ): Fingerprintable {
 	return {
 		labels: source.labels,
 		descriptions: source.descriptions,
@@ -61,11 +61,11 @@ export const mutations: MutationTree<EntityState> = {
 		Vue.set( state.labels, languageTerm.language, languageTerm );
 	},
 
-	[ ENTITY_SET_ALIASES ]( state: EntityState, { language, terms }: { language: string, terms: Term[] } ) {
+	[ ENTITY_SET_ALIASES ]( state: EntityState, { language, terms }: { language: string; terms: Term[] } ) {
 		Vue.set( state.aliases, language, terms );
 	},
 
-	[ ENTITY_REMOVE_ALIAS ]( state: EntityState, { languageCode, index }: { languageCode: string, index: number } ) {
+	[ ENTITY_REMOVE_ALIAS ]( state: EntityState, { languageCode, index }: { languageCode: string; index: number } ) {
 		state.aliases[ languageCode ].splice( index, 1 );
 	},
 

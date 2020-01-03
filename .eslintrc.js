@@ -6,30 +6,20 @@ module.exports = {
 		'wikimedia/language/es6',
 		'wikimedia/language/es2017',
 		'plugin:vue/strongly-recommended',
+		'@wmde/wikimedia-typescript',
 	],
 	plugins: [
-		'@typescript-eslint',
 		'filenames',
 	],
 	parser: 'vue-eslint-parser',
-	parserOptions: {
-		parser: '@typescript-eslint/parser',
-		sourceType: 'module',
-		ecmaFeatures: {
-			impliedStrict: true,
-		},
-	},
 	root: true,
 	rules: {
 		'function-paren-newline': [ 'error', 'consistent' ],
-		'@typescript-eslint/type-annotation-spacing': [ 'error' ],
 		'filenames/match-exported': 'error',
 		'object-shorthand': [ 'error', 'always' ],
-		'@typescript-eslint/explicit-member-accessibility': [ 'error', { 'accessibility': 'explicit' } ],
 
 		// problematic in TypeScript / ES6
 		'no-unused-vars': 'off',
-		'@typescript-eslint/no-unused-vars': [ 'error', { 'argsIgnorePattern': '^_' } ],
 		'no-undef': 'error',
 
 		// diverging from Wikimedia rule set
@@ -56,11 +46,21 @@ module.exports = {
 
 		'no-restricted-properties': 'off',
 	},
-	overrides: {
-		files: [ '**/*.ts' ],
-		parser: 'vue-eslint-parser',
-		rules: {
-			'no-undef': 'off',
+	overrides: [
+		{
+			files: [ '**/*.ts' ],
+			parser: 'vue-eslint-parser',
+			rules: {
+				'no-undef': 'off',
+			},
 		},
-	},
+		{
+			files: [ '*.js' ],
+			rules: {
+				'@typescript-eslint/explicit-function-return-type': 'off',
+				'@typescript-eslint/explicit-member-accessibility': 'off',
+				'@typescript-eslint/no-var-requires': 'off',
+			},
+		},
+	],
 };

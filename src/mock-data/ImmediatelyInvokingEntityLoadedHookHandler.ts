@@ -1,11 +1,11 @@
 export default class ImmediatelyInvokingEntityLoadedHookHandler {
-	private entity: any;
+	private entity: unknown;
 
-	public constructor( entity: any ) {
+	public constructor( entity: unknown ) {
 		this.entity = entity;
 	}
 
-	public add( hookCallback: ( entity: any ) => void ) {
+	public add( hookCallback: ( entity: unknown ) => void ): void {
 		hookCallback( this.entity );
 	}
 

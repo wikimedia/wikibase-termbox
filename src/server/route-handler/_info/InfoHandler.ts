@@ -1,8 +1,8 @@
-import express, { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import PackageInfo from '../../metadata/PackageInfo';
 
-export default function ( info: PackageInfo ) {
-	const router = express.Router();
+export default function ( info: PackageInfo ): Router {
+	const router = Router();
 
 	router.get( '/', ( req: Request, res: Response ) => {
 		res.json( {

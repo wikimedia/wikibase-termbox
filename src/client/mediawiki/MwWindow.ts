@@ -3,7 +3,11 @@ import HookHandler from '@/client/mediawiki/HookHandler';
 import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKey } from '@/common/MessageKey';
 
-type MwTitle = new( title: string, namespace: number ) => any;
+interface MwTitleInstance {
+	getUrl: ( query?: object ) => string;
+}
+
+type MwTitle = new( title: string, namespace: number ) => MwTitleInstance;
 
 export interface MwMessage {
 	text: () => string;
@@ -12,7 +16,7 @@ export interface MwMessage {
 export type MwMessages = ( key: MessageKey, ...params: string[] ) => MwMessage;
 
 export interface MWUserOptions {
-	get( optionName: string, defaultValue?: any ): any;
+	get( optionName: string, defaultValue?: unknown ): unknown;
 }
 
 interface MediaWiki {
@@ -30,7 +34,9 @@ interface MediaWiki {
 }
 
 export interface WikibaseContentLanguages {
-	getAllPairs: () => any;
+	getAllPairs: () => {
+		[ key: string ]: string;
+	};
 }
 
 export type MWCookieOptions = {
@@ -39,7 +45,7 @@ export type MWCookieOptions = {
 	domain?: string;
 	path?: string;
 	secure?: boolean;
-}
+};
 
 export interface MWCookie {
 	set( name: string, value: string|null, options?: MWCookieOptions ): void;

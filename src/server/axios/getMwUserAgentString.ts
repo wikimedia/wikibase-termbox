@@ -1,9 +1,9 @@
 import PackageInfo from '../metadata/PackageInfo';
 
-export default function ( info: PackageInfo ) {
+export default function ( info: Required<PackageInfo> ): string {
 	const appInformation = `${info.name}/${info.version}`;
-	const authorInfo = `${info.author!}`;
-	const libaryInfo = `axios/${info.dependencies!.axios!}`;
+	const authorInfo = `${info.author}`;
+	const libraryInfo = `axios/${info.dependencies.axios}`;
 
-	return `${appInformation} (${authorInfo}) ${libaryInfo}`;
+	return `${appInformation} (${authorInfo}) ${libraryInfo}`;
 }

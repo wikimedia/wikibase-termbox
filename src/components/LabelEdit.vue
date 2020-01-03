@@ -37,7 +37,7 @@ export default class LabelEdit extends mixins( Messages ) {
 	@namespace( NS_ENTITY ).Action( ENTITY_LABEL_EDIT )
 	public editLabel!: ( value: Term ) => void;
 
-	get value() {
+	public get value(): string {
 		if ( !this.label ) {
 			return '';
 		} else {
@@ -45,7 +45,7 @@ export default class LabelEdit extends mixins( Messages ) {
 		}
 	}
 
-	set value( value ) {
+	public set value( value ) {
 		this.editLabel( { language: this.languageCode, value } );
 	}
 

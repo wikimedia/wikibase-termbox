@@ -44,13 +44,13 @@ import IconMessageBox from '@/components/IconMessageBox.vue';
 
 export default class LicenseAgreement extends mixins( Messages ) {
 	@namespace( NS_USER ).Action( USER_PREFERENCE_SET )
-	public savePreference!: ( payload: { name: UserPreference, value: string | null } ) => Promise<void>;
+	public savePreference!: ( payload: { name: UserPreference; value: string | null } ) => Promise<void>;
 
 	public doNotShowAgain = true;
 
 	private config!: ConfigOptions;
 
-	public savePreferenceAndPublish() {
+	public savePreferenceAndPublish(): void {
 		this.$emit( 'save' );
 		this.savePreference( {
 			name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
@@ -58,7 +58,7 @@ export default class LicenseAgreement extends mixins( Messages ) {
 		} );
 	}
 
-	public mounted() {
+	public mounted(): void {
 		this.$el.querySelectorAll( '.wb-ui-license-agreement__message a' ).forEach( ( $link ) => {
 			$link.setAttribute( 'target', '_blank' );
 

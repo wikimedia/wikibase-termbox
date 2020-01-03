@@ -21,6 +21,7 @@ import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { LINKS_INIT } from '@/store/links/actionTypes';
 import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { namespace } from 'vuex-class';
+import Root from '@/store/Root';
 
 @Component( {
 	components: {
@@ -29,7 +30,10 @@ import { namespace } from 'vuex-class';
 } )
 export default class App extends Vue {
 
-	public static asyncData( store: Store<any>, request: TermboxRequest ): Promise<any> {
+	public static asyncData(
+		store: Store<Root>,
+		request: TermboxRequest,
+	): Promise<unknown[]> {
 		return Promise.all( [
 			store.dispatch( action( NS_LANGUAGE, LANGUAGE_INIT ) ),
 			store.dispatch(

@@ -42,7 +42,7 @@ export default class EventEmittingButton extends Vue {
 	@Prop( { required: false, default: true, type: Boolean } )
 	public preventDefault!: boolean;
 
-	public click( event: MouseEvent ) {
+	public click( event: MouseEvent ): void {
 		if ( this.preventDefault ) {
 			event.preventDefault();
 		}

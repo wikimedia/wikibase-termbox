@@ -3,7 +3,7 @@ import Language from '@/datamodel/Language';
 import { getter } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_LANGUAGE } from '@/store/namespaces';
 
-export default function inlanguage( vnode: VNode, directiveMeta: VNodeDirective ) {
+export default function inlanguage( vnode: VNode, directiveMeta: VNodeDirective ): void {
 	if ( !directiveMeta.value ) {
 		return;
 	}

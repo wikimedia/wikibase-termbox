@@ -39,32 +39,32 @@ export default class AliasesEdit extends mixins( Messages ) {
 	public languageCode!: string;
 
 	@namespace( NS_ENTITY ).Action( ENTITY_ALIASES_EDIT )
-	public editAliases!: ( payload: { language: string, aliasValues: string[] } ) => void;
+	public editAliases!: ( payload: { language: string; aliasValues: string[] } ) => void;
 
 	@namespace( NS_ENTITY ).Action( ENTITY_ALIAS_REMOVE )
-	public removeAlias!: ( payload: { languageCode: string, index: number } ) => void;
+	public removeAlias!: ( payload: { languageCode: string; index: number } ) => void;
 
 	public hasFocus = false;
 
-	public setFocus() {
+	public setFocus(): void {
 		this.hasFocus = true;
 	}
 
-	public unsetFocus() {
+	public unsetFocus(): void {
 		this.hasFocus = false;
 	}
 
-	get aliasValues() {
+	public get aliasValues(): string[] {
 		return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
 	}
 
 	private keys = [ ... this.aliasValues.keys() ];
 
-	private addAdditionalKey() {
+	private addAdditionalKey(): void {
 		this.keys.push( this.keys[ this.keys.length - 1 ] + 1 );
 	}
 
-	public aliasInput( index: number, value: string ) {
+	public aliasInput( index: number, value: string ): void {
 		if ( this.isBottomBlankField( index ) ) {
 			this.addNewAlias( value );
 		} else {
@@ -72,7 +72,7 @@ export default class AliasesEdit extends mixins( Messages ) {
 		}
 	}
 
-	private addNewAlias( value: string ) {
+	private addNewAlias( value: string ): void {
 		if ( value.trim() === '' ) {
 			return;
 		}
@@ -85,7 +85,7 @@ export default class AliasesEdit extends mixins( Messages ) {
 		} );
 	}
 
-	private editAlias( index: number, value: string ) {
+	private editAlias( index: number, value: string ): void {
 		const aliasValues = this.getValuesWithEdit( index, value );
 		aliasValues.splice( aliasValues.length - 1, 1 );
 
@@ -95,14 +95,14 @@ export default class AliasesEdit extends mixins( Messages ) {
 		} );
 	}
 
-	private getValuesWithEdit( index: number, value: string ) {
+	private getValuesWithEdit( index: number, value: string ): string[] {
 		const aliasValues = [ ...this.aliasValues ];
 		aliasValues[ index ] = value;
 
 		return aliasValues;
 	}
 
-	public removeAliasIfEmpty( index: number ) {
+	public removeAliasIfEmpty( index: number ): void {
 		if (
 			this.aliasValues[ index ].trim() === '' &&
 			!this.isBottomBlankField( index )
@@ -112,7 +112,7 @@ export default class AliasesEdit extends mixins( Messages ) {
 		}
 	}
 
-	private isBottomBlankField( index: number ) {
+	private isBottomBlankField( index: number ): boolean {
 		return index === this.aliasValues.length - 1;
 	}
 

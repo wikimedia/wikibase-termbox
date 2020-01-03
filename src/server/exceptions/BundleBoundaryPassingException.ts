@@ -11,7 +11,7 @@ export enum ErrorReason {
 export default class BundleBoundaryPassingException extends ContextError {
 	public readonly reason: ErrorReason;
 
-	public constructor( reason: ErrorReason, context: any ) {
+	public constructor( reason: ErrorReason, context: object ) {
 		super( reason, context );
 		this.reason = reason;
 	}

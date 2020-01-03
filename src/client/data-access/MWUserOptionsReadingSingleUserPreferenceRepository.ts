@@ -2,7 +2,7 @@ import { ReadingSingleUserPreferenceRepository } from '@/common/data-access/Sing
 import { MWUserOptions } from '@/client/mediawiki/MwWindow';
 
 export default class MWUserOptionsReadingSingleUserPreferenceRepository implements
-	ReadingSingleUserPreferenceRepository<any> {
+	ReadingSingleUserPreferenceRepository<unknown> {
 	private optionName: string;
 	private mwUserOptions: MWUserOptions;
 
@@ -11,7 +11,7 @@ export default class MWUserOptionsReadingSingleUserPreferenceRepository implemen
 		this.mwUserOptions = mwUserOptions;
 	}
 
-	public getPreference(): Promise<any> {
+	public getPreference(): Promise<unknown> {
 		return Promise.resolve( this.mwUserOptions.get( this.optionName ) );
 	}
 

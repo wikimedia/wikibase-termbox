@@ -8,8 +8,9 @@ describe( 'formDataRequestTransformation', () => {
 			omg: 'bbq',
 		} );
 
-		expect( formData.get( 'foo' ) ).toBe( 'bar' );
-		expect( formData.get( 'omg' ) ).toBe( 'bbq' );
+		expect( formData ).toBeInstanceOf( FormData );
+		expect( ( formData as FormData ).get( 'foo' ) ).toBe( 'bar' );
+		expect( ( formData as FormData ).get( 'omg' ) ).toBe( 'bbq' );
 	} );
 
 	it.each( [

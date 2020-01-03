@@ -19,7 +19,13 @@ export default class TermboxHandler {
 				return;
 			}
 
-			const query = request.query as any;
+			const query = request.query as {
+				language: string;
+				entity: string;
+				revision: number;
+				editLink: string;
+				preferredLanguages: string[];
+			};
 			resolve(
 				new TermboxRequest(
 					query.language,
