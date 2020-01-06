@@ -149,3 +149,15 @@ You can reference these tags directly when spinning up a container - the simples
 docker run --rm -v $(pwd)/config.debug.yaml:/srv/service/config.yaml -p "3030:3030" -e WIKIBASE_REPO=https://www.wikidata.org/w -e WIKIBASE_REPO_HOSTNAME_ALIAS=www.wikidata.org -e SSR_PORT=3030 docker-registry.wikimedia.org/wikimedia/wikibase-termbox:2019-08-24-040743-production
 ```
 
+### Asserting service health
+
+We can use the release engineering docker image to assert if our service passes the monitoring x-amples it defines in `openapi.json`.
+
+Assuming you are running the SSR service through docker-compose and have it exposed to your host system at port 3030, run
+
+```sh
+docker run --rm -it --network host docker-registry.wikimedia.org/service-checker 127.0.0.1 http://ssr:3030
+```
+This should yield: "All endpoints are healthy."
+
+To make the most of this, make sure to set a `HEALTHCHECK_QUERY` inside your `.env` file which matches your system (i.e. mentioning an entity-revision-combination present in your database).
