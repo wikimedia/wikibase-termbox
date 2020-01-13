@@ -23,7 +23,7 @@ if ( process.env.WIKIBASE_REPO ) {
 module.exports = {
 	outputDir: TARGET_NODE ? 'serverDist' : 'dist',
 	configureWebpack: () => ( {
-		entry: DEV_MODE ? [ './src/mockup-entry.ts', `./src/${target}-entry.ts` ] : `./src/${target}-entry.ts`,
+		entry: DEV_MODE ? [ './src/dev-entry.ts', `./src/${target}-entry.ts` ] : `./src/${target}-entry.ts`,
 		target: TARGET_NODE ? 'node' : 'web',
 		node: TARGET_NODE ? undefined : false,
 		plugins: [
