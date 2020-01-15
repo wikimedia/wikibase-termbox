@@ -2,6 +2,7 @@ import { storiesOf } from '@storybook/vue';
 import Modal from '@/components/Modal.vue';
 
 storiesOf( 'Modal', module )
+	.addParameters( { component: Modal } )
 	.add( 'default', () => ( {
 		components: { Modal },
 		template: `<Modal>

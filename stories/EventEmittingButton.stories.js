@@ -6,6 +6,7 @@ import {
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 
 storiesOf( 'EventEmittingButton', module )
+	.addParameters( { component: EventEmittingButton } )
 	.add(
 		'edit',
 		() => ( {

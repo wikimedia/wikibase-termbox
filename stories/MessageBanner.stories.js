@@ -3,6 +3,7 @@ import MessageBanner from '@/components/MessageBanner.vue';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 
 storiesOf( 'MessageBanner', module )
+	.addParameters( { component: MessageBanner } )
 	.add( 'default', () => ( {
 		components: { MessageBanner },
 		data() {

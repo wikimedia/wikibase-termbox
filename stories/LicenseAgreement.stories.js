@@ -13,6 +13,7 @@ Vue.mixin( newConfigMixin( {
 } ) );
 
 storiesOf( 'LicenseAgreement', module )
+	.addParameters( { component: LicenseAgreement } )
 	.add( 'in Modal', () => {
 		const messages = {
 			[ MessageKey.PUBLISH ]: 'asinus',

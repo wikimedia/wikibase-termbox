@@ -6,6 +6,7 @@ import {
 } from '@storybook/addon-knobs';
 
 storiesOf( 'IconMessageBox', module )
+	.addParameters( { component: IconMessageBox } )
 	.add( 'default', () => ( {
 		components: { IconMessageBox },
 		props: {

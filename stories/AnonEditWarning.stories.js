@@ -6,6 +6,7 @@ import stubMessagesMixin from '../.storybook/helpers/stubMessagesMixin';
 import { createStore } from '@/store';
 
 storiesOf( 'AnonEditWarning', module )
+	.addParameters( { component: AnonEditWarning } )
 	.add( 'in Modal', () => {
 		const messages = {
 			[ MessageKey.LOGIN ]: 'asinus',

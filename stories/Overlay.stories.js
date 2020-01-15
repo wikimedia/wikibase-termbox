@@ -4,6 +4,7 @@ import Modal from '@/components/Modal.vue';
 import { IndeterminateProgressBar } from '@wmde/wikibase-vuejs-components';
 
 storiesOf( 'Overlay', module )
+	.addParameters( { component: Overlay } )
 	.add( 'default', () => ( {
 		components: { Overlay },
 		template: `<div>
