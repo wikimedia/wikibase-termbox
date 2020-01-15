@@ -27,7 +27,7 @@ storiesOf( 'MessageBanner', module )
 				</MessageBanner>
 				
 			</div>`,
-	} ), { info: true } )
+	} ) )
 	.add( 'with IconMessageBox', () => ( {
 		components: { MessageBanner, IconMessageBox },
 		template:
@@ -45,8 +45,4 @@ storiesOf( 'MessageBanner', module )
 					<template #message><IconMessageBox type="error">Oh No!</IconMessageBox></template>
 				</MessageBanner>
 			</div>`,
-	} ), {
-		info: {
-			components: { MessageBanner },
-		},
-	} );
+	} ) );

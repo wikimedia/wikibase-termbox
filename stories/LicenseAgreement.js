@@ -32,8 +32,4 @@ storiesOf( 'LicenseAgreement', module )
 			},
 			template: '<Modal><LicenseAgreement /></Modal>',
 		};
-	}, {
-		info: {
-			components: { LicenseAgreement },
-		},
 	} );

@@ -32,4 +32,4 @@ storiesOf( 'IconMessageBox', module )
 					{{ message }}
 				</IconMessageBox>
 			</div>`,
-	} ), { info: true } );
+	} ) );

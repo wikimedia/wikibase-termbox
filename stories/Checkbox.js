@@ -15,4 +15,4 @@ storiesOf( 'Checkbox', module )
 		},
 		// eslint-disable-next-line max-len
 		template: '<Checkbox v-model="isChecked" :html-value="\'A value\'" :label="label" />',
-	} ), { info: true } );
+	} ) );

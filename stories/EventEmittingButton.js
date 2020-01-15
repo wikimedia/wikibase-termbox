@@ -21,11 +21,6 @@ storiesOf( 'EventEmittingButton', module )
 			components: { EventEmittingButton },
 			template: '<EventEmittingButton type="edit" :message="message" :preventDefault="preventDefault"/>',
 		} ),
-		{
-			info: {
-				summary: 'A CTA for the user to edit data',
-			},
-		},
 	)
 	.add( 'cancel', () => ( {
 		props: {
@@ -38,7 +33,7 @@ storiesOf( 'EventEmittingButton', module )
 		},
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="cancel" :message="message"  :preventDefault="preventDefault"/>',
-	} ), { info: true } )
+	} ) )
 	.add( 'publish', () => ( {
 		props: {
 			message: {
@@ -62,7 +57,7 @@ storiesOf( 'EventEmittingButton', module )
 		},
 		components: { EventEmittingButton },
 		template: '<EventEmittingButton type="normal" :message="message" :preventDefault="preventDefault"/>',
-	} ), { info: true } )
+	} ) )
 	.add( 'primaryProgressive', () => ( {
 		props: {
 			message: {
@@ -75,7 +70,7 @@ storiesOf( 'EventEmittingButton', module )
 		components: { EventEmittingButton },
 		template: `<EventEmittingButton type="primaryProgressive"
 						:message="message" :preventDefault="preventDefault"/>`,
-	} ), { info: true } )
+	} ) )
 	.add( 'framelessProgressive', () => ( {
 		props: {
 			message: {
@@ -88,4 +83,4 @@ storiesOf( 'EventEmittingButton', module )
 		components: { EventEmittingButton },
 		template: `<EventEmittingButton type="framelessProgressive"
 						:message="message" :preventDefault="preventDefault"/>`,
-	} ), { info: true } );
+	} ) );
