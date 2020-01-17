@@ -47,7 +47,7 @@ These environment variables can be distinguished in two groups - some are releva
 
     The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file> to get HTML, in turn the SSR services calls <WIKIBASE_REPO> to [get essential information](./src/server/data-access).
 
-  * `CSR_PORT` is the port at which you can reach the development server on your machine to live-preview changes to the termbox application
+  * `CSR_PORT` is the port at which you can reach the development server on your machine to live-preview changes to the termbox application. This allows development outside of MediaWiki, using a simulated environment as configured in `src/dev-entry.ts`.
   * `STORYBOOK_PORT` is the port at which you can reach the storybook server on your machine to live-preview changes in the component library
   * `NODE_ENV` is the environment to set for node.js
 

@@ -24,7 +24,7 @@
     "node_modules",
     "src/types/client/**/*",
     "src/mock-data/**/*",
-    "src/mockup-entry.ts",
+    "src/dev-entry.ts",
     "src/client/**/*",
     "src/client-entry.ts"
   ]
