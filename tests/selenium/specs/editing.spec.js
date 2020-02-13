@@ -14,7 +14,7 @@ describe( 'Termbox: editing', () => {
 	} );
 
 	afterEach( () => {
-		browser.deleteCookie();
+		browser.deleteAllCookies();
 	} );
 
 	describe( 'edit mode', () => {

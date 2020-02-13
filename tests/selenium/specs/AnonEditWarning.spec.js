@@ -3,6 +3,16 @@ const TermboxPage = require( '../pageobjects/Termbox.page' );
 const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 const LoginPage = require( 'wdio-mediawiki/LoginPage' );
 
+/**
+ * TODO use LoginPage.loginAdmin() compatible w/ wdio 5 from wdio-mediawiki v1.0.0+
+ */
+function loginAdmin() {
+	LoginPage.open();
+	$( '#wpName1' ).setValue( browser.config.username );
+	$( '#wpPassword1' ).setValue( browser.config.password );
+	$( '#wpLoginAttempt' ).click();
+}
+
 describe( 'Termbox: AnonEditWarning', () => {
 	let id;
 
@@ -16,12 +26,12 @@ describe( 'Termbox: AnonEditWarning', () => {
 	} );
 
 	afterEach( () => {
-		browser.deleteCookie();
+		browser.deleteAllCookies();
 	} );
 
 	it( 'shows the warning overlay for anonymous users when clicking the edit button', () => {
-		assert.ok( TermboxPage.anonEditWarning.isVisible() );
-		assert.ok( TermboxPage.anonEditWarningCheckbox.isVisible() );
+		assert.ok( TermboxPage.anonEditWarning.isDisplayed() );
+		assert.ok( TermboxPage.anonEditWarningCheckbox.isDisplayed() );
 	} );
 
 	it( 'can be dismissed', () => {
@@ -41,7 +51,7 @@ describe( 'Termbox: AnonEditWarning', () => {
 	} );
 
 	it( 'never appears for logged in users', () => {
-		LoginPage.loginAdmin();
+		loginAdmin();
 		TermboxPage.openItemPage( id );
 		TermboxPage.editButton.click();
 

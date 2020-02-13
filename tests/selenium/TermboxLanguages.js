@@ -13,7 +13,7 @@ module.exports = class TermboxLanguages {
 		browser.waitUntil( () => {
 			return browser.execute( () => {
 				return ( typeof window.mw.loader === 'object' && typeof window.mw.loader.using === 'function' );
-			} ).value === true;
+			} ) === true;
 		} );
 
 		return new this(
@@ -21,12 +21,12 @@ module.exports = class TermboxLanguages {
 				window.mw.loader.using( [ 'ext.uls.mediawiki', 'wikibase.getUserLanguages' ], () => {
 					done( window.wb.getUserLanguages() );
 				} );
-			} ).value,
+			} ),
 			browser.executeAsync( ( done ) => {
 				window.mw.loader.using( [ 'wikibase.WikibaseContentLanguages' ], () => {
 					done( new window.wb.WikibaseContentLanguages().getAllPairs() );
 				} );
-			} ).value
+			} )
 		);
 	}
 

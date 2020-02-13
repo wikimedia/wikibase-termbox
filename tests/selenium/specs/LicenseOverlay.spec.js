@@ -16,7 +16,7 @@ describe( 'Termbox: LicenseOverlay', () => {
 	} );
 
 	afterEach( () => {
-		browser.deleteCookie();
+		browser.deleteAllCookies();
 	} );
 
 	it( 'is shown when clicking publish', () => {
@@ -61,6 +61,6 @@ describe( 'Termbox: LicenseOverlay', () => {
 		TermboxPage.switchToEditModeSkipWarning();
 		TermboxPage.publishButton.click();
 
-		assert.ok( TermboxPage.licenseOverlay.isVisible() );
+		assert.ok( TermboxPage.licenseOverlay.isDisplayed() );
 	} );
 } );

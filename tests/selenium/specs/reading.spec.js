@@ -36,7 +36,7 @@ describe( 'Termbox: reading', () => {
 	} );
 
 	beforeEach( () => {
-		browser.deleteCookie();
+		browser.deleteAllCookies();
 		TermboxPage.openItemPage( id, useLangParam );
 	} );
 
@@ -70,25 +70,25 @@ describe( 'Termbox: reading', () => {
 		} );
 
 		it( 'has a collapse/expand button', () => {
-			assert.ok( TermboxPage.inMoreLanguagesButton.isVisible() );
+			assert.ok( TermboxPage.inMoreLanguagesButton.isDisplayed() );
 		} );
 
 		it( 'is expanded by default', () => {
-			assert.ok( TermboxPage.inMoreLanguages.isVisible() );
+			assert.ok( TermboxPage.inMoreLanguages.isDisplayed() );
 		} );
 
 		it( 'is collapsible, also hiding the "all entered languages" section', () => {
 			TermboxPage.inMoreLanguagesButton.click();
 
-			assert.strictEqual( TermboxPage.inMoreLanguages.isVisible(), false );
-			assert.strictEqual( TermboxPage.allEnteredLanguagesButton.isVisible(), false );
+			assert.strictEqual( TermboxPage.inMoreLanguages.isDisplayed(), false );
+			assert.strictEqual( TermboxPage.allEnteredLanguagesButton.isDisplayed(), false );
 		} );
 
 		it( 'expands again when clicking the button twice', () => {
 			TermboxPage.inMoreLanguagesButton.click();
 			TermboxPage.inMoreLanguagesButton.click();
 
-			assert.ok( TermboxPage.inMoreLanguages.isVisible() );
+			assert.ok( TermboxPage.inMoreLanguages.isDisplayed() );
 		} );
 
 		it( 'contains the expected languages with respective terms', () => {
@@ -117,23 +117,23 @@ describe( 'Termbox: reading', () => {
 		} );
 
 		it( 'is collapsed by default', () => {
-			assert.strictEqual( TermboxPage.allEnteredLanguages.isVisible(), false );
+			assert.strictEqual( TermboxPage.allEnteredLanguages.isDisplayed(), false );
 		} );
 
 		it( 'has a collapse/expand button', () => {
-			assert.ok( TermboxPage.allEnteredLanguagesButton.isVisible() );
+			assert.ok( TermboxPage.allEnteredLanguagesButton.isDisplayed() );
 		} );
 
 		it( 'is expandable', () => {
 			TermboxPage.allEnteredLanguagesButton.click();
-			assert.ok( TermboxPage.allEnteredLanguages.isVisible() );
+			assert.ok( TermboxPage.allEnteredLanguages.isDisplayed() );
 		} );
 
 		it( 'collapses again when clicking the button twice', () => {
 			TermboxPage.allEnteredLanguagesButton.click();
 			TermboxPage.allEnteredLanguagesButton.click();
 
-			assert.strictEqual( TermboxPage.allEnteredLanguages.isVisible(), false );
+			assert.strictEqual( TermboxPage.allEnteredLanguages.isDisplayed(), false );
 		} );
 
 		it( 'contains the expected languages with respective terms', () => {
