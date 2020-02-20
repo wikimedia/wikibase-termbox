@@ -46,7 +46,7 @@ export default (
 		} );
 	},
 
-	[ ENTITY_SAVE ]( context: ActionContext<EntityState, any> ): Promise<EntityRevision> {
+	[ ENTITY_SAVE ]( context: ActionContext<EntityState, any> ): Promise<void> {
 		return writingEntityRepository.saveEntity( new FingerprintableEntity(
 			context.state.id,
 			context.state.labels,
@@ -55,8 +55,6 @@ export default (
 		), context.state.baseRevision ).then( ( entityRevision: EntityRevision ) => {
 			context.commit( ENTITY_REVISION_UPDATE, entityRevision.revisionId );
 			context.commit( ENTITY_UPDATE, entityRevision.entity );
-
-			return entityRevision;
 		} );
 	},
 
