@@ -8,6 +8,7 @@
 		v-inlanguage="languageCode"
 		v-model="value"
 		:maxlength="config.textFieldCharacterLimit"
+		autocapitalize="off"
 	/>
 </template>
 
