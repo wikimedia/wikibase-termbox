@@ -43,7 +43,7 @@ These environment variables can be distinguished in two groups - some are releva
 
     Recommendation is to use termbox in conjunction with [addshore/mediawiki-docker-dev](https://github.com/addshore/mediawiki-docker-dev/).
 
-    Check via `docker network ls` for the name, [by default](https://docs.docker.com/compose/networking/) it is derived from your mediawiki development project, e.g. `addshoremediawikidockerdev_default`.
+    Check via `docker network ls` for the name, [by default](https://docs.docker.com/compose/networking/) it is derived from your mediawiki development project, e.g. `mediawiki-docker-dev_dps`.
 
     The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file> to get HTML, in turn the SSR services calls <WIKIBASE_REPO> to [get essential information](./src/server/data-access).
 
@@ -63,11 +63,15 @@ docker-compose run --rm node npm install
 
 ### Configuring Wikibase
 In order to have this termbox displayed in Wikibase entity pages Wikibase need to be configured.
-For details see: [options.wiki](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/docs/options.wiki) (search for "termbox")
+For details see: [options.md](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/92be486/docs/topics/options.md#Termbox-SSR)
 
-For development in particular set
+For development in particular set the following in your LocalSettings.php
 
-* `ssrServerUrl` to http://node-ssr:<SSR_PORT from your .env file> as explained in the Development level environment variables section.
+```php
+$wgWBRepoSettings['termboxEnabled'] = true;
+$wgWBRepoSettings['termboxUserSpecificSsrEnabled'] = true;
+$wgWBRepoSettings['ssrServerUrl'] = 'http://node-ssr:3030/termbox';
+```
 
 Right now the new termbox is also only visible with the MinervaNeue skin enabled which requires MobileFrontend. Hence you may need to clone and enable these in LocalSettings.php e.g.:
 
