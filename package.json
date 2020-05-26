@@ -68,7 +68,7 @@
     "@vue/server-test-utils": "^1.0.0-beta.29",
     "@vue/test-utils": "^1.0.0-beta.29",
     "@wmde/eslint-config-wikimedia-typescript": "^0.1.1",
-    "@wmde/wikibase-vuejs-components": "^0.1.2",
+    "@wmde/wikibase-vuejs-components": "^0.1.9",
     "axios-mock-adapter": "^1.17.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
