@@ -22,6 +22,7 @@
 				<component
 					:is="editMode ? 'DescriptionEdit' : 'Description'"
 					:description="getDescriptionByLanguage( languageCode )"
+					@input="onEditDescription"
 					:language-code="editMode ? languageCode : null"
 					class="wb-ui-monolingualfingerprintview__description-inner"
 				/>
@@ -54,7 +55,7 @@ import Aliases from '@/components/Aliases.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
+import { ENTITY_DESCRIPTION_EDIT, ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
 import Term from '@/datamodel/Term';
 
 @Component( {
@@ -88,6 +89,9 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 
 	@namespace( NS_ENTITY ).Action( ENTITY_LABEL_EDIT )
 	public onEditLabel!: ( term: Term ) => void;
+
+	@namespace( NS_ENTITY ).Action( ENTITY_DESCRIPTION_EDIT )
+	public onEditDescription!: ( term: Term ) => void;
 
 }
 </script>

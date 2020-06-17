@@ -15,7 +15,7 @@ import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
 import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 import emptyServices from '../emptyServices';
-import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
+import { ENTITY_DESCRIPTION_EDIT, ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
 
 function createMinimalStoreWithLanguage( languageCode: string ) {
 	const store = createStore( emptyServices as any );
@@ -118,6 +118,25 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			expect( store.dispatch )
 				.toHaveBeenCalledWith( action( NS_ENTITY, ENTITY_LABEL_EDIT ), newValue );
 		} );
+	} );
+
+	it( 'triggers ENTITY_DESCRIPTION_EDIT on description edits', () => {
+		const store = createStore( emptyServices as any );
+		store.dispatch = jest.fn();
+		store.commit( EDITMODE_SET, true );
+
+		const languageCode = 'de';
+		const wrapper = shallowMount( MonolingualFingerprintView, {
+			store,
+			propsData: { languageCode },
+		} );
+
+		const newValue = { language: languageCode, value: 'newValue' };
+		const descriptionEdit = wrapper.find( DescriptionEdit );
+		descriptionEdit.vm.$emit( 'input', newValue );
+
+		expect( store.dispatch )
+			.toHaveBeenCalledWith( action( NS_ENTITY, ENTITY_DESCRIPTION_EDIT ), newValue );
 	} );
 
 	describe( 'primary Fingerprint', () => {
