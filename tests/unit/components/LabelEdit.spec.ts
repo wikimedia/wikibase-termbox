@@ -2,11 +2,10 @@ import LabelEdit from '@/components/LabelEdit.vue';
 import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
-import { action, mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
-import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
+import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
+import { NS_LANGUAGE } from '@/store/namespaces';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
-import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
@@ -39,7 +38,7 @@ describe( 'LabelEdit', () => {
 		expect( wrapper.find( ResizingTextField ).props( 'value' ) ).toBe( label );
 	} );
 
-	it( `triggers ${ENTITY_LABEL_EDIT} when the label is edited`, () => {
+	it( 'emits input event when the label is edited', () => {
 		const language = 'en';
 
 		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
@@ -53,11 +52,9 @@ describe( 'LabelEdit', () => {
 		} );
 		const newLabel = 'hello';
 		wrapper.find( ResizingTextField ).vm.$emit( 'input', newLabel );
+		expect( wrapper.emitted( 'input' ) ).toHaveLength( 1 );
+		expect( wrapper.emitted( 'input' )[ 0 ][ 0 ] ).toEqual( { language, value: newLabel } );
 
-		expect( store.dispatch ).toHaveBeenCalledWith(
-			action( NS_ENTITY, ENTITY_LABEL_EDIT ),
-			{ language, value: newLabel },
-		);
 	} );
 
 	it( 'has an isPrimary prop', () => {

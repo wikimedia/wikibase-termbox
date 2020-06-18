@@ -13,6 +13,7 @@
 			<component
 				:is="editMode ? 'LabelEdit' : 'Label'"
 				:label="getLabelByLanguage( languageCode )"
+				@input="onEditLabel"
 				:is-primary="isPrimary"
 				:language-code="editMode ? languageCode : null"
 				class="wb-ui-monolingualfingerprintview__label-wrapper"
@@ -52,6 +53,9 @@ import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import Aliases from '@/components/Aliases.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
 import { Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
+import Term from '@/datamodel/Term';
 
 @Component( {
 	components: {
@@ -81,6 +85,9 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 
 	@Prop( { required: false, default: false, type: Boolean } )
 	public isPrimary!: boolean;
+
+	@namespace( NS_ENTITY ).Action( ENTITY_LABEL_EDIT )
+	public onEditLabel!: ( term: Term ) => void;
 
 }
 </script>
