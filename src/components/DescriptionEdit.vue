@@ -11,12 +11,9 @@
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
-import { NS_ENTITY } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import { Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import Term from '@/datamodel/Term';
-import { ENTITY_DESCRIPTION_EDIT } from '@/store/entity/actionTypes';
 import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 
 @Component( {
@@ -29,9 +26,6 @@ export default class DescriptionEdit extends mixins( Messages ) {
 	@Prop( { required: true, type: String } )
 	public languageCode!: string;
 
-	@namespace( NS_ENTITY ).Action( ENTITY_DESCRIPTION_EDIT )
-	public editDescription!: ( value: Term ) => void;
-
 	public get value(): string {
 		if ( !this.description ) {
 			return '';
@@ -41,7 +35,7 @@ export default class DescriptionEdit extends mixins( Messages ) {
 	}
 
 	public set value( value ) {
-		this.editDescription( { language: this.languageCode, value } );
+		this.$emit( 'input', { language: this.languageCode, value } );
 	}
 }
 </script>
