@@ -12,9 +12,8 @@ import {
 	ENTITY_ROLLBACK,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
-import Fingerprintable from '@/datamodel/Fingerprintable';
+import { Fingerprintable, Term } from '@wmde/wikibase-datamodel-types';
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import Term from '@/datamodel/Term';
 
 function getFingerprintProperties( source: Fingerprintable ): Fingerprintable {
 	return {

@@ -23,7 +23,7 @@ import {
 	ENTITY_REMOVE_ALIAS,
 	ENTITY_ROLLBACK as ENTITY_ROLLBACK_MUTATION,
 } from '@/store/entity/mutationTypes';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 import EntityRevision from '@/datamodel/EntityRevision';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

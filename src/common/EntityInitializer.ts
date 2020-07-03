@@ -1,6 +1,6 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityInitializerInterface from './EntityInitializerInterface';
-import Fingerprintable from '@/datamodel/Fingerprintable';
+import { Fingerprintable } from '@wmde/wikibase-datamodel-types';
 
 export default class EntityInitializer implements EntityInitializerInterface {
 

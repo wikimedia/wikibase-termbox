@@ -22,7 +22,7 @@ import OpenAPIRequestCoercer from 'openapi-request-coercer';
 import OpenAPIRequestValidator from 'openapi-request-validator';
 import Metrics from '@/server/Metrics';
 import qs from 'querystring';
-import TermList from '@/datamodel/TermList';
+import { TermList } from '@wmde/wikibase-datamodel-types';
 import MessageCollection from '@/datamodel/MessageCollection';
 
 /**

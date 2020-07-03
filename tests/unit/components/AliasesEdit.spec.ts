@@ -10,7 +10,7 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
 import newFingerprintable from '../../newFingerprintable';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';

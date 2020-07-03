@@ -1,5 +1,5 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 
 function stringListToTermListMap( values: { [ language: string ]: string[] } ) {
 	const aliases: { [ language: string ]: Term[] } = {};

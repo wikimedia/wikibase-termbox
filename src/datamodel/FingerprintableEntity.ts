@@ -1,6 +1,5 @@
-import TermList from '@/datamodel/TermList';
-import AliasesList from '@/datamodel/AliasesList';
-import Fingerprintable from '@/datamodel/Fingerprintable';
+import { AliasesList, TermList } from '@wmde/wikibase-datamodel-types';
+import { Fingerprintable } from '@wmde/wikibase-datamodel-types';
 
 export default class FingerprintableEntity implements Fingerprintable {
 	public readonly id: string;

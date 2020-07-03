@@ -17,7 +17,7 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 import { Prop } from 'vue-property-decorator';
 
 @Component

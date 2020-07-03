@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex';
 import EntityState from '@/store/entity/EntityState';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 
 export const getters: GetterTree<EntityState, any> = {
 	getLabelByLanguage: ( state: EntityState ) => ( languageCode: string ): Term | null => {

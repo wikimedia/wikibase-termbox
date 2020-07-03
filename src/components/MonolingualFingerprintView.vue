@@ -56,7 +56,7 @@ import AliasesEdit from '@/components/AliasesEdit.vue';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { ENTITY_DESCRIPTION_EDIT, ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 
 @Component( {
 	components: {

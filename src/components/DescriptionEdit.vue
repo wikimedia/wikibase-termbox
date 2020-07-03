@@ -13,7 +13,7 @@
 import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
 import { Prop } from 'vue-property-decorator';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 
 @Component( {

@@ -1,4 +1,4 @@
-import Fingerprintable from '@/datamodel/Fingerprintable';
+import { Fingerprintable } from '@wmde/wikibase-datamodel-types';
 
 interface EntityState extends Fingerprintable {
 	id: string;

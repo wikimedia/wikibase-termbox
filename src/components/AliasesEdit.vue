@@ -25,7 +25,7 @@ import { NS_ENTITY } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import Term from '@/datamodel/Term';
+import { Term } from '@wmde/wikibase-datamodel-types';
 import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
 
