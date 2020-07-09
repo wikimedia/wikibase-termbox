@@ -101,7 +101,7 @@
     "ts-jest": "^23.10.5",
     "typescript": "^3.5.3",
     "url-search-params-polyfill": "^5.1.0",
-    "vue": "^2.6.11",
+    "vue": "2.6.11",
     "vue-class-component": "^6.3.2",
     "vue-property-decorator": "^7.3.0",
     "vue-template-compiler": "^2.6.11",

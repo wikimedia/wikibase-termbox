@@ -20,10 +20,22 @@ if ( process.env.WIKIBASE_REPO ) {
 	repoProtocol = repoUrl.protocol;
 }
 
+/**
+ * In production libraries may be provided by ResourceLoader
+ * to allow their caching across applications,
+ * in dev and on server mode it is still webpack's job to make them available
+ */
+function externals() {
+	return DEV_MODE || TARGET_NODE ? [] : [
+		'vue',
+	];
+}
+
 module.exports = {
 	outputDir: TARGET_NODE ? 'serverDist' : 'dist',
 	configureWebpack: () => ( {
 		entry: DEV_MODE ? [ './src/dev-entry.ts', `./src/${target}-entry.ts` ] : `./src/${target}-entry.ts`,
+		externals: externals(),
 		target: TARGET_NODE ? 'node' : 'web',
 		node: TARGET_NODE ? undefined : false,
 		plugins: [
