@@ -117,7 +117,7 @@ export default class MonolingualFingerprintView extends mixins( Messages ) {
 	&__aliases-wrapper {
 		min-width: 244px;
 		max-width: 420px;
-		margin-top: 0.5rem;
+		margin-top: $base-font-size / 2;
 	}
 
 	&:not( &--editing ) {

@@ -142,7 +142,7 @@ describe( 'LicenseAgreement', () => {
 		expect( mockSetPreference ).toHaveBeenCalledWith( expect.anything(), {
 			name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
 			value: copyrightVersion,
-		}, undefined );
+		} );
 	} );
 
 	it( 'unsets the "remember my choice" preference when unchecking the checkbox and clicking publish', () => {
@@ -165,6 +165,6 @@ describe( 'LicenseAgreement', () => {
 		expect( mockSetPreference ).toHaveBeenCalledWith( expect.anything(), {
 			name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
 			value: null,
-		}, undefined );
+		} );
 	} );
 } );

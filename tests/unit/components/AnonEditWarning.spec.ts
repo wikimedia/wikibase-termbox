@@ -166,7 +166,6 @@ describe( 'AnonEditWarning', () => {
 					name: UserPreference.HIDE_ANON_EDIT_WARNING,
 					value: true,
 				},
-				undefined,
 			);
 		} );
 
@@ -194,7 +193,6 @@ describe( 'AnonEditWarning', () => {
 					name: UserPreference.HIDE_ANON_EDIT_WARNING,
 					value: false,
 				},
-				undefined,
 			);
 		} );
 	} );
