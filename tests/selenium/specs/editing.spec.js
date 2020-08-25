@@ -52,8 +52,8 @@ describe( 'Termbox: editing', () => {
 			)[ 0 ];
 			assert.strictEqual( primaryFingerprint.label.getText(), label );
 			assert.strictEqual( primaryFingerprint.description.getText(), description );
-			assert.strictEqual( primaryFingerprint.aliases[ 0 ].getText(), alias1 );
-			assert.strictEqual( primaryFingerprint.aliases[ 1 ].getText(), alias2 );
+			assert.strictEqual( primaryFingerprint.aliases[ 0 ].getText().trim(), alias1 );
+			assert.strictEqual( primaryFingerprint.aliases[ 1 ].getText().trim(), alias2 );
 		} );
 
 		it( 'shows an error banner when an edit fails to save when the entity was protected while editing', () => {
