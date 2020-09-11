@@ -109,11 +109,8 @@ blubber .pipeline/blubber.yaml test > Dockerfile
 docker build -t wmde/wikibase-termbox-test .
 docker run --rm wmde/wikibase-termbox-test
 ```
-### Browser tests
 
-Termbox browser tests are part of the Wikibase Repo test suite and test the functionality in integration with Wikibase. To run the tests locally follow the [instructions for running the Wikibase Repo browser tests](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/refs/heads/master/repo/tests/selenium/README.md).
-
-The browser tests are currently not executed in CI jobs for this repository. Instead, the tests of the [Termbox version tagged inside Wikibase](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/refs/heads/master/view/lib/wikibase-termbox) run with the rest of Wikibase's browser test suite for all patches to its code repository.
+To read more about tests, and the intricacies of browser tests in particular, see [`docs/tests.md`](./docs/tests.md)
 
 ### Vue CLI
 
