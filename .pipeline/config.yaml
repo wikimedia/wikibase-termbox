@@ -22,4 +22,4 @@ pipelines:
         build: production
         publish:
           image: true
-
+          tags: [latest]
