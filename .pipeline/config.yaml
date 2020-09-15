@@ -1,0 +1,33 @@
+pipelines:
+  test:
+    blubberfile: blubber.yaml
+    stages:
+      - name: test
+      - name: candidate
+        build: production
+
+  rehearse:
+    blubberfile: blubber.yaml
+    stages:
+      - name: test
+      - name: candidate
+        build: production
+        publish:
+          image: true
+      - name: rehearsal
+        deploy:
+          chart:
+            name: termbox
+          image: '${candidate.imageName}'
+          tag: '${candidate.imageTag}'
+          test: true
+
+  publish:
+    blubberfile: blubber.yaml
+    stages:
+      - name: production
+        build: production
+        publish:
+          image:
+            id: '${candidate.imageID}'
+
