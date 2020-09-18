@@ -14,13 +14,6 @@ pipelines:
         build: production
         publish:
           image: true
-      - name: rehearsal
-        deploy:
-          chart:
-            name: termbox
-          image: '${candidate.imageName}'
-          tag: '${candidate.imageTag}'
-          test: true
 
   publish:
     blubberfile: blubber.yaml
