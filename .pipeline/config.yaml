@@ -21,6 +21,5 @@ pipelines:
       - name: production
         build: production
         publish:
-          image:
-            id: '${candidate.imageID}'
+          image: true
 
