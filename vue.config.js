@@ -44,9 +44,7 @@ module.exports = {
 				: new VueSSRClientPlugin(),
 		],
 		output: {
-			libraryTarget: TARGET_NODE
-				? 'commonjs2'
-				: undefined,
+			libraryTarget: DEV_MODE ? undefined : 'commonjs2',
 			filename: `${filePrefix}[name].js`,
 		},
 		optimization: {
