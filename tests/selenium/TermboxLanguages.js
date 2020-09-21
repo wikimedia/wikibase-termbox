@@ -8,7 +8,13 @@ module.exports = class TermboxLanguages {
 	}
 
 	static initWithUseLang( language ) {
-		( new Page() ).openTitle( '', { uselang: language } );
+		( new Page() ).openTitle(
+			// We're intentionally opening an Item page that does not (need to) exist. This page is only opened to call
+			// `wikibase.getUserLanguages` which accesses a JS config variable that only exists on pages that run
+			// Wikibase's OutputPageBeforeHTML hook handler.
+			'Item:Q123',
+			{ uselang: language }
+		);
 
 		browser.waitUntil( () => {
 			return browser.execute( () => {
