@@ -21,5 +21,6 @@ pipelines:
       - name: production
         build: production
         publish:
-          image: true
-          tags: [latest]
+          image:
+            id: '${.imageID}'
+            tags: [latest]
