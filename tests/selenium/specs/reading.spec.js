@@ -15,7 +15,7 @@ function assertMonolingualFingerprintHasTermsInLanguage( elements, expectedTerms
 	);
 	expectedTerms.aliases[ language ].forEach( ( { value: alias }, j ) => {
 		assert.strictEqual(
-			elements.aliases[ j ].getText(),
+			elements.aliases[ j ].getText().trim(),
 			alias
 		);
 	} );

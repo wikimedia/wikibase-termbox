@@ -114,7 +114,7 @@ class TermboxPage extends Page {
 	}
 
 	waitUntilSaved() {
-		this.editButton.waitForExist( 3000 );
+		this.editButton.waitForExist( { timeout: 3000 } );
 	}
 
 }

@@ -37,7 +37,7 @@ describe( 'Termbox: AnonEditWarning', () => {
 		TermboxPage.waitForTermboxToLoad();
 		TermboxPage.editButton.click();
 
-		assert.ok( TermboxPage.anonEditWarning.waitForExist( null, true ) );
+		assert.ok( TermboxPage.anonEditWarning.waitForExist( { reverse: true } ) );
 	} );
 
 	it( 'never appears for logged in users', () => {
@@ -45,7 +45,7 @@ describe( 'Termbox: AnonEditWarning', () => {
 		TermboxPage.openItemPage( id );
 		TermboxPage.editButton.click();
 
-		assert.ok( TermboxPage.anonEditWarning.waitForExist( null, true ) );
+		assert.ok( TermboxPage.anonEditWarning.waitForExist( { reverse: true } ) );
 	} );
 
 } );
