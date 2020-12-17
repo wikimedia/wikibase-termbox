@@ -15,6 +15,7 @@
     "test:lint": "vue-cli-service lint --no-fix --max-warnings 0 . && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "vue-cli-service test:unit",
     "test:distnodiff": "npm run build -- --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.main.js /tmp/dist/wikibase.termbox.main.js",
+    "test:mwlibs": "node tests/mwlibs.js",
     "storybook": "start-storybook",
     "storybook:build": "build-storybook -o docs/ui"
   },
@@ -91,6 +92,7 @@
     "npm-run-all": "^4.1.5",
     "postcss-prefixwrap": "^1.16.0",
     "reset-css": "^4.0.1",
+    "require-from-url": "^3.1.3",
     "sass-loader": "^7.3.1",
     "sast": "^0.8.1",
     "stylelint": "^9.10.1",
