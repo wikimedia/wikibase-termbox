@@ -7,7 +7,7 @@ import { MessageKey } from '@/common/MessageKey';
 
 describe( 'AllEnteredLanguagesExpandable', () => {
 
-	it( 'has a switch button', () => {
+	it( 'has a switch button', async () => {
 		const buttonTextCollapsed = 'all entered languages';
 		const buttonTextExpanded = 'fewer languages';
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
@@ -17,45 +17,46 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			} ) ],
 		} );
 
-		const switchButton = wrapper.find( { ref: 'allEnteredLanguagesSwitch' } );
+		const switchButton = wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } );
 		expect( switchButton.exists() ).toBeTruthy();
 		expect( switchButton.text() ).toBe( buttonTextCollapsed );
 
-		switchButton.trigger( 'click' );
+		await switchButton.trigger( 'click' );
+
 		expect( switchButton.exists() ).toBeTruthy();
 		expect( switchButton.text() ).toBe( buttonTextExpanded );
 	} );
 
-	it( 'expands and collapses all entered languages on consecutive clicks on switch button', () => {
+	it( 'expands and collapses all entered languages on consecutive clicks on switch button', async () => {
 		const wrapper = shallowMount(
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin() ] },
 		);
-		const switchButton = wrapper.find( { ref: 'allEnteredLanguagesSwitch' } );
+		const switchButton = wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } );
 
-		switchButton.trigger( 'click' );
+		await switchButton.trigger( 'click' );
 
-		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( AllEnteredLanguages ).exists() ).toBeTruthy();
 
-		switchButton.trigger( 'click' );
+		await switchButton.trigger( 'click' );
 
-		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( AllEnteredLanguages ).exists() ).toBeFalsy();
 	} );
 
-	it( 'has close button after being expanded', () => {
+	it( 'has close button after being expanded', async () => {
 		const buttonText = 'fewer languages';
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
 			mixins: [ mockMessageMixin( { [ MessageKey.FEWER_LANGUAGES ]: buttonText } ) ],
 		} );
 
-		wrapper.find( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
+		await wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
 
-		const closeButton = wrapper.find( { ref: 'allEnteredLanguagesClose' } );
+		const closeButton = wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } );
 		expect( closeButton.exists() ).toBeTruthy();
 		expect( closeButton.text() ).toBe( buttonText );
 	} );
 
-	it( 'collapses and hides close button when close button clicked', () => {
+	it( 'collapses and hides close button when close button clicked', async () => {
 		// scroll* functions are not defined in JSDOM, need to mock it
 		Element.prototype.scrollIntoView = jest.fn();
 
@@ -63,11 +64,11 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			mixins: [ mockMessageMixin() ],
 		} );
 
-		wrapper.find( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
-		wrapper.find( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
+		await wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
+		await wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
 
-		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
-		expect( wrapper.find( { ref: 'allEnteredLanguagesClose' } ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( AllEnteredLanguages ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } ).exists() ).toBeFalsy();
 	} );
 
 	it( 'scrolls to switch button and focuses on it when close button clicked', async () => {
@@ -78,12 +79,11 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			mixins: [ mockMessageMixin() ],
 		} );
 
-		const switchButton = wrapper.find( { ref: 'allEnteredLanguagesSwitch' } );
+		const switchButton = wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } );
 		const switchButtonScrollIntoViewSpy = jest.spyOn( switchButton.element, 'scrollIntoView' );
-		switchButton.trigger( 'click' );
+		await switchButton.trigger( 'click' );
 
-		wrapper.find( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
+		await wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
 
 		expect( document.activeElement ).toBe( switchButton.element );
 		expect( switchButtonScrollIntoViewSpy ).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin() ] },
 		);
-		expect( wrapper.find( AllEnteredLanguages ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( AllEnteredLanguages ).exists() ).toBeFalsy();
 	} );
 
 	it( 'is not shown when rendered on the server', () => {

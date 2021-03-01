@@ -18,7 +18,7 @@ describe( 'EventEmittingButton', () => {
 		wrapper.find( 'a' ).trigger( 'click' );
 		const clickEvent = wrapper.emitted( 'click' );
 		expect( clickEvent ).toBeTruthy();
-		const originalEvent: MouseEvent = clickEvent[ 0 ][ 0 ];
+		const originalEvent = clickEvent![ 0 ][ 0 ];
 		expect( originalEvent ).toBeInstanceOf( MouseEvent );
 		expect( originalEvent.defaultPrevented ).toBeTruthy();
 	} );
@@ -30,9 +30,9 @@ describe( 'EventEmittingButton', () => {
 		wrapper.find( 'a' ).trigger( 'click' );
 		const clickEvent = wrapper.emitted( 'click' );
 		expect( clickEvent ).toBeTruthy();
-		const originalEvent: MouseEvent = clickEvent[ 0 ][ 0 ];
+		const originalEvent = clickEvent![ 0 ][ 0 ];
 		expect( originalEvent ).toBeInstanceOf( MouseEvent );
-		expect( originalEvent.defaultPrevented ).toBeFalsy();
+		expect( originalEvent!.defaultPrevented ).toBeFalsy();
 	} );
 
 	it( 'can have a link target', () => {

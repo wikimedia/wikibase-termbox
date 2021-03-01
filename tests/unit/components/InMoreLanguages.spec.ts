@@ -1,7 +1,7 @@
 import InMoreLanguages from '@/components/InMoreLanguages.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import AllEnteredLanguagesExpandable from '@/components/AllEnteredLanguagesExpandable.vue';
-import { shallowMount, WrapperArray } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import { SECONDARY_LANGUAGES_INIT } from '@/store/user/mutationTypes';
 import { createStore } from '@/store';
 import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
@@ -17,7 +17,7 @@ describe( 'InMoreLanguages', () => {
 		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), secondaryLanguages );
 
 		const wrapper = shallowMount( InMoreLanguages, { store } );
-		const fingerprints: WrapperArray<MonolingualFingerprintView> = wrapper.findAll( MonolingualFingerprintView );
+		const fingerprints = wrapper.findAllComponents( MonolingualFingerprintView );
 
 		expect( fingerprints ).toHaveLength( 3 );
 
@@ -30,7 +30,7 @@ describe( 'InMoreLanguages', () => {
 		const store = createStore( emptyServices as any );
 		const wrapper = shallowMount( InMoreLanguages, { store } );
 
-		expect( wrapper.find( AllEnteredLanguagesExpandable ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( AllEnteredLanguagesExpandable ).exists() ).toBeTruthy();
 	} );
 
 } );

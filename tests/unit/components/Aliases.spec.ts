@@ -66,7 +66,7 @@ describe( 'Aliases', () => {
 			store,
 		} );
 
-		expect( wrapper.find( '.wb-ui-aliases--placeholder' ).isEmpty() ).toBeTruthy();
+		expect( wrapper.find( '.wb-ui-aliases--placeholder' ).element.children ).toHaveLength( 0 );
 	} );
 
 	it( 'delegates language attribute rendering to the v-inlanguage directive', () => {

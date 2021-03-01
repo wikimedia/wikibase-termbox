@@ -35,7 +35,7 @@ describe( 'LabelEdit', () => {
 			store,
 		} );
 
-		expect( wrapper.find( ResizingTextField ).props( 'value' ) ).toBe( label );
+		expect( wrapper.findComponent( ResizingTextField ).props( 'value' ) ).toBe( label );
 	} );
 
 	it( 'emits input event when the label is edited', () => {
@@ -51,9 +51,9 @@ describe( 'LabelEdit', () => {
 			store,
 		} );
 		const newLabel = 'hello';
-		wrapper.find( ResizingTextField ).vm.$emit( 'input', newLabel );
+		wrapper.findComponent( ResizingTextField ).vm.$emit( 'input', newLabel );
 		expect( wrapper.emitted( 'input' ) ).toHaveLength( 1 );
-		expect( wrapper.emitted( 'input' )[ 0 ][ 0 ] ).toEqual( { language, value: newLabel } );
+		expect( wrapper.emitted( 'input' )![ 0 ][ 0 ] ).toEqual( { language, value: newLabel } );
 
 	} );
 
@@ -84,7 +84,7 @@ describe( 'LabelEdit', () => {
 			],
 		} );
 
-		expect( wrapper.find( ResizingTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
+		expect( wrapper.findComponent( ResizingTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
 	} );
 
 	it( 'passes a maxlength down', () => {
@@ -101,7 +101,7 @@ describe( 'LabelEdit', () => {
 				} as ConfigOptions ) ],
 		} );
 
-		expect( wrapper.find( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
+		expect( wrapper.findComponent( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 	} );
 
 	describe( 'directionality and language code', () => {

@@ -12,7 +12,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 	it( 'should show the user\'s secondary languages by default', () => {
 		const store = createStore( emptyServices as any );
 		const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
-		expect( wrapper.find( InMoreLanguages ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( InMoreLanguages ).exists() ).toBeTruthy();
 	} );
 
 	describe( 'toggle button', () => {
@@ -26,12 +26,13 @@ describe( 'InMoreLanguagesExpandable', () => {
 				.toBe( expectedLinkText );
 		} );
 
-		it( 'toggle collapses/expands the user\'s secondary languages on click', () => {
+		it( 'toggle collapses/expands the user\'s secondary languages on click', async () => {
 			const store = createStore( emptyServices as any );
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { store } );
-			wrapper.find( '.wb-ui-in-more-languages-expandable__switch' ).trigger( 'click' );
 
-			expect( wrapper.find( InMoreLanguages ).exists() ).toBeFalsy();
+			await wrapper.find( '.wb-ui-in-more-languages-expandable__switch' ).trigger( 'click' );
+
+			expect( wrapper.findComponent( InMoreLanguages ).exists() ).toBeFalsy();
 		} );
 	} );
 

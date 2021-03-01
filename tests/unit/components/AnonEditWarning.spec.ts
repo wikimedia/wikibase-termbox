@@ -20,8 +20,16 @@ import emptyServices from '../emptyServices';
 const LOGIN_URL = '/login';
 const SIGNUP_URL = '/signup';
 
-function createStoreWithLinks() {
-	const store = createStore( emptyServices as any );
+function createStoreWithLinksAndMockPreferenceAction( persistPreferenceAction = jest.fn() ) {
+	const store = hotUpdateDeep( createStore( emptyServices as any ), {
+		modules: {
+			[ NS_USER ]: {
+				actions: {
+					[ USER_PREFERENCE_SET ]: persistPreferenceAction,
+				},
+			},
+		},
+	} );
 	store.commit( mutation( NS_LINKS, LINKS_UPDATE ), { loginLinkUrl: LOGIN_URL, signUpLinkUrl: SIGNUP_URL } );
 	return store;
 }
@@ -50,22 +58,19 @@ describe( 'AnonEditWarning', () => {
 			} ) ],
 		} );
 
-		expect( wrapper.find( IconMessageBox ).props( 'type' ) ).toBe( 'warning' );
-		expect( wrapper.find( IconMessageBox ).text() ).toBe( expectedMessage );
+		expect( wrapper.findComponent( IconMessageBox ).props( 'type' ) ).toBe( 'warning' );
+		expect( wrapper.findComponent( IconMessageBox ).text() ).toBe( expectedMessage );
 	} );
 
 	it( 'has a login button acting as link that also causes preference persistence', () => {
 		const buttonLabel = 'login';
-		const persistUserPreference = jest.fn();
+		const mockUserPreferenceSet = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStoreWithLinks(),
+			store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.LOGIN ]: buttonLabel,
 			} ) ],
-			methods: {
-				persistUserPreference,
-			},
 		} );
 		const button = wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' );
 
@@ -74,21 +79,18 @@ describe( 'AnonEditWarning', () => {
 		expect( button.props( 'preventDefault' ) ).toBe( false );
 
 		button.trigger( 'click' );
-		expect( persistUserPreference ).toHaveBeenCalled();
+		expect( mockUserPreferenceSet ).toHaveBeenCalled();
 	} );
 
 	it( 'has a sign-up button acting as link that also causes preference persistence', () => {
 		const buttonLabel = 'sign up';
-		const persistUserPreference = jest.fn();
+		const mockUserPreferenceSet = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStoreWithLinks(),
+			store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.CREATE_ACCOUNT ]: buttonLabel,
 			} ) ],
-			methods: {
-				persistUserPreference,
-			},
 		} );
 		const button = wrapper.find( '.wb-ui-event-emitting-button--framelessProgressive' );
 
@@ -97,21 +99,18 @@ describe( 'AnonEditWarning', () => {
 		expect( button.props( 'preventDefault' ) ).toBe( false );
 
 		button.trigger( 'click' );
-		expect( persistUserPreference ).toHaveBeenCalled();
+		expect( mockUserPreferenceSet ).toHaveBeenCalled();
 	} );
 
 	it( 'has a dismiss button that emits an event and also causes preference persistence', () => {
 		const buttonLabel = 'edit w/o login';
-		const persistUserPreference = jest.fn();
+		const mockPreferenceSet = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStore( emptyServices as any ),
+			store: createStoreWithLinksAndMockPreferenceAction( mockPreferenceSet ),
 			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_DISMISS_BUTTON ]: buttonLabel,
 			} ) ],
-			methods: {
-				persistUserPreference,
-			},
 		} );
 
 		const button = wrapper.find( '.wb-ui-event-emitting-button--normal' );
@@ -119,19 +118,19 @@ describe( 'AnonEditWarning', () => {
 
 		button.trigger( 'click' );
 		expect( wrapper.emitted( 'dismiss' ) ).toBeTruthy();
-		expect( persistUserPreference ).toHaveBeenCalled();
+		expect( mockPreferenceSet ).toHaveBeenCalled();
 	} );
 
 	it( 'has a checkbox that is checked by default', () => {
 		const wrapper = shallowMount( AnonEditWarning, { store: createStore( emptyServices as any ) } );
 
-		expect( wrapper.find( Checkbox ).props( 'value' ) ).toBeTruthy();
+		expect( wrapper.findComponent( Checkbox ).props( 'value' ) ).toBeTruthy();
 	} );
 
 	it( 'is focused', () => {
 		const focus = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStoreWithLinks(),
+			store: createStoreWithLinksAndMockPreferenceAction(),
 			directives: {
 				focus,
 			},
@@ -144,15 +143,7 @@ describe( 'AnonEditWarning', () => {
 		it( 'as true when warnRecurringly is false', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: hotUpdateDeep( createStore( emptyServices as any ), {
-					modules: {
-						[ NS_USER ]: {
-							actions: {
-								[ USER_PREFERENCE_SET ]: mockUserPreferenceSet,
-							},
-						},
-					},
-				} ),
+				store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
 				data: () => ( {
 					warnRecurringly: false,
 				} ),
@@ -172,15 +163,7 @@ describe( 'AnonEditWarning', () => {
 		it( 'as false when warnRecurringly is true', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: hotUpdateDeep( createStore( emptyServices as any ), {
-					modules: {
-						[ NS_USER ]: {
-							actions: {
-								[ USER_PREFERENCE_SET ]: mockUserPreferenceSet,
-							},
-						},
-					},
-				} ),
+				store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
 				data: () => ( {
 					warnRecurringly: true,
 				} ),

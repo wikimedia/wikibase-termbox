@@ -40,6 +40,6 @@ describe( 'Checkbox', () => {
 	it( 'sets the checkbox state from the `value` prop', () => {
 		const value = true;
 		const wrapper = shallowMountWithProps( { value } );
-		expect( ( wrapper.find( 'input' ).is( ':checked' ) ) ).toBe( value );
+		expect( ( wrapper.find( 'input' ).element as HTMLInputElement ).checked ).toBe( value );
 	} );
 } );

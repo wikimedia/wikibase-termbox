@@ -35,7 +35,7 @@ describe( 'DescriptionEdit', () => {
 			store,
 		} );
 
-		const textField = wrapper.find( ResizingTextField );
+		const textField = wrapper.findComponent( ResizingTextField );
 		expect( textField.props( 'value' ) ).toBe( description );
 
 	} );
@@ -53,10 +53,10 @@ describe( 'DescriptionEdit', () => {
 			store,
 		} );
 		const newDescription = 'a new description';
-		wrapper.find( ResizingTextField ).vm.$emit( 'input', newDescription );
+		wrapper.findComponent( ResizingTextField ).vm.$emit( 'input', newDescription );
 
 		expect( wrapper.emitted( 'input' ) ).toHaveLength( 1 );
-		expect( wrapper.emitted( 'input' )[ 0 ][ 0 ] ).toEqual( { language, value: newDescription } );
+		expect( wrapper.emitted( 'input' )![ 0 ][ 0 ] ).toEqual( { language, value: newDescription } );
 	} );
 
 	it( 'passes a placeholder down', () => {
@@ -72,7 +72,7 @@ describe( 'DescriptionEdit', () => {
 			],
 		} );
 
-		expect( wrapper.find( ResizingTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
+		expect( wrapper.findComponent( ResizingTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
 	} );
 
 	it( 'passes a maxlength down', () => {
@@ -89,7 +89,7 @@ describe( 'DescriptionEdit', () => {
 				} as ConfigOptions ) ],
 		} );
 
-		expect( wrapper.find( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
+		expect( wrapper.findComponent( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
 	} );
 
 	describe( 'directionality and language code', () => {

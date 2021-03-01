@@ -26,7 +26,7 @@ describe( 'AllEnteredLanguages', () => {
 
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
-		expect( wrapper.find( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( language );
+		expect( wrapper.findComponent( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( language );
 	} );
 
 	it( 'does not contain the primary user language', () => {
@@ -45,8 +45,8 @@ describe( 'AllEnteredLanguages', () => {
 
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
-		expect( wrapper.findAll( MonolingualFingerprintView ).length ).toBe( 1 );
-		expect( wrapper.find( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'en' );
+		expect( wrapper.findAllComponents( MonolingualFingerprintView ).length ).toBe( 1 );
+		expect( wrapper.findComponent( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'en' );
 	} );
 
 	it( 'does not contain the secondary user languages', () => {
@@ -66,8 +66,8 @@ describe( 'AllEnteredLanguages', () => {
 
 		const wrapper = shallowMount( AllEnteredLanguages, { store } );
 
-		expect( wrapper.findAll( MonolingualFingerprintView ).length ).toBe( 1 );
-		expect( wrapper.find( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'de' );
+		expect( wrapper.findAllComponents( MonolingualFingerprintView ).length ).toBe( 1 );
+		expect( wrapper.findComponent( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'de' );
 	} );
 
 } );

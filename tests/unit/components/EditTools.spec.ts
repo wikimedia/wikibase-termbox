@@ -11,7 +11,7 @@ describe( 'EditTools', () => {
 			},
 		} );
 
-		const sectionEdit = wrapper.find( Sectionedit );
+		const sectionEdit = wrapper.findComponent( Sectionedit );
 		expect( sectionEdit.exists() ).toBeTruthy();
 		expect( sectionEdit.vm.$parent ).toBe( wrapper.vm );
 	} );

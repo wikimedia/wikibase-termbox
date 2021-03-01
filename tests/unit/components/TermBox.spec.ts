@@ -71,6 +71,9 @@ function createStoreInEditMode() {
 	return store;
 }
 
+// This appears to effectively wait for "saving" to finish after clicking the publish button when Vue.nextTick didn't.
+const flushPromises = () => new Promise( setImmediate );
+
 describe( 'TermBox.vue', () => {
 
 	it( 'contains a MonolingualFingerprintView of the user\'s primary language', () => {
@@ -79,9 +82,9 @@ describe( 'TermBox.vue', () => {
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
 		const wrapper = shallowMount( TermBox, { store } );
 
-		expect( wrapper.find( MonolingualFingerprintView ).props() )
+		expect( wrapper.findComponent( MonolingualFingerprintView ).props() )
 			.toHaveProperty( 'languageCode', userLanguage );
-		expect( wrapper.find( MonolingualFingerprintView ).props() )
+		expect( wrapper.findComponent( MonolingualFingerprintView ).props() )
 			.toHaveProperty( 'isPrimary', true );
 	} );
 
@@ -92,7 +95,7 @@ describe( 'TermBox.vue', () => {
 				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 				const wrapper = shallowMount( TermBox, { store } );
 
-				expect( wrapper.find( EditTools ).exists() ).toBeTruthy();
+				expect( wrapper.findComponent( EditTools ).exists() ).toBeTruthy();
 			} );
 
 			describe( 'EditPen', () => {
@@ -110,7 +113,7 @@ describe( 'TermBox.vue', () => {
 						} ) ],
 					} );
 
-					const editPen = wrapper.find( EditTools ).find( '.wb-ui-event-emitting-button--edit' );
+					const editPen = wrapper.findComponent( EditTools ).find( '.wb-ui-event-emitting-button--edit' );
 
 					expect( editPen.exists() ).toBeTruthy();
 					expect( editPen.attributes() ).toHaveProperty( 'href', editLinkUrl );
@@ -148,7 +151,7 @@ describe( 'TermBox.vue', () => {
 						await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 						expect(
-							wrapper.find( '.wb-ui-overlay .wb-ui-modal' ).find( AnonEditWarning ).exists(),
+							wrapper.find( '.wb-ui-overlay .wb-ui-modal' ).findComponent( AnonEditWarning ).exists(),
 						).toBeTruthy();
 					} );
 
@@ -163,7 +166,7 @@ describe( 'TermBox.vue', () => {
 
 						await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
-						expect( wrapper.find( AnonEditWarning ).exists() ).toBeFalsy();
+						expect( wrapper.findComponent( AnonEditWarning ).exists() ).toBeFalsy();
 					} );
 
 					it( `is not shown if ${UserPreference.HIDE_ANON_EDIT_WARNING} is set`, async () => {
@@ -180,18 +183,18 @@ describe( 'TermBox.vue', () => {
 
 						await wrapper.find( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
-						expect( wrapper.find( AnonEditWarning ).exists() ).toBeFalsy();
+						expect( wrapper.findComponent( AnonEditWarning ).exists() ).toBeFalsy();
 					} );
 
-					it( 'can be dismissed', () => {
+					it( 'can be dismissed', async () => {
 						const wrapper = shallowMount( TermBox, {
 							store: createStore( emptyServices as any ),
 							data: () => ( { showEditWarning: true } ),
 						} );
 
-						wrapper.find( AnonEditWarning ).vm.$emit( 'dismiss' );
+						await wrapper.findComponent( AnonEditWarning ).vm.$emit( 'dismiss' );
 
-						expect( wrapper.find( Modal ).exists() ).toBeFalsy();
+						expect( wrapper.findComponent( Modal ).exists() ).toBeFalsy();
 					} );
 				} );
 			} );
@@ -208,7 +211,7 @@ describe( 'TermBox.vue', () => {
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.PUBLISH ]: message,
 						} ) ],
-					} ).find( EditTools ).find( '.wb-ui-event-emitting-button--publish' );
+					} ).findComponent( EditTools ).find( '.wb-ui-event-emitting-button--publish' );
 
 					expect( publish.exists() ).toBeTruthy();
 					expect( publish.props( 'message' ) ).toBe( message );
@@ -220,7 +223,7 @@ describe( 'TermBox.vue', () => {
 					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 
 					expect(
-						wrapper.find( '.wb-ui-overlay .wb-ui-modal' ).find( LicenseAgreement ).exists(),
+						wrapper.find( '.wb-ui-overlay .wb-ui-modal' ).findComponent( LicenseAgreement ).exists(),
 					).toBeTruthy();
 				} );
 
@@ -248,7 +251,7 @@ describe( 'TermBox.vue', () => {
 					} );
 
 					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
-					expect( wrapper.find( LicenseAgreement ).exists() ).toBeFalsy();
+					expect( wrapper.findComponent( LicenseAgreement ).exists() ).toBeFalsy();
 					expect( entitySave ).toHaveBeenCalled();
 
 					await Vue.nextTick();
@@ -287,15 +290,15 @@ describe( 'TermBox.vue', () => {
 						],
 					} );
 
-					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
-					await Vue.nextTick();
+					wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					await flushPromises();
 
 					expect( entitySave ).toHaveBeenCalled();
-					const messageBanner = wrapper.find( MessageBanner );
+					const messageBanner = wrapper.findComponent( MessageBanner );
 					expect( messageBanner.exists() ).toBeTruthy();
 					expect( messageBanner.text() ).toContain( errorHeading );
 
-					const errorMessageBox = messageBanner.find( IconMessageBox );
+					const errorMessageBox = messageBanner.findComponent( IconMessageBox );
 					expect( errorMessageBox.props( 'type' ) ).toBe( 'error' );
 					expect( errorMessageBox.text() ).toBe( errorMessage );
 
@@ -327,16 +330,16 @@ describe( 'TermBox.vue', () => {
 						mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
 					} );
 
-					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
-					await Vue.nextTick();
+					wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					await flushPromises();
 
 					expect( entitySave ).toHaveBeenCalledTimes( 1 );
-					expect( wrapper.find( MessageBanner ).exists() ).toBeTruthy();
+					expect( wrapper.findComponent( MessageBanner ).exists() ).toBeTruthy();
 
-					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
-					await Vue.nextTick();
+					wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					await flushPromises();
 
-					expect( wrapper.find( MessageBanner ).exists() ).toBeFalsy();
+					expect( wrapper.findComponent( MessageBanner ).exists() ).toBeFalsy();
 					expect( deactivateEditMode ).toHaveBeenCalled();
 				} );
 			} );
@@ -353,7 +356,7 @@ describe( 'TermBox.vue', () => {
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.CANCEL ]: message,
 						} ) ],
-					} ).find( EditTools ).find( '.wb-ui-event-emitting-button--cancel' );
+					} ).findComponent( EditTools ).find( '.wb-ui-event-emitting-button--cancel' );
 
 					expect( cancel.exists() ).toBeTruthy();
 					expect( cancel.props( 'message' ) ).toBe( message );
@@ -468,7 +471,7 @@ describe( 'TermBox.vue', () => {
 				entitySavePromise.then( () => {
 					expect( mockDeactivateEditMode ).toHaveBeenCalled();
 				} );
-				expect( wrapper.find( Modal ).exists() ).toBeFalsy();
+				expect( wrapper.findComponent( Modal ).exists() ).toBeFalsy();
 			} );
 
 			it( 'can be aborted', async () => {
@@ -477,7 +480,7 @@ describe( 'TermBox.vue', () => {
 				await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 				await wrapper.find( '.wb-ui-event-emitting-button--normal' ).trigger( 'click' );
 
-				expect( wrapper.find( Modal ).exists() ).toBeFalsy();
+				expect( wrapper.findComponent( Modal ).exists() ).toBeFalsy();
 			} );
 		} );
 
@@ -500,7 +503,7 @@ describe( 'TermBox.vue', () => {
 			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), false );
 			const wrapper = shallowMount( TermBox, { store } );
 
-			expect( wrapper.find( EditTools ).exists() ).toBeFalsy();
+			expect( wrapper.findComponent( EditTools ).exists() ).toBeFalsy();
 		} );
 	} );
 
@@ -508,7 +511,7 @@ describe( 'TermBox.vue', () => {
 		const store = createStore( emptyServices as any );
 		const wrapper = shallowMount( TermBox, { store } );
 
-		expect( wrapper.find( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
 	} );
 
 	it( 'shows an overlay with indeterminate progress bar while saving', async () => {
@@ -533,11 +536,11 @@ describe( 'TermBox.vue', () => {
 		} );
 
 		await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
-		expect( wrapper.find( Overlay ).exists() ).toBeTruthy();
-		expect( wrapper.find( IndeterminateProgressBar ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( Overlay ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( IndeterminateProgressBar ).exists() ).toBeTruthy();
 
-		await Vue.nextTick();
-		expect( wrapper.find( Overlay ).exists() ).toBeFalsy();
+		await flushPromises();
+		expect( wrapper.findComponent( Overlay ).exists() ).toBeFalsy();
 	} );
 
 } );
