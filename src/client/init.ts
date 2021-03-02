@@ -3,7 +3,8 @@ import MwWindow from '@/client/mediawiki/MwWindow';
 
 export default function (): Promise<TermboxRequest> {
 	return new Promise<TermboxRequest>( ( resolve ) => {
-		const config = ( window as MwWindow ).mw.config;
+		const mwWindow = window as unknown as MwWindow;
+		const config = mwWindow.mw.config;
 		const entityId = config.get( 'wbEntityId' );
 		const currentPage = config.get( 'wgPageName' );
 
@@ -12,19 +13,19 @@ export default function (): Promise<TermboxRequest> {
 			entityId,
 			config.get( 'wgRevisionId' ),
 			{
-				editLinkUrl: ( new ( window as MwWindow ).mw.Title(
+				editLinkUrl: ( new mwWindow.mw.Title(
 					`SetLabelDescriptionAliases/${entityId}`,
 					config.get( 'wgNamespaceIds' ).special,
 				) ).getUrl(),
-				loginLinkUrl: ( window as MwWindow ).mw.util.getUrl( 'Special:UserLogin', {
+				loginLinkUrl: mwWindow.mw.util.getUrl( 'Special:UserLogin', {
 					returnto: currentPage,
 				} ),
-				signUpLinkUrl: ( window as MwWindow ).mw.util.getUrl( 'Special:UserLogin', {
+				signUpLinkUrl: mwWindow.mw.util.getUrl( 'Special:UserLogin', {
 					type: 'signup',
 					returnto: currentPage,
 				} ),
 			},
-			( window as MwWindow ).wb.getUserLanguages(),
+			mwWindow.wb.getUserLanguages(),
 			config.get( 'wgUserName' ),
 		) );
 	} );

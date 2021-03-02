@@ -27,16 +27,18 @@ import AxiosWritingSingleUserPreferenceRepository
 	from '@/client/data-access/AxiosWritingSingleUserPreferenceRepository';
 import buildAndAttemptHydration from '@/client/buildAndAttemptHydration';
 
+const mwWindow = window as unknown as MwWindow;
+
 Vue.config.productionTip = false;
 Vue.mixin( newConfigMixin(
 	{
-		textFieldCharacterLimit: ( window as MwWindow ).mw.config.get( 'wbMultiLingualStringLimit' ),
-		licenseAgreementInnerHtml: ( window as MwWindow ).mw.config.get( 'wbCopyright' ).messageHtml,
-		copyrightVersion: ( window as MwWindow ).mw.config.get( 'wbCopyright' ).version,
+		textFieldCharacterLimit: mwWindow.mw.config.get( 'wbMultiLingualStringLimit' ),
+		licenseAgreementInnerHtml: mwWindow.mw.config.get( 'wbCopyright' ).messageHtml,
+		copyrightVersion: mwWindow.mw.config.get( 'wbCopyright' ).version,
 	},
 ) );
 
-const contentLanguages = new ( window as MwWindow ).wb.WikibaseContentLanguages();
+const contentLanguages = new mwWindow.wb.WikibaseContentLanguages();
 const entityInitializer = new EntityInitializer();
 const services = new TermboxServices();
 
@@ -51,14 +53,14 @@ services.set(
 	'languageRepository',
 	new UlsLanguageRepository(
 		contentLanguages,
-		( window as MwWindow ).$.uls.data,
+		mwWindow.$.uls.data,
 	),
 );
 
 services.set(
 	'messagesRepository',
 	new MessagesRepository(
-		( window as MwWindow ).mw.message,
+		mwWindow.mw.message,
 		Object.values( MessageKey ),
 	),
 );
@@ -66,7 +68,7 @@ services.set(
 services.set(
 	'entityRepository',
 	new EntityRepository(
-		( window as MwWindow ).mw.hook( Hooks.entityLoaded ),
+		mwWindow.mw.hook( Hooks.entityLoaded ),
 		entityInitializer,
 	),
 );
@@ -76,16 +78,16 @@ services.set(
 	{
 		isEditable() {
 			return Promise.resolve(
-				( window as MwWindow ).mw.config.get( 'wbIsEditView' )
-				&& ( window as MwWindow ).mw.config.get( 'wgRelevantPageIsProbablyEditable' ),
+				mwWindow.mw.config.get( 'wbIsEditView' )
+				&& mwWindow.mw.config.get( 'wgRelevantPageIsProbablyEditable' ),
 			);
 		},
 	},
 );
 
-const repoConfig = ( window as MwWindow ).mw.config.get( 'wbRepo' );
+const repoConfig = mwWindow.mw.config.get( 'wbRepo' );
 const baseUrl = repoConfig.scriptPath;
-const userName = ( window as MwWindow ).mw.config.get( 'wgUserName' );
+const userName = mwWindow.mw.config.get( 'wgUserName' );
 const axios = axiosFactory( baseUrl, userName );
 
 services.set(
@@ -97,7 +99,7 @@ services.set(
 	'userPreferenceRepository',
 	new DispatchingUserPreferenceRepository( {
 		[ UserPreference.HIDE_ANON_EDIT_WARNING ]: new CookieUserPreferenceRepository<boolean>(
-			new BooleanCookieStore( new StringMWCookieStore( ( window as MwWindow ).mw.cookie ) ),
+			new BooleanCookieStore( new StringMWCookieStore( mwWindow.mw.cookie ) ),
 			'wikibase-no-anonymouseditwarning',
 			{ maxAge: 60 * 60 * 24 * 365 * 10 },
 		),
@@ -105,7 +107,7 @@ services.set(
 			new CompoundUserPreferenceRepository(
 				new MWUserOptionsReadingSingleUserPreferenceRepository(
 					'wb-acknowledgedcopyrightversion',
-					( window as MwWindow ).mw.user.options,
+					mwWindow.mw.user.options,
 				),
 				new AxiosWritingSingleUserPreferenceRepository(
 					'wb-acknowledgedcopyrightversion',
@@ -113,7 +115,7 @@ services.set(
 				),
 			),
 			new CookieUserPreferenceRepository<string | null>(
-				new StringMWCookieStore( ( window as MwWindow ).mw.cookie ),
+				new StringMWCookieStore( mwWindow.mw.cookie ),
 				'wikibase.acknowledgedcopyrightversion',
 				{ maxAge: 60 * 60 * 24 * 365 * 10 },
 			),

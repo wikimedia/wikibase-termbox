@@ -13,7 +13,9 @@ const preferredLanguages = getOrEnforceUrlParameter(
 	'de|en|ar|fr|es',
 );
 
-( window as MwWindow ).mw = {
+const mwWindow = window as unknown as MwWindow;
+
+mwWindow.mw = {
 	config: new MWConfig( language ),
 	hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( entity ),
 	Title: class Title {
@@ -45,12 +47,12 @@ const preferredLanguages = getOrEnforceUrlParameter(
 	},
 };
 
-( window as MwWindow ).wb = {
+mwWindow.wb = {
 	WikibaseContentLanguages: MockupWikibaseContentLanguages,
 	getUserLanguages: () => preferredLanguages.split( '|' ),
 };
 
-( window as MwWindow ).$ = {
+mwWindow.$ = {
 	uls: {
 		data: {
 			getDir: ( code: string ) => directionalities[ code ],

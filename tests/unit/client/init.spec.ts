@@ -14,7 +14,7 @@ function mockMwEnv(
 	getUserLanguages: any = null,
 	getUrl: any = null,
 ) {
-	( window as MwWindow ).mw = {
+	( window as unknown as MwWindow ).mw = {
 		config: { get( key: string ) {
 			switch ( key ) {
 				case 'wgUserLanguage':
@@ -47,7 +47,7 @@ function mockMwEnv(
 		user: new ( jest.fn() )(),
 	};
 
-	( window as MwWindow ).wb = {
+	( window as unknown as MwWindow ).wb = {
 		WikibaseContentLanguages: {} as any,
 		getUserLanguages: getUserLanguages || jest.fn(),
 	};
