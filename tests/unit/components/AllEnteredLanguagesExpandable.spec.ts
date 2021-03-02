@@ -97,13 +97,11 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		expect( wrapper.findComponent( AllEnteredLanguages ).exists() ).toBeFalsy();
 	} );
 
-	it( 'is not shown when rendered on the server', () => {
-		// it returns a cheerio wrapper, not a string as the d.ts claims
-		// https://vue-test-utils.vuejs.org/api/render.html#render
-		const wrapper = render(
+	it( 'is not shown when rendered on the server', async () => {
+		const wrapper = await render(
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin( { [ MessageKey.ALL_LANGUAGES ]: 'button text' } ) ] },
-		) as any;
+		);
 		expect( wrapper.text() ).toBe( '' );
 	} );
 

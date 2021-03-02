@@ -38,11 +38,9 @@ describe( 'InMoreLanguagesExpandable', () => {
 
 	describe( 'client/server-specific appearance', () => {
 
-		it( 'has an additional class to appear unclickable when rendered on the server-side', () => {
+		it( 'has an additional class to appear unclickable when rendered on the server-side', async () => {
 			const store = createStore( emptyServices as any );
-			// render returns a cheerio wrapper, not a string as the d.ts claims
-			// https://vue-test-utils.vuejs.org/api/render.html#render
-			const $button = ( render( InMoreLanguagesExpandable, { store } ) as any )
+			const $button = ( await render( InMoreLanguagesExpandable, { store } ) )
 				.find( '.wb-ui-in-more-languages-expandable__switch' );
 			expect( $button.hasClass( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( true );
 		} );
