@@ -1,7 +1,7 @@
 module.exports = {
 	plugins: {
 		autoprefixer: {
-			browsers: [
+			overrideBrowserslist: [
 				'extends browserslist-config-base',
 				'ie 10',
 			],
