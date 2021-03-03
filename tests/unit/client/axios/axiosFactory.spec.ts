@@ -1,7 +1,7 @@
 import axiosFactory from '@/client/axios/axiosFactory';
 import MockAdapter from 'axios-mock-adapter';
 import HttpStatus from 'http-status-codes';
-import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
+import { GLOBAL_REQUEST_PARAMS, MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 
 const mockRequestBaseURL = 'foo';
 const mockUsername = 'PacMan';
@@ -28,16 +28,16 @@ describe( 'axiosFactory', () => {
 		const postData = {
 			someData: 'ThatShouldBeFormEncoded',
 		};
-		axiosMock.onPost( mockRequestBaseURL ).reply( HttpStatus.OK );
+		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK );
 		addMockCSRFReply( axiosMock );
-		return axios.post( mockRequestBaseURL, postData ).then( () => {
+		return axios.post( MEDIAWIKI_API_SCRIPT, postData ).then( () => {
 			expect( axiosMock.history.post[ 0 ].data ).toBeInstanceOf( FormData );
 			expect( axiosMock.history.post[ 0 ].data.get( 'someData' ) ).toMatch( 'ThatShouldBeFormEncoded' );
 		} );
 	} );
 
 	it( 'should return an Axios instance that makes a token GET request for all POSTs', () => {
-		axiosMock.onPost( mockRequestBaseURL ).reply( HttpStatus.OK );
+		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK );
 		addMockCSRFReply( axiosMock );
 		const postData = {
 			action: 'some',
@@ -51,7 +51,7 @@ describe( 'axiosFactory', () => {
 			},
 		};
 
-		return axios.post( mockRequestBaseURL, postData ).then( () => {
+		return axios.post( MEDIAWIKI_API_SCRIPT, postData ).then( () => {
 			expect( axiosMock.history.get[ 0 ].params ).toMatchObject( tokenRequestData.params );
 			expect( axiosMock.history.post[ 0 ].data.get( 'token' ) ).toEqual( 'fooToken' );
 		} );
@@ -66,7 +66,7 @@ describe( 'axiosFactory', () => {
 	} );
 
 	it( 'should assert user in POST requests if one is passed', () => {
-		axiosMock.onPost( mockRequestBaseURL ).reply( HttpStatus.OK );
+		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK );
 		axiosMock.onGet( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK, {
 			batchcomplete: '',
 			query: {
@@ -75,9 +75,17 @@ describe( 'axiosFactory', () => {
 				},
 			},
 		} );
-		return axios.post( mockRequestBaseURL, { action: 'fooAction' } ).then( () => {
+		return axios.post( MEDIAWIKI_API_SCRIPT, { action: 'fooAction' } ).then( () => {
 			expect( axiosMock.history.post[ 0 ].data ).toBeInstanceOf( FormData );
 			expect( axiosMock.history.post[ 0 ].data.get( 'assertuser' ) ).toEqual( mockUsername );
 		} );
+	} );
+
+	it( 'contains the global default params in every request', async () => {
+		axiosMock.onGet( '/' ).reply( HttpStatus.OK );
+
+		await axios.get( '/' );
+
+		expect( axiosMock.history.get[ 0 ].params ).toMatchObject( GLOBAL_REQUEST_PARAMS );
 	} );
 } );

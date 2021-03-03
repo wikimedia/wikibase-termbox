@@ -2,6 +2,7 @@ import axiosFactory from '@/server/axios/axiosFactory';
 import MockAdapter from 'axios-mock-adapter';
 import HttpStatus from 'http-status-codes';
 import axiosLib from 'axios';
+import { GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 
 describe( 'axiosFactory', () => {
 	it( 'should return an Axios instance that makes requests with the correct baseURL', () => {
@@ -62,5 +63,21 @@ describe( 'axiosFactory', () => {
 		return axios.get( '/foo' ).then( () => {
 			expect( axiosMock.history.get[ 0 ].headers.Host ).toBe( 'test.wiki.example.com:1111' );
 		} );
+	} );
+
+	it( 'contains the global default params in every request', async () => {
+		const axios = axiosFactory(
+			'https://my-repo/',
+			'my-repo-alias',
+			42,
+			'some user agent',
+		);
+		const axiosMock = new MockAdapter( axios );
+
+		axiosMock.onGet( '/' ).reply( HttpStatus.OK );
+
+		await axios.get( '/' );
+
+		expect( axiosMock.history.get[ 0 ].params ).toMatchObject( GLOBAL_REQUEST_PARAMS );
 	} );
 } );

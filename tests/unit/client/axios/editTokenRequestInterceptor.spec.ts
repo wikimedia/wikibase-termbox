@@ -52,7 +52,7 @@ describe( 'editTokenRequestInterceptor', () => {
 
 	it( 'does nothing for get requests', () => {
 		const interceptor = newEditTokenRequestInterceptor();
-		const getRequest = {
+		const getRequest: AxiosRequestConfig = {
 			method: 'get',
 			url: '/mediawiki/api.php',
 			params: {

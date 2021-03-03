@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 import { URL } from 'url';
+import globalRequestParamsInterceptor from '@/common/axios/globalParamsRequestInterceptor';
 
 export default function axiosFactory(
 	wikibaseRepo: string,
@@ -12,13 +12,16 @@ export default function axiosFactory(
 	const hostHeader = baseUrl.host;
 	baseUrl.hostname = hostnameAlias;
 
-	return axios.create( {
+	const axiosInstance = axios.create( {
 		baseURL: baseUrl.toString(),
-		params: GLOBAL_REQUEST_PARAMS,
 		timeout,
 		headers: {
 			'User-Agent': userAgentString,
 			'Host': hostHeader,
 		},
 	} );
+
+	axiosInstance.interceptors.request.use( globalRequestParamsInterceptor );
+
+	return axiosInstance;
 }

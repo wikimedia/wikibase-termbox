@@ -1,4 +1,5 @@
 import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
+import { AxiosError } from 'axios';
 
 describe( 'AxiosTechnicalProblem', () => {
 
@@ -11,7 +12,7 @@ describe( 'AxiosTechnicalProblem', () => {
 		const testStatusText = 'foo';
 		const testResponseHeaders = { SomeHeader: 'goat' };
 		const testData = 'foo';
-		const mockError = {
+		const mockError: AxiosError = {
 			name: 'mockError',
 			message: testErrorMessage,
 			config: {
@@ -27,6 +28,8 @@ describe( 'AxiosTechnicalProblem', () => {
 				headers: testResponseHeaders,
 				data: testData,
 			},
+			isAxiosError: true,
+			toJSON: jest.fn(),
 		};
 
 		expect( ( new AxiosTechnicalProblem( mockError ) ).getContext() ).toEqual( {
