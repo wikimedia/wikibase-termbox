@@ -54,7 +54,6 @@
     "@storybook/addons": "^6.1.21",
     "@storybook/cli": "^6.1.21",
     "@storybook/vue": "^6.1.21",
-    "@types/cheerio": "^0.22.24",
     "@types/compression": "0.0.36",
     "@types/dotenv": "^4.0.3",
     "@types/express": "^4.17.11",
