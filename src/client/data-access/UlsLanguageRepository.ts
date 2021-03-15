@@ -28,7 +28,7 @@ export default class UlsLanguageRepository implements LanguageRepository {
 
 	private getLanguageCodes(): string[] {
 		return Object.keys(
-			this.contentLanguages.getAllPairs(),
+			this.contentLanguages.getLanguageNameMap(),
 		);
 	}
 

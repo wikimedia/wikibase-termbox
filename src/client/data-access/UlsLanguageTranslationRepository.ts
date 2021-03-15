@@ -18,6 +18,6 @@ export default class UlsLanguageTranslationRepository implements LanguageTransla
 	}
 
 	private getLanguagesNames(): StringTMap<string> {
-		return this.contentLanguages.getAllPairs();
+		return this.contentLanguages.getLanguageNameMap();
 	}
 }

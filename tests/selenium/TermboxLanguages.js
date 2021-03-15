@@ -30,7 +30,7 @@ module.exports = class TermboxLanguages {
 			} ),
 			browser.executeAsync( ( done ) => {
 				window.mw.loader.using( [ 'wikibase.WikibaseContentLanguages' ], () => {
-					done( window.wb.WikibaseContentLanguages.getTermLanguages().getAllPairs() );
+					done( window.wb.WikibaseContentLanguages.getTermLanguages().getLanguageNameMap() );
 				} );
 			} )
 		);
