@@ -38,7 +38,7 @@ Vue.mixin( newConfigMixin(
 	},
 ) );
 
-const contentLanguages = new mwWindow.wb.WikibaseContentLanguages();
+const contentLanguages = mwWindow.wb.WikibaseContentLanguages.getTermLanguages();
 const entityInitializer = new EntityInitializer();
 const services = new TermboxServices();
 

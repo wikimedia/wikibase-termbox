@@ -53,7 +53,7 @@ export interface MWCookie {
 }
 
 interface Wikibase {
-	WikibaseContentLanguages: new() => WikibaseContentLanguages;
+	WikibaseContentLanguages: { getTermLanguages: () => WikibaseContentLanguages };
 	getUserLanguages: () => string[];
 }
 

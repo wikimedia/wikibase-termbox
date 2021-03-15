@@ -48,7 +48,9 @@ mwWindow.mw = {
 };
 
 mwWindow.wb = {
-	WikibaseContentLanguages: MockupWikibaseContentLanguages,
+	WikibaseContentLanguages: {
+		getTermLanguages: () => new MockupWikibaseContentLanguages(),
+	},
 	getUserLanguages: () => preferredLanguages.split( '|' ),
 };
 
