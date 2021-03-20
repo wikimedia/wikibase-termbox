@@ -82,7 +82,7 @@ export default class LicenseAgreement extends mixins( Messages ) {
 
 	&__message .external {
 		// The following compensates for styling originating from the MinervaNeue skin that got partially reset.
-		// A better approach (e.g. whitelisting elements from resetting, see
+		// A better approach (e.g. only allowing some elements to reset, see
 		// https://gerrit.wikimedia.org/r/c/wikibase/termbox/+/518041) should be revisited should this codebase
 		// become skin-agnostic.
 		padding-right: 13px;
