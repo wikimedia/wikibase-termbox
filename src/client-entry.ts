@@ -26,6 +26,7 @@ import MWUserOptionsReadingSingleUserPreferenceRepository
 import AxiosWritingSingleUserPreferenceRepository
 	from '@/client/data-access/AxiosWritingSingleUserPreferenceRepository';
 import buildAndAttemptHydration from '@/client/buildAndAttemptHydration';
+import termboxConfig from './config.json'; // in production, this file is provided by ResourceLoader
 
 const mwWindow = window as unknown as MwWindow;
 
@@ -92,7 +93,7 @@ const axios = axiosFactory( baseUrl, userName );
 
 services.set(
 	'writingEntityRepository',
-	new AxiosWritingEntityRepository( axios, entityInitializer ),
+	new AxiosWritingEntityRepository( axios, entityInitializer, termboxConfig.tags ),
 );
 
 services.set(

@@ -10,10 +10,17 @@ import EntityInitializer from '@/common/EntityInitializer';
 
 const axiosMock = new MockAdapter( axios );
 
-function newAxiosWritingEntityRepository( entityInitializer?: any ) {
+function newAxiosWritingEntityRepository( {
+	entityInitializer,
+	tags,
+}: {
+	entityInitializer?: any;
+	tags?: string[];
+} = {} ) {
 	return new AxiosWritingEntityRepository(
 		axios,
 		entityInitializer || { newFromSerialization: jest.fn() } as any as EntityInitializer,
+		tags,
 	);
 }
 
@@ -35,7 +42,8 @@ describe( 'AxiosWritingEntityRepository', () => {
 	} );
 
 	it( 'posts data via wbeditentity', () => {
-		const repository = newAxiosWritingEntityRepository();
+		const tags = [ 'tag 1', 'tag 2' ];
+		const repository = newAxiosWritingEntityRepository( { tags } );
 		const entity = newFingerprintable( {
 			id: 'Q16587531',
 			labels: { en: 'potato', de: 'Kartoffel' },
@@ -53,6 +61,7 @@ describe( 'AxiosWritingEntityRepository', () => {
 				descriptions: entity.descriptions,
 				aliases: entity.aliases,
 			} ),
+			tags,
 		} ).reply( HttpStatus.OK, wbeditentitySuccessResponse );
 
 		return repository.saveEntity( entity, baseRevisionId ).then( () => {
@@ -64,7 +73,7 @@ describe( 'AxiosWritingEntityRepository', () => {
 		const entityInitializer = {
 			newFromSerialization: jest.fn(),
 		};
-		const repository = newAxiosWritingEntityRepository( entityInitializer );
+		const repository = newAxiosWritingEntityRepository( { entityInitializer } );
 		const entity = newFingerprintable( { labels: { en: 'hello' } } );
 		const newRevisionId = 777;
 		const responseEntity = {

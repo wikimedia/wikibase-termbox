@@ -9,10 +9,12 @@ import EntityInitializerInterface from '@/common/EntityInitializerInterface';
 export default class AxiosWritingEntityRepository implements WritingEntityRepository {
 	private axios: AxiosInstance;
 	private entityInitializer: EntityInitializerInterface;
+	private tags: string[];
 
-	public constructor( axios: AxiosInstance, entityInitializer: EntityInitializerInterface ) {
+	public constructor( axios: AxiosInstance, entityInitializer: EntityInitializerInterface, tags: string[] = [] ) {
 		this.axios = axios;
 		this.entityInitializer = entityInitializer;
+		this.tags = tags;
 	}
 
 	public saveEntity( entity: FingerprintableEntity, baseRevId: number ): Promise<EntityRevision> {
@@ -26,6 +28,7 @@ export default class AxiosWritingEntityRepository implements WritingEntityReposi
 					descriptions: entity.descriptions,
 					aliases: entity.aliases,
 				} ),
+				tags: this.tags,
 			} ).then( ( response: AxiosResponse ) => {
 				if ( !response.data.success ) {
 					reject( new TechnicalProblem( response.data ) );

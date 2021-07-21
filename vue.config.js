@@ -32,7 +32,14 @@ function externals() {
 
 	// get external packages from @wmde/lib-version-check config
 	const package = require( './package.json' );
-	return Object.keys( package.config.remoteVersion );
+	const resourceLoaderModules = Object.keys( package.config.remoteVersion );
+	const resourceLoaderPackageFiles = [
+		'./config.json',
+	];
+	return [
+		...resourceLoaderModules,
+		...resourceLoaderPackageFiles,
+	];
 }
 
 module.exports = {
