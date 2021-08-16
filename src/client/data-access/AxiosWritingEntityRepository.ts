@@ -28,7 +28,7 @@ export default class AxiosWritingEntityRepository implements WritingEntityReposi
 					descriptions: entity.descriptions,
 					aliases: entity.aliases,
 				} ),
-				tags: this.tags,
+				tags: '\u{1F}' + this.tags.join( '\u{1F}' ),
 			} ).then( ( response: AxiosResponse ) => {
 				if ( !response.data.success ) {
 					reject( new TechnicalProblem( response.data ) );

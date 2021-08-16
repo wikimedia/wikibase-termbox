@@ -61,7 +61,7 @@ describe( 'AxiosWritingEntityRepository', () => {
 				descriptions: entity.descriptions,
 				aliases: entity.aliases,
 			} ),
-			tags,
+			tags: '\u{1F}tag 1\u{1F}tag 2',
 		} ).reply( HttpStatus.OK, wbeditentitySuccessResponse );
 
 		return repository.saveEntity( entity, baseRevisionId ).then( () => {
