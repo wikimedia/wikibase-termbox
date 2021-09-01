@@ -118,6 +118,6 @@
     "wikimedia-ui-base": "^0.13.0"
   },
   "peerDependencies": {
-    "wdio-wikibase": "^4.0.0"
+    "wdio-wikibase": "^5.1.0"
   }
 }
