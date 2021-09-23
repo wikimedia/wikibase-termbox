@@ -2,7 +2,7 @@ import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntit
 import newFingerprintable from '../../../newFingerprintable';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 import EntityRevision from '@/datamodel/EntityRevision';
@@ -62,7 +62,7 @@ describe( 'AxiosWritingEntityRepository', () => {
 				aliases: entity.aliases,
 			} ),
 			tags: '\u{1F}tag 1\u{1F}tag 2',
-		} ).reply( HttpStatus.OK, wbeditentitySuccessResponse );
+		} ).reply( StatusCodes.OK, wbeditentitySuccessResponse );
 
 		return repository.saveEntity( entity, baseRevisionId ).then( () => {
 			expect( axiosMock.history.post ).toHaveLength( 1 );
@@ -85,7 +85,7 @@ describe( 'AxiosWritingEntityRepository', () => {
 		};
 
 		entityInitializer.newFromSerialization.mockReturnValue( entity );
-		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK, {
+		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( StatusCodes.OK, {
 			success: 1,
 			entity: responseEntity,
 		} );
@@ -111,7 +111,7 @@ describe( 'AxiosWritingEntityRepository', () => {
 				descriptions: entity.descriptions,
 				aliases: entity.aliases,
 			} ),
-		} ).reply( HttpStatus.OK, {
+		} ).reply( StatusCodes.OK, {
 			error: {
 				code: 'invalid-json',
 			},

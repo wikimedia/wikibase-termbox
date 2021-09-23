@@ -5,7 +5,7 @@ import { WikibaseApiContentLanguages } from '@/server/data-access/WikibaseConten
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 const axiosMock = new MockAdapter( axios );
@@ -53,7 +53,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 				wbclcontext: 'term',
 				wbclprop: 'code|name',
 				uselang: inLanguage,
-			} } ).reply( HttpStatus.OK, results );
+			} } ).reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( inLanguage ).then( ( resultLanguages: WikibaseApiContentLanguages ) => {
@@ -85,7 +85,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 				meta: 'wbcontentlanguages',
 				wbclcontext: 'term',
 				wbclprop: 'code|name',
-			} } ).reply( HttpStatus.OK, results );
+			} } ).reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( null ).then( ( resultLanguages: WikibaseApiContentLanguages ) => {
@@ -96,7 +96,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 
 		it( 'rejects on result that does not contain an object', ( done ) => {
 			const inLanguage = 'de';
-			axiosMock.onGet().reply( HttpStatus.OK, '<some><random><html>' );
+			axiosMock.onGet().reply( StatusCodes.OK, '<some><random><html>' );
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
@@ -112,7 +112,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 				strangebody: 'yes',
 			};
 
-			axiosMock.onGet().reply( HttpStatus.OK, results );
+			axiosMock.onGet().reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
@@ -131,7 +131,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 				},
 			};
 
-			axiosMock.onGet().reply( HttpStatus.OK, results );
+			axiosMock.onGet().reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
@@ -155,7 +155,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 				},
 			};
 
-			axiosMock.onGet().reply( HttpStatus.OK, results );
+			axiosMock.onGet().reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {
@@ -168,7 +168,7 @@ describe( 'AxiosWikibaseContentLanguagesRepo', () => {
 		it( 'rejects stating the reason in case of API problems', ( done ) => {
 			const inLanguage = 'de';
 
-			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR, 'something went wrong in the API' );
+			axiosMock.onGet().reply( StatusCodes.INTERNAL_SERVER_ERROR, 'something went wrong in the API' );
 
 			const repo = newAxiosWikibaseContentLanguagesRepo();
 			repo.getContentLanguages( inLanguage ).catch( ( reason: Error ) => {

@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import editTokenRequestInterceptor from '@/client/axios/editTokenRequestInterceptor';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 
 const axiosMock = new MockAdapter( axios );
 
@@ -35,7 +35,7 @@ const tokenRequestData = {
 
 function mockSuccessfulTokenRequest( token: string ) {
 	axiosMock.onGet( MEDIAWIKI_API_SCRIPT, tokenRequestData )
-		.reply( HttpStatus.OK, {
+		.reply( StatusCodes.OK, {
 			batchcomplete: '',
 			query: {
 				tokens: {
@@ -94,7 +94,7 @@ describe( 'editTokenRequestInterceptor', () => {
 
 		axios.interceptors.request.use( newEditTokenRequestInterceptor() );
 
-		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK );
+		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( StatusCodes.OK );
 		return axios.post( MEDIAWIKI_API_SCRIPT, postData ).then( () => {
 			expect( axiosMock.history.get[ 0 ].params ).toEqual( tokenRequestData.params );
 			expect( axiosMock.history.post[ 0 ].data ).toEqual( JSON.stringify( expectedPostData ) );
@@ -103,7 +103,7 @@ describe( 'editTokenRequestInterceptor', () => {
 
 	it( 'rejects with TechnicalProblem in case the API did not respond with a token', () => {
 		axiosMock.onGet( MEDIAWIKI_API_SCRIPT, tokenRequestData )
-			.reply( HttpStatus.OK, { sadness: true } );
+			.reply( StatusCodes.OK, { sadness: true } );
 		const actionRequiringToken = newFakePostRequest();
 
 		return newEditTokenRequestInterceptor()( actionRequiringToken ).catch( ( error ) => {

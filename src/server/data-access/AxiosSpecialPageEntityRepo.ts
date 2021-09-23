@@ -5,7 +5,7 @@ import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 import EntityInitializerInterface from '@/common/EntityInitializerInterface';
 import { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { MEDIAWIKI_INDEX_SCRIPT } from '@/common/constants';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 export default class AxiosSpecialPageEntityRepo implements EntityRepository {
@@ -64,7 +64,7 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 					resolve( data.entities[ id ] );
 				} )
 				.catch( ( error: AxiosError ) => {
-					if ( error.response && error.response.status === HttpStatus.NOT_FOUND ) {
+					if ( error.response && error.response.status === StatusCodes.NOT_FOUND ) {
 						reject( new EntityNotFound( 'Entity flagged missing in response.', {
 							entity: id,
 							revision,

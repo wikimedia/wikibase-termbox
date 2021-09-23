@@ -1,6 +1,6 @@
 import axiosFactory from '@/server/axios/axiosFactory';
 import MockAdapter from 'axios-mock-adapter';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import axiosLib from 'axios';
 import { GLOBAL_REQUEST_PARAMS } from '@/common/constants';
 
@@ -16,10 +16,10 @@ describe( 'axiosFactory', () => {
 
 		const somePath = 'somePath';
 		axiosMock.onGet( `http://${mockRepoHostAlias}/${mockWikiHostSubPath}/${somePath}` )
-			.reply( HttpStatus.OK );
+			.reply( StatusCodes.OK );
 
 		return axios.get( somePath ).then( ( response ) => {
-			expect( response.status ).toEqual( HttpStatus.OK );
+			expect( response.status ).toEqual( StatusCodes.OK );
 		} );
 	} );
 
@@ -33,7 +33,7 @@ describe( 'axiosFactory', () => {
 		const axiosMock = new MockAdapter( axios );
 		const somePath = 'somePath';
 		axiosMock.onGet( `http://${mockRepoHostAlias}/${mockWikiHostSubPath}/${somePath}` )
-			.reply( HttpStatus.OK );
+			.reply( StatusCodes.OK );
 
 		return axios.get( somePath ).then( () => {
 			expect( axiosMock.history.get[ 0 ].headers[ 'User-Agent' ] ).toEqual( mockUserAgentString );
@@ -59,7 +59,7 @@ describe( 'axiosFactory', () => {
 		const mockRepoHostAlias = 'reverse.proxy.test';
 		const axios = axiosFactory( mockRepo, mockRepoHostAlias, mockTimeout, mockUserAgentString );
 		const axiosMock = new MockAdapter( axios );
-		axiosMock.onGet( 'http://reverse.proxy.test:1111/w/foo' ).reply( HttpStatus.OK );
+		axiosMock.onGet( 'http://reverse.proxy.test:1111/w/foo' ).reply( StatusCodes.OK );
 		return axios.get( '/foo' ).then( () => {
 			expect( axiosMock.history.get[ 0 ].headers.Host ).toBe( 'test.wiki.example.com:1111' );
 		} );
@@ -74,7 +74,7 @@ describe( 'axiosFactory', () => {
 		);
 		const axiosMock = new MockAdapter( axios );
 
-		axiosMock.onGet( '/' ).reply( HttpStatus.OK );
+		axiosMock.onGet( '/' ).reply( StatusCodes.OK );
 
 		await axios.get( '/' );
 

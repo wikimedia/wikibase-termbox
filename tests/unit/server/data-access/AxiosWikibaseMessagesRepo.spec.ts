@@ -6,7 +6,7 @@ import { MessageKey } from '@/common/MessageKey';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import AxiosTechnicalProblem from '@/common/data-access/error/AxiosTechnicalProblem';
 
 const axiosMock = new MockAdapter( axios );
@@ -60,7 +60,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 				meta: 'allmessages',
 				ammessages: messageKeys.join( '|' ),
 				amlang: inLanguage,
-			} } ).reply( HttpStatus.OK, results );
+			} } ).reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseMessagesRepo( messageKeys );
 			repo.getMessagesInLanguage( inLanguage ).then( ( resultMessages: any ) => {
@@ -85,7 +85,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 				},
 			};
 
-			axiosMock.onGet().reply( HttpStatus.OK, results );
+			axiosMock.onGet().reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseMessagesRepo( [ 'wikibase-edit', 'foo' ] as MessageKey[] );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
@@ -97,7 +97,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 
 		it( 'rejects on result that does not contain an object', ( done ) => {
 			const inLanguage = 'de';
-			axiosMock.onGet().reply( HttpStatus.OK, '<some><random><html>' );
+			axiosMock.onGet().reply( StatusCodes.OK, '<some><random><html>' );
 
 			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKey ) );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
@@ -112,7 +112,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 			const results = {
 				strangebody: 'yes',
 			};
-			axiosMock.onGet().reply( HttpStatus.OK, results );
+			axiosMock.onGet().reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKey ) );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
@@ -130,7 +130,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 					strangeprop: 'yes',
 				},
 			};
-			axiosMock.onGet().reply( HttpStatus.OK, results );
+			axiosMock.onGet().reply( StatusCodes.OK, results );
 
 			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKey ) );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {
@@ -142,7 +142,7 @@ describe( 'AxiosWikibaseMessagesRepo', () => {
 
 		it( 'rejects stating the reason in case of API problems', ( done ) => {
 			const inLanguage = 'de';
-			axiosMock.onGet().reply( HttpStatus.INTERNAL_SERVER_ERROR, 'API problem' );
+			axiosMock.onGet().reply( StatusCodes.INTERNAL_SERVER_ERROR, 'API problem' );
 
 			const repo = newAxiosWikibaseMessagesRepo( Object.values( MessageKey ) );
 			repo.getMessagesInLanguage( inLanguage ).catch( ( reason: Error ) => {

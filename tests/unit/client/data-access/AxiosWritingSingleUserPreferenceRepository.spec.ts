@@ -2,7 +2,7 @@ import AxiosWritingSingleUserPreferenceRepository
 	from '@/client/data-access/AxiosWritingSingleUserPreferenceRepository';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { MEDIAWIKI_API_SCRIPT } from '@/common/constants';
 import TechnicalProblem from '@/common/data-access/error/TechnicalProblem';
 
@@ -26,7 +26,7 @@ describe( 'AxiosWritingSingleUserPreferenceRepository', () => {
 			action: 'options',
 			optionname: optionName,
 			optionvalue: value,
-		} ).reply( HttpStatus.OK, optionsSuccessResponse );
+		} ).reply( StatusCodes.OK, optionsSuccessResponse );
 
 		return repo.setPreference( value ).then( () => {
 			expect( axiosMock.history.post ).toHaveLength( 1 );
@@ -36,7 +36,7 @@ describe( 'AxiosWritingSingleUserPreferenceRepository', () => {
 	it( 'rejects with TechnicalProblem given the API does not return a success response', () => {
 		const repo = new AxiosWritingSingleUserPreferenceRepository( 'foo', axios );
 
-		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( HttpStatus.OK, { sadness: true } );
+		axiosMock.onPost( MEDIAWIKI_API_SCRIPT ).reply( StatusCodes.OK, { sadness: true } );
 
 		return repo.setPreference( 'bar' ).catch( ( error ) => {
 			expect( error ).toBeInstanceOf( TechnicalProblem );

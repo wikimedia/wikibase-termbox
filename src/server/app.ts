@@ -5,7 +5,7 @@ import responseTime from 'response-time';
 import { createBundleRenderer } from 'vue-server-renderer';
 import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import InvalidRequest from './route-handler/termbox/error/InvalidRequest';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import BundleBoundaryPassingException, { ErrorReason } from './exceptions/BundleBoundaryPassingException';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import BundleRendererContextBuilder from './bundle-renderer/BundleRendererContextBuilder';
@@ -54,19 +54,19 @@ export default function ( services: BundleRendererServices ): Application {
 			} )
 			.catch( ( err ) => {
 				if ( err instanceof InvalidRequest ) {
-					response.status( HttpStatus.BAD_REQUEST )
+					response.status( StatusCodes.BAD_REQUEST )
 						.send( `Bad request\nErrors: ${JSON.stringify( err.getContext() )}` );
 					services.logger.log( 'info/service', buildErrorContextWithRequestInfo( err, request ) );
 				} else if ( err.constructor.name === BundleBoundaryPassingException.name ) {
 					if ( err.reason === ErrorReason.EntityNotFound ) {
-						response.status( HttpStatus.NOT_FOUND ).send( 'Entity not found' );
+						response.status( StatusCodes.NOT_FOUND ).send( 'Entity not found' );
 					} else if ( err.reason === ErrorReason.LanguageNotFound ) {
-						response.status( HttpStatus.BAD_REQUEST ).send( 'Bad request. Language not existing' );
+						response.status( StatusCodes.BAD_REQUEST ).send( 'Bad request. Language not existing' );
 					}
 
 					services.logger.log( 'info/service', buildErrorContextWithRequestInfo( err, request ) );
 				} else {
-					response.status( HttpStatus.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
+					response.status( StatusCodes.INTERNAL_SERVER_ERROR ).send( 'Technical problem' );
 					services.logger.log( 'error/service', buildErrorContextWithRequestInfo( err, request ) );
 				}
 			} );

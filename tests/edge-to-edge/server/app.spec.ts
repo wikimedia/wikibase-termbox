@@ -4,7 +4,7 @@ import openApiJson from '@/../openapi.json';
 import createApp from '@/server/app';
 import nock from 'nock';
 import 'jest-dom/extend-expect';
-import HttpStatus from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import Vue from 'vue';
 import messages from '@/mock-data/data/de_messages_data.json';
 import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
@@ -99,7 +99,7 @@ function nockSuccessfulLanguageLoading( inLanguage: string ) {
 			uselang: inLanguage,
 			...GLOBAL_REQUEST_PARAMS,
 		} )
-		.reply( HttpStatus.OK, {
+		.reply( StatusCodes.OK, {
 			batchcomplete: '',
 			query: {
 				wbcontentlanguages: {
@@ -143,7 +143,7 @@ function nockSuccessfulMessagesLoading( inLanguage: string ) {
 			amlang: inLanguage,
 			...GLOBAL_REQUEST_PARAMS,
 		} )
-		.reply( HttpStatus.OK, {
+		.reply( StatusCodes.OK, {
 			batchcomplete: '',
 			query: {
 				allmessages: getApiResponseMessages( messageKeys ),
@@ -160,7 +160,7 @@ function nockSuccessfulEntityLoading( entityId: string, revision: number ) {
 			title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 			...GLOBAL_REQUEST_PARAMS,
 		} )
-		.reply( HttpStatus.OK, {
+		.reply( StatusCodes.OK, {
 			entities: {
 				[ entityId ]: mockQ64, // TODO build dynamic mock response if needed
 			},
@@ -210,12 +210,12 @@ describe( 'Termbox SSR', () => {
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.OK, {
+			.reply( StatusCodes.OK, {
 				malformed: 'yes',
 			} );
 
 		return request( app ).get( pathAndQuery ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
+			expect( response.status ).toBe( StatusCodes.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
@@ -245,7 +245,7 @@ describe( 'Termbox SSR', () => {
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.INTERNAL_SERVER_ERROR, responseMessage );
+			.reply( StatusCodes.INTERNAL_SERVER_ERROR, responseMessage );
 
 		request( app ).get( '/termbox' ).query( {
 			entity: entityId,
@@ -254,7 +254,7 @@ describe( 'Termbox SSR', () => {
 			editLink,
 			preferredLanguages,
 		} ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
+			expect( response.status ).toBe( StatusCodes.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
@@ -283,7 +283,7 @@ describe( 'Termbox SSR', () => {
 				uselang: language,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.INTERNAL_SERVER_ERROR, responseText );
+			.reply( StatusCodes.INTERNAL_SERVER_ERROR, responseText );
 		nockSuccessfulMessagesLoading( language );
 		nockSuccessfulEntityLoading( entityId, revision );
 
@@ -294,7 +294,7 @@ describe( 'Termbox SSR', () => {
 			editLink,
 			preferredLanguages,
 		} ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
+			expect( response.status ).toBe( StatusCodes.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
@@ -320,7 +320,7 @@ describe( 'Termbox SSR', () => {
 				amlang: language,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.INTERNAL_SERVER_ERROR, responseText );
+			.reply( StatusCodes.INTERNAL_SERVER_ERROR, responseText );
 		nockSuccessfulEntityLoading( entityId, revision );
 		nockSuccessfulLanguageLoading( language );
 
@@ -331,7 +331,7 @@ describe( 'Termbox SSR', () => {
 			editLink: `/some/${entityId}`,
 			preferredLanguages: 'de|en|pl|zh|fr|ar',
 		} ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.INTERNAL_SERVER_ERROR );
+			expect( response.status ).toBe( StatusCodes.INTERNAL_SERVER_ERROR );
 			expect( response.text ).toContain( 'Technical problem' );
 
 			expect( logger.log ).toHaveBeenCalledTimes( 1 );
@@ -444,7 +444,7 @@ describe( 'Termbox SSR', () => {
 			const pathAndQuery = `/termbox?${qs.stringify( query )}`;
 
 			return request( app ).get( pathAndQuery ).then( ( response ) => {
-				expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
+				expect( response.status ).toBe( StatusCodes.BAD_REQUEST );
 				expect( response.text ).toContain( 'Bad request' );
 				const errors = JSON.parse( response.text.match( '.*Errors: (.+)' )![ 1 ]! ).errors;
 				expect( errors.map( ( e: any ) => e.path ).sort() ).toEqual( reasons.sort() );
@@ -486,7 +486,7 @@ describe( 'Termbox SSR', () => {
 				uselang: language,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.OK, {
+			.reply( StatusCodes.OK, {
 				batchcomplete: '',
 				query: {
 					wbcontentlanguages: {
@@ -503,7 +503,7 @@ describe( 'Termbox SSR', () => {
 			} );
 
 		request( app ).get( pathAndQuery ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.BAD_REQUEST );
+			expect( response.status ).toBe( StatusCodes.BAD_REQUEST );
 			expect( response.text ).toContain( 'Bad request. Language not existing' );
 
 			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
@@ -542,10 +542,10 @@ describe( 'Termbox SSR', () => {
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.NOT_FOUND, backendErrorMessage );
+			.reply( StatusCodes.NOT_FOUND, backendErrorMessage );
 
 		return request( app ).get( pathAndQuery ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
+			expect( response.status ).toBe( StatusCodes.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
 
 			// this should never happen™ in combination with a well-configured wb, consequently we log this anomaly
@@ -577,7 +577,7 @@ describe( 'Termbox SSR', () => {
 				title: AxiosSpecialPageEntityRepo.SPECIAL_PAGE,
 				...GLOBAL_REQUEST_PARAMS,
 			} )
-			.reply( HttpStatus.NOT_FOUND, backendErrorMessage );
+			.reply( StatusCodes.NOT_FOUND, backendErrorMessage );
 
 		return request( app ).get( '/termbox' ).query( {
 			entity: entityId,
@@ -586,7 +586,7 @@ describe( 'Termbox SSR', () => {
 			editLink,
 			preferredLanguages,
 		} ).then( ( response ) => {
-			expect( response.status ).toBe( HttpStatus.NOT_FOUND );
+			expect( response.status ).toBe( StatusCodes.NOT_FOUND );
 			expect( response.text ).toContain( 'Entity not found' );
 		} );
 	} );
