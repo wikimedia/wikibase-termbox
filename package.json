@@ -51,7 +51,7 @@
     "@babel/core": "^7.13.8",
     "@storybook/addon-docs": "^6.1.21",
     "@storybook/addon-knobs": "^6.1.21",
-    "@storybook/addons": "^6.1.21",
+    "@storybook/addons": "^6.3.10",
     "@storybook/cli": "^6.1.21",
     "@storybook/vue": "^6.1.21",
     "@types/compression": "0.0.36",
