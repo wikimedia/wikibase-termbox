@@ -8,19 +8,18 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
 
 const validTypes = [ 'warning', 'error' ];
 
-@Component
-export default class IconMessageBox extends Vue {
-	@Prop( {
-		required: true,
-		validator: ( type ) => validTypes.indexOf( type ) !== -1,
-	} )
-	public type!: string;
-}
+export default Vue.extend( {
+	name: 'IconMessageBox',
+	props: {
+		type: {
+			required: true,
+			validator: ( type: string ) => validTypes.indexOf( type ) !== -1,
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

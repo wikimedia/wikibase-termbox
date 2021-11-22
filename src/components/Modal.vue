@@ -6,11 +6,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 
-@Component
-export default class Modal extends Vue {
-}
+export default Vue.extend( {
+	name: 'Modal',
+} );
 </script>
 
 <style lang="scss">

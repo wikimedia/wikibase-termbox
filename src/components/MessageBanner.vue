@@ -13,25 +13,24 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 
-@Component
-export default class MessageBanner extends Vue {
-	private bannerHeight = 0;
-
-	public mounted(): void {
+export default Vue.extend( {
+	name: 'MessageBanner',
+	data() {
+		return { bannerHeight: 0 };
+	},
+	mounted(): void {
 		this.bannerHeight = this.$el.scrollHeight;
 		const currentPadding = parseInt( window.getComputedStyle( document.body ).getPropertyValue( 'padding-top' ) );
 		document.body.style.paddingTop = `${currentPadding + this.bannerHeight}px`;
 		window.scrollBy( 0, this.bannerHeight );
-	}
-
-	public beforeDestroy(): void {
+	},
+	beforeDestroy(): void {
 		const currentPadding = parseInt( window.getComputedStyle( document.body ).getPropertyValue( 'padding-top' ) );
 		document.body.style.paddingTop = `${currentPadding - this.bannerHeight}px`;
 		window.scrollBy( 0, -this.bannerHeight );
-	}
-}
+	},
+} );
 </script>
 
 <style lang="scss">

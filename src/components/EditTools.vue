@@ -8,16 +8,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import Sectionedit from './Sectionedit.vue';
-import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
 
-@Component( {
+export default Vue.extend( {
+	name: 'EditTools',
 	components: {
 		Sectionedit,
 	},
-} )
-export default class EditTools extends Vue {
-	@Prop( { required: true, type: Boolean } )
-	public editMode!: boolean;
-}
+	props: {
+		editMode: { required: true, type: Boolean },
+	},
+} );
 </script>

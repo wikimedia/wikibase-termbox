@@ -6,11 +6,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 
-@Component
-export default class Overlay extends Vue {
-}
+export default Vue.extend( {
+	name: 'Overlay',
+} );
 </script>
 
 <style lang="scss">

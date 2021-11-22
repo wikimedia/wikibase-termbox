@@ -12,18 +12,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 
 // wikibase' custom tag to show/hide wrapped content depending on editability
 Vue.config.ignoredElements.push( 'wb:sectionedit' );
 
-@Component( {
-} )
-export default class Sectionedit extends Vue {
-	public isServerRendered = true;
-
-	public beforeMount(): void {
+export default Vue.extend( {
+	name: 'Sectionedit',
+	data() {
+		return { isServerRendered: true };
+	},
+	beforeMount(): void {
 		this.isServerRendered = false;
-	}
-}
+	},
+} );
 </script>

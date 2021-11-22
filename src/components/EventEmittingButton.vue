@@ -14,8 +14,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
 
 const validTypes = [
 	'normal',
@@ -25,31 +23,27 @@ const validTypes = [
 	'publish',
 	'cancel',
 ];
-@Component
-export default class EventEmittingButton extends Vue {
-	@Prop( {
-		required: true,
-		validator: ( type ) => validTypes.indexOf( type ) !== -1,
-	} )
-	public type!: string;
 
-	@Prop( { required: true, type: String } )
-	public message!: string;
-
-	@Prop( { required: false, default: '#', type: String } )
-	public href!: string;
-
-	@Prop( { required: false, default: true, type: Boolean } )
-	public preventDefault!: boolean;
-
-	public click( event: MouseEvent ): void {
-		if ( this.preventDefault ) {
-			event.preventDefault();
-		}
-		this.$emit( 'click', event );
-	}
-}
-
+export default Vue.extend( {
+	name: 'EventEmittingButton',
+	props: {
+		type: {
+			required: true,
+			validator: ( type: string ) => validTypes.indexOf( type ) !== -1,
+		},
+		message: { required: true, type: String },
+		href: { required: false, default: '#', type: String },
+		preventDefault: { required: false, default: true, type: Boolean },
+	},
+	methods: {
+		click( event: MouseEvent ): void {
+			if ( this.preventDefault ) {
+				event.preventDefault();
+			}
+			this.$emit( 'click', event );
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

@@ -16,23 +16,21 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
 import Vue from 'vue';
-import { Prop } from 'vue-property-decorator';
 
-@Component
-export default class Checkbox extends Vue {
-	@Prop( { required: true, type: Boolean } )
-	public value!: boolean;
-
-	@Prop( { required: true, type: String } )
-	public label!: string;
-
-	@Prop( { required: false, type: String } )
-	public htmlValue!: string;
-
-	public id = `wb-ui-${Math.round( Math.random() * 10000 )}`;// see:https://github.com/vuejs/vue/issues/5886
-}
+export default Vue.extend( {
+	name: 'Checkbox',
+	props: {
+		value: { required: true, type: Boolean },
+		label: { required: true, type: String },
+		htmlValue: { required: false, type: String, default: '' },
+	},
+	data() {
+		return {
+			id: `wb-ui-${Math.round( Math.random() * 10000 )}`, // see:https://github.com/vuejs/vue/issues/5886
+		};
+	},
+} );
 </script>
 <style lang="scss">
 $label: '.wb-ui-checkbox__label';
