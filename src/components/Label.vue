@@ -18,24 +18,23 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue, { PropType } from 'vue';
 import Messages from '@/components/mixins/Messages';
 import { Term } from '@wmde/wikibase-datamodel-types';
-import { Prop } from 'vue-property-decorator';
 
-@Component
-export default class Label extends mixins( Messages ) {
-	@Prop( { required: true } )
-	public label!: Term;
-
-	@Prop( { required: false, default: false, type: Boolean } )
-	public isPrimary!: boolean;
-
-	public get language(): string {
-		return this.label.language;
-	}
-
-}
+export default Vue.extend( {
+	name: 'Label',
+	mixins: [ Messages ],
+	props: {
+		label: { required: false, default: null, type: Object as PropType<Term> },
+		isPrimary: { required: false, default: false, type: Boolean },
+	},
+	computed: {
+		language(): string {
+			return this.label.language;
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

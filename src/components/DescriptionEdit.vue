@@ -10,34 +10,34 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue, { PropType } from 'vue';
 import Messages from '@/components/mixins/Messages';
-import { Prop } from 'vue-property-decorator';
 import { Term } from '@wmde/wikibase-datamodel-types';
 import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 
-@Component( {
+export default Vue.extend( {
+	name: 'DescriptionEdit',
 	components: { ResizingTextField },
-} )
-export default class DescriptionEdit extends mixins( Messages ) {
-	@Prop( { required: true } )
-	public description!: Term|null;
-
-	@Prop( { required: true, type: String } )
-	public languageCode!: string;
-
-	public get value(): string {
-		if ( !this.description ) {
-			return '';
-		} else {
-			return this.description.value;
-		}
-	}
-
-	public set value( value ) {
-		this.$emit( 'input', { language: this.languageCode, value } );
-	}
-}
+	mixins: [ Messages ],
+	props: {
+		description: { required: false, default: null, type: Object as PropType<Term> },
+		languageCode: { required: true, type: String },
+	},
+	computed: {
+		value: {
+			get(): string {
+				if ( !this.description ) {
+					return '';
+				} else {
+					return this.description.value;
+				}
+			},
+			set( value: string ) {
+				this.$emit( 'input', { language: this.languageCode, value } );
+			},
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

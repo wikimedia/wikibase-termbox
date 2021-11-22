@@ -17,26 +17,29 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue from 'vue';
 import InMoreLanguages from '@/components/InMoreLanguages.vue';
 import Messages from '@/components/mixins/Messages';
 
-@Component( {
+export default Vue.extend( {
+	name: 'InMoreLanguagesExpandable',
 	components: { InMoreLanguages },
-} )
-export default class InMoreLanguagesExpandable extends mixins( Messages ) {
-	public isExpanded = true;
-
-	public isServerRendered = true;
-
-	public toggleShowMoreLanguages(): void {
-		this.isExpanded = !this.isExpanded;
-	}
-
-	public beforeMount(): void {
+	mixins: [ Messages ],
+	data() {
+		return {
+			isExpanded: true,
+			isServerRendered: true,
+		};
+	},
+	methods: {
+		toggleShowMoreLanguages(): void {
+			this.isExpanded = !this.isExpanded;
+		},
+	},
+	beforeMount(): void {
 		this.isServerRendered = false;
-	}
-}
+	},
+} );
 </script>
 
 <style lang="scss">

@@ -26,41 +26,40 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue from 'vue';
 import Messages from './mixins/Messages';
 import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
 
-@Component( {
-	components: { AllEnteredLanguages },
-} )
-export default class AllEnteredLanguagesExpandable extends mixins( Messages ) {
-	public $refs!: {
-		allEnteredLanguagesSwitch: HTMLElement;
-		allEnteredLanguagesClose: HTMLElement;
-	};
-
-	public isExpanded = false;
-
-	public link = '#';
-
-	public isServerRendered = true;
-
-	public toggleShowAllLanguages(): void {
-		this.isExpanded = !this.isExpanded;
-	}
-
-	public closeAllLanguages(): void {
-		this.isExpanded = false;
-		this.$nextTick( () => {
-			this.$refs.allEnteredLanguagesSwitch.focus( { preventScroll: true } );
-			this.$refs.allEnteredLanguagesSwitch.scrollIntoView( { block: 'center', behavior: 'smooth' } );
-		} );
-	}
-
-	public beforeMount(): void {
+export default Vue.extend( {
+	name: 'AllEnteredLanguagesExpandable',
+	components: {
+		AllEnteredLanguages,
+	},
+	mixins: [ Messages ],
+	data() {
+		return {
+			isExpanded: false,
+			link: '#',
+			isServerRendered: true,
+		};
+	},
+	methods: {
+		toggleShowAllLanguages(): void {
+			this.isExpanded = !this.isExpanded;
+		},
+		closeAllLanguages(): void {
+			this.isExpanded = false;
+			this.$nextTick( () => {
+				const allEnteredLanguagesSwitch = this.$refs.allEnteredLanguagesSwitch as HTMLElement;
+				allEnteredLanguagesSwitch.focus( { preventScroll: true } );
+				allEnteredLanguagesSwitch.scrollIntoView( { block: 'center', behavior: 'smooth' } );
+			} );
+		},
+	},
+	beforeMount(): void {
 		this.isServerRendered = false;
-	}
-}
+	},
+} );
 </script>
 
 <style lang="scss">

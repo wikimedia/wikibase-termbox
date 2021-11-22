@@ -13,38 +13,35 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue, { PropType } from 'vue';
 import Messages from '@/components/mixins/Messages';
-import { Prop } from 'vue-property-decorator';
 import { Term } from '@wmde/wikibase-datamodel-types';
 import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 
-@Component( {
+export default Vue.extend( {
+	name: 'LabelEdit',
 	components: { ResizingTextField },
-} )
-export default class LabelEdit extends mixins( Messages ) {
-	@Prop( { required: true } )
-	public label!: Term|null;
-
-	@Prop( { required: true, type: String } )
-	public languageCode!: string;
-
-	@Prop( { required: false, default: false, type: Boolean } )
-	public isPrimary!: boolean;
-
-	public get value(): string {
-		if ( !this.label ) {
-			return '';
-		} else {
-			return this.label.value;
-		}
-	}
-
-	public set value( value ) {
-		this.$emit( 'input', { language: this.languageCode, value } );
-	}
-
-}
+	mixins: [ Messages ],
+	props: {
+		label: { required: false, default: null, type: Object as PropType<Term> },
+		languageCode: { required: true, type: String },
+		isPrimary: { required: false, default: false, type: Boolean },
+	},
+	computed: {
+		value: {
+			get(): string {
+				if ( !this.label ) {
+					return '';
+				} else {
+					return this.label.value;
+				}
+			},
+			set( value: string ) {
+				this.$emit( 'input', { language: this.languageCode, value } );
+			},
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

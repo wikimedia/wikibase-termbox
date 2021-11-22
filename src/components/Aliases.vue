@@ -17,22 +17,22 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue, { PropType } from 'vue';
 import { Term } from '@wmde/wikibase-datamodel-types';
 import Messages from '@/components/mixins/Messages';
-import { Prop } from 'vue-property-decorator';
 
-@Component
-export default class Aliases extends mixins( Messages ) {
-
-	@Prop( { required: true } )
-	public aliases!: Term[];
-
-	public get language(): string {
-		return this.aliases[ 0 ].language;
-	}
-
-}
+export default Vue.extend( {
+	name: 'Aliases',
+	mixins: [ Messages ],
+	props: {
+		aliases: { required: false, default: null, type: Array as PropType<Term[]> },
+	},
+	computed: {
+		language(): string {
+			return this.aliases[ 0 ].language;
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

@@ -15,22 +15,22 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue, { PropType } from 'vue';
 import Messages from '@/components/mixins/Messages';
 import { Term } from '@wmde/wikibase-datamodel-types';
-import { Prop } from 'vue-property-decorator';
 
-@Component
-export default class Description extends mixins( Messages ) {
-
-	@Prop( { required: true } )
-	public description!: Term;
-
-	public get language(): string {
-		return this.description.language;
-	}
-
-}
+export default Vue.extend( {
+	name: 'Description',
+	mixins: [ Messages ],
+	props: {
+		description: { required: false, default: null, type: Object as PropType<Term> },
+	},
+	computed: {
+		language(): string {
+			return this.description.language;
+		},
+	},
+} );
 </script>
 
 <style lang="scss">
