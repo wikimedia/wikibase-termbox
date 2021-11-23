@@ -6,9 +6,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 import TermBox from './TermBox.vue';
-import { Store } from 'vuex';
+import {
+	mapState,
+	Store,
+} from 'vuex';
 import { NS_ENTITY, NS_LANGUAGE, NS_LINKS, NS_USER } from '@/store/namespaces';
 import { ENTITY_INIT } from '@/store/entity/actionTypes';
 import {
@@ -20,40 +22,39 @@ import TermboxRequest from '@/common/TermboxRequest';
 import { LANGUAGE_INIT } from '@/store/language/actionTypes';
 import { LINKS_INIT } from '@/store/links/actionTypes';
 import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
-import { namespace } from 'vuex-class';
 import Root from '@/store/Root';
 
-@Component( {
+const App = Vue.extend( {
+	name: 'App',
 	components: {
 		TermBox,
 	},
-} )
-export default class App extends Vue {
+	computed: {
+		...mapState( NS_USER, [ 'primaryLanguage' ] ),
+	},
+} );
 
-	public static asyncData(
-		store: Store<Root>,
-		request: TermboxRequest,
-	): Promise<unknown[]> {
-		return Promise.all( [
-			store.dispatch( action( NS_LANGUAGE, LANGUAGE_INIT ) ),
-			store.dispatch(
-				action( NS_ENTITY, ENTITY_INIT ),
-				{ entity: request.entityId, revision: request.revision },
-			),
-			store.dispatch(
-				action( NS_USER, LANGUAGE_PREFERENCE ),
-				{ primaryLanguage: request.language, preferredLanguages: request.preferredLanguages },
-			),
-			store.dispatch( action( NS_LINKS, LINKS_INIT ), request.links ),
-			store.dispatch( action( NS_USER, USER_NAME_SET ), request.userName ),
-			store.dispatch( action( NS_USER, USER_PREFERENCES_INIT ) ),
-		] );
-	}
+( App as typeof App & { asyncData: Function } ).asyncData = function asyncData(
+	store: Store<Root>,
+	request: TermboxRequest,
+): Promise<unknown[]> {
+	return Promise.all( [
+		store.dispatch( action( NS_LANGUAGE, LANGUAGE_INIT ) ),
+		store.dispatch(
+			action( NS_ENTITY, ENTITY_INIT ),
+			{ entity: request.entityId, revision: request.revision },
+		),
+		store.dispatch(
+			action( NS_USER, LANGUAGE_PREFERENCE ),
+			{ primaryLanguage: request.language, preferredLanguages: request.preferredLanguages },
+		),
+		store.dispatch( action( NS_LINKS, LINKS_INIT ), request.links ),
+		store.dispatch( action( NS_USER, USER_NAME_SET ), request.userName ),
+		store.dispatch( action( NS_USER, USER_PREFERENCES_INIT ) ),
+	] );
+};
 
-	@namespace( NS_USER ).State( 'primaryLanguage' )
-	public primaryLanguage!: string;
-
-}
+export default App;
 </script>
 
 <style lang="scss">
