@@ -39,10 +39,10 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
-import { namespace } from 'vuex-class';
+import Vue from 'vue';
+import { mapState } from 'vuex';
 import {
 	NS_LINKS,
 	NS_USER,
@@ -53,29 +53,28 @@ import { UserPreference } from '@/common/UserPreference';
 import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 
-@Component( {
+export default Vue.extend( {
+	name: 'AnonEditWarning',
 	components: { IconMessageBox, Checkbox, EventEmittingButton },
-} )
-export default class AnonEditWarning extends mixins( Messages ) {
-
-	@namespace( NS_LINKS ).State( 'loginLinkUrl' )
-	public loginLinkUrl!: string;
-
-	@namespace( NS_LINKS ).State( 'signUpLinkUrl' )
-	public signUpLinkUrl!: string;
-
-	public warnRecurringly = true;
-
-	public persistUserPreference(): void {
-		this.$store.dispatch(
-			action( NS_USER, USER_PREFERENCE_SET ),
-			{
-				name: UserPreference.HIDE_ANON_EDIT_WARNING,
-				value: !this.warnRecurringly,
-			},
-		);
-	}
-}
+	mixins: [ Messages ],
+	data() {
+		return { warnRecurringly: true };
+	},
+	computed: {
+		...mapState( NS_LINKS, [ 'loginLinkUrl', 'signUpLinkUrl' ] ),
+	},
+	methods: {
+		persistUserPreference(): void {
+			this.$store.dispatch(
+				action( NS_USER, USER_PREFERENCE_SET ),
+				{
+					name: UserPreference.HIDE_ANON_EDIT_WARNING,
+					value: !this.warnRecurringly,
+				},
+			);
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

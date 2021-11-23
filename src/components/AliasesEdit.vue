@@ -20,104 +20,101 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue, { PropType } from 'vue';
 import { NS_ENTITY } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
-import { Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
+import { mapActions } from 'vuex';
 import { Term } from '@wmde/wikibase-datamodel-types';
 import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
 import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
 
-@Component( {
-	components: { ResizingTextField },
-} )
-export default class AliasesEdit extends mixins( Messages ) {
-	@Prop( { required: true } )
-	public aliases!: Term[]|null;
-
-	@Prop( { required: true, type: String } )
-	public languageCode!: string;
-
-	@namespace( NS_ENTITY ).Action( ENTITY_ALIASES_EDIT )
-	public editAliases!: ( payload: { language: string; aliasValues: string[] } ) => void;
-
-	@namespace( NS_ENTITY ).Action( ENTITY_ALIAS_REMOVE )
-	public removeAlias!: ( payload: { languageCode: string; index: number } ) => void;
-
-	public hasFocus = false;
-
-	public setFocus(): void {
-		this.hasFocus = true;
-	}
-
-	public unsetFocus(): void {
-		this.hasFocus = false;
-	}
-
-	public get aliasValues(): string[] {
-		return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
-	}
-
-	private keys = [ ... this.aliasValues.keys() ];
-
-	private addAdditionalKey(): void {
-		this.keys.push( this.keys[ this.keys.length - 1 ] + 1 );
-	}
-
-	public aliasInput( index: number, value: string ): void {
-		if ( this.isBottomBlankField( index ) ) {
-			this.addNewAlias( value );
-		} else {
-			this.editAlias( index, value );
-		}
-	}
-
-	private addNewAlias( value: string ): void {
-		if ( value.trim() === '' ) {
-			return;
-		}
-
-		this.addAdditionalKey();
-
-		this.editAliases( {
-			language: this.languageCode,
-			aliasValues: this.getValuesWithEdit( this.aliasValues.length - 1, value ),
-		} );
-	}
-
-	private editAlias( index: number, value: string ): void {
-		const aliasValues = this.getValuesWithEdit( index, value );
-		aliasValues.splice( aliasValues.length - 1, 1 );
-
-		this.editAliases( {
-			language: this.languageCode,
-			aliasValues,
-		} );
-	}
-
-	private getValuesWithEdit( index: number, value: string ): string[] {
-		const aliasValues = [ ...this.aliasValues ];
-		aliasValues[ index ] = value;
-
-		return aliasValues;
-	}
-
-	public removeAliasIfEmpty( index: number ): void {
-		if (
-			this.aliasValues[ index ].trim() === '' &&
-			!this.isBottomBlankField( index )
-		) {
-			this.removeAlias( { languageCode: this.languageCode, index } );
-			this.keys.splice( index, 1 );
-		}
-	}
-
-	private isBottomBlankField( index: number ): boolean {
-		return index === this.aliasValues.length - 1;
-	}
-
+interface AliasesEdit {
+	editAliases: ( payload: { language: string; aliasValues: string[] } ) => void;
+	removeAlias: ( payload: { languageCode: string; index: number } ) => void;
 }
+
+export default Vue.extend( {
+	name: 'AliasesEdit',
+	components: { ResizingTextField },
+	mixins: [ Messages ],
+	props: {
+		aliases: { required: false, default: null, type: Array as PropType<Term[]> },
+		languageCode: { required: true, type: String },
+	},
+	data() {
+		return {
+			hasFocus: false,
+			// keys of aliasValues (computed property not yet available)
+			keys: [ ...[ ...( this.aliases || [] ), '' ].keys() ],
+		};
+	},
+	computed: {
+		aliasValues(): string[] {
+			return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
+		},
+	},
+	methods: {
+		...mapActions( NS_ENTITY, {
+			editAliases: ENTITY_ALIASES_EDIT,
+			removeAlias: ENTITY_ALIAS_REMOVE,
+		} ),
+		setFocus(): void {
+			this.hasFocus = true;
+		},
+		unsetFocus(): void {
+			this.hasFocus = false;
+		},
+		addAdditionalKey(): void {
+			this.keys.push( this.keys[ this.keys.length - 1 ] + 1 );
+		},
+		aliasInput( index: number, value: string ): void {
+			if ( this.isBottomBlankField( index ) ) {
+				this.addNewAlias( value );
+			} else {
+				this.editAlias( index, value );
+			}
+		},
+		addNewAlias( value: string ): void {
+			if ( value.trim() === '' ) {
+				return;
+			}
+
+			this.addAdditionalKey();
+
+			( this as AliasesEdit ).editAliases( {
+				language: this.languageCode,
+				aliasValues: this.getValuesWithEdit( this.aliasValues.length - 1, value ),
+			} );
+		},
+		editAlias( index: number, value: string ): void {
+			const aliasValues = this.getValuesWithEdit( index, value );
+			aliasValues.splice( aliasValues.length - 1, 1 );
+
+			( this as AliasesEdit ).editAliases( {
+				language: this.languageCode,
+				aliasValues,
+			} );
+		},
+		getValuesWithEdit( index: number, value: string ): string[] {
+			const aliasValues = [ ...this.aliasValues ];
+			aliasValues[ index ] = value;
+
+			return aliasValues;
+		},
+		removeAliasIfEmpty( index: number ): void {
+			if (
+				this.aliasValues[ index ].trim() === '' &&
+				!this.isBottomBlankField( index )
+			) {
+				( this as AliasesEdit ).removeAlias( { languageCode: this.languageCode, index } );
+				this.keys.splice( index, 1 );
+			}
+		},
+		isBottomBlankField( index: number ): boolean {
+			return index === this.aliasValues.length - 1;
+		},
+	},
+} );
 </script>
 
 <style lang="scss">

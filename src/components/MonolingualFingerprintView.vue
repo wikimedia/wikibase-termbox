@@ -40,11 +40,12 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue from 'vue';
 import Messages from './mixins/Messages';
 import {
 	mapState,
 	mapGetters,
+	mapActions,
 } from 'vuex';
 import { NS_ENTITY, NS_LANGUAGE } from '@/store/namespaces';
 import Label from '@/components/Label.vue';
@@ -53,12 +54,10 @@ import Description from '@/components/Description.vue';
 import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import Aliases from '@/components/Aliases.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
-import { Prop } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import { ENTITY_DESCRIPTION_EDIT, ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
-import { Term } from '@wmde/wikibase-datamodel-types';
 
-@Component( {
+export default Vue.extend( {
+	name: 'MonolingualFingerprintView',
 	components: {
 		Label,
 		LabelEdit,
@@ -66,6 +65,11 @@ import { Term } from '@wmde/wikibase-datamodel-types';
 		DescriptionEdit,
 		Aliases,
 		AliasesEdit,
+	},
+	mixins: [ Messages ],
+	props: {
+		languageCode: { required: true, type: String },
+		isPrimary: { required: false, default: false, type: Boolean },
 	},
 	computed: {
 		...mapState( [ 'editMode' ] ),
@@ -78,22 +82,13 @@ import { Term } from '@wmde/wikibase-datamodel-types';
 			getLanguageTranslationInUserLanguage: 'getTranslationInUserLanguage',
 		} ),
 	},
-} )
-export default class MonolingualFingerprintView extends mixins( Messages ) {
-
-	@Prop( { required: true, type: String } )
-	public languageCode!: string;
-
-	@Prop( { required: false, default: false, type: Boolean } )
-	public isPrimary!: boolean;
-
-	@namespace( NS_ENTITY ).Action( ENTITY_LABEL_EDIT )
-	public onEditLabel!: ( term: Term ) => void;
-
-	@namespace( NS_ENTITY ).Action( ENTITY_DESCRIPTION_EDIT )
-	public onEditDescription!: ( term: Term ) => void;
-
-}
+	methods: {
+		...mapActions( NS_ENTITY, {
+			onEditLabel: ENTITY_LABEL_EDIT,
+			onEditDescription: ENTITY_DESCRIPTION_EDIT,
+		} ),
+	},
+} );
 </script>
 
 <style lang="scss">

@@ -27,47 +27,48 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
 import Messages from '@/components/mixins/Messages';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Checkbox from '@/components/Checkbox.vue';
-import { namespace } from 'vuex-class';
+import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { NS_USER } from '@/store/namespaces';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 
-@Component( {
+interface LicenseAgreement {
+	config: ConfigOptions;
+	savePreference: ( payload: { name: UserPreference; value: string | null } ) => Promise<void>;
+}
+
+export default Vue.extend( {
+	name: 'LicenseAgreement',
 	components: { IconMessageBox, Checkbox, EventEmittingButton },
-} )
-
-export default class LicenseAgreement extends mixins( Messages ) {
-	@namespace( NS_USER ).Action( USER_PREFERENCE_SET )
-	public savePreference!: ( payload: { name: UserPreference; value: string | null } ) => Promise<void>;
-
-	public doNotShowAgain = true;
-
-	private config!: ConfigOptions;
-
-	public savePreferenceAndPublish(): void {
-		this.$emit( 'save' );
-		this.savePreference( {
-			name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
-			value: this.doNotShowAgain ? this.config.copyrightVersion : null,
-		} );
-	}
-
-	public mounted(): void {
+	mixins: [ Messages ],
+	data() {
+		return { doNotShowAgain: true };
+	},
+	methods: {
+		...mapActions( NS_USER, { savePreference: USER_PREFERENCE_SET } ),
+		savePreferenceAndPublish(): void {
+			this.$emit( 'save' );
+			( this as unknown as LicenseAgreement ).savePreference( {
+				name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
+				value: this.doNotShowAgain ? ( this as unknown as LicenseAgreement ).config.copyrightVersion : null,
+			} );
+		},
+	},
+	mounted(): void {
 		this.$el.querySelectorAll( '.wb-ui-license-agreement__message a' ).forEach( ( $link ) => {
 			$link.setAttribute( 'target', '_blank' );
 
 			// protect older browsers from a window.opener vulnerability: https://mathiasbynens.github.io/rel-noopener/
 			$link.setAttribute( 'rel', `${$link.getAttribute( 'rel' ) || ''} noopener noreferrer` );
 		} );
-	}
-
-}
+	},
+} );
 </script>
 
 <style lang="scss">

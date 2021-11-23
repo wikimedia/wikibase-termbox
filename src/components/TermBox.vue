@@ -64,8 +64,10 @@
 </template>
 
 <script lang="ts">
-import Component, { mixins } from 'vue-class-component';
+import Vue from 'vue';
 import {
+	mapActions,
+	mapGetters,
 	mapState,
 } from 'vuex';
 import {
@@ -76,7 +78,6 @@ import {
 import EditTools from '@/components/EditTools.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
-import { Action, namespace } from 'vuex-class';
 import { ENTITY_SAVE, ENTITY_ROLLBACK } from '@/store/entity/actionTypes';
 import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
@@ -92,7 +93,8 @@ import { IndeterminateProgressBar } from '@wmde/wikibase-vuejs-components';
 import MessageBanner from '@/components/MessageBanner.vue';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 
-@Component( {
+export default Vue.extend( {
+	name: 'TermBox',
 	components: {
 		IconMessageBox,
 		MessageBanner,
@@ -106,98 +108,83 @@ import IconMessageBox from '@/components/IconMessageBox.vue';
 		MonolingualFingerprintView,
 		EditTools,
 	},
+	mixins: [ Messages ],
+	data() {
+		return {
+			showEditWarning: false,
+			showLicenseAgreement: false,
+			isSaving: false,
+			showSavingError: false,
+		};
+	},
 	computed: {
 		...mapState( [ 'editMode' ] ),
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
 		...mapState( NS_ENTITY, [ 'isEditable' ] ),
+		...mapGetters( NS_USER, { userIsAnonymous: 'isAnonymous' } ),
 	},
-} )
-export default class TermBox extends mixins( Messages ) {
+	methods: {
+		...mapActions( {
+			activateEditMode: EDITMODE_ACTIVATE,
+			deactivateEditMode: EDITMODE_DEACTIVATE,
+		} ),
+		...mapActions( NS_ENTITY, {
+			saveEntity: ENTITY_SAVE,
+			rollbackEntity: ENTITY_ROLLBACK,
+		} ),
+		edit(): void {
+			if ( !( this.$store.state[ NS_USER ] as User ).preferences[ UserPreference.HIDE_ANON_EDIT_WARNING ] ) {
+				this.showEditWarningForAnonymousUser();
+			}
 
-	@Action( EDITMODE_ACTIVATE )
-	public activateEditMode!: () => Promise<void>;
-
-	@Action( EDITMODE_DEACTIVATE )
-	public deactivateEditMode!: () => Promise<void>;
-
-	@namespace( NS_ENTITY ).Action( ENTITY_SAVE )
-	public saveEntity!: () => Promise<void>;
-
-	@namespace( NS_ENTITY ).Action( ENTITY_ROLLBACK )
-	public rollbackEntity!: () => Promise<void>;
-
-	@namespace( NS_USER ).Getter( 'isAnonymous' )
-	public userIsAnonymous!: boolean;
-
-	@namespace( NS_USER ).State( ( state: User ) => state.preferences[ UserPreference.HIDE_ANON_EDIT_WARNING ] )
-	public hideAnonEditWarning!: boolean;
-
-	@namespace( NS_USER ).State( ( state: User ) => state.preferences[ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION ] )
-	public acknowledgedCopyrightVersion!: string;
-
-	private config!: ConfigOptions;
-
-	public showEditWarning = false;
-
-	public showLicenseAgreement = false;
-
-	public isSaving = false;
-
-	public showSavingError = false;
-
-	public edit(): void {
-		if ( !this.hideAnonEditWarning ) {
-			this.showEditWarningForAnonymousUser();
-		}
-
-		this.activateEditMode();
-	}
-
-	public saveOrShowLicenseAgreement(): void {
-		if ( this.acknowledgedCopyrightVersion && this.acknowledgedCopyrightVersion === this.config.copyrightVersion ) {
-			this.save();
-		} else {
-			this.showLicenseAgreement = true;
-		}
-	}
-
-	public save(): void {
-		this.isSaving = true;
-		this.closeLicenseAgreement();
-		this.saveEntity()
-			.then( () => {
-				this.deactivateEditModeAndDismissErrors();
-			} )
-			.catch( () => {
-				this.showSavingError = true;
-			} )
-			.finally( () => {
-				this.isSaving = false;
-			} );
-	}
-
-	private deactivateEditModeAndDismissErrors(): void {
-		this.showSavingError = false;
-		this.deactivateEditMode();
-	}
-
-	public closeLicenseAgreement(): void {
-		this.showLicenseAgreement = false;
-	}
-
-	public cancel(): void {
-		this.rollbackEntity()
-			.then( () => {
-				this.deactivateEditModeAndDismissErrors();
-			} );
-	}
-
-	public showEditWarningForAnonymousUser(): void {
-		this.showEditWarning = this.userIsAnonymous;
-	}
-
-}
+			this.activateEditMode();
+		},
+		saveOrShowLicenseAgreement(): void {
+			const acknowledgedCopyrightVersion = ( this.$store.state[ NS_USER ] as User )
+				.preferences[ UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION ];
+			const config = ( this as unknown as { config: ConfigOptions } ).config;
+			if (
+				acknowledgedCopyrightVersion &&
+				acknowledgedCopyrightVersion === config.copyrightVersion
+			) {
+				this.save();
+			} else {
+				this.showLicenseAgreement = true;
+			}
+		},
+		save(): void {
+			this.isSaving = true;
+			this.closeLicenseAgreement();
+			this.saveEntity()
+				.then( () => {
+					this.deactivateEditModeAndDismissErrors();
+				} )
+				.catch( () => {
+					this.showSavingError = true;
+				} )
+				.finally( () => {
+					this.isSaving = false;
+				} );
+		},
+		deactivateEditModeAndDismissErrors(): void {
+			this.showSavingError = false;
+			this.deactivateEditMode();
+		},
+		closeLicenseAgreement(): void {
+			this.showLicenseAgreement = false;
+		},
+		cancel(): void {
+			this.rollbackEntity()
+				.then( () => {
+					this.deactivateEditModeAndDismissErrors();
+				} );
+		},
+		showEditWarningForAnonymousUser(): void {
+			this.showEditWarning = this.userIsAnonymous;
+		},
+	},
+} );
 </script>
 
 <style lang="scss">
