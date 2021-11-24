@@ -1,5 +1,5 @@
 import Vue, { ComponentOptions, VNode } from 'vue';
-import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
+import ResizingTextField from '@/components/ResizingTextField.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
 import { mount, shallowMount, Wrapper } from '@vue/test-utils';
 import { createStore } from '@/store';

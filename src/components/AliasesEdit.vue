@@ -12,7 +12,7 @@
 				@focus.native="setFocus()"
 				@blur.native="removeAliasIfEmpty( index ); unsetFocus()"
 				:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_ALIAS )"
-				:maxlength="config.textFieldCharacterLimit"
+				:max-length="config.textFieldCharacterLimit"
 				autocapitalize="off"
 			/>
 		</li>
@@ -25,7 +25,7 @@ import { NS_ENTITY } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import { mapActions } from 'vuex';
 import { Term } from '@wmde/wikibase-datamodel-types';
-import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
+import ResizingTextField from '@/components/ResizingTextField.vue';
 import { ENTITY_ALIAS_REMOVE, ENTITY_ALIASES_EDIT } from '@/store/entity/actionTypes';
 
 interface AliasesEdit {

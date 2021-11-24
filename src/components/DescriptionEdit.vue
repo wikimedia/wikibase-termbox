@@ -4,7 +4,7 @@
 		v-inlanguage="languageCode"
 		v-model="value"
 		:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_DESCRIPTION )"
-		:maxlength="config.textFieldCharacterLimit"
+		:max-length="config.textFieldCharacterLimit"
 		autocapitalize="off"
 	/>
 </template>
@@ -13,7 +13,7 @@
 import Vue, { PropType } from 'vue';
 import Messages from '@/components/mixins/Messages';
 import { Term } from '@wmde/wikibase-datamodel-types';
-import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
+import ResizingTextField from '@/components/ResizingTextField.vue';
 
 export default Vue.extend( {
 	name: 'DescriptionEdit',

@@ -1,5 +1,5 @@
 import LabelEdit from '@/components/LabelEdit.vue';
-import { ResizingTextField } from '@wmde/wikibase-vuejs-components';
+import ResizingTextField from '@/components/ResizingTextField.vue';
 import { shallowMount } from '@vue/test-utils';
 import { createStore } from '@/store';
 import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';

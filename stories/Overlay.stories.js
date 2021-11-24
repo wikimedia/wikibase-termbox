@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/vue';
 import Overlay from '@/components/Overlay.vue';
 import Modal from '@/components/Modal.vue';
-import { IndeterminateProgressBar } from '@wmde/wikibase-vuejs-components';
+import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
 
 storiesOf( 'Overlay', module )
 	.addParameters( { component: Overlay } )
