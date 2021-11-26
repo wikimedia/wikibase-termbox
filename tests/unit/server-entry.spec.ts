@@ -9,7 +9,7 @@ import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServi
 const mockBuildApp = jest.fn();
 jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
-	default: (
+	buildAppSsr: (
 		termboxRequest: TermboxRequest,
 		services: TermboxServices,
 	) => mockBuildApp( termboxRequest, services ),

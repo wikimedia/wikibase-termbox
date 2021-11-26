@@ -20,12 +20,12 @@ import {
 Vue.use( Vuex );
 
 export function createStore( services: TermboxServices ): Store<Root> {
-	const state: Root = {
-		editMode: false,
-	};
-
 	const storeBundle: StoreOptions<Root> = {
-		state,
+		state(): Root {
+			return {
+				editMode: false,
+			};
+		},
 		mutations,
 		actions,
 		modules: {
