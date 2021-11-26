@@ -5,9 +5,9 @@ const TARGET_NODE = process.env.WEBPACK_TARGET === 'node';
 const DEV_MODE = process.env.WEBPACK_TARGET === 'dev';
 const filePrefix = 'wikibase.termbox.';
 
-const target = TARGET_NODE
-	? 'server'
-	: 'client';
+const mainEntry = TARGET_NODE
+	? './src/server-entry.ts'
+	: './src/client-entry.ts';
 
 let repoHost;
 let repoScriptPath;
@@ -45,7 +45,7 @@ function externals() {
 module.exports = {
 	outputDir: TARGET_NODE ? 'serverDist' : 'dist',
 	configureWebpack: () => ( {
-		entry: DEV_MODE ? [ './src/dev-entry.ts', `./src/${target}-entry.ts` ] : `./src/${target}-entry.ts`,
+		entry: DEV_MODE ? [ './src/dev-entry.ts', mainEntry ] : mainEntry,
 		externals: externals(),
 		target: TARGET_NODE ? 'node' : 'web',
 		node: TARGET_NODE ? undefined : false,
