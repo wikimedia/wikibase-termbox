@@ -14,7 +14,11 @@
 import Vue from 'vue';
 
 // wikibase' custom tag to show/hide wrapped content depending on editability
-Vue.config.ignoredElements.push( 'wb:sectionedit' );
+if ( Vue.config.ignoredElements ) {
+	Vue.config.ignoredElements.push( 'wb:sectionedit' );
+} else {
+	Vue.config.ignoredElements = [ 'wb:sectionedit' ];
+}
 
 export default Vue.extend( {
 	name: 'Sectionedit',
