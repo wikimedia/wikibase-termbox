@@ -2,7 +2,8 @@
 	<ResizingTextField
 		class="wb-ui-description-edit"
 		v-inlanguage="languageCode"
-		v-model="value"
+		:value="value"
+		@input="value = $event"
 		:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_DESCRIPTION )"
 		:max-length="config.textFieldCharacterLimit"
 		autocapitalize="off"

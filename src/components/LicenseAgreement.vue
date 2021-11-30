@@ -9,7 +9,11 @@
 			v-html="config.licenseAgreementInnerHtml"
 		/>
 		<p class="wb-ui-license-agreement__persist">
-			<Checkbox v-model="doNotShowAgain" :label="message( MESSAGE_KEYS.LICENSE_AGREEMENT_ACCEPT_PERSIST )" />
+			<Checkbox
+				:value="doNotShowAgain"
+				@input="doNotShowAgain = $event"
+				:label="message( MESSAGE_KEYS.LICENSE_AGREEMENT_ACCEPT_PERSIST )"
+			/>
 		</p>
 		<div class="wb-ui-license-agreement__button-group">
 			<EventEmittingButton

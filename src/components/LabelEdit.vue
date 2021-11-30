@@ -6,7 +6,8 @@
 		}"
 		:placeholder="message( MESSAGE_KEYS.PLACEHOLDER_EDIT_LABEL )"
 		v-inlanguage="languageCode"
-		v-model="value"
+		:value="value"
+		@input="value = $event"
 		:max-length="config.textFieldCharacterLimit"
 		autocapitalize="off"
 	/>

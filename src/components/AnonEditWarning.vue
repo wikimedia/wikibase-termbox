@@ -8,7 +8,8 @@
 		</IconMessageBox>
 		<p class="wb-ui-anon-edit-warning__persist">
 			<Checkbox
-				v-model="warnRecurringly"
+				:value="warnRecurringly"
+				@input="warnRecurringly = $event"
 				:label="message( MESSAGE_KEYS.EDIT_WARNING_DISMISS_PERSIST )"
 			/>
 		</p>
