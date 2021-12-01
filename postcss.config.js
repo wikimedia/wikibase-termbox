@@ -1,8 +1,10 @@
+const { browserslist } = require( './package.json' );
+
 module.exports = {
 	plugins: {
 		autoprefixer: {
 			overrideBrowserslist: [
-				'extends browserslist-config-base',
+				...browserslist,
 				'ie 10',
 			],
 		},
