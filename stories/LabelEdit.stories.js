@@ -1,16 +1,15 @@
-import { storiesOf } from '@storybook/vue';
+import { app, storiesOf } from '@storybook/vue3';
 import { boolean } from '@storybook/addon-knobs';
 import LabelEdit from '@/components/LabelEdit.vue';
 import { MessageKey } from '@/common/MessageKey';
 import stubMessagesMixin from '../.storybook/helpers/stubMessagesMixin';
-import Vue from 'vue';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 storiesOf( 'LabelEdit', module )
 	.addParameters( { component: LabelEdit } )
 	.add( 'default', () => {
 
-		Vue.mixin( newConfigMixin( {
+		app.mixin( newConfigMixin( {
 			textFieldCharacterLimit: 100,
 		} ) );
 

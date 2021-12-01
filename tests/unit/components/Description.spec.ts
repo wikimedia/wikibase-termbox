@@ -29,7 +29,7 @@ describe( 'Description', () => {
 
 		const wrapper = shallowMount( Description, {
 			propsData: { description: { language, value: description } },
-			store,
+			global: { plugins: [ store ] },
 		} );
 
 		expect( wrapper.find( DESCRIPTION_SELECTOR ).text() ).toBe( description );
@@ -54,9 +54,11 @@ describe( 'Description', () => {
 			const store = createStoreWithLanguage( language );
 			shallowMount( Description, {
 				propsData: { description: { language: languageCode, value: 'bla' } },
-				store,
-				directives: {
-					inlanguage,
+				global: {
+					plugins: [ store ],
+					directives: {
+						inlanguage,
+					},
 				},
 			} );
 
@@ -70,9 +72,11 @@ describe( 'Description', () => {
 
 			shallowMount( Description, {
 				propsData: { description: null },
-				store,
-				directives: {
-					inlanguage: inlanguageDirective,
+				global: {
+					plugins: [ store ],
+					directives: {
+						inlanguage: inlanguageDirective,
+					},
 				},
 			} );
 

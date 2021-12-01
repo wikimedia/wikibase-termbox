@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import init from '@/client/init';
 import TermboxRequest from '@/common/TermboxRequest';
 import TermboxServices from '@/common/TermboxServices';
@@ -29,7 +28,6 @@ import termboxConfig from './config.json'; // in production, this file is provid
 
 const mwWindow = window as unknown as MwWindow;
 
-Vue.config.productionTip = false;
 const config: ConfigOptions = {
 	textFieldCharacterLimit: mwWindow.mw.config.get( 'wbMultiLingualStringLimit' ),
 	licenseAgreementInnerHtml: mwWindow.mw.config.get( 'wbCopyright' ).messageHtml,

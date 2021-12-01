@@ -16,9 +16,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Checkbox',
 	props: {
 		value: { required: true, type: Boolean },
@@ -30,6 +30,7 @@ export default Vue.extend( {
 			id: `wb-ui-${Math.round( Math.random() * 10000 )}`, // see:https://github.com/vuejs/vue/issues/5886
 		};
 	},
+	emits: [ 'input' ],
 } );
 </script>
 <style lang="scss">

@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/vue';
+import { storiesOf } from '@storybook/vue3';
 import { boolean } from '@storybook/addon-knobs';
 import Label from '@/components/Label.vue';
 

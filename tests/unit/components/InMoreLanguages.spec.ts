@@ -16,19 +16,19 @@ describe( 'InMoreLanguages', () => {
 
 		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), secondaryLanguages );
 
-		const wrapper = shallowMount( InMoreLanguages, { store } );
+		const wrapper = shallowMount( InMoreLanguages, { global: { plugins: [ store ] } } );
 		const fingerprints = wrapper.findAllComponents( MonolingualFingerprintView );
 
 		expect( fingerprints ).toHaveLength( 3 );
 
-		expect( fingerprints.at( 0 ).props( 'languageCode' ) ).toBe( secondaryLanguages[ 0 ] );
-		expect( fingerprints.at( 1 ).props( 'languageCode' ) ).toBe( secondaryLanguages[ 1 ] );
-		expect( fingerprints.at( 2 ).props( 'languageCode' ) ).toBe( secondaryLanguages[ 2 ] );
+		expect( fingerprints[ 0 ].props( 'languageCode' ) ).toBe( secondaryLanguages[ 0 ] );
+		expect( fingerprints[ 1 ].props( 'languageCode' ) ).toBe( secondaryLanguages[ 1 ] );
+		expect( fingerprints[ 2 ].props( 'languageCode' ) ).toBe( secondaryLanguages[ 2 ] );
 	} );
 
 	it( 'shows an expandable list of all entered languages', () => {
 		const store = createStore( emptyServices as any );
-		const wrapper = shallowMount( InMoreLanguages, { store } );
+		const wrapper = shallowMount( InMoreLanguages, { global: { plugins: [ store ] } } );
 
 		expect( wrapper.findComponent( AllEnteredLanguagesExpandable ).exists() ).toBeTruthy();
 	} );

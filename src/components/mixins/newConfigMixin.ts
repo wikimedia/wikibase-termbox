@@ -1,4 +1,4 @@
-import Vue, { ComponentOptions } from 'vue';
+import { ComponentOptions } from 'vue';
 
 export interface ConfigOptions {
 	textFieldCharacterLimit: number;
@@ -6,7 +6,7 @@ export interface ConfigOptions {
 	copyrightVersion: string;
 }
 
-export default function newConfigMixin( config: ConfigOptions ): ComponentOptions<Vue> {
+export default function newConfigMixin( config: ConfigOptions ): ComponentOptions {
 	return {
 		computed: {
 			config: () => config,

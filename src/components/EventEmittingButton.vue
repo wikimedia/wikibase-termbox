@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
 const validTypes = [
 	'normal',
@@ -24,7 +24,7 @@ const validTypes = [
 	'cancel',
 ];
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'EventEmittingButton',
 	props: {
 		type: {
@@ -35,6 +35,7 @@ export default Vue.extend( {
 		href: { required: false, default: '#', type: String },
 		preventDefault: { required: false, default: true, type: Boolean },
 	},
+	emits: [ 'click' ],
 	methods: {
 		click( event: MouseEvent ): void {
 			if ( this.preventDefault ) {

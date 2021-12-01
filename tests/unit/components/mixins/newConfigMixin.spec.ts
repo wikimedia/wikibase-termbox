@@ -1,5 +1,5 @@
 import newConfigMixin from '@/components/mixins/newConfigMixin';
-import Vue from 'vue';
+import { createApp } from 'vue';
 
 describe( 'newConfigMixin', () => {
 	it( 'adds a config object to Vue instances', () => {
@@ -7,14 +7,19 @@ describe( 'newConfigMixin', () => {
 		const licenseAgreementInnerHtml = 'vip';
 		const copyrightVersion = 'wikibase-l';
 
-		Vue.mixin( newConfigMixin( {
+		const app = createApp( {
+			template: '<span></span>',
+		} );
+		app.mixin( newConfigMixin( {
 			textFieldCharacterLimit,
 			licenseAgreementInnerHtml,
 			copyrightVersion,
 		} ) );
-		expect( ( new Vue() as any ).config ).toBeDefined();
-		expect( ( new Vue() as any ).config.textFieldCharacterLimit ).toBe( textFieldCharacterLimit );
-		expect( ( new Vue() as any ).config.licenseAgreementInnerHtml ).toBe( licenseAgreementInnerHtml );
-		expect( ( new Vue() as any ).config.copyrightVersion ).toBe( copyrightVersion );
+		const instance = app.mount( document.createElement( 'div' ) );
+
+		expect( ( instance as any ).config ).toBeDefined();
+		expect( ( instance as any ).config.textFieldCharacterLimit ).toBe( textFieldCharacterLimit );
+		expect( ( instance as any ).config.licenseAgreementInnerHtml ).toBe( licenseAgreementInnerHtml );
+		expect( ( instance as any ).config.copyrightVersion ).toBe( copyrightVersion );
 	} );
 } );

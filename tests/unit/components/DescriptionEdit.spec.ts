@@ -21,6 +21,11 @@ function createStoreWithLanguage( language: Language ) {
 
 describe( 'DescriptionEdit', () => {
 
+	// default mixins for tests that need nothing more specific
+	const messages = mockMessageMixin();
+	const config = newConfigMixin( {} as ConfigOptions );
+	const mixins = [ messages, config ];
+
 	it( 'shows the description in the given language', () => {
 		const language = 'en';
 		const description = 'hello';
@@ -32,7 +37,8 @@ describe( 'DescriptionEdit', () => {
 				description: { language, value: description },
 				languageCode: language,
 			},
-			store,
+			global: { plugins: [ store ] },
+			mixins,
 		} );
 
 		const textField = wrapper.findComponent( ResizingTextField );
@@ -50,7 +56,8 @@ describe( 'DescriptionEdit', () => {
 				description: { language, value: 'a description' },
 				languageCode: language,
 			},
-			store,
+			global: { plugins: [ store ] },
+			mixins,
 		} );
 		const newDescription = 'a new description';
 		wrapper.findComponent( ResizingTextField ).vm.$emit( 'input', newDescription );
@@ -62,13 +69,14 @@ describe( 'DescriptionEdit', () => {
 	it( 'passes a placeholder down', () => {
 		const placeholderMessage = 'placeholder';
 		const wrapper = shallowMount( DescriptionEdit, {
-			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			global: { plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ] },
 			propsData: {
 				description: null,
 				languageCode: 'en',
 			},
 			mixins: [
 				mockMessageMixin( { [ MessageKey.PLACEHOLDER_EDIT_DESCRIPTION ]: placeholderMessage } ),
+				config,
 			],
 		} );
 
@@ -78,7 +86,7 @@ describe( 'DescriptionEdit', () => {
 	it( 'passes a maxlength down', () => {
 		const maxLength = 23;
 		const wrapper = shallowMount( DescriptionEdit, {
-			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			global: { plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ] },
 			propsData: {
 				description: null,
 				languageCode: 'en',
@@ -86,7 +94,9 @@ describe( 'DescriptionEdit', () => {
 			mixins: [
 				newConfigMixin( {
 					textFieldCharacterLimit: maxLength,
-				} as ConfigOptions ) ],
+				} as ConfigOptions ),
+				messages,
+			],
 		} );
 
 		expect( wrapper.findComponent( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
@@ -104,10 +114,13 @@ describe( 'DescriptionEdit', () => {
 					description: { language: languageCode, value: 'meep' },
 					languageCode,
 				},
-				store,
-				directives: {
-					inlanguage,
+				global: {
+					plugins: [ store ],
+					directives: {
+						inlanguage,
+					},
 				},
+				mixins,
 			} );
 
 			expect( inlanguage ).toHaveBeenCalledTimes( 1 );

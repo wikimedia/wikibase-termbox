@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Vuex, { StoreOptions, Store } from 'vuex';
+import { StoreOptions, Store } from 'vuex';
 import TermboxServices from '@/common/TermboxServices';
 import createEntity from './entity';
 import createUser from './user';
@@ -16,8 +15,6 @@ import {
 	NS_MESSAGES,
 	NS_USER,
 } from '@/store/namespaces';
-
-Vue.use( Vuex );
 
 export function createStore( services: TermboxServices ): Store<Root> {
 	const storeBundle: StoreOptions<Root> = {

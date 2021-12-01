@@ -39,10 +39,10 @@ describe( 'AnonEditWarning', () => {
 	it( 'has a heading', () => {
 		const expectedHeading = 'you are not logged in';
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStore( emptyServices as any ),
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_HEADING ]: expectedHeading,
 			} ) ],
+			global: { plugins: [ createStore( emptyServices as any ) ] },
 		} );
 
 		expect( wrapper.find( '.wb-ui-anon-edit-warning__heading' ).text() )
@@ -52,10 +52,13 @@ describe( 'AnonEditWarning', () => {
 	it( 'has a warning message', () => {
 		const expectedMessage = 'Your IP address will be publicly visible. [...]';
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStore( emptyServices as any ),
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_MESSAGE ]: expectedMessage,
 			} ) ],
+			global: {
+				plugins: [ createStore( emptyServices as any ) ],
+				renderStubDefaultSlot: true,
+			},
 		} );
 
 		expect( wrapper.findComponent( IconMessageBox ).props( 'type' ) ).toBe( 'warning' );
@@ -66,11 +69,14 @@ describe( 'AnonEditWarning', () => {
 		const buttonLabel = 'login';
 		const mockUserPreferenceSet = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
-			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.LOGIN ]: buttonLabel,
 			} ) ],
+			global: {
+				plugins: [ createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ) ],
+				stubs: { EventEmittingButton },
+				renderStubDefaultSlot: true,
+			},
 		} );
 		// @ts-ignore
 		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--primaryProgressive' );
@@ -87,11 +93,14 @@ describe( 'AnonEditWarning', () => {
 		const buttonLabel = 'sign up';
 		const mockUserPreferenceSet = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
-			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.CREATE_ACCOUNT ]: buttonLabel,
 			} ) ],
+			global: {
+				plugins: [ createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ) ],
+				stubs: { EventEmittingButton },
+				renderStubDefaultSlot: true,
+			},
 		} );
 		// @ts-ignore
 		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--framelessProgressive' );
@@ -108,11 +117,14 @@ describe( 'AnonEditWarning', () => {
 		const buttonLabel = 'edit w/o login';
 		const mockPreferenceSet = jest.fn();
 		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStoreWithLinksAndMockPreferenceAction( mockPreferenceSet ),
-			stubs: { EventEmittingButton },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_DISMISS_BUTTON ]: buttonLabel,
 			} ) ],
+			global: {
+				plugins: [ createStoreWithLinksAndMockPreferenceAction( mockPreferenceSet ) ],
+				stubs: { EventEmittingButton },
+				renderStubDefaultSlot: true,
+			},
 		} );
 
 		const button = wrapper.find( '.wb-ui-event-emitting-button--normal' );
@@ -124,19 +136,21 @@ describe( 'AnonEditWarning', () => {
 	} );
 
 	it( 'has a checkbox that is checked by default', () => {
-		const wrapper = shallowMount( AnonEditWarning, { store: createStore( emptyServices as any ) } );
+		const wrapper = shallowMount( AnonEditWarning, { global: {
+			plugins: [ createStore( emptyServices as any ) ],
+		} } );
 
 		expect( wrapper.findComponent( Checkbox ).props( 'value' ) ).toBeTruthy();
 	} );
 
 	it( 'is focused', () => {
 		const focus = jest.fn();
-		const wrapper = shallowMount( AnonEditWarning, {
-			store: createStoreWithLinksAndMockPreferenceAction(),
+		const wrapper = shallowMount( AnonEditWarning, { global: {
+			plugins: [ createStoreWithLinksAndMockPreferenceAction() ],
 			directives: {
 				focus,
 			},
-		} );
+		} } );
 
 		expect( focus.mock.calls[ 0 ][ 0 ] ).toBe( wrapper.element );
 	} );
@@ -145,10 +159,12 @@ describe( 'AnonEditWarning', () => {
 		it( 'as true when warnRecurringly is false', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
 				data: () => ( {
 					warnRecurringly: false,
 				} ),
+				global: {
+					plugins: [ createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ) ],
+				},
 			} );
 
 			( wrapper.vm as any ).persistUserPreference();
@@ -165,10 +181,12 @@ describe( 'AnonEditWarning', () => {
 		it( 'as false when warnRecurringly is true', () => {
 			const mockUserPreferenceSet = jest.fn();
 			const wrapper = shallowMount( AnonEditWarning, {
-				store: createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ),
 				data: () => ( {
 					warnRecurringly: true,
 				} ),
+				global: {
+					plugins: [ createStoreWithLinksAndMockPreferenceAction( mockUserPreferenceSet ) ],
+				},
 			} );
 			( wrapper.vm as any ).persistUserPreference();
 

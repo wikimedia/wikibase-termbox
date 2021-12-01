@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/vue';
+import { storiesOf } from '@storybook/vue3';
 import { text, boolean } from '@storybook/addon-knobs';
 import Checkbox from '@/components/Checkbox.vue';
 

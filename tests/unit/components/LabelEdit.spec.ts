@@ -21,6 +21,11 @@ function createStoreWithLanguage( language: Language ) {
 
 describe( 'LabelEdit', () => {
 
+	// default mixins for tests that need nothing more specific
+	const messages = mockMessageMixin();
+	const config = newConfigMixin( {} as ConfigOptions );
+	const mixins = [ messages, config ];
+
 	it( 'shows the label in the given language', () => {
 		const language = 'en';
 		const label = 'hello';
@@ -32,7 +37,8 @@ describe( 'LabelEdit', () => {
 				label: { language, value: label },
 				languageCode: language,
 			},
-			store,
+			global: { plugins: [ store ] },
+			mixins,
 		} );
 
 		expect( wrapper.findComponent( ResizingTextField ).props( 'value' ) ).toBe( label );
@@ -48,7 +54,8 @@ describe( 'LabelEdit', () => {
 				label: { language, value: 'hi' },
 				languageCode: language,
 			},
-			store,
+			global: { plugins: [ store ] },
+			mixins,
 		} );
 		const newLabel = 'hello';
 		wrapper.findComponent( ResizingTextField ).vm.$emit( 'input', newLabel );
@@ -59,12 +66,13 @@ describe( 'LabelEdit', () => {
 
 	it( 'has an isPrimary prop', () => {
 		const wrapper = shallowMount( LabelEdit, {
-			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
+			global: { plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ] },
 			propsData: {
 				label: null,
 				languageCode: 'en',
 				isPrimary: true,
 			},
+			mixins,
 		} );
 
 		expect( wrapper.props() ).toHaveProperty( 'isPrimary', true );
@@ -74,14 +82,17 @@ describe( 'LabelEdit', () => {
 	it( 'passes a placeholder down', () => {
 		const placeholderMessage = 'placeholder';
 		const wrapper = shallowMount( LabelEdit, {
-			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
 			propsData: {
 				label: null,
 				languageCode: 'en',
 			},
 			mixins: [
 				mockMessageMixin( { [ MessageKey.PLACEHOLDER_EDIT_LABEL ]: placeholderMessage } ),
+				config,
 			],
+			global: {
+				plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ],
+			},
 		} );
 
 		expect( wrapper.findComponent( ResizingTextField ).attributes( 'placeholder' ) ).toBe( placeholderMessage );
@@ -90,7 +101,6 @@ describe( 'LabelEdit', () => {
 	it( 'passes a maxlength down', () => {
 		const maxLength = 23;
 		const wrapper = shallowMount( LabelEdit, {
-			store: createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ),
 			propsData: {
 				label: null,
 				languageCode: 'en',
@@ -98,7 +108,12 @@ describe( 'LabelEdit', () => {
 			mixins: [
 				newConfigMixin( {
 					textFieldCharacterLimit: maxLength,
-				} as ConfigOptions ) ],
+				} as ConfigOptions ),
+				messages,
+			],
+			global: {
+				plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ],
+			},
 		} );
 
 		expect( wrapper.findComponent( ResizingTextField ).attributes( 'maxlength' ) ).toBe( maxLength.toString() );
@@ -116,10 +131,13 @@ describe( 'LabelEdit', () => {
 					label: { language: languageCode, value: 'meep' },
 					languageCode,
 				},
-				store,
-				directives: {
-					inlanguage,
+				global: {
+					plugins: [ store ],
+					directives: {
+						inlanguage,
+					},
 				},
+				mixins,
 			} );
 
 			expect( inlanguage ).toHaveBeenCalledTimes( 1 );

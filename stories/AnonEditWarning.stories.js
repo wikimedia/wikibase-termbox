@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/vue';
+import { app, storiesOf } from '@storybook/vue3';
 import Modal from '@/components/Modal.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
 import { MessageKey } from '@/common/MessageKey';
@@ -17,11 +17,11 @@ storiesOf( 'AnonEditWarning', module )
 			[ MessageKey.EDIT_WARNING_MESSAGE ]: 'Nunc volutpat mattis augue. Sed eu enim vitae dui.',
 		};
 
-		return {
-			store: createStore( {
-				get: () => ( {} ),
-			} ),
+		app.use( createStore( {
+			get: () => ( {} ),
+		} ) );
 
+		return {
 			components: {
 				AnonEditWarning: stubMessagesMixin( AnonEditWarning, messages ),
 				Modal,

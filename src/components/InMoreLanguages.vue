@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import { mapState } from 'vuex';
 import { NS_USER } from '@/store/namespaces';
 import AllEnteredLanguagesExpandable from '@/components/AllEnteredLanguagesExpandable.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'InMoreLanguages',
 	components: { AllEnteredLanguagesExpandable, MonolingualFingerprintView },
 	computed: {

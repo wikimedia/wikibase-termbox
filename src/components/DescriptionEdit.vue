@@ -11,12 +11,21 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import {
+	PropType,
+	ComponentPublicInstance,
+	defineComponent,
+} from 'vue';
 import Messages from '@/components/mixins/Messages';
 import { Term } from '@wmde/wikibase-datamodel-types';
 import ResizingTextField from '@/components/ResizingTextField.vue';
 
-export default Vue.extend( {
+interface DescriptionEdit extends ComponentPublicInstance {
+	description?: Term;
+	languageCode: string;
+}
+
+export default defineComponent( {
 	name: 'DescriptionEdit',
 	components: { ResizingTextField },
 	mixins: [ Messages ],
@@ -24,16 +33,17 @@ export default Vue.extend( {
 		description: { required: false, default: null, type: Object as PropType<Term> },
 		languageCode: { required: true, type: String },
 	},
+	emits: [ 'input' ],
 	computed: {
 		value: {
-			get(): string {
+			get( this: DescriptionEdit ): string {
 				if ( !this.description ) {
 					return '';
 				} else {
 					return this.description.value;
 				}
 			},
-			set( value: string ) {
+			set( this: DescriptionEdit, value: string ): void {
 				this.$emit( 'input', { language: this.languageCode, value } );
 			},
 		},

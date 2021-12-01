@@ -16,13 +16,18 @@ import emptyServices from '../emptyServices';
 
 describe( 'LicenseAgreement', () => {
 
+	// default mixins for tests that need nothing more specific
+	const messages = mockMessageMixin();
+	const config = newConfigMixin( {} as ConfigOptions );
+	const mixins = [ messages, config ];
+
 	it( 'has a heading', () => {
 		const expectedHeading = 'you are not logged in';
 		const wrapper = shallowMount( LicenseAgreement, {
-			stubs: { EventEmittingButton },
+			global: { stubs: { EventEmittingButton } },
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.LICENSE_HEADER ]: expectedHeading,
-			} ) ],
+			} ), config ],
 		} );
 
 		expect( wrapper.find( '.wb-ui-license-agreement__heading' ).text() )
@@ -54,7 +59,7 @@ describe( 'LicenseAgreement', () => {
 					licenseAgreementInnerHtml: `Please agree to our
 						<a href="https://creativecommons.org/" rel="nofollow">terms of use</a>`,
 				} as ConfigOptions ),
-				mockMessageMixin( {} ),
+				messages,
 			],
 		} );
 
@@ -66,19 +71,22 @@ describe( 'LicenseAgreement', () => {
 	it( 'has a publish button which emits save', () => {
 		const buttonLabel = 'publish';
 		const wrapper = shallowMount( LicenseAgreement, {
-			stubs: { EventEmittingButton },
-			store: hotUpdateDeep( createStore( emptyServices as any ), {
-				modules: {
-					[ NS_USER ]: {
-						actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
+			global: {
+				plugins: [ hotUpdateDeep( createStore( emptyServices as any ), {
+					modules: {
+						[ NS_USER ]: {
+							actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
+						},
 					},
-				},
-			} ),
+				} ) ],
+				stubs: { EventEmittingButton },
+			},
 			mixins: [
 				mockMessageMixin( {
 					[ MessageKey.LICENSE_HEADER ]: '',
 					[ MessageKey.PUBLISH ]: buttonLabel,
 				} ),
+				config,
 			],
 		} );
 		const button = wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' );
@@ -91,12 +99,13 @@ describe( 'LicenseAgreement', () => {
 	it( 'has a cancel button which emits cancel', () => {
 		const buttonLabel = 'cancel';
 		const wrapper = shallowMount( LicenseAgreement, {
-			stubs: { EventEmittingButton },
+			global: { stubs: { EventEmittingButton } },
 			mixins: [
 				mockMessageMixin( {
 					[ MessageKey.LICENSE_HEADER ]: '',
 					[ MessageKey.CANCEL ]: buttonLabel,
 				} ),
+				config,
 			],
 		} );
 
@@ -110,7 +119,10 @@ describe( 'LicenseAgreement', () => {
 	it( 'has a checkbox that is checked by default', () => {
 		const label = 'remember my choice';
 		const wrapper = shallowMount( LicenseAgreement, {
-			mixins: [ mockMessageMixin( { [ MessageKey.LICENSE_AGREEMENT_ACCEPT_PERSIST ]: label } ) ],
+			mixins: [
+				mockMessageMixin( { [ MessageKey.LICENSE_AGREEMENT_ACCEPT_PERSIST ]: label } ),
+				config,
+			],
 		} );
 
 		const checkbox = wrapper.findComponent( Checkbox );
@@ -123,18 +135,20 @@ describe( 'LicenseAgreement', () => {
 		const mockSetPreference = jest.fn();
 		const copyrightVersion = 'wikibase-1';
 		const wrapper = shallowMount( LicenseAgreement, {
-			stubs: { EventEmittingButton },
 			mixins: [
-				mockMessageMixin(),
+				messages,
 				newConfigMixin( { copyrightVersion } as ConfigOptions ),
 			],
-			store: hotUpdateDeep( createStore( emptyServices as any ), {
-				modules: {
-					[ NS_USER ]: {
-						actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },
+			global: {
+				plugins: [ hotUpdateDeep( createStore( emptyServices as any ), {
+					modules: {
+						[ NS_USER ]: {
+							actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },
+						},
 					},
-				},
-			} ),
+				} ) ],
+				stubs: { EventEmittingButton },
+			},
 		} );
 
 		wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' ).trigger( 'click' );
@@ -148,15 +162,17 @@ describe( 'LicenseAgreement', () => {
 	it( 'unsets the "remember my choice" preference when unchecking the checkbox and clicking publish', () => {
 		const mockSetPreference = jest.fn();
 		const wrapper = shallowMount( LicenseAgreement, {
-			stubs: { EventEmittingButton },
-			mixins: [ mockMessageMixin() ],
-			store: hotUpdateDeep( createStore( emptyServices as any ), {
-				modules: {
-					[ NS_USER ]: {
-						actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },
+			mixins,
+			global: {
+				plugins: [ hotUpdateDeep( createStore( emptyServices as any ), {
+					modules: {
+						[ NS_USER ]: {
+							actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },
+						},
 					},
-				},
-			} ),
+				} ) ],
+				stubs: { EventEmittingButton },
+			},
 		} );
 
 		wrapper.findComponent( Checkbox ).vm.$emit( 'input', false );

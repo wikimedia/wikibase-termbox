@@ -18,7 +18,7 @@ class JestCustomEnvironment extends JSDOMEnvironment {
 				);
 			},
 		} );
-		// Jest v27+ jsdom removes these globals but some packages need them to exist
+		// Jest v27+ jsdom removes these globals but bundle-runnenr needs them to exist
 		this.global.setImmediate = function () {
 			throw new Error( 'Unexpected call of setImmediate()' );
 		};

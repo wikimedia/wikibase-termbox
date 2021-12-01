@@ -1,13 +1,10 @@
 import MWConfig from '@/mock-data/MwConfig';
-import Vue, { VueConstructor } from 'vue';
-import { MwVueConstructor } from './common/buildApp';
 import entity from './mock-data/data/Q64_data.json';
 import directionalities from '@/mock-data/data/en_lang_dir_data.json';
 import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import getOrEnforceUrlParameter from './mock-data/getOrEnforceUrlParameter';
 import MockupWikibaseContentLanguages from '@/mock-data/MockWikibaseContentLanguages';
-import { createMwApp } from './mock-data/MockCreateMwApp';
 import { message } from './mock-data/MockMwMessages';
 
 const language = getOrEnforceUrlParameter( 'language', 'de' );
@@ -64,5 +61,3 @@ mwWindow.$ = {
 		},
 	},
 };
-
-( Vue as VueConstructor & MwVueConstructor ).createMwApp = createMwApp;

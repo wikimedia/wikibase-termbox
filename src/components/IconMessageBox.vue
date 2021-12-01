@@ -7,11 +7,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
 const validTypes = [ 'warning', 'error' ];
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'IconMessageBox',
 	props: {
 		type: {

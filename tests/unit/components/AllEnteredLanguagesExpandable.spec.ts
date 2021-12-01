@@ -1,7 +1,11 @@
-import { shallowMount } from '@vue/test-utils';
+import { renderToString } from '@vue/server-renderer';
+import {
+	mount,
+	shallowMount,
+} from '@vue/test-utils';
 import AllEnteredLanguagesExpandable from '@/components/AllEnteredLanguagesExpandable.vue';
 import AllEnteredLanguages from '@/components/AllEnteredLanguages.vue';
-import { render } from '@vue/server-test-utils';
+import { createSSRApp } from 'vue';
 import mockMessageMixin from '../store/mockMessageMixin';
 import { MessageKey } from '@/common/MessageKey';
 
@@ -99,11 +103,14 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 	} );
 
 	it( 'is not shown when rendered on the server', async () => {
-		const wrapper = await render(
-			AllEnteredLanguagesExpandable,
-			{ mixins: [ mockMessageMixin( { [ MessageKey.ALL_LANGUAGES ]: 'button text' } ) ] },
-		);
-		expect( wrapper.text() ).toBe( '' );
+		// reset vue-test-utils stubbing (transformVNodeArgs internal API) from other tests
+		mount( { render: () => '' } );
+
+		const app = createSSRApp( AllEnteredLanguagesExpandable )
+			.mixin( mockMessageMixin( { [ MessageKey.ALL_LANGUAGES ]: 'button text' } ) );
+		const html = ( await renderToString( app ) )
+			.replace( /<!--.*?-->/g, '' );
+		expect( html ).toBe( '' );
 	} );
 
 } );

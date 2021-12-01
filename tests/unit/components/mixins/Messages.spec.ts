@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import Vuex from 'vuex';
 import Messages from '@/components/mixins/Messages';
 import {
@@ -6,8 +6,6 @@ import {
 	NS_USER,
 } from '@/store/namespaces';
 import { MessageKey } from '@/common/MessageKey';
-
-Vue.use( Vuex );
 
 function mockStore( primaryLanguage: string, messageGetter: any ) {
 	const state = {
@@ -27,6 +25,15 @@ function mockStore( primaryLanguage: string, messageGetter: any ) {
 
 describe( 'Messages', () => {
 
+	function createInstance( store: any ): any {
+		return createApp( {
+			template: '<span></span>',
+			mixins: [ Messages ],
+		} )
+			.use( store )
+			.mount( document.createElement( 'div' ) );
+	}
+
 	it( 'returns the message for a given message key', () => {
 		const language = 'en';
 		const messageKey = MessageKey.EDIT;
@@ -35,8 +42,7 @@ describe( 'Messages', () => {
 		const getter = jest.fn();
 		getter.mockReturnValue( message );
 
-		const messages = new Messages();
-		messages.$store = mockStore( language, getter );
+		const messages = createInstance( mockStore( language, getter ) );
 
 		expect( messages.message( messageKey ) ).toBe( message );
 		expect( getter ).toBeCalledWith( language, messageKey );
@@ -50,14 +56,13 @@ describe( 'Messages', () => {
 		const getter = jest.fn();
 		getter.mockReturnValue( message );
 
-		const messages = new Messages();
-		messages.$store = mockStore( language, getter );
+		const messages = createInstance( mockStore( language, getter ) );
 
 		expect( messages.message( messageKey as MessageKey ) ).toBe( messageKey );
 		expect( getter ).toBeCalledWith( language, messageKey );
 	} );
 
 	it( 'sets the MESSAGE_KEYS property', () => {
-		expect( ( new Messages() ).MESSAGE_KEYS ).toBe( MessageKey );
+		expect( createInstance( mockStore( 'en', undefined ) ).MESSAGE_KEYS ).toBe( MessageKey );
 	} );
 } );

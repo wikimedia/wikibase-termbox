@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { MutationTree } from 'vuex';
 import {
 	LANGUAGE_INIT,
@@ -32,6 +31,6 @@ export const mutations: MutationTree<User> = {
 	},
 
 	[ USER_SET_PREFERENCE ]( state: User, { name, value }: { name: UserPreference; value: unknown } ) {
-		Vue.set( state.preferences, name, value );
+		state.preferences[ name ] = value;
 	},
 };

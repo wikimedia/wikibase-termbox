@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/vue';
+import { storiesOf } from '@storybook/vue3';
 import Modal from '@/components/Modal.vue';
 
 storiesOf( 'Modal', module )

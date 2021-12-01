@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'MessageBanner',
 	data() {
 		return { bannerHeight: 0 };
@@ -25,7 +25,7 @@ export default Vue.extend( {
 		document.body.style.paddingTop = `${currentPadding + this.bannerHeight}px`;
 		window.scrollBy( 0, this.bannerHeight );
 	},
-	beforeDestroy(): void {
+	beforeUnmount(): void {
 		const currentPadding = parseInt( window.getComputedStyle( document.body ).getPropertyValue( 'padding-top' ) );
 		document.body.style.paddingTop = `${currentPadding - this.bannerHeight}px`;
 		window.scrollBy( 0, -this.bannerHeight );

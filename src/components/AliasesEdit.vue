@@ -20,7 +20,10 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import {
+	defineComponent,
+	PropType,
+} from 'vue';
 import { NS_ENTITY } from '@/store/namespaces';
 import Messages from '@/components/mixins/Messages';
 import { mapActions } from 'vuex';
@@ -33,7 +36,7 @@ interface AliasesEdit {
 	removeAlias: ( payload: { languageCode: string; index: number } ) => void;
 }
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AliasesEdit',
 	components: { ResizingTextField },
 	mixins: [ Messages ],
@@ -57,7 +60,7 @@ export default Vue.extend( {
 	computed: {
 		aliasValues(): string[] {
 			// data() has keys corresponding to this value
-			return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
+			return [ ...( this.aliases || [] ).map( ( alias: Term ) => alias.value ), '' ];
 		},
 	},
 	methods: {

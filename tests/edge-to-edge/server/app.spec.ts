@@ -5,7 +5,6 @@ import createApp from '@/server/app';
 import nock from 'nock';
 import 'jest-dom/extend-expect';
 import { StatusCodes } from 'http-status-codes';
-import Vue from 'vue';
 import messages from '@/mock-data/data/de_messages_data.json';
 import BundleRendererServices from '@/server/bundle-renderer/BundleRendererServices';
 import axios from 'axios';
@@ -25,15 +24,6 @@ import qs from 'querystring';
 import { TermList } from '@wmde/wikibase-datamodel-types';
 import MessageCollection from '@/datamodel/MessageCollection';
 import globalRequestParamsInterceptor from '@/common/axios/globalParamsRequestInterceptor';
-
-/**
- * edge-to-edge tests are simulating actual requests against the server
- * and are - by definition - run in a development context. While the
- * production tip is valuable for the server (should we bork config) it
- * makes no sense to show it during tests
- */
-Vue.config.productionTip = false;
-Vue.config.devtools = false;
 
 const WIKIBASE_TEST_HOST = 'http://mw.testonly.localhost';
 const WIKIBASE_TEST_API_PATH = `/${MEDIAWIKI_API_SCRIPT}`;

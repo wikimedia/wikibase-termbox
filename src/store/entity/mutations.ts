@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { MutationTree } from 'vuex';
 import EntityState from '@/store/entity/EntityState';
 import {
@@ -57,11 +56,11 @@ export const mutations: MutationTree<EntityState> = {
 	},
 
 	[ ENTITY_SET_LABEL ]( state: EntityState, languageTerm: Term ): void {
-		Vue.set( state.labels, languageTerm.language, languageTerm );
+		state.labels[ languageTerm.language ] = languageTerm;
 	},
 
 	[ ENTITY_SET_ALIASES ]( state: EntityState, { language, terms }: { language: string; terms: Term[] } ) {
-		Vue.set( state.aliases, language, terms );
+		state.aliases[ language ] = terms;
 	},
 
 	[ ENTITY_REMOVE_ALIAS ]( state: EntityState, { languageCode, index }: { languageCode: string; index: number } ) {
@@ -69,7 +68,7 @@ export const mutations: MutationTree<EntityState> = {
 	},
 
 	[ ENTITY_SET_DESCRIPTION ]( state: EntityState, descriptionTerm: Term ) {
-		Vue.set( state.descriptions, descriptionTerm.language, descriptionTerm );
+		state.descriptions[ descriptionTerm.language ] = descriptionTerm;
 	},
 
 	[ ENTITY_REVISION_UPDATE ]( state: EntityState, revision: number ) {

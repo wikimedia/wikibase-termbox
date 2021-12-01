@@ -1,6 +1,9 @@
 import EditTools from '@/components/EditTools.vue';
 import Sectionedit from '@/components/Sectionedit.vue';
-import { mount } from '@vue/test-utils';
+import {
+	mount,
+	shallowMount,
+} from '@vue/test-utils';
 
 describe( 'EditTools', () => {
 
@@ -18,7 +21,7 @@ describe( 'EditTools', () => {
 
 	it( 'Shows read slot if in reading mode', () => {
 		const read = 'read';
-		const wrapper = mount( EditTools, {
+		const wrapper = shallowMount( EditTools, {
 			propsData: {
 				editMode: false,
 			},
@@ -26,6 +29,7 @@ describe( 'EditTools', () => {
 				read,
 				edit: 'not to be shown',
 			},
+			global: { renderStubDefaultSlot: true },
 		} );
 
 		expect( wrapper.text() ).toBe( read );
@@ -33,7 +37,7 @@ describe( 'EditTools', () => {
 
 	it( 'Shows edit slot if in edit mode', () => {
 		const edit = 'edit';
-		const wrapper = mount( EditTools, {
+		const wrapper = shallowMount( EditTools, {
 			propsData: {
 				editMode: true,
 			},
@@ -41,6 +45,7 @@ describe( 'EditTools', () => {
 				read: 'not to be shown',
 				edit,
 			},
+			global: { renderStubDefaultSlot: true },
 		} );
 
 		expect( wrapper.text() ).toBe( edit );

@@ -42,7 +42,7 @@
 <script lang="ts">
 import Messages from '@/components/mixins/Messages';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import {
 	NS_LINKS,
@@ -54,7 +54,7 @@ import { UserPreference } from '@/common/UserPreference';
 import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AnonEditWarning',
 	components: { IconMessageBox, Checkbox, EventEmittingButton },
 	mixins: [ Messages ],
@@ -64,6 +64,7 @@ export default Vue.extend( {
 	computed: {
 		...mapState( NS_LINKS, [ 'loginLinkUrl', 'signUpLinkUrl' ] ),
 	},
+	emits: [ 'dismiss' ],
 	methods: {
 		persistUserPreference(): void {
 			this.$store.dispatch(

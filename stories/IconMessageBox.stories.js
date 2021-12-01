@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/vue';
+import { storiesOf } from '@storybook/vue3';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 import {
 	optionsKnob as options,

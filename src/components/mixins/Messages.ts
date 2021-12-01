@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { MessageKey } from '@/common/MessageKey';
 import { NS_MESSAGES, NS_USER } from '@/store/namespaces';
 import {
@@ -11,7 +11,7 @@ interface Messages {
 	primaryLanguage: string;
 }
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Messages',
 	computed: {
 		MESSAGE_KEYS() {

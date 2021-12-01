@@ -1,14 +1,13 @@
-import { storiesOf } from '@storybook/vue';
+import { app, storiesOf } from '@storybook/vue3';
 import DescriptionEdit from '@/components/DescriptionEdit.vue';
 import { MessageKey } from '@/common/MessageKey';
 import stubMessagesMixin from '../.storybook/helpers/stubMessagesMixin';
-import Vue from 'vue';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 storiesOf( 'DescriptionEdit', module )
 	.addParameters( { component: DescriptionEdit } )
 	.add( 'default', () => {
-		Vue.mixin( newConfigMixin( {
+		app.mixin( newConfigMixin( {
 			textFieldCharacterLimit: 100,
 		} ) );
 

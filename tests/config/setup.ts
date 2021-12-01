@@ -1,16 +1,12 @@
-import Vue from 'vue';
+import { config } from '@vue/test-utils';
 import focus from '@/directives/focus';
 import inlanguage from '@/directives/inlanguage';
-import newConfigMixin from '@/components/mixins/newConfigMixin';
+
+config.global.directives = {
+	focus,
+	inlanguage,
+};
 
 beforeEach( () => {
 	expect.hasAssertions();
 } );
-
-Vue.mixin( newConfigMixin( {
-	textFieldCharacterLimit: 0,
-	licenseAgreementInnerHtml: '',
-	copyrightVersion: '',
-} ) );
-Vue.directive( 'inlanguage', inlanguage );
-Vue.directive( 'focus', focus );

@@ -1,9 +1,9 @@
 // see: https://vuejs.org/v2/guide/custom-directive.html
 
-import { DirectiveOptions } from 'vue';
+import { ObjectDirective } from 'vue';
 
-const focus: DirectiveOptions = {
-	inserted( el: HTMLElement ): void {
+const focus: ObjectDirective = {
+	mounted( el: HTMLElement ): void {
 		el.focus();
 	},
 };

@@ -1,15 +1,10 @@
 import {
 	buildAppMw,
 	buildAppSsr,
-	MwVueConstructor,
-	Vue3LikeApp,
 } from '@/common/buildApp';
-import App from '@/components/App.vue';
-import Vue, { VueConstructor } from 'vue';
 import TermboxRequest from '../../../src/common/TermboxRequest';
 import TermboxServices from '../../../src/common/TermboxServices';
 import { ConfigOptions } from '../../../src/components/mixins/newConfigMixin';
-import { createMwApp } from '../../../src/mock-data/MockCreateMwApp';
 
 const mockInitStore = jest.fn();
 jest.mock( '@/common/initStore', () => ( {
@@ -23,8 +18,6 @@ jest.mock( '@/store', () => ( {
 	createStore: ( services: any ) => mockCreateStore( services ),
 } ) );
 
-( Vue as VueConstructor & MwVueConstructor ).createMwApp = createMwApp;
-
 describe.each( [
 	[ 'buildAppMw', buildAppMw ],
 	[ 'buildAppSsr', buildAppSsr ],
@@ -34,7 +27,7 @@ describe.each( [
 		termboxRequest: TermboxRequest,
 		services: TermboxServices,
 		config: ConfigOptions,
-	) => Promise<App & Vue3LikeApp>,
+	) => Promise<any>,
 ) => {
 
 	it( 'calls initStore, then returns the app', () => {
@@ -49,7 +42,7 @@ describe.each( [
 		const services = new ( jest.fn() )();
 		const config = new ( jest.fn() )();
 
-		const store = {};
+		const store = { install: jest.fn() };
 		mockCreateStore.mockReturnValue( store );
 
 		mockInitStore.mockResolvedValue( [] );
@@ -73,7 +66,7 @@ describe.each( [
 		const services = new ( jest.fn() )();
 		const config = new ( jest.fn() )();
 
-		const store = {};
+		const store = { install: jest.fn() };
 		mockCreateStore.mockReturnValue( store );
 
 		return buildApp( request, services, config ).then( ( app ) => {

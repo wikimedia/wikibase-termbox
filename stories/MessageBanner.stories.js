@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/vue';
+import { storiesOf } from '@storybook/vue3';
 import MessageBanner from '@/components/MessageBanner.vue';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 

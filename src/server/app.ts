@@ -2,14 +2,15 @@ import { resolve } from 'path';
 import express, { Application, Request, Response, NextFunction } from 'express';
 import compression from 'compression';
 import responseTime from 'response-time';
-import { createBundleRenderer } from 'vue-server-renderer';
+import { createBundleRenderer } from 'vue-bundle-renderer';
+import { renderToString } from '@vue/server-renderer';
+import * as bundleRunner from 'bundle-runner';
 import TermboxHandler from './route-handler/termbox/TermboxHandler';
 import InvalidRequest from './route-handler/termbox/error/InvalidRequest';
 import { StatusCodes } from 'http-status-codes';
 import BundleBoundaryPassingException, { ErrorReason } from './exceptions/BundleBoundaryPassingException';
 import BundleRendererServices from './bundle-renderer/BundleRendererServices';
 import BundleRendererContextBuilder from './bundle-renderer/BundleRendererContextBuilder';
-import inlanguage from './directives/inlanguage';
 import packageInfo from '@/../package.json';
 import InfoHandler from './route-handler/_info/InfoHandler';
 import reportResponseTimeMetrics from './reportResponseTimeMetrics';
@@ -26,9 +27,9 @@ export default function ( services: BundleRendererServices ): Application {
 		resolve( './serverDist/vue-ssr-server-bundle.json' ),
 		{
 			runInNewContext: false,
-			directives: {
-				inlanguage,
-			},
+			renderToString,
+			bundleRunner,
+			clientManifest: {},
 		},
 	);
 	const contextBuilder = new BundleRendererContextBuilder( services );
@@ -49,7 +50,7 @@ export default function ( services: BundleRendererServices ): Application {
 		termboxHandler.createTermboxRequest( request )
 			.then( contextBuilder.passRequest.bind( contextBuilder ) )
 			.then( ( context ) => renderer.renderToString( context as object ) )
-			.then( ( html ) => {
+			.then( ( { html } ) => {
 				response.send( html );
 			} )
 			.catch( ( err ) => {

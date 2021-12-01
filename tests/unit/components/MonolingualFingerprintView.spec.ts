@@ -46,10 +46,10 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
 			store.commit( EDITMODE_SET, false );
 
-			const wrapper = shallowMount(
-				MonolingualFingerprintView,
-				{ store, propsData: { languageCode: language.code } },
-			);
+			const wrapper = shallowMount( MonolingualFingerprintView, {
+				global: { plugins: [ store ] },
+				propsData: { languageCode: language.code },
+			} );
 
 			expect( wrapper.findComponent( Label ).exists() ).toBeTruthy();
 			expect( wrapper.findComponent( Label ).props( 'label' ) ).toStrictEqual( entity.labels[ language.code ] );
@@ -79,7 +79,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			store.commit( EDITMODE_SET, true );
 
 			const wrapper = shallowMount( MonolingualFingerprintView, {
-				store,
+				global: { plugins: [ store ] },
 				propsData: { languageCode: language.code },
 			} );
 
@@ -108,7 +108,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			store.commit( EDITMODE_SET, true );
 
 			const wrapper = shallowMount( MonolingualFingerprintView, {
-				store,
+				global: { plugins: [ store ] },
 				propsData: {
 					label: { language: languageCode, value: 'oldValue' },
 					languageCode,
@@ -131,7 +131,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 
 		const languageCode = 'de';
 		const wrapper = shallowMount( MonolingualFingerprintView, {
-			store,
+			global: { plugins: [ store ] },
 			propsData: { languageCode },
 		} );
 
@@ -150,7 +150,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			const wrapper = shallowMount(
 				MonolingualFingerprintView,
 				{
-					store,
+					global: { plugins: [ store ] },
 					propsData: {
 						isPrimary: true,
 						languageCode,
@@ -167,7 +167,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			const wrapper = shallowMount(
 				MonolingualFingerprintView,
 				{
-					store,
+					global: { plugins: [ store ] },
 					propsData: {
 						isPrimary: false,
 						languageCode,
@@ -197,7 +197,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 		const wrapper = shallowMount(
 			MonolingualFingerprintView,
 			{
-				store,
+				global: { plugins: [ store ] },
 				propsData: {
 					languageCode,
 				},

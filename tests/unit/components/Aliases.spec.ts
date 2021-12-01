@@ -32,12 +32,12 @@ describe( 'Aliases', () => {
 		];
 		const wrapper = shallowMount( Aliases, {
 			propsData: { aliases },
-			store,
+			global: { plugins: [ store ] },
 		} );
 
 		const $aliases = wrapper.find( ALIASES_SELECTOR ).findAll( ALIAS_SELECTOR );
-		expect( $aliases.at( 0 ).text() ).toBe( aliases[ 0 ].value );
-		expect( $aliases.at( 1 ).text() ).toBe( aliases[ 1 ].value );
+		expect( $aliases[ 0 ].text() ).toBe( aliases[ 0 ].value );
+		expect( $aliases[ 1 ].text() ).toBe( aliases[ 1 ].value );
 	} );
 
 	it( 'shows aliases with a separator', () => {
@@ -51,8 +51,10 @@ describe( 'Aliases', () => {
 					{ language, value: 'hello2' },
 				],
 			},
-			store: createStoreWithLanguage( { code: language, directionality: 'ltr' } ),
 			mixins: [ mockMessageMixin( { [ MessageKey.ALIAS_SEPARATOR ]: separator } ) ],
+			global: {
+				plugins: [ createStoreWithLanguage( { code: language, directionality: 'ltr' } ) ],
+			},
 		} );
 
 		expect( wrapper.find( ALIAS_SELECTOR ).attributes( 'data-separator' ) ).toBe( separator );
@@ -63,7 +65,7 @@ describe( 'Aliases', () => {
 
 		const wrapper = shallowMount( Aliases, {
 			propsData: { aliases: [] },
-			store,
+			global: { plugins: [ store ] },
 		} );
 
 		expect( wrapper.find( '.wb-ui-aliases--placeholder' ).element.children ).toHaveLength( 0 );
@@ -77,9 +79,11 @@ describe( 'Aliases', () => {
 
 		shallowMount( Aliases, {
 			propsData: { aliases: [ { language: languageCode, value: 'hello' } ] },
-			store,
-			directives: {
-				inlanguage,
+			global: {
+				plugins: [ store ],
+				directives: {
+					inlanguage,
+				},
 			},
 		} );
 

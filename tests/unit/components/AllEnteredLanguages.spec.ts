@@ -24,7 +24,7 @@ describe( 'AllEnteredLanguages', () => {
 			{},
 		) );
 
-		const wrapper = shallowMount( AllEnteredLanguages, { store } );
+		const wrapper = shallowMount( AllEnteredLanguages, { global: { plugins: [ store ] } } );
 
 		expect( wrapper.findComponent( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( language );
 	} );
@@ -43,7 +43,7 @@ describe( 'AllEnteredLanguages', () => {
 			{},
 		) );
 
-		const wrapper = shallowMount( AllEnteredLanguages, { store } );
+		const wrapper = shallowMount( AllEnteredLanguages, { global: { plugins: [ store ] } } );
 
 		expect( wrapper.findAllComponents( MonolingualFingerprintView ).length ).toBe( 1 );
 		expect( wrapper.findComponent( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'en' );
@@ -64,7 +64,7 @@ describe( 'AllEnteredLanguages', () => {
 			{},
 		) );
 
-		const wrapper = shallowMount( AllEnteredLanguages, { store } );
+		const wrapper = shallowMount( AllEnteredLanguages, { global: { plugins: [ store ] } } );
 
 		expect( wrapper.findAllComponents( MonolingualFingerprintView ).length ).toBe( 1 );
 		expect( wrapper.findComponent( MonolingualFingerprintView ).props( 'languageCode' ) ).toBe( 'de' );

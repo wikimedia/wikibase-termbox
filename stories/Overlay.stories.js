@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/vue';
+import { storiesOf } from '@storybook/vue3';
 import Overlay from '@/components/Overlay.vue';
 import Modal from '@/components/Modal.vue';
 import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';

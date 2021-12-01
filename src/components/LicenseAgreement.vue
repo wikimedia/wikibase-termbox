@@ -34,7 +34,7 @@
 import Messages from '@/components/mixins/Messages';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Checkbox from '@/components/Checkbox.vue';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapActions } from 'vuex';
 import { NS_USER } from '@/store/namespaces';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
@@ -47,13 +47,14 @@ interface LicenseAgreement {
 	savePreference: ( payload: { name: UserPreference; value: string | null } ) => Promise<void>;
 }
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'LicenseAgreement',
 	components: { IconMessageBox, Checkbox, EventEmittingButton },
 	mixins: [ Messages ],
 	data() {
 		return { doNotShowAgain: true };
 	},
+	emits: [ 'save', 'cancel' ],
 	methods: {
 		...mapActions( NS_USER, { savePreference: USER_PREFERENCE_SET } ),
 		savePreferenceAndPublish(): void {
@@ -65,7 +66,7 @@ export default Vue.extend( {
 		},
 	},
 	mounted(): void {
-		this.$el.querySelectorAll( '.wb-ui-license-agreement__message a' ).forEach( ( $link ) => {
+		this.$el.querySelectorAll( '.wb-ui-license-agreement__message a' ).forEach( ( $link: HTMLAnchorElement ) => {
 			$link.setAttribute( 'target', '_blank' );
 
 			// protect older browsers from a window.opener vulnerability: https://mathiasbynens.github.io/rel-noopener/

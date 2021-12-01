@@ -1,5 +1,3 @@
-const VueSSRServerPlugin = require( 'vue-server-renderer/server-plugin' );
-const VueSSRClientPlugin = require( 'vue-server-renderer/client-plugin' );
 const URL = require( 'url' ).URL;
 const TARGET_NODE = process.env.WEBPACK_TARGET === 'node';
 const DEV_MODE = process.env.WEBPACK_TARGET === 'dev';
@@ -23,10 +21,11 @@ if ( process.env.WIKIBASE_REPO ) {
 /**
  * In production libraries may be provided by ResourceLoader
  * to allow their caching across applications,
- * in dev and on server mode it is still webpack's job to make them available
+ * and during SSR we need the server app and the bundled app to use the same Vue,
+ * but in dev it is still webpack's job to make them available
  */
 function externals() {
-	if ( DEV_MODE || TARGET_NODE ) {
+	if ( DEV_MODE ) {
 		return [];
 	}
 
@@ -49,11 +48,6 @@ module.exports = {
 		externals: externals(),
 		target: TARGET_NODE ? 'node' : 'web',
 		node: TARGET_NODE ? undefined : false,
-		plugins: [
-			TARGET_NODE
-				? new VueSSRServerPlugin()
-				: new VueSSRClientPlugin(),
-		],
 		output: {
 			libraryTarget: DEV_MODE ? undefined : 'commonjs2',
 			filename: `${filePrefix}[name].js`,
@@ -91,6 +85,12 @@ module.exports = {
 			.tap( ( options ) =>
 				Object.assign( options, {
 					optimizeSSR: false,
+					compilerOptions: {
+						directiveTransforms: {
+							focus: () => ( { props: [] } ),
+							inlanguage: require( './src/server/directiveTransforms/inlanguage' ),
+						},
+					},
 				} ) );
 	},
 	css: {
@@ -108,4 +108,5 @@ module.exports = {
 			},
 		},
 	},
+	parallel: false, // the compilerOptions.directiveTransforms are not serializable
 };

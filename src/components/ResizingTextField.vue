@@ -10,7 +10,7 @@
 </template>
 <script lang="ts">
 import debounce from 'lodash/debounce';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
 interface InputEventTarget {
 	value: string;
@@ -20,7 +20,7 @@ interface InputEvent {
 	target: InputEventTarget;
 }
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'ResizingTextField',
 	props: {
 		value: {
@@ -43,12 +43,13 @@ export default Vue.extend( {
 		window.addEventListener( 'resize', this.windowResizeHandler );
 		this.resizeTextField();
 	},
-	destroyed(): void {
+	unmounted(): void {
 		if ( this.windowResizeHandler !== undefined ) {
 			window.removeEventListener( 'resize', this.windowResizeHandler );
 			this.windowResizeHandler = undefined;
 		}
 	},
+	emits: [ 'input', 'focus', 'blur' ],
 	methods: {
 		setValue( event: InputEvent ): void {
 			this.$emit( 'input', this.removeNewlines( event.target.value ) );

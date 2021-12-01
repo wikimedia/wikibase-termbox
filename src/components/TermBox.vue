@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import {
 	mapActions,
 	mapGetters,
@@ -93,7 +93,7 @@ import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue'
 import MessageBanner from '@/components/MessageBanner.vue';
 import IconMessageBox from '@/components/IconMessageBox.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'TermBox',
 	components: {
 		IconMessageBox,

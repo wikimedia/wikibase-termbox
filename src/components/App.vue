@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import TermBox from './TermBox.vue';
 import { mapState } from 'vuex';
 import { NS_USER } from '@/store/namespaces';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'App',
 	components: {
 		TermBox,

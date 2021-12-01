@@ -17,16 +17,14 @@ describe( 'inlanguage directive', () => {
 				modifiers: {},
 				name: 'inlanguage',
 				value: languageCode,
-			},
-			{
-				context: {
+				instance: {
 					$store: {
 						getters: {
 							[ getter( NS_LANGUAGE, 'getByCode' ) ]: mockGetter,
 						},
 					},
 				},
-			} as any,
+			},
 		);
 
 		expect( mockGetter ).toHaveBeenCalledWith( languageCode );

@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Messages from './mixins/Messages';
 import {
 	mapState,
@@ -56,7 +56,7 @@ import Aliases from '@/components/Aliases.vue';
 import AliasesEdit from '@/components/AliasesEdit.vue';
 import { ENTITY_DESCRIPTION_EDIT, ENTITY_LABEL_EDIT } from '@/store/entity/actionTypes';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'MonolingualFingerprintView',
 	components: {
 		Label,

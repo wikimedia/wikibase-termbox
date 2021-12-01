@@ -31,7 +31,7 @@ describe( 'Label', () => {
 			propsData: {
 				label: { language, value: label },
 			},
-			store,
+			global: { plugins: [ store ] },
 		} );
 
 		expect( wrapper.find( LABEL_SELECTOR ).text() ).toBe( label );
@@ -57,8 +57,10 @@ describe( 'Label', () => {
 				propsData: {
 					label: { language: languageCode, value: 'meep' },
 				},
-				directives: {
-					inlanguage,
+				global: {
+					directives: {
+						inlanguage,
+					},
 				},
 			} );
 
@@ -72,9 +74,11 @@ describe( 'Label', () => {
 
 			shallowMount( Label, {
 				propsData: { label: null },
-				store,
-				directives: {
-					inlanguage: inlanguageDirective,
+				global: {
+					plugins: [ store ],
+					directives: {
+						inlanguage: inlanguageDirective,
+					},
 				},
 			} );
 
@@ -90,7 +94,7 @@ describe( 'Label', () => {
 				isPrimary: true,
 				label: { language: 'en', value: 'meep' },
 			},
-			store,
+			global: { plugins: [ store ] },
 		} );
 		expect( wrapper.find( LABEL_SELECTOR ).element.tagName ).toBe( 'H2' );
 	} );

@@ -17,11 +17,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import InMoreLanguages from '@/components/InMoreLanguages.vue';
 import Messages from '@/components/mixins/Messages';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'InMoreLanguagesExpandable',
 	components: { InMoreLanguages },
 	mixins: [ Messages ],

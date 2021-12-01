@@ -14,12 +14,21 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import {
+	PropType,
+	ComponentPublicInstance,
+	defineComponent,
+} from 'vue';
 import Messages from '@/components/mixins/Messages';
 import { Term } from '@wmde/wikibase-datamodel-types';
 import ResizingTextField from '@/components/ResizingTextField.vue';
 
-export default Vue.extend( {
+interface LabelEdit extends ComponentPublicInstance {
+	label: Term | null;
+	languageCode: string;
+}
+
+export default defineComponent( {
 	name: 'LabelEdit',
 	components: { ResizingTextField },
 	mixins: [ Messages ],
@@ -28,16 +37,17 @@ export default Vue.extend( {
 		languageCode: { required: true, type: String },
 		isPrimary: { required: false, default: false, type: Boolean },
 	},
+	emits: [ 'input' ],
 	computed: {
 		value: {
-			get(): string {
+			get( this: LabelEdit ): string {
 				if ( !this.label ) {
 					return '';
 				} else {
 					return this.label.value;
 				}
 			},
-			set( value: string ) {
+			set( this: LabelEdit, value: string ): void {
 				this.$emit( 'input', { language: this.languageCode, value } );
 			},
 		},

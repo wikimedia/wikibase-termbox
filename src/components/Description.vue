@@ -15,11 +15,14 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import {
+	defineComponent,
+	PropType,
+} from 'vue';
 import Messages from '@/components/mixins/Messages';
 import { Term } from '@wmde/wikibase-datamodel-types';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Description',
 	mixins: [ Messages ],
 	props: {
