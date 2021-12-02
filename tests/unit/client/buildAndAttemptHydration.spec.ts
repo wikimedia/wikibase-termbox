@@ -5,7 +5,8 @@ import TermboxRequest from '@/common/TermboxRequest';
 const mockBuildApp = jest.fn();
 jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
-	default: ( termboxRequest: TermboxRequest, services: TermboxServices ) => mockBuildApp( termboxRequest, services ),
+	buildAppMw: ( termboxRequest: TermboxRequest, services: TermboxServices ) =>
+		mockBuildApp( termboxRequest, services ),
 } ) );
 
 describe( 'buildAndAttemptHydration', () => {
@@ -14,13 +15,13 @@ describe( 'buildAndAttemptHydration', () => {
 		const termboxRequest = new ( jest.fn() )();
 		const services = new ( jest.fn() )();
 		const selector = '.wikibase-entitytermsview';
-		const mockApp = { $mount: jest.fn() };
+		const mockApp = { mount: jest.fn() };
 		mockBuildApp.mockReturnValue( Promise.resolve( mockApp ) );
 
 		return buildAndAttemptHydration( termboxRequest, selector, services ).then( () => {
 			expect( mockBuildApp ).toHaveBeenCalledTimes( 1 );
 			expect( mockBuildApp ).toHaveBeenCalledWith( termboxRequest, services );
-			expect( mockApp.$mount ).toHaveBeenCalledWith( selector );
+			expect( mockApp.mount ).toHaveBeenCalledWith( selector );
 		} );
 	} );
 
@@ -28,7 +29,7 @@ describe( 'buildAndAttemptHydration', () => {
 		const termboxRequest = new ( jest.fn() )();
 		const services = new ( jest.fn() )();
 		const selector = '.wikibase-entitytermsview';
-		const mockApp = { $mount: jest.fn() };
+		const mockApp = { mount: jest.fn() };
 		const mockTermboxElement = {
 			removeAttribute: jest.fn(),
 		};
@@ -42,7 +43,7 @@ describe( 'buildAndAttemptHydration', () => {
 		return buildAndAttemptHydration( termboxRequest, selector, services ).then( () => {
 			expect( mockBuildApp ).toHaveBeenCalledTimes( 2 );
 			expect( mockTermboxElement.removeAttribute ).toHaveBeenCalledWith( 'data-server-rendered' );
-			expect( mockApp.$mount ).toHaveBeenCalledWith( selector );
+			expect( mockApp.mount ).toHaveBeenCalledWith( selector );
 		} );
 	} );
 

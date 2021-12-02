@@ -1,5 +1,14 @@
-import buildApp from '@/common/buildApp';
+import {
+	buildAppMw,
+	buildAppSsr,
+	MwVueConstructor,
+	Vue3LikeApp,
+} from '@/common/buildApp';
 import App from '@/components/App.vue';
+import Vue, { VueConstructor } from 'vue';
+import TermboxRequest from '../../../src/common/TermboxRequest';
+import TermboxServices from '../../../src/common/TermboxServices';
+import { createMwApp } from '../../../src/mock-data/MockCreateMwApp';
 
 const mockInitStore = jest.fn();
 jest.mock( '@/common/initStore', () => ( {
@@ -13,7 +22,15 @@ jest.mock( '@/store', () => ( {
 	createStore: ( services: any ) => mockCreateStore( services ),
 } ) );
 
-describe( 'buildApp', () => {
+( Vue as VueConstructor & MwVueConstructor ).createMwApp = createMwApp;
+
+describe.each( [
+	[ 'buildAppMw', buildAppMw ],
+	[ 'buildAppSsr', buildAppSsr ],
+] )( '%s', (
+	_name: string,
+	buildApp: ( termboxRequest: TermboxRequest, services: TermboxServices ) => Promise<App & Vue3LikeApp>,
+) => {
 
 	it( 'calls initStore, then returns the app', () => {
 		const request = {
@@ -34,7 +51,7 @@ describe( 'buildApp', () => {
 		return buildApp( request, services ).then( ( app ) => {
 			expect( mockInitStore ).toBeCalledWith( store, request );
 
-			expect( app ).toBeInstanceOf( App );
+			expect( typeof ( app.$mount || app.mount ) ).toBe( 'function' );
 		} );
 	} );
 
@@ -55,7 +72,8 @@ describe( 'buildApp', () => {
 		return buildApp( request, services ).then( ( app ) => {
 			expect( mockCreateStore ).toHaveBeenCalledWith( services );
 
-			expect( app ).toBeInstanceOf( App );
+			expect( typeof ( app.$mount || app.mount ) ).toBe( 'function' );
 		} );
 	} );
+
 } );

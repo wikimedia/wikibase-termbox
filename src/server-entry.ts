@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from '@/components/App.vue';
-import buildApp from '@/common/buildApp';
+import { buildAppSsr } from '@/common/buildApp';
 import TermboxServices from './common/TermboxServices';
 import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
 import EntityInitializer from './common/EntityInitializer';
@@ -101,7 +101,7 @@ export default ( context: BundleRendererContext ): Promise<App> => {
 		},
 	);
 
-	return buildApp(
+	return buildAppSsr(
 		context.request,
 		services,
 	).catch( ( err: unknown ) => {

@@ -1,4 +1,4 @@
-import buildApp from '@/common/buildApp';
+import { buildAppMw } from '@/common/buildApp';
 import TermboxServices from '@/common/TermboxServices';
 import TermboxRequest from '@/common/TermboxRequest';
 
@@ -8,8 +8,8 @@ export default function buildAndAttemptHydration(
 	services: TermboxServices,
 ): Promise<void> {
 	const buildAndMount = (): Promise<void> => {
-		return buildApp( termboxRequest, services ).then( ( app ) => {
-			app.$mount( termboxRootSelector );
+		return buildAppMw( termboxRequest, services ).then( ( app ) => {
+			app.mount( termboxRootSelector );
 		} );
 	};
 
