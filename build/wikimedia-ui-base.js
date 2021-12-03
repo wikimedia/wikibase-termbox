@@ -3,9 +3,23 @@
  * to SCSS and stores it alongside this package for use in our styles
  */
 const fs = require( 'fs' );
-const gonzales = require( 'gonzales-pe' );
-const lessVariableResolver = require( 'less-variable-resolver' );
-const sast = require( 'sast' );
+
+let gonzales, lessVariableResolver, sast;
+try {
+	gonzales = require( 'gonzales-pe' );
+	lessVariableResolver = require( 'less-variable-resolver' );
+	sast = require( 'sast' );
+} catch ( _ ) {
+	// eslint-disable-next-line no-console
+	console.warn(
+		'Dev dependencies not found. ' +
+			'If you are running `npm install --only=production` under npm v7+, ' +
+			'this is expected because this script should not actually run: ' +
+			'see <https://github.com/npm/cli/issues/4027>. ' +
+			'Otherwise, something is wrong.',
+	);
+	return;
+}
 
 const WIKIMEDIA_UI_BASE_DIR = `${__dirname}/../node_modules/wikimedia-ui-base`;
 
