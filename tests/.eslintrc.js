@@ -8,5 +8,12 @@ module.exports = {
 
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-non-null-assertion': 'off',
+
+		'@typescript-eslint/ban-types': [ 'error', {
+			extendDefaults: true,
+			types: {
+				Function: false, // allow this as a type covering any function (e.g. jest.fn())
+			},
+		} ],
 	},
 };

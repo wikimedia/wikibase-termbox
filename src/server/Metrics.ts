@@ -1,7 +1,3 @@
-interface Tags {
-	[key: string]: string | number;
-}
-
 /**
  * Describes the metrics service provided by service runner, likely a statsd interface of sorts.
  * See https://github.com/wikimedia/service-runner/blob/master/lib/statsd.js#L29

@@ -9,12 +9,12 @@ import Vue, {
 	VueConstructor,
 } from 'vue';
 
-export interface MwVueConstructor {
-	createMwApp( componentOptions: ComponentOptions<Vue> ): Vue3LikeApp;
-}
-
 export interface Vue3LikeApp {
 	mount( selector: string ): unknown;
+}
+
+export interface MwVueConstructor {
+	createMwApp( componentOptions: ComponentOptions<Vue> ): Vue3LikeApp;
 }
 
 export function buildAppMw( termboxRequest: TermboxRequest, services: TermboxServices ): Promise<Vue3LikeApp> {

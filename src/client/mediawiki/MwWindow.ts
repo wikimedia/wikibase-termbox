@@ -15,6 +15,19 @@ export interface MwMessage {
 
 export type MwMessages = ( key: MessageKey, ...params: string[] ) => MwMessage;
 
+export type MWCookieOptions = {
+	expires?: Date | number | null;
+	prefix?: string;
+	domain?: string;
+	path?: string;
+	secure?: boolean;
+};
+
+export interface MWCookie {
+	set( name: string, value: string|null, options?: MWCookieOptions ): void;
+	get( name: string, prefix?: string | null, defaultValue?: string ): string | null;
+}
+
 export interface MWUserOptions {
 	get( optionName: string, defaultValue?: unknown ): unknown;
 }
@@ -37,19 +50,6 @@ export interface WikibaseContentLanguages {
 	getLanguageNameMap: () => {
 		[ key: string ]: string;
 	};
-}
-
-export type MWCookieOptions = {
-	expires?: Date | number | null;
-	prefix?: string;
-	domain?: string;
-	path?: string;
-	secure?: boolean;
-};
-
-export interface MWCookie {
-	set( name: string, value: string|null, options?: MWCookieOptions ): void;
-	get( name: string, prefix?: string | null, defaultValue?: string ): string | null;
 }
 
 interface Wikibase {
