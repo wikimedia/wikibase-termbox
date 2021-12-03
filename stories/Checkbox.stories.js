@@ -14,6 +14,5 @@ storiesOf( 'Checkbox', module )
 				default: text( 'Label', 'sample label' ),
 			},
 		},
-		// eslint-disable-next-line max-len
 		template: '<Checkbox v-model="isChecked" :html-value="\'A value\'" :label="label" />',
 	} ) );
