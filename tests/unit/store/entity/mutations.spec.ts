@@ -204,8 +204,9 @@ describe( 'entity/mutations', () => {
 			try {
 				mutations[ ENTITY_ROLLBACK ]( state, null );
 				expect( true ).toBeFalsy();
-			} catch ( e ) {
-				expect( e ).toBeInstanceOf( InvalidEntityException );
+			} catch ( e_ ) {
+				expect( e_ ).toBeInstanceOf( InvalidEntityException );
+				const e = e_ as InvalidEntityException;
 				expect( e.message ).toBe( 'Entity baseRevisionFingerprint not set' );
 			}
 		} );

@@ -29,7 +29,7 @@ export default class AxiosSpecialPageEntityRepo implements EntityRepository {
 					try {
 						resolve( this.entityInitializer.newFromSerialization( entity ) );
 					} catch ( e ) {
-						reject( new TechnicalProblem( e.message ) );
+						reject( new TechnicalProblem( ( e as Error ).message ) );
 					}
 				} )
 				.catch( ( reason ) => {

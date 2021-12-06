@@ -1,6 +1,6 @@
-import LanguageRepository from '@/common/data-access/LanguageRepository.ts';
+import LanguageRepository from '@/common/data-access/LanguageRepository';
 import LanguageCollection from '@/datamodel/LanguageCollection';
-import Language from '@/datamodel/Language.ts';
+import Language from '@/datamodel/Language';
 import { WikibaseContentLanguages, UlsData } from '@/client/mediawiki/MwWindow';
 
 export default class UlsLanguageRepository implements LanguageRepository {

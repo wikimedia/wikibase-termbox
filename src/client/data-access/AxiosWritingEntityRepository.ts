@@ -40,7 +40,7 @@ export default class AxiosWritingEntityRepository implements WritingEntityReposi
 						response.data.entity.lastrevid,
 					) );
 				} catch ( e ) {
-					reject( new TechnicalProblem( e.toString() ) );
+					reject( new TechnicalProblem( String( e ) ) );
 				}
 			} ).catch( ( error: AxiosError ) => {
 				reject( new TechnicalProblem( error.toString() ) );

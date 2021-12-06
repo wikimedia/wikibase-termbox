@@ -35,7 +35,8 @@ export default function ( options: ServiceRunnerOptions ): void {
 	try {
 		openApiSpec = buildOpenApiSpec( config.HEALTHCHECK_QUERY, termboxQueryValidator );
 	} catch ( error ) {
-		logger.log( 'fatal/service', `HEALTHCHECK_QUERY malformed: ${JSON.stringify( error.info )}. Exiting.` );
+		const info = ( error as { info: unknown } ).info;
+		logger.log( 'fatal/service', `HEALTHCHECK_QUERY malformed: ${JSON.stringify( info )}. Exiting.` );
 		process.exit( 1 );
 	}
 

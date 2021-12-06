@@ -114,8 +114,9 @@ describe( 'buildOpenApiSpec', () => {
 		try {
 			buildOpenApiSpec( 'wrong=query&validator=sad', validator as any );
 			expect( false ).toBe( true ); // expected exception did not happen
-		} catch ( e ) {
-			expect( e ).toBeInstanceOf( InvalidRequest );
+		} catch ( e_ ) {
+			expect( e_ ).toBeInstanceOf( InvalidRequest );
+			const e = e_ as InvalidRequest;
 			expect( e.getContext() ).toEqual( { message: e.message, errors } );
 		}
 	} );
