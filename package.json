@@ -44,7 +44,7 @@
     "rtl-detect": "^1.0.4",
     "service-runner": "^2.9.0",
     "ts-deferred": "^1.0.4",
-    "tslib": "^1.14.1",
+    "tslib": "^2.3.1",
     "vue-server-renderer": "2.6.11"
   },
   "devDependencies": {
