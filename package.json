@@ -21,7 +21,7 @@
     "test:lint": "vue-cli-service lint --no-fix --max-warnings 0 . && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "vue-cli-service test:unit",
     "test:distnodiff": "npm run build -- --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.main.js /tmp/dist/wikibase.termbox.main.js",
-    "test:mwlibs": "ZUUL_BRANCH=${ZUUL_BRANCH:-master} lib-version-check",
+    "test:mwlibs": "echo 'disabled (T297381)' # ZUUL_BRANCH=${ZUUL_BRANCH:-master} lib-version-check",
     "storybook": "start-storybook",
     "storybook:build": "build-storybook -o docs/ui"
   },
