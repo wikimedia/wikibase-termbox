@@ -111,7 +111,7 @@ describe( 'AliasesEdit', () => {
 			const store = wrapper.vm.$store;
 			store.dispatch = jest.fn();
 
-			textField.trigger( 'blur.native' );
+			textField.vm.$emit( 'blur' );
 			expect( store.dispatch ).toHaveBeenCalledWith(
 				action( NS_ENTITY, ENTITY_ALIAS_REMOVE ),
 				{ languageCode: language, index },
@@ -140,7 +140,7 @@ describe( 'AliasesEdit', () => {
 
 				const firstField = wrapper.findComponent( ResizingTextField );
 				await firstField.vm.$emit( 'input', '' );
-				await firstField.trigger( 'blur.native' );
+				await firstField.vm.$emit( 'blur' );
 
 				const textFields = wrapper.findAllComponents( ResizingTextField );
 				expect( textFields ).toHaveLength( 2 );
@@ -156,7 +156,7 @@ describe( 'AliasesEdit', () => {
 			const store = wrapper.vm.$store;
 			store.dispatch = jest.fn();
 
-			textField.trigger( 'blur.native' );
+			textField.vm.$emit( 'blur' );
 			expect( store.dispatch ).toHaveBeenCalledWith(
 				action( NS_ENTITY, ENTITY_ALIAS_REMOVE ),
 				{ languageCode: language, index },
@@ -171,7 +171,7 @@ describe( 'AliasesEdit', () => {
 			const textFields = wrapper.findAllComponents( ResizingTextField );
 			const bottomTextField = textFields.at( 1 );
 
-			bottomTextField.trigger( 'blur.native' );
+			bottomTextField.vm.$emit( 'blur' );
 			expect( store.dispatch ).not.toHaveBeenCalledWith(
 				action( NS_ENTITY, ENTITY_ALIAS_REMOVE ),
 				expect.anything(),
@@ -254,7 +254,7 @@ describe( 'AliasesEdit', () => {
 			const wrapper = getShallowMountedAliasEdit( aliases );
 
 			const textField = wrapper.findComponent( ResizingTextField );
-			await textField.trigger( 'focus' );
+			await textField.vm.$emit( 'focus' );
 
 			expect( wrapper.find( '.wb-ui-aliases-edit--focus-within' ).exists() ).toBeTruthy();
 		} );
@@ -264,8 +264,8 @@ describe( 'AliasesEdit', () => {
 			const wrapper = getShallowMountedAliasEdit( aliases );
 
 			const textField = wrapper.findComponent( ResizingTextField );
-			textField.trigger( 'focus' );
-			await textField.trigger( 'blur.native' );
+			textField.vm.$emit( 'focus' );
+			await textField.vm.$emit( 'blur' );
 
 			expect( wrapper.find( '.wb-ui-aliases-edit--focus-within' ).exists() ).toBeFalsy();
 		} );

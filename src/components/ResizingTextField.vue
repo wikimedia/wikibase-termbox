@@ -2,6 +2,8 @@
 	<textarea
 		:value="value"
 		@input="setValue"
+		@focus="onFocus"
+		@blur="onBlur"
 		@keydown.enter.prevent
 		:maxlength="maxLength"
 	/>
@@ -69,6 +71,12 @@ export default Vue.extend( {
 		},
 		getPropertyValueInPx( element: HTMLElement, property: string ): number {
 			return parseInt( window.getComputedStyle( element ).getPropertyValue( property ) );
+		},
+		onFocus( event: FocusEvent ): void {
+			this.$emit( 'focus', event );
+		},
+		onBlur( event: FocusEvent ): void {
+			this.$emit( 'blur', event );
 		},
 	},
 } );
