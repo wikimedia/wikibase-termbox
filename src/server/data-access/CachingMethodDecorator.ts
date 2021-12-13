@@ -17,7 +17,7 @@ export default class CachingMethodDecorator<V> {
 	 */
 	public constructor(
 		cache: LRUCache<string, V>,
-		instance: any,
+		instance: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
 		method: ( ...args: any[] ) => Promise<V>,
 	) {
 		this.cache = cache;

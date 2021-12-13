@@ -2,7 +2,7 @@ import express from 'express';
 import Metrics from './Metrics';
 
 export default function reportResponseTimeMetrics( metrics: Metrics ) {
-	return ( request: express.Request, response: express.Response, time: number ) => {
+	return ( request: express.Request, response: express.Response, time: number ): void => {
 		const normalizedPath = metrics.normalizeName(
 			request.path.replace( /^\//, '' ) || 'root',
 		);

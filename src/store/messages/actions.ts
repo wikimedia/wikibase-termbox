@@ -5,7 +5,8 @@ import { MESSAGES_INIT as MESSAGES_INIT_MUTATION } from '@/store/messages/mutati
 import MessageTranslationCollection from '@/datamodel/MessageTranslationCollection';
 import MessagesRepository from '@/common/data-access/MessagesRepository';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// eslint-disable-next-line max-len
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export default (
 	messagesRepository: MessagesRepository,
 ) => ( {

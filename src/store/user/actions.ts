@@ -22,7 +22,8 @@ import { action } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { UserPreference } from '@/common/UserPreference';
 import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// eslint-disable-next-line max-len
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export default (
 	userPreferenceRepository: UserPreferenceRepository,
 ) => ( {

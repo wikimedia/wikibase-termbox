@@ -10,7 +10,8 @@ import LanguageCollection from '@/datamodel/LanguageCollection';
 import LanguageRepository from '@/common/data-access/LanguageRepository';
 import LanguageTranslationRepository from '@/common/data-access/LanguageTranslationRepository';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// eslint-disable-next-line max-len
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export default (
 	languageRepository: LanguageRepository,
 	languageTranslationRepository: LanguageTranslationRepository,
