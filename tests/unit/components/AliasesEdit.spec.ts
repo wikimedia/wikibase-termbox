@@ -196,7 +196,7 @@ describe( 'AliasesEdit', () => {
 			const wrapper = getShallowMountedAliasEdit( [ 'hi' ] );
 			const textFields = wrapper.findAllComponents( ResizingTextField );
 
-			return Vue.nextTick().then( () => {
+			return wrapper.vm.$nextTick().then( () => {
 				expect( textFields.at( 0 ).props( 'value' ) ).toBe( 'hi' );
 				expect( textFields ).toHaveLength( 2 );
 				expect( textFields.at( 1 ).props( 'value' ) ).toBe( '' );

@@ -42,7 +42,6 @@ import { EDITMODE_SET } from '@/store/mutationTypes';
 import newFingerprintable from '../../newFingerprintable';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
-import Vue from 'vue';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
@@ -71,7 +70,7 @@ function createStoreInEditMode() {
 	return store;
 }
 
-// This appears to effectively wait for "saving" to finish after clicking the publish button when Vue.nextTick didn't.
+// This appears to effectively wait for "saving" to finish after clicking the publish button when $nextTick didn't.
 const flushPromises = () => new Promise( ( resolve ) => setTimeout( resolve ) );
 
 describe( 'TermBox.vue', () => {
@@ -261,7 +260,7 @@ describe( 'TermBox.vue', () => {
 					expect( wrapper.findComponent( LicenseAgreement ).exists() ).toBeFalsy();
 					expect( entitySave ).toHaveBeenCalled();
 
-					await Vue.nextTick();
+					await wrapper.vm.$nextTick();
 					expect( deactivateEditMode ).toHaveBeenCalled();
 				} );
 
@@ -440,7 +439,7 @@ describe( 'TermBox.vue', () => {
 
 					await wrapper.find( '.wb-ui-event-emitting-button--cancel' ).trigger( 'click' );
 
-					return Vue.nextTick().then( () => {
+					return wrapper.vm.$nextTick().then( () => {
 						const label = wrapper.find( '.wb-ui-label' );
 						expect( label.text() ).toBe( originalLabel );
 					} );
