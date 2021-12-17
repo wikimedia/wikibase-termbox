@@ -1,5 +1,10 @@
 // see: https://vuejs.org/v2/guide/custom-directive.html
 
-export default function focus( el: HTMLElement ): void {
-	el.focus();
-}
+import { DirectiveOptions } from 'vue';
+
+const focus: DirectiveOptions = {
+	inserted( el: HTMLElement ): void {
+		el.focus();
+	},
+};
+export default focus;
