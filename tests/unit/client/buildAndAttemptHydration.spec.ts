@@ -36,7 +36,7 @@ describe( 'buildAndAttemptHydration', () => {
 		document.querySelector = jest.fn().mockReturnValue( mockTermboxElement );
 		mockBuildApp
 			.mockReturnValueOnce( Promise.resolve( {
-				$mount: () => { throw new Error( 'sad markup mismatch' ); },
+				mount: () => { throw new Error( 'sad markup mismatch' ); },
 			} ) )
 			.mockReturnValueOnce( Promise.resolve( mockApp ) );
 
