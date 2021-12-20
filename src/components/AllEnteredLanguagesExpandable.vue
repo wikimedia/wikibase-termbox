@@ -15,10 +15,9 @@
 		<a
 			v-if="isExpanded"
 			:href="link"
-			class="wb-ui-all-entered-languages-expandable__switch"
+			class="wb-ui-all-entered-languages-expandable__switch wb-ui-all-entered-languages-expandable__close"
 			:class="{ 'wb-ui-all-entered-languages-expandable__switch--expanded': isExpanded }"
 			@click.prevent="closeAllLanguages()"
-			ref="allEnteredLanguagesClose"
 		>
 			<span>{{ message( isExpanded ? MESSAGE_KEYS.FEWER_LANGUAGES : MESSAGE_KEYS.ALL_LANGUAGES ) }}</span>
 		</a>

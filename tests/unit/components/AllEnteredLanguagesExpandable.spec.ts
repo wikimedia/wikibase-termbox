@@ -17,7 +17,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			} ) ],
 		} );
 
-		const switchButton = wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } );
+		const switchButton = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' );
 		expect( switchButton.exists() ).toBeTruthy();
 		expect( switchButton.text() ).toBe( buttonTextCollapsed );
 
@@ -32,7 +32,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin() ] },
 		);
-		const switchButton = wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } );
+		const switchButton = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' );
 
 		await switchButton.trigger( 'click' );
 
@@ -49,9 +49,9 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			mixins: [ mockMessageMixin( { [ MessageKey.FEWER_LANGUAGES ]: buttonText } ) ],
 		} );
 
-		await wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
+		await wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
 
-		const closeButton = wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } );
+		const closeButton = wrapper.find( '.wb-ui-all-entered-languages-expandable__close' );
 		expect( closeButton.exists() ).toBeTruthy();
 		expect( closeButton.text() ).toBe( buttonText );
 	} );
@@ -64,11 +64,11 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			mixins: [ mockMessageMixin() ],
 		} );
 
-		await wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } ).trigger( 'click' );
-		await wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
+		await wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
+		await wrapper.find( '.wb-ui-all-entered-languages-expandable__close' ).trigger( 'click' );
 
 		expect( wrapper.findComponent( AllEnteredLanguages ).exists() ).toBeFalsy();
-		expect( wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.wb-ui-all-entered-languages-expandable__close' ).exists() ).toBeFalsy();
 	} );
 
 	it( 'scrolls to switch button and focuses on it when close button clicked', async () => {
@@ -79,13 +79,14 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			mixins: [ mockMessageMixin() ],
 		} );
 
-		const switchButton = wrapper.findComponent( { ref: 'allEnteredLanguagesSwitch' } );
+		const switchButton = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' );
+		const switchButtonFocusSpy = jest.spyOn( switchButton.element as HTMLElement, 'focus' );
 		const switchButtonScrollIntoViewSpy = jest.spyOn( switchButton.element, 'scrollIntoView' );
 		await switchButton.trigger( 'click' );
 
-		await wrapper.findComponent( { ref: 'allEnteredLanguagesClose' } ).trigger( 'click' );
+		await wrapper.find( '.wb-ui-all-entered-languages-expandable__close' ).trigger( 'click' );
 
-		expect( document.activeElement ).toBe( switchButton.element );
+		expect( switchButtonFocusSpy ).toHaveBeenCalled();
 		expect( switchButtonScrollIntoViewSpy ).toHaveBeenCalled();
 	} );
 
