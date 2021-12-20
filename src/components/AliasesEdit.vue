@@ -42,14 +42,21 @@ export default Vue.extend( {
 		languageCode: { required: true, type: String },
 	},
 	data() {
+		const keys = []; // keys of aliasValues (computed property not yet available)
+		let key;
+		for ( key = 0; this.aliases && key < this.aliases.length; key++ ) {
+			keys.push( key );
+		}
+		keys.push( key ); // the final ''
+
 		return {
 			hasFocus: false,
-			// keys of aliasValues (computed property not yet available)
-			keys: [ ...[ ...( this.aliases || [] ), '' ].keys() ],
+			keys,
 		};
 	},
 	computed: {
 		aliasValues(): string[] {
+			// data() has keys corresponding to this value
 			return [ ...( this.aliases || [] ).map( ( alias ) => alias.value ), '' ];
 		},
 	},
