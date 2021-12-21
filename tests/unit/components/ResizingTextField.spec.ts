@@ -10,7 +10,7 @@ describe( 'ResizingTextField', () => {
 	it( 'shows its value prop as the textarea value', () => {
 		const value = 'hello';
 		const wrapper = mount( ResizingTextField, {
-			propsData: {
+			props: {
 				value,
 			},
 		} );
@@ -27,7 +27,7 @@ describe( 'ResizingTextField', () => {
 
 	it( 'applies the max length limit to the textarea, if supplied', () => {
 		const wrapper = mount( ResizingTextField, {
-			propsData: {
+			props: {
 				maxLength: 8,
 			},
 		} );

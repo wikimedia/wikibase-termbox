@@ -31,7 +31,7 @@ describe( 'Aliases', () => {
 			{ language, value: 'hello2' },
 		];
 		const wrapper = shallowMount( Aliases, {
-			propsData: { aliases },
+			props: { aliases },
 			global: { plugins: [ store ] },
 		} );
 
@@ -45,7 +45,7 @@ describe( 'Aliases', () => {
 		const separator = '|';
 
 		const wrapper = shallowMount( Aliases, {
-			propsData: {
+			props: {
 				aliases: [
 					{ language, value: 'hello' },
 					{ language, value: 'hello2' },
@@ -64,7 +64,7 @@ describe( 'Aliases', () => {
 		const store = createStore( emptyServices as any );
 
 		const wrapper = shallowMount( Aliases, {
-			propsData: { aliases: [] },
+			props: { aliases: [] },
 			global: { plugins: [ store ] },
 		} );
 
@@ -78,7 +78,7 @@ describe( 'Aliases', () => {
 		const store = createStoreWithLanguage( language );
 
 		shallowMount( Aliases, {
-			propsData: { aliases: [ { language: languageCode, value: 'hello' } ] },
+			props: { aliases: [ { language: languageCode, value: 'hello' } ] },
 			global: {
 				plugins: [ store ],
 				directives: {

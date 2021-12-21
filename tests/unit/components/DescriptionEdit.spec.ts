@@ -33,7 +33,7 @@ describe( 'DescriptionEdit', () => {
 		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 		const wrapper = shallowMount( DescriptionEdit, {
-			propsData: {
+			props: {
 				description: { language, value: description },
 				languageCode: language,
 			},
@@ -52,7 +52,7 @@ describe( 'DescriptionEdit', () => {
 		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 		store.dispatch = jest.fn();
 		const wrapper = shallowMount( DescriptionEdit, {
-			propsData: {
+			props: {
 				description: { language, value: 'a description' },
 				languageCode: language,
 			},
@@ -70,7 +70,7 @@ describe( 'DescriptionEdit', () => {
 		const placeholderMessage = 'placeholder';
 		const wrapper = shallowMount( DescriptionEdit, {
 			global: { plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ] },
-			propsData: {
+			props: {
 				description: null,
 				languageCode: 'en',
 			},
@@ -87,7 +87,7 @@ describe( 'DescriptionEdit', () => {
 		const maxLength = 23;
 		const wrapper = shallowMount( DescriptionEdit, {
 			global: { plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ] },
-			propsData: {
+			props: {
 				description: null,
 				languageCode: 'en',
 			},
@@ -110,7 +110,7 @@ describe( 'DescriptionEdit', () => {
 			const inlanguage = jest.fn();
 			const store = createStoreWithLanguage( language );
 			shallowMount( DescriptionEdit, {
-				propsData: {
+				props: {
 					description: { language: languageCode, value: 'meep' },
 					languageCode,
 				},

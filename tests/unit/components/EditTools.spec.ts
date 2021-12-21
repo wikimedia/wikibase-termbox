@@ -9,7 +9,7 @@ describe( 'EditTools', () => {
 
 	it( 'Wraps content in Sectionedit to ensure mediawiki can control visibility on a per-user level', () => {
 		const wrapper = mount( EditTools, {
-			propsData: {
+			props: {
 				editMode: true,
 			},
 		} );
@@ -22,7 +22,7 @@ describe( 'EditTools', () => {
 	it( 'Shows read slot if in reading mode', () => {
 		const read = 'read';
 		const wrapper = shallowMount( EditTools, {
-			propsData: {
+			props: {
 				editMode: false,
 			},
 			slots: {
@@ -38,7 +38,7 @@ describe( 'EditTools', () => {
 	it( 'Shows edit slot if in edit mode', () => {
 		const edit = 'edit';
 		const wrapper = shallowMount( EditTools, {
-			propsData: {
+			props: {
 				editMode: true,
 			},
 			slots: {

@@ -6,7 +6,7 @@ describe( 'IconMessageBox', () => {
 		const message = 'some message';
 		const wrapper = shallowMount( IconMessageBox, {
 			slots: { default: message },
-			propsData: { type: 'warning' },
+			props: { type: 'warning' },
 		} );
 
 		expect( wrapper.text() ).toBe( message );
@@ -14,14 +14,14 @@ describe( 'IconMessageBox', () => {
 
 	it( 'sets its class based on its `type` prop', () => {
 		const wrapper = shallowMount( IconMessageBox, {
-			propsData: { type: 'error' },
+			props: { type: 'error' },
 		} );
 		expect( wrapper.classes() ).toContain( 'wb-ui-icon-message-box--error' );
 	} );
 
 	it( 'throws for unknown type', () => {
 		expect( () => shallowMount( IconMessageBox, {
-			propsData: { type: 'potato' },
+			props: { type: 'potato' },
 		} ) ).toThrow();
 	} );
 } );

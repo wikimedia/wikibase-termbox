@@ -28,7 +28,7 @@ describe( 'Label', () => {
 		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 		const wrapper = shallowMount( Label, {
-			propsData: {
+			props: {
 				label: { language, value: label },
 			},
 			global: { plugins: [ store ] },
@@ -40,7 +40,7 @@ describe( 'Label', () => {
 	it( 'shows a missing label indicator', () => {
 		const missingLabelMessage = 'label missing';
 		const wrapper = shallowMount( Label, {
-			propsData: { label: null },
+			props: { label: null },
 			mixins: [ mockMessageMixin( { [ MessageKey.MISSING_LABEL ]: missingLabelMessage } ) ],
 		} );
 
@@ -54,7 +54,7 @@ describe( 'Label', () => {
 			const inlanguage = jest.fn();
 
 			shallowMount( Label, {
-				propsData: {
+				props: {
 					label: { language: languageCode, value: 'meep' },
 				},
 				global: {
@@ -73,7 +73,7 @@ describe( 'Label', () => {
 			const store = createStore( emptyServices as any );
 
 			shallowMount( Label, {
-				propsData: { label: null },
+				props: { label: null },
 				global: {
 					plugins: [ store ],
 					directives: {
@@ -90,7 +90,7 @@ describe( 'Label', () => {
 	it( 'renders the label as a heading if it is the primary language', () => {
 		const store = createStoreWithLanguage( { code: 'en', directionality: 'ltr' } );
 		const wrapper = shallowMount( Label, {
-			propsData: {
+			props: {
 				isPrimary: true,
 				label: { language: 'en', value: 'meep' },
 			},

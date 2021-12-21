@@ -28,7 +28,7 @@ describe( 'Description', () => {
 		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 		const wrapper = shallowMount( Description, {
-			propsData: { description: { language, value: description } },
+			props: { description: { language, value: description } },
 			global: { plugins: [ store ] },
 		} );
 
@@ -38,7 +38,7 @@ describe( 'Description', () => {
 	it( 'shows a missing description indicator', () => {
 		const missingDescriptionMessage = 'description missing';
 		const wrapper = shallowMount( Description, {
-			propsData: { description: null },
+			props: { description: null },
 			mixins: [ mockMessageMixin( { [ MessageKey.MISSING_DESCRIPTION ]: missingDescriptionMessage } ) ],
 		} );
 
@@ -53,7 +53,7 @@ describe( 'Description', () => {
 			const inlanguage = jest.fn();
 			const store = createStoreWithLanguage( language );
 			shallowMount( Description, {
-				propsData: { description: { language: languageCode, value: 'bla' } },
+				props: { description: { language: languageCode, value: 'bla' } },
 				global: {
 					plugins: [ store ],
 					directives: {
@@ -71,7 +71,7 @@ describe( 'Description', () => {
 			const store = createStore( emptyServices as any );
 
 			shallowMount( Description, {
-				propsData: { description: null },
+				props: { description: null },
 				global: {
 					plugins: [ store ],
 					directives: {

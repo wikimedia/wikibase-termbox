@@ -48,7 +48,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 
 			const wrapper = shallowMount( MonolingualFingerprintView, {
 				global: { plugins: [ store ] },
-				propsData: { languageCode: language.code },
+				props: { languageCode: language.code },
 			} );
 
 			expect( wrapper.findComponent( Label ).exists() ).toBeTruthy();
@@ -80,7 +80,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 
 			const wrapper = shallowMount( MonolingualFingerprintView, {
 				global: { plugins: [ store ] },
-				propsData: { languageCode: language.code },
+				props: { languageCode: language.code },
 			} );
 
 			expect( wrapper.findComponent( LabelEdit ).exists() ).toBeTruthy();
@@ -109,7 +109,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 
 			const wrapper = shallowMount( MonolingualFingerprintView, {
 				global: { plugins: [ store ] },
-				propsData: {
+				props: {
 					label: { language: languageCode, value: 'oldValue' },
 					languageCode,
 				},
@@ -132,7 +132,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 		const languageCode = 'de';
 		const wrapper = shallowMount( MonolingualFingerprintView, {
 			global: { plugins: [ store ] },
-			propsData: { languageCode },
+			props: { languageCode },
 		} );
 
 		const newValue = { language: languageCode, value: 'newValue' };
@@ -151,7 +151,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 				MonolingualFingerprintView,
 				{
 					global: { plugins: [ store ] },
-					propsData: {
+					props: {
 						isPrimary: true,
 						languageCode,
 					},
@@ -168,7 +168,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 				MonolingualFingerprintView,
 				{
 					global: { plugins: [ store ] },
-					propsData: {
+					props: {
 						isPrimary: false,
 						languageCode,
 					},
@@ -198,7 +198,7 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			MonolingualFingerprintView,
 			{
 				global: { plugins: [ store ] },
-				propsData: {
+				props: {
 					languageCode,
 				},
 			},

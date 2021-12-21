@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils';
 
 function shallowMountWithProps( props = {} ) {
 	return shallowMount( Checkbox, {
-		propsData: {
+		props: {
 			value: false,
 			label: 'check me',
 			...props,

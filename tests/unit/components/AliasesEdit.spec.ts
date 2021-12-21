@@ -45,7 +45,7 @@ function getShallowMountedAliasEdit(
 	];
 
 	return shallowMount( AliasesEdit, {
-		propsData: {
+		props: {
 			aliases: aliases.map( ( alias ) => ( { language, value: alias } ) ),
 			languageCode: language,
 		},
@@ -215,7 +215,7 @@ describe( 'AliasesEdit', () => {
 			const inlanguage = jest.fn();
 			const store = createStoreWithLanguage( language );
 			shallowMount( AliasesEdit, {
-				propsData: {
+				props: {
 					aliases: [
 						{ language: languageCode, value: 'hello' },
 						{ language: languageCode, value: 'hello2' },
@@ -240,7 +240,7 @@ describe( 'AliasesEdit', () => {
 		it( 'transforms non-existent aliases into an alias list with one empty string', () => {
 			const store = createStoreWithLanguage( { code: 'en', directionality: 'ltr' } );
 			const wrapper = shallowMount( AliasesEdit, {
-				propsData: { aliases: null, languageCode: 'en' },
+				props: { aliases: null, languageCode: 'en' },
 				global: {
 					plugins: [ store ],
 					mixins: [ newConfigMixin( { textFieldCharacterLimit: 0 } as ConfigOptions ) ],

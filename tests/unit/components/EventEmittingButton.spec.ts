@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils';
 
 function shallowMountWithProps( props = {} ) {
 	return shallowMount( EventEmittingButton, {
-		propsData: {
+		props: {
 			type: 'edit',
 			message: 'click me',
 			...props,

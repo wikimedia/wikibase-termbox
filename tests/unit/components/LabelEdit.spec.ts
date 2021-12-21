@@ -33,7 +33,7 @@ describe( 'LabelEdit', () => {
 		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 
 		const wrapper = shallowMount( LabelEdit, {
-			propsData: {
+			props: {
 				label: { language, value: label },
 				languageCode: language,
 			},
@@ -50,7 +50,7 @@ describe( 'LabelEdit', () => {
 		const store = createStoreWithLanguage( { code: language, directionality: 'ltr' } );
 		store.dispatch = jest.fn();
 		const wrapper = shallowMount( LabelEdit, {
-			propsData: {
+			props: {
 				label: { language, value: 'hi' },
 				languageCode: language,
 			},
@@ -67,7 +67,7 @@ describe( 'LabelEdit', () => {
 	it( 'has an isPrimary prop', () => {
 		const wrapper = shallowMount( LabelEdit, {
 			global: { plugins: [ createStoreWithLanguage( { code: 'en', directionality: 'ltr' } ) ] },
-			propsData: {
+			props: {
 				label: null,
 				languageCode: 'en',
 				isPrimary: true,
@@ -82,7 +82,7 @@ describe( 'LabelEdit', () => {
 	it( 'passes a placeholder down', () => {
 		const placeholderMessage = 'placeholder';
 		const wrapper = shallowMount( LabelEdit, {
-			propsData: {
+			props: {
 				label: null,
 				languageCode: 'en',
 			},
@@ -101,7 +101,7 @@ describe( 'LabelEdit', () => {
 	it( 'passes a maxlength down', () => {
 		const maxLength = 23;
 		const wrapper = shallowMount( LabelEdit, {
-			propsData: {
+			props: {
 				label: null,
 				languageCode: 'en',
 			},
@@ -127,7 +127,7 @@ describe( 'LabelEdit', () => {
 			const inlanguage = jest.fn();
 			const store = createStoreWithLanguage( language );
 			shallowMount( LabelEdit, {
-				propsData: {
+				props: {
 					label: { language: languageCode, value: 'meep' },
 					languageCode,
 				},
