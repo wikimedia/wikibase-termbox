@@ -9,6 +9,7 @@ module.exports = {
 
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-non-null-assertion': 'off',
+		'@typescript-eslint/ban-ts-comment': 'off', // temporary during Vue 3 migration
 
 		'@typescript-eslint/ban-types': [ 'error', {
 			extendDefaults: true,

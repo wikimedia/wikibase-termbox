@@ -72,7 +72,8 @@ describe( 'AnonEditWarning', () => {
 				[ MessageKey.LOGIN ]: buttonLabel,
 			} ) ],
 		} );
-		const button = wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' );
+		// @ts-ignore
+		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--primaryProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
 		expect( button.props( 'href' ) ).toBe( LOGIN_URL );
@@ -92,7 +93,8 @@ describe( 'AnonEditWarning', () => {
 				[ MessageKey.CREATE_ACCOUNT ]: buttonLabel,
 			} ) ],
 		} );
-		const button = wrapper.find( '.wb-ui-event-emitting-button--framelessProgressive' );
+		// @ts-ignore
+		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--framelessProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
 		expect( button.props( 'href' ) ).toBe( SIGNUP_URL );
