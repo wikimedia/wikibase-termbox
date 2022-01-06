@@ -52,14 +52,15 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			);
 
 			expect( wrapper.findComponent( Label ).exists() ).toBeTruthy();
-			expect( wrapper.findComponent( Label ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
+			expect( wrapper.findComponent( Label ).props( 'label' ) ).toStrictEqual( entity.labels[ language.code ] );
 
 			expect( wrapper.findComponent( Description ).exists() ).toBeTruthy();
 			expect( wrapper.findComponent( Description ).props( 'description' ) )
-				.toBe( entity.descriptions[ language.code ] );
+				.toStrictEqual( entity.descriptions[ language.code ] );
 
 			expect( wrapper.findComponent( Aliases ).exists() ).toBeTruthy();
-			expect( wrapper.findComponent( Aliases ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
+			expect( wrapper.findComponent( Aliases ).props( 'aliases' ) )
+				.toStrictEqual( entity.aliases[ language.code ] );
 		} );
 
 		it( 'renders in editmode', () => {
@@ -83,17 +84,19 @@ describe( 'MonolingualFingerprintView.vue', () => {
 			} );
 
 			expect( wrapper.findComponent( LabelEdit ).exists() ).toBeTruthy();
-			expect( wrapper.findComponent( LabelEdit ).props( 'label' ) ).toBe( entity.labels[ language.code ] );
+			expect( wrapper.findComponent( LabelEdit ).props( 'label' ) )
+				.toStrictEqual( entity.labels[ language.code ] );
 			expect( wrapper.findComponent( LabelEdit ).props( 'languageCode' ) ).toBe( languageCode );
 
 			expect( wrapper.findComponent( DescriptionEdit ).exists() ).toBeTruthy();
 			expect( wrapper.findComponent( DescriptionEdit ).props( 'description' ) )
-				.toBe( entity.descriptions[ language.code ] );
+				.toStrictEqual( entity.descriptions[ language.code ] );
 			expect( wrapper.findComponent( DescriptionEdit ).props( 'languageCode' ) ).toBe( languageCode );
 
 			expect( wrapper.findComponent( AliasesEdit ).exists() ).toBeTruthy();
 			expect( wrapper.findComponent( AliasesEdit ).props( 'languageCode' ) ).toBe( languageCode );
-			expect( wrapper.findComponent( AliasesEdit ).props( 'aliases' ) ).toBe( entity.aliases[ language.code ] );
+			expect( wrapper.findComponent( AliasesEdit ).props( 'aliases' ) )
+				.toStrictEqual( entity.aliases[ language.code ] );
 		} );
 
 		it( 'triggers ENTITY_LABEL_EDIT on label edits', () => {
