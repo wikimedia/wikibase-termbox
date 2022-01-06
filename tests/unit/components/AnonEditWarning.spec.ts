@@ -78,7 +78,6 @@ describe( 'AnonEditWarning', () => {
 				renderStubDefaultSlot: true,
 			},
 		} );
-		// @ts-ignore
 		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--primaryProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
@@ -102,7 +101,6 @@ describe( 'AnonEditWarning', () => {
 				renderStubDefaultSlot: true,
 			},
 		} );
-		// @ts-ignore
 		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--framelessProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );

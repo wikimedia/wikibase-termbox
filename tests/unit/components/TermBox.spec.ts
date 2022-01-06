@@ -111,7 +111,6 @@ describe( 'TermBox.vue', () => {
 					} );
 
 					const editPen = wrapper.findComponent( EditTools )
-						// @ts-ignore
 						.findComponent( '.wb-ui-event-emitting-button--edit' );
 
 					expect( editPen.exists() ).toBeTruthy();
@@ -132,7 +131,6 @@ describe( 'TermBox.vue', () => {
 						plugins: [ store ],
 					} } );
 
-					// @ts-ignore
 					await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 					expect( mockActivateEditMode ).toHaveBeenCalled();
@@ -147,7 +145,6 @@ describe( 'TermBox.vue', () => {
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						} } );
 
-						// @ts-ignore
 						await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 						expect(
@@ -164,7 +161,6 @@ describe( 'TermBox.vue', () => {
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						} } );
 
-						// @ts-ignore
 						await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 						expect( wrapper.findComponent( AnonEditWarning ).exists() ).toBeFalsy();
@@ -182,7 +178,6 @@ describe( 'TermBox.vue', () => {
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						} } );
 
-						// @ts-ignore
 						await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 						expect( wrapper.findComponent( AnonEditWarning ).exists() ).toBeFalsy();
@@ -218,7 +213,6 @@ describe( 'TermBox.vue', () => {
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.PUBLISH ]: message,
 						} ) ],
-						// @ts-ignore
 					} ).findComponent( EditTools ).findComponent( '.wb-ui-event-emitting-button--publish' );
 
 					expect( publish.exists() ).toBeTruthy();
@@ -368,7 +362,6 @@ describe( 'TermBox.vue', () => {
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.CANCEL ]: message,
 						} ) ],
-						// @ts-ignore
 					} ).findComponent( EditTools ).findComponent( '.wb-ui-event-emitting-button--cancel' );
 
 					expect( cancel.exists() ).toBeTruthy();
@@ -399,7 +392,6 @@ describe( 'TermBox.vue', () => {
 						mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 					} } );
 
-					// @ts-ignore
 					await wrapper.findComponent( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
 
 					expect( mockEntityRollback ).toHaveBeenCalled();
@@ -555,7 +547,6 @@ describe( 'TermBox.vue', () => {
 			mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
 		} } );
 
-		// @ts-ignore
 		await wrapper.findComponent( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 		expect( wrapper.findComponent( Overlay ).exists() ).toBeTruthy();
 		expect( wrapper.findComponent( IndeterminateProgressBar ).exists() ).toBeTruthy();
