@@ -17,23 +17,20 @@ storiesOf( 'LabelEdit', module )
 		const messages = {
 			[ MessageKey.PLACEHOLDER_EDIT_LABEL ]: 'Placeholder text',
 		};
-		const theLabel = { language: 'en', value: '' };
 
 		return {
-			data() {
-				return {
-					theLabel,
-					onEdit( term ) {
-						theLabel.value = term.value;
-					},
-				};
-			},
+			data: () => ( { label: { language: 'en', value: '' } } ),
 			components: { LabelEdit: stubMessagesMixin( LabelEdit, messages ) },
 			props: {
 				isPrimary: {
 					default: boolean( 'Is primary', false ),
 				},
 			},
-			template: '<LabelEdit @input="onEdit" :label="theLabel" :is-primary="isPrimary" language-code="de" />',
+			template: '<LabelEdit @input="onEdit" :label="label" :is-primary="isPrimary" language-code="de" />',
+			methods: {
+				onEdit( term ) {
+					this.label = term;
+				},
+			},
 		};
 	} );
