@@ -18,6 +18,13 @@ class JestCustomEnvironment extends JSDOMEnvironment {
 				);
 			},
 		} );
+		// Jest v27+ jsdom removes these globals but some packages need them to exist
+		this.global.setImmediate = function () {
+			throw new Error( 'Unexpected call of setImmediate()' );
+		};
+		this.global.clearImmediate = function () {
+			throw new Error( 'Unexpected call of clearImmediate()' );
+		};
 	}
 }
 

@@ -72,7 +72,7 @@ function createStoreInEditMode() {
 }
 
 // This appears to effectively wait for "saving" to finish after clicking the publish button when Vue.nextTick didn't.
-const flushPromises = () => new Promise( setImmediate );
+const flushPromises = () => new Promise( ( resolve ) => setTimeout( resolve ) );
 
 describe( 'TermBox.vue', () => {
 
