@@ -1,10 +1,4 @@
-import {
-	buildAppMw,
-	buildAppSsr,
-} from '@/common/buildApp';
-import TermboxRequest from '../../../src/common/TermboxRequest';
-import TermboxServices from '../../../src/common/TermboxServices';
-import { ConfigOptions } from '../../../src/components/mixins/newConfigMixin';
+import buildApp from '@/common/buildApp';
 
 const mockInitStore = jest.fn();
 jest.mock( '@/common/initStore', () => ( {
@@ -18,17 +12,7 @@ jest.mock( '@/store', () => ( {
 	createStore: ( services: any ) => mockCreateStore( services ),
 } ) );
 
-describe.each( [
-	[ 'buildAppMw', buildAppMw ],
-	[ 'buildAppSsr', buildAppSsr ],
-] )( '%s', (
-	_name: string,
-	buildApp: (
-		termboxRequest: TermboxRequest,
-		services: TermboxServices,
-		config: ConfigOptions,
-	) => Promise<any>,
-) => {
+describe( 'buildApp', () => {
 
 	it( 'calls initStore, then returns the app', () => {
 		const request = {

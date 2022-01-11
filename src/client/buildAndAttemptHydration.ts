@@ -1,4 +1,4 @@
-import { buildAppMw } from '@/common/buildApp';
+import buildApp from '@/common/buildApp';
 import TermboxServices from '@/common/TermboxServices';
 import TermboxRequest from '@/common/TermboxRequest';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
@@ -10,7 +10,7 @@ export default function buildAndAttemptHydration(
 	config: ConfigOptions,
 ): Promise<void> {
 	const buildAndMount = (): Promise<void> => {
-		return buildAppMw( termboxRequest, services, config ).then( ( app ) => {
+		return buildApp( termboxRequest, services, config ).then( ( app ) => {
 			app.mount( termboxRootSelector );
 		} );
 	};

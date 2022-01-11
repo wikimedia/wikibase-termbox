@@ -1,4 +1,4 @@
-import { buildAppSsr } from '@/common/buildApp';
+import buildApp from '@/common/buildApp';
 import TermboxServices from './common/TermboxServices';
 import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
 import EntityInitializer from './common/EntityInitializer';
@@ -99,7 +99,7 @@ export default ( context: BundleRendererContext ): Promise<unknown> => {
 		},
 	);
 
-	return buildAppSsr(
+	return buildApp(
 		context.request,
 		services,
 		config,

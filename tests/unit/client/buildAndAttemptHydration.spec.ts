@@ -6,7 +6,7 @@ import { ConfigOptions } from '../../../src/components/mixins/newConfigMixin';
 const mockBuildApp = jest.fn();
 jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
-	buildAppMw: ( termboxRequest: TermboxRequest, services: TermboxServices, config: ConfigOptions ) =>
+	default: ( termboxRequest: TermboxRequest, services: TermboxServices, config: ConfigOptions ) =>
 		mockBuildApp( termboxRequest, services, config ),
 } ) );
 
