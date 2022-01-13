@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import App from '@/components/App.vue';
 import { buildAppSsr } from '@/common/buildApp';
 import TermboxServices from './common/TermboxServices';
@@ -20,15 +19,15 @@ import MessagesRepository from './common/data-access/MessagesRepository';
 import MessageTranslationCollection from './datamodel/MessageTranslationCollection';
 import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages }
 	from '@/server/data-access/WikibaseContentLanguagesRepo';
-import newConfigMixin from '@/components/mixins/newConfigMixin';
+import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import EntityRevision from '@/datamodel/EntityRevision';
 
-Vue.mixin( newConfigMixin( {
+const config: ConfigOptions = {
 	// As of now all config values concern edit mode exclusively, which is not reachable on the server side
 	textFieldCharacterLimit: 0,
 	licenseAgreementInnerHtml: '',
 	copyrightVersion: '',
-} ) );
+};
 
 export default ( context: BundleRendererContext ): Promise<App> => {
 	const services = new TermboxServices();
@@ -104,6 +103,7 @@ export default ( context: BundleRendererContext ): Promise<App> => {
 	return buildAppSsr(
 		context.request,
 		services,
+		config,
 	).catch( ( err: unknown ) => {
 		if ( err instanceof EntityNotFound ) {
 			throw new BundleBoundaryPassingException( ErrorReason.EntityNotFound, err.getContext() );

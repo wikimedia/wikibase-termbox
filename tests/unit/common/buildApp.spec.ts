@@ -8,6 +8,7 @@ import App from '@/components/App.vue';
 import Vue, { VueConstructor } from 'vue';
 import TermboxRequest from '../../../src/common/TermboxRequest';
 import TermboxServices from '../../../src/common/TermboxServices';
+import { ConfigOptions } from '../../../src/components/mixins/newConfigMixin';
 import { createMwApp } from '../../../src/mock-data/MockCreateMwApp';
 
 const mockInitStore = jest.fn();
@@ -29,7 +30,11 @@ describe.each( [
 	[ 'buildAppSsr', buildAppSsr ],
 ] )( '%s', (
 	_name: string,
-	buildApp: ( termboxRequest: TermboxRequest, services: TermboxServices ) => Promise<App & Vue3LikeApp>,
+	buildApp: (
+		termboxRequest: TermboxRequest,
+		services: TermboxServices,
+		config: ConfigOptions,
+	) => Promise<App & Vue3LikeApp>,
 ) => {
 
 	it( 'calls initStore, then returns the app', () => {
@@ -42,13 +47,14 @@ describe.each( [
 			userName: null,
 		};
 		const services = new ( jest.fn() )();
+		const config = new ( jest.fn() )();
 
 		const store = {};
 		mockCreateStore.mockReturnValue( store );
 
 		mockInitStore.mockResolvedValue( [] );
 
-		return buildApp( request, services ).then( ( app ) => {
+		return buildApp( request, services, config ).then( ( app ) => {
 			expect( mockInitStore ).toBeCalledWith( store, request );
 
 			expect( typeof ( app.$mount || app.mount ) ).toBe( 'function' );
@@ -65,11 +71,12 @@ describe.each( [
 			userName: null,
 		};
 		const services = new ( jest.fn() )();
+		const config = new ( jest.fn() )();
 
 		const store = {};
 		mockCreateStore.mockReturnValue( store );
 
-		return buildApp( request, services ).then( ( app ) => {
+		return buildApp( request, services, config ).then( ( app ) => {
 			expect( mockCreateStore ).toHaveBeenCalledWith( services );
 
 			expect( typeof ( app.$mount || app.mount ) ).toBe( 'function' );

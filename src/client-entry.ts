@@ -9,12 +9,10 @@ import EntityRepository from '@/client/data-access/EntityRepository';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKey } from '@/common/MessageKey';
-import focus from '@/client/directives/focus';
-import inlanguage from '@/client/directives/inlanguage';
 import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
 import EntityInitializer from '@/common/EntityInitializer';
 import axiosFactory from '@/client/axios/axiosFactory';
-import newConfigMixin from '@/components/mixins/newConfigMixin';
+import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import DispatchingUserPreferenceRepository from '@/common/data-access/DispatchingUserPreferenceRepository';
 import { UserPreference } from '@/common/UserPreference';
 import CookieUserPreferenceRepository from '@/client/data-access/CookieUserPreferenceRepository';
@@ -32,15 +30,11 @@ import termboxConfig from './config.json'; // in production, this file is provid
 const mwWindow = window as unknown as MwWindow;
 
 Vue.config.productionTip = false;
-Vue.mixin( newConfigMixin(
-	{
-		textFieldCharacterLimit: mwWindow.mw.config.get( 'wbMultiLingualStringLimit' ),
-		licenseAgreementInnerHtml: mwWindow.mw.config.get( 'wbCopyright' ).messageHtml,
-		copyrightVersion: mwWindow.mw.config.get( 'wbCopyright' ).version,
-	},
-) );
-Vue.directive( 'inlanguage', inlanguage );
-Vue.directive( 'focus', focus );
+const config: ConfigOptions = {
+	textFieldCharacterLimit: mwWindow.mw.config.get( 'wbMultiLingualStringLimit' ),
+	licenseAgreementInnerHtml: mwWindow.mw.config.get( 'wbCopyright' ).messageHtml,
+	copyrightVersion: mwWindow.mw.config.get( 'wbCopyright' ).version,
+};
 
 const contentLanguages = mwWindow.wb.WikibaseContentLanguages.getTermLanguages();
 const entityInitializer = new EntityInitializer();
@@ -130,5 +124,5 @@ services.set(
 );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
-	buildAndAttemptHydration( termboxRequest, '.wikibase-entitytermsview', services );
+	buildAndAttemptHydration( termboxRequest, '.wikibase-entitytermsview', services, config );
 } );

@@ -1,4 +1,7 @@
+import focus from '@/client/directives/focus';
+import inlanguage from '@/client/directives/inlanguage';
 import App from '@/components/App.vue';
+import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import { createStore } from '@/store';
 import initStore from '@/common/initStore';
 import TermboxServices from '@/common/TermboxServices';
@@ -17,7 +20,14 @@ export interface MwVueConstructor {
 	createMwApp( componentOptions: ComponentOptions<Vue> ): Vue3LikeApp;
 }
 
-export function buildAppMw( termboxRequest: TermboxRequest, services: TermboxServices ): Promise<Vue3LikeApp> {
+export function buildAppMw(
+	termboxRequest: TermboxRequest,
+	services: TermboxServices,
+	config: ConfigOptions,
+): Promise<Vue3LikeApp> {
+	Vue.mixin( newConfigMixin( config ) );
+	Vue.directive( 'inlanguage', inlanguage );
+	Vue.directive( 'focus', focus );
 	const store = createStore( services );
 	const compatApp = {
 		store,
@@ -29,7 +39,14 @@ export function buildAppMw( termboxRequest: TermboxRequest, services: TermboxSer
 	return initStore( store, termboxRequest ).then( () => app );
 }
 
-export function buildAppSsr( termboxRequest: TermboxRequest, services: TermboxServices ): Promise<Vue> {
+export function buildAppSsr(
+	termboxRequest: TermboxRequest,
+	services: TermboxServices,
+	config: ConfigOptions,
+): Promise<Vue> {
+	Vue.mixin( newConfigMixin( config ) );
+	Vue.directive( 'inlanguage', inlanguage );
+	Vue.directive( 'focus', focus );
 	const store = createStore( services );
 	const app = new App( {
 		store,

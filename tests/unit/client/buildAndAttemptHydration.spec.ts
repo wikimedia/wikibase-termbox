@@ -1,12 +1,13 @@
 import buildAndAttemptHydration from '@/client/buildAndAttemptHydration';
 import TermboxServices from '@/common/TermboxServices';
 import TermboxRequest from '@/common/TermboxRequest';
+import { ConfigOptions } from '../../../src/components/mixins/newConfigMixin';
 
 const mockBuildApp = jest.fn();
 jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
-	buildAppMw: ( termboxRequest: TermboxRequest, services: TermboxServices ) =>
-		mockBuildApp( termboxRequest, services ),
+	buildAppMw: ( termboxRequest: TermboxRequest, services: TermboxServices, config: ConfigOptions ) =>
+		mockBuildApp( termboxRequest, services, config ),
 } ) );
 
 describe( 'buildAndAttemptHydration', () => {
@@ -14,13 +15,14 @@ describe( 'buildAndAttemptHydration', () => {
 	it( 'builds and mounts the app once if the first attempt is successful', () => {
 		const termboxRequest = new ( jest.fn() )();
 		const services = new ( jest.fn() )();
+		const config = new ( jest.fn() )();
 		const selector = '.wikibase-entitytermsview';
 		const mockApp = { mount: jest.fn() };
 		mockBuildApp.mockReturnValue( Promise.resolve( mockApp ) );
 
-		return buildAndAttemptHydration( termboxRequest, selector, services ).then( () => {
+		return buildAndAttemptHydration( termboxRequest, selector, services, config ).then( () => {
 			expect( mockBuildApp ).toHaveBeenCalledTimes( 1 );
-			expect( mockBuildApp ).toHaveBeenCalledWith( termboxRequest, services );
+			expect( mockBuildApp ).toHaveBeenCalledWith( termboxRequest, services, config );
 			expect( mockApp.mount ).toHaveBeenCalledWith( selector );
 		} );
 	} );
@@ -28,6 +30,7 @@ describe( 'buildAndAttemptHydration', () => {
 	it( 'removes the data-server-rendered attribute, and re-renders if the first mount failed', () => {
 		const termboxRequest = new ( jest.fn() )();
 		const services = new ( jest.fn() )();
+		const config = new ( jest.fn() )();
 		const selector = '.wikibase-entitytermsview';
 		const mockApp = { mount: jest.fn() };
 		const mockTermboxElement = {
@@ -40,7 +43,7 @@ describe( 'buildAndAttemptHydration', () => {
 			} ) )
 			.mockReturnValueOnce( Promise.resolve( mockApp ) );
 
-		return buildAndAttemptHydration( termboxRequest, selector, services ).then( () => {
+		return buildAndAttemptHydration( termboxRequest, selector, services, config ).then( () => {
 			expect( mockBuildApp ).toHaveBeenCalledTimes( 2 );
 			expect( mockTermboxElement.removeAttribute ).toHaveBeenCalledWith( 'data-server-rendered' );
 			expect( mockApp.mount ).toHaveBeenCalledWith( selector );
