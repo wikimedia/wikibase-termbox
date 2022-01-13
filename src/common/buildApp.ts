@@ -1,5 +1,5 @@
-import focus from '@/client/directives/focus';
-import inlanguage from '@/client/directives/inlanguage';
+import focus from '@/directives/focus';
+import inlanguage from '@/directives/inlanguage';
 import App from '@/components/App.vue';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import { createStore } from '@/store';

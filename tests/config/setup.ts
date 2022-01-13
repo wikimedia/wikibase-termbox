@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import focus from '@/client/directives/focus';
-import inlanguage from '@/client/directives/inlanguage';
+import focus from '@/directives/focus';
+import inlanguage from '@/directives/inlanguage';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 beforeEach( () => {

@@ -2,8 +2,8 @@ import {
 	addDecorator,
 	addParameters,
 } from '@storybook/vue';
-import focus from '@/client/directives/focus';
-import inlanguage from '@/client/directives/inlanguage';
+import focus from '@/directives/focus';
+import inlanguage from '@/directives/inlanguage';
 import { withKnobs } from '@storybook/addon-knobs';
 import Vue from 'vue';
 

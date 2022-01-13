@@ -1,4 +1,4 @@
-import focus from '@/client/directives/focus';
+import focus from '@/directives/focus';
 
 describe( 'focus directive', () => {
 	it( 'calls the focus method of an element', () => {

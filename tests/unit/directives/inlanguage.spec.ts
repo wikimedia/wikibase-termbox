@@ -1,4 +1,4 @@
-import inlanguage from '@/client/directives/inlanguage';
+import inlanguage from '@/directives/inlanguage';
 import Language from '@/datamodel/Language';
 import { getter } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_LANGUAGE } from '@/store/namespaces';

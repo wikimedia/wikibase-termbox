@@ -28,6 +28,7 @@
     "src/client/**/*",
     "src/client-entry.ts",
     "src/server-entry.ts",
-    "src/common/buildApp.ts"
+    "src/common/buildApp.ts",
+    "src/directives/**/*"
   ]
 }
