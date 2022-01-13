@@ -1,4 +1,3 @@
-import App from '@/components/App.vue';
 import { buildAppSsr } from '@/common/buildApp';
 import TermboxServices from './common/TermboxServices';
 import AxiosSpecialPageEntityRepo from './server/data-access/AxiosSpecialPageEntityRepo';
@@ -29,7 +28,7 @@ const config: ConfigOptions = {
 	copyrightVersion: '',
 };
 
-export default ( context: BundleRendererContext ): Promise<App> => {
+export default ( context: BundleRendererContext ): Promise<unknown> => {
 	const services = new TermboxServices();
 	const axios = context.services.axios;
 

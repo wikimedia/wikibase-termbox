@@ -48,7 +48,7 @@ export default function ( services: BundleRendererServices ): Application {
 
 		termboxHandler.createTermboxRequest( request )
 			.then( contextBuilder.passRequest.bind( contextBuilder ) )
-			.then( renderer.renderToString )
+			.then( ( context ) => renderer.renderToString( context as object ) )
 			.then( ( html ) => {
 				response.send( html );
 			} )
