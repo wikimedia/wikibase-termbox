@@ -20,15 +20,8 @@
       "esnext"
     ]
   },
-  "exclude": [
-    "node_modules",
-    "src/types/client/**/*",
-    "src/mock-data/**/*",
-    "src/dev-entry.ts",
-    "src/client/**/*",
-    "src/client-entry.ts",
-    "src/server-entry.ts",
-    "src/common/buildApp.ts",
-    "src/directives/**/*"
+  "include": [
+    "src/server/**/*.ts",
+    "src/types/**/*.ts"
   ]
 }
