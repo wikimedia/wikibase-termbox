@@ -9,7 +9,8 @@ import EntityRepository from '@/client/data-access/EntityRepository';
 import MwWindow from '@/client/mediawiki/MwWindow';
 import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKey } from '@/common/MessageKey';
-import '@/client/directives';
+import focus from '@/client/directives/focus';
+import inlanguage from '@/client/directives/inlanguage';
 import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
 import EntityInitializer from '@/common/EntityInitializer';
 import axiosFactory from '@/client/axios/axiosFactory';
@@ -38,6 +39,8 @@ Vue.mixin( newConfigMixin(
 		copyrightVersion: mwWindow.mw.config.get( 'wbCopyright' ).version,
 	},
 ) );
+Vue.directive( 'inlanguage', inlanguage );
+Vue.directive( 'focus', focus );
 
 const contentLanguages = mwWindow.wb.WikibaseContentLanguages.getTermLanguages();
 const entityInitializer = new EntityInitializer();

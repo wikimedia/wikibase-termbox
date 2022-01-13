@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import '@/client/directives';
+import focus from '@/client/directives/focus';
+import inlanguage from '@/client/directives/inlanguage';
 import newConfigMixin from '@/components/mixins/newConfigMixin';
 
 beforeEach( () => {
@@ -11,3 +12,5 @@ Vue.mixin( newConfigMixin( {
 	licenseAgreementInnerHtml: '',
 	copyrightVersion: '',
 } ) );
+Vue.directive( 'inlanguage', inlanguage );
+Vue.directive( 'focus', focus );
