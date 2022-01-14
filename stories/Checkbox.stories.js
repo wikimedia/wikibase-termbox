@@ -14,5 +14,11 @@ storiesOf( 'Checkbox', module )
 				default: text( 'Label', 'sample label' ),
 			},
 		},
-		template: '<Checkbox v-model="isChecked" :html-value="\'A value\'" :label="label" />',
+		template:
+			`<Checkbox
+				:value="isChecked"
+				@input="isChecked = $event"
+				:html-value="'A value'"
+				:label="label"
+			/>`,
 	} ) );
