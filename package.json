@@ -60,7 +60,7 @@
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.177",
     "@types/lru-cache": "^5.1.0",
-    "@types/nock": "^9.3.1",
+    "@types/nock": "^11.1.0",
     "@types/node": "^10.17.54",
     "@types/response-time": "^2.3.4",
     "@types/supertest": "^2.0.8",
