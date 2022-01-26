@@ -36,7 +36,7 @@ export default defineComponent( {
 			this.isExpanded = !this.isExpanded;
 		},
 	},
-	beforeMount(): void {
+	mounted(): void {
 		this.isServerRendered = false;
 	},
 } );

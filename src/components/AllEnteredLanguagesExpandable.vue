@@ -55,7 +55,7 @@ export default defineComponent( {
 			} );
 		},
 	},
-	beforeMount(): void {
+	mounted(): void {
 		this.isServerRendered = false;
 	},
 } );

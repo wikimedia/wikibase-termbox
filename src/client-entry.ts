@@ -122,5 +122,5 @@ services.set(
 );
 
 init().then( ( termboxRequest: TermboxRequest ) => {
-	buildAndAttemptHydration( termboxRequest, '.wikibase-entitytermsview', services, config );
+	buildAndAttemptHydration( termboxRequest, services, config );
 } );

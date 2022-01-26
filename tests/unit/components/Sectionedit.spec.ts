@@ -30,15 +30,23 @@ describe( 'Sectionedit', () => {
 		expect( rootElemWrapper.find( 'div' ).length ).toBe( 1 );
 	} );
 
-	it( 'wrapps in "normal" div only on client', () => {
+	it( 'changes to "normal" div after mounting on client', async () => {
 		const content = 'testing';
 		const wrapper = shallowMount( Sectionedit, {
 			slots: {
 				default: content,
 			},
 		} );
+		// the real element is actually the wrapper’s child due to the HTML comment before it
+		const element = () => wrapper.element.firstElementChild as HTMLElement;
 
-		expect( wrapper.element.getRootNode().nodeName.toLowerCase() )
+		expect( element().tagName.toLowerCase() )
+			.toEqual( 'wb:sectionedit' );
+		expect( wrapper.text() ).toBe( content );
+
+		await wrapper.vm.$nextTick();
+
+		expect( element().tagName.toLowerCase() )
 			.toEqual( 'div' );
 		expect( wrapper.text() ).toBe( content );
 	} );

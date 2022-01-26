@@ -55,9 +55,12 @@ describe( 'InMoreLanguagesExpandable', () => {
 			expect( $button.hasClass( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( true );
 		} );
 
-		it( 'has no extra class when mounted on the client side', () => {
+		it( 'removes extra class after mounting on the client side', async () => {
 			const store = createStore( emptyServices as any );
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { global: { plugins: [ store ] } } );
+			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch' )
+				.classes( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( true );
+			await wrapper.vm.$nextTick();
 			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch' )
 				.classes( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( false );
 		} );

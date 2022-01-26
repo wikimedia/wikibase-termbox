@@ -20,6 +20,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 				[ MessageKey.FEWER_LANGUAGES ]: buttonTextExpanded,
 			} ) ],
 		} );
+		await wrapper.vm.$nextTick();
 
 		const switchButton = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' );
 		expect( switchButton.exists() ).toBeTruthy();
@@ -36,6 +37,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin() ] },
 		);
+		await wrapper.vm.$nextTick();
 		const switchButton = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' );
 
 		await switchButton.trigger( 'click' );
@@ -52,6 +54,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
 			mixins: [ mockMessageMixin( { [ MessageKey.FEWER_LANGUAGES ]: buttonText } ) ],
 		} );
+		await wrapper.vm.$nextTick();
 
 		await wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
 
@@ -67,6 +70,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
 			mixins: [ mockMessageMixin() ],
 		} );
+		await wrapper.vm.$nextTick();
 
 		await wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' ).trigger( 'click' );
 		await wrapper.find( '.wb-ui-all-entered-languages-expandable__close' ).trigger( 'click' );
@@ -82,6 +86,7 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		const wrapper = shallowMount( AllEnteredLanguagesExpandable, {
 			mixins: [ mockMessageMixin() ],
 		} );
+		await wrapper.vm.$nextTick();
 
 		const switchButton = wrapper.find( '.wb-ui-all-entered-languages-expandable__switch' );
 		const switchButtonFocusSpy = jest.spyOn( switchButton.element as HTMLElement, 'focus' );
@@ -94,11 +99,12 @@ describe( 'AllEnteredLanguagesExpandable', () => {
 		expect( switchButtonScrollIntoViewSpy ).toHaveBeenCalled();
 	} );
 
-	it( 'does not expand all entered languages by default', () => {
+	it( 'does not expand all entered languages by default', async () => {
 		const wrapper = shallowMount(
 			AllEnteredLanguagesExpandable,
 			{ mixins: [ mockMessageMixin() ] },
 		);
+		await wrapper.vm.$nextTick();
 		expect( wrapper.findComponent( AllEnteredLanguages ).exists() ).toBeFalsy();
 	} );
 

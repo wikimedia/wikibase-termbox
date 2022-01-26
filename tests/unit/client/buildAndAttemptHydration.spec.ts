@@ -12,41 +12,68 @@ jest.mock( '@/common/buildApp', () => ( {
 
 describe( 'buildAndAttemptHydration', () => {
 
-	it( 'builds and mounts the app once if the first attempt is successful', () => {
+	afterEach( () => {
+		document.documentElement.innerHTML = '';
+	} );
+
+	it( 'builds and mounts the app on an existing wrapper element', () => {
 		const termboxRequest = new ( jest.fn() )();
 		const services = new ( jest.fn() )();
 		const config = new ( jest.fn() )();
-		const selector = '.wikibase-entitytermsview';
-		const mockApp = { mount: jest.fn() };
+		const mockApp = { mount: jest.fn(), config: {} };
 		mockBuildApp.mockReturnValue( Promise.resolve( mockApp ) );
 
-		return buildAndAttemptHydration( termboxRequest, selector, services, config ).then( () => {
+		// tree: outer > wrapper > root; outer > unrelated
+		const outerElement = document.createElement( 'div' );
+		outerElement.classList.add( 'wikibase-entityview-main' );
+		document.documentElement.appendChild( outerElement );
+		const wrapperElement = document.createElement( 'div' );
+		wrapperElement.classList.add( 'wikibase-entitytermsview-wrapper' );
+		outerElement.appendChild( wrapperElement );
+		const rootElement = document.createElement( 'section' );
+		rootElement.classList.add( 'wikibase-entitytermsview' );
+		wrapperElement.appendChild( rootElement );
+		const unrelatedElement = document.createElement( 'div' );
+		unrelatedElement.id = 'toc';
+		outerElement.appendChild( unrelatedElement );
+
+		return buildAndAttemptHydration( termboxRequest, services, config ).then( () => {
 			expect( mockBuildApp ).toHaveBeenCalledTimes( 1 );
 			expect( mockBuildApp ).toHaveBeenCalledWith( termboxRequest, services, config );
-			expect( mockApp.mount ).toHaveBeenCalledWith( selector );
+			expect( mockApp.mount ).toHaveBeenCalledTimes( 1 );
+			expect( mockApp.mount ).toHaveBeenCalledWith( wrapperElement );
+			expect( unrelatedElement.parentElement ).toBe( outerElement );
 		} );
 	} );
 
-	it( 'removes the data-server-rendered attribute, and re-renders if the first mount failed', () => {
+	it( 'builds and mounts the app on a newly created wrapper element', () => {
 		const termboxRequest = new ( jest.fn() )();
 		const services = new ( jest.fn() )();
 		const config = new ( jest.fn() )();
-		const selector = '.wikibase-entitytermsview';
-		const mockApp = { mount: jest.fn() };
-		const mockTermboxElement = {
-			removeAttribute: jest.fn(),
-		};
-		document.querySelector = jest.fn().mockReturnValue( mockTermboxElement );
-		mockBuildApp
-			.mockReturnValueOnce( Promise.resolve( {
-				mount: () => { throw new Error( 'sad markup mismatch' ); },
-			} ) )
-			.mockReturnValueOnce( Promise.resolve( mockApp ) );
+		const mockApp = { mount: jest.fn(), config: {} };
+		mockBuildApp.mockReturnValue( Promise.resolve( mockApp ) );
 
-		return buildAndAttemptHydration( termboxRequest, selector, services, config ).then( () => {
-			expect( mockBuildApp ).toHaveBeenCalledTimes( 2 );
-			expect( mockTermboxElement.removeAttribute ).toHaveBeenCalledWith( 'data-server-rendered' );
-			expect( mockApp.mount ).toHaveBeenCalledWith( selector );
+		// tree: outer > root; outer > unrelated
+		const outerElement = document.createElement( 'div' );
+		outerElement.classList.add( 'wikibase-entityview-main' );
+		document.documentElement.appendChild( outerElement );
+		const rootElement = document.createElement( 'section' );
+		rootElement.classList.add( 'wikibase-entitytermsview' );
+		outerElement.appendChild( rootElement );
+		const unrelatedElement = document.createElement( 'div' );
+		unrelatedElement.id = 'toc';
+		outerElement.appendChild( unrelatedElement );
+
+		return buildAndAttemptHydration( termboxRequest, services, config ).then( () => {
+			// expected tree: outer > wrapper > root; outer > unrelated
+			expect( mockBuildApp ).toHaveBeenCalledTimes( 1 );
+			expect( mockBuildApp ).toHaveBeenCalledWith( termboxRequest, services, config );
+			expect( mockApp.mount ).toHaveBeenCalledTimes( 1 );
+			const wrapperElement = mockApp.mount.mock.calls[ 0 ][ 0 ] as HTMLElement;
+			expect( wrapperElement.className ).toBe( 'wikibase-entitytermsview-wrapper' );
+			expect( wrapperElement.parentElement ).toBe( outerElement );
+			expect( rootElement.parentElement ).toBe( wrapperElement );
+			expect( unrelatedElement.parentElement ).toBe( outerElement );
 		} );
 	} );
 

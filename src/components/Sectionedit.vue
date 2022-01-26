@@ -19,7 +19,7 @@ export default defineComponent( {
 	data() {
 		return { isServerRendered: true };
 	},
-	beforeMount(): void {
+	mounted(): void {
 		this.isServerRendered = false;
 	},
 } );
