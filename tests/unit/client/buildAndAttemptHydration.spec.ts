@@ -77,4 +77,18 @@ describe( 'buildAndAttemptHydration', () => {
 		} );
 	} );
 
+	it( 'does nothing on DOM without root element', () => {
+		const termboxRequest = new ( jest.fn() )();
+		const services = new ( jest.fn() )();
+		const config = new ( jest.fn() )();
+
+		const html = '<head></head><body><div></div></body>';
+		document.documentElement.innerHTML = html;
+
+		return buildAndAttemptHydration( termboxRequest, services, config ).then( () => {
+			expect( mockBuildApp ).not.toHaveBeenCalled();
+			expect( document.documentElement.innerHTML ).toBe( html );
+		} );
+	} );
+
 } );

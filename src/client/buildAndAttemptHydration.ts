@@ -10,7 +10,7 @@ export default async function buildAndAttemptHydration(
 ): Promise<void> {
 	const rootElement = document.querySelector( '.wikibase-entitytermsview' );
 	if ( !rootElement ) {
-		throw new Error( 'No Termbox root element found!' );
+		return; // no termbox on this page (history, diffonly…)
 	}
 
 	// create a wrapper <div> if it doesn’t exist yet:
