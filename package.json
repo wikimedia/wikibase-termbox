@@ -33,7 +33,7 @@
     "@wmde/vuex-helpers": "^0.1.2",
     "axios": "^0.21.1",
     "compression": "^1.7.4",
-    "core-js": "^3.6.5",
+    "core-js": "^3.22.3",
     "express": "^4.17.1",
     "http-status-codes": "^2.1.4",
     "lru-cache": "^5.1.1",
