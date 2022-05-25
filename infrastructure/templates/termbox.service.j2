@@ -5,7 +5,6 @@ Requires=docker.service
 
 [Service]
 Type=simple
-ExecStartPre={{ PATH }}/updater.sh
 ExecStart=/usr/bin/docker run --restart=always --name=systemd_termbox -e STATSD_HOST={{ STATSD_HOST }} -e LOGSTASH_HOST={{ LOGSTASH_HOST }} -e WIKIBASE_REPO={{ WIKIBASE_REPO }} -e WIKIBASE_REPO_HOSTNAME_ALIAS={{ WIKIBASE_REPO_HOSTNAME_ALIAS }} -e SSR_PORT={{ SSR_PORT }} -p={{ SSR_PORT }}:{{ SSR_PORT }} wmde/wikibase-termbox-production:latest
 ExecStop=/usr/bin/docker stop systemd_termbox
 ExecStopPost=/usr/bin/docker rm -f systemd_termbox

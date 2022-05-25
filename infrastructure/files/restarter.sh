@@ -2,15 +2,20 @@
 set -e
 
 if $( sudo systemctl is-active --quiet termbox ); then
-	LATEST_COMMIT=$(curl -s --header 'Accept: application/vnd.github.v3.sha' 'https://api.github.com/repos/wikimedia/wikibase-termbox/commits/master')
+	docker pull docker-registry.wikimedia.org/wikimedia/wikibase-termbox:latest
 
-	if \
-		[[ -z "$(docker images -q docker-registry.wikimedia.org/wikimedia/wikibase-termbox:$LATEST_COMMIT 2> /dev/null)" ]]\
-	&&\
-		$( curl --output /dev/null --silent --head --fail "https://docker-registry.wikimedia.org/v2/wikimedia/wikibase-termbox/manifests/$LATEST_COMMIT" )\
-	;then
-		echo "Restart Termbox SSR"
+	CURRENT_HASH=$(docker images -q wmde/wikibase-termbox-production 2> /dev/null)
+	LATEST_HASH=$(docker images -q docker-registry.wikimedia.org/wikimedia/wikibase-termbox:latest 2> /dev/null)
+
+	if [ "{$CURRENT_HASH}" != "{$LATEST_HASH}" ]; then
+		echo "Tagging latest Termbox SSR image from wikimedia docker registry as current image in-use"
+		docker tag docker-registry.wikimedia.org/wikimedia/wikibase-termbox:latest wmde/wikibase-termbox-production:latest
+
+		echo "Restarting Termbox SSR"
 		sudo systemctl restart termbox
+
+		echo "Cleaning up old Termbox SSR images, if any"
+		docker rmi $(docker images -q docker-registry.wikimedia.org/wikimedia/wikibase-termbox 2> /dev/null ) || true
 	else
 		echo "All up to date"
 	fi

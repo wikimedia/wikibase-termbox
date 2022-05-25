@@ -24,14 +24,6 @@
         group: "root"
         mode: 0644
 
-    - name: Ensure updater is in place
-      template:
-          src: templates/updater.sh.j2
-          dest: "{{ PATH }}/updater.sh"
-          owner: "root"
-          group: "root"
-          mode: 0744
-
     - name: Ensure restarter is in place
       copy:
           src: files/restarter.sh
