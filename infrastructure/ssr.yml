@@ -3,7 +3,7 @@
   tasks:
     - name: Ensure docker is installed
       package:
-          name: docker-ce
+          name: docker.io
           state: present
 
     - name: Ensure curl is installed
