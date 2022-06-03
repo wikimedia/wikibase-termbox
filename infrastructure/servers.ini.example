@@ -1,5 +1,5 @@
 [ssr]
-deployment-termbox-ssr.deployment-prep.eqiad1.wikimedia.cloud
+<ssr-server-instance>
 
 [ssr:vars]
 WIKIBASE_REPO=https://wikidata.beta.wmflabs.org/w

@@ -1,15 +1,25 @@
-This provides a quick and dirty way to configure the system we use to run the SSR service for beta.
+This guide provides a quick and dirty way to configure the system we use to run the SSR service for beta.
 
 ## Prerequisites
 
-This uses [ansible](https://docs.ansible.com/ansible/latest/index.html) to manipulate remote servers via SSH - essentially automating what you'd otherwise do "by hand" in a step-by-step approach.
-You need to be in possession of an SSH private key for which there is a associated user that is authorized to perform the operations.
+This procedure uses [ansible](https://docs.ansible.com/ansible/latest/index.html) to manipulate remote servers via SSH - essentially automating what you'd otherwise do "by hand" in a step-by-step approach.
+
+To perform this manual deployment setup, you need to be in possession of a machine or instance to deploy to, and an SSH private key for which there is an associated user that is authorized to perform the operations. To create such an instance, you may utilize one of WMDE's [Wikimedia CloudVPS](https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS) projects, please consult your Engineering Manager or Tech Lead for more information.
+
+## Preparation
+
+1. Copy `servers.ini.example` to `servers.ini`
+
+    ```sh
+    $ cp servers.ini.example servers.ini
+    ```
+
+2. In `servers.ini` change `<ssr-server-url>` to the ssh address of the instance you intend to deploy the SSR service for beta into.
 
 ## Run (from your local machine)
 
 ```sh
-# assuming your shell is inside this folder (infrastructure)
-ansible-playbook -b -i servers.ini ssr.yml
+$ ansible-playbook -b -i servers.ini ssr.yml
 ```
 
 ## Development
