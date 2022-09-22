@@ -85,6 +85,13 @@ wfLoadExtension( 'MobileFrontend' );
 wfLoadSkin( 'MinervaNeue' );
 ```
 
+Wikibase Termbox will only work if you have installed the [Universal Language Selector package](https://gerrit.wikimedia.org/r/admin/repos/mediawiki/extensions/UniversalLanguageSelector). Download to the `/extensions` folder and enable it as well in LocalSettings.php
+
+```php
+wfLoadExtension( 'UniversalLanguageSelector' );
+```
+
+
 ## Building
 * `docker-compose run --rm node npm run build` builds the frontend code
 * `docker-compose run --rm node npm run build-server` builds the server-side manifest and the node entry point
