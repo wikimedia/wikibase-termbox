@@ -72,8 +72,10 @@ describe( 'buildAndAttemptHydration', () => {
 			const wrapperElement = mockApp.mount.mock.calls[ 0 ][ 0 ] as HTMLElement;
 			expect( wrapperElement.className ).toBe( 'wikibase-entitytermsview-wrapper' );
 			expect( wrapperElement.parentElement ).toBe( outerElement );
-			expect( rootElement.parentElement ).toBe( wrapperElement );
 			expect( unrelatedElement.parentElement ).toBe( outerElement );
+			// The root element is discarded, thus has neither a parent nor children
+			expect( rootElement.parentElement ).toBeNull();
+			expect( rootElement.childElementCount ).toBe( 0 );
 		} );
 	} );
 

@@ -34,22 +34,9 @@ export default async function buildAndAttemptHydration(
 
 	const app = await buildApp( termboxRequest, services, config );
 
-	// mount the app in the wrapper element,
-	// hiding warnings and errors because we know the DOM won’t hydrate perfectly (T300176)
-	/* eslint-disable no-console */
-	app.config.warnHandler = () => undefined;
-	const consoleError = console.error;
-	console.error = ( ...args ) => {
-		if ( args.length === 1 && args[ 0 ] === 'Hydration completed but contains mismatches.' ) {
-			// ignore, Vue offers no way to hide this hard-coded warning
-		} else {
-			return consoleError( ...args );
-		}
-	};
-	try {
-		app.mount( wrapperElement );
-	} finally {
-		console.error = consoleError;
-	}
-	/* eslint-enable no-console */
+	// T318137: Due to https://github.com/vuejs/core/issues/5063 we can't rely on
+	// Vue's hydration (as of October 2022).
+	wrapperElement.textContent = '';
+
+	app.mount( wrapperElement );
 }
