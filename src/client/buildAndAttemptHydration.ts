@@ -36,6 +36,7 @@ export default async function buildAndAttemptHydration(
 
 	// T318137: Due to https://github.com/vuejs/core/issues/5063 we can't rely on
 	// Vue's hydration (as of October 2022).
+	// (Also watch out for T300176 if reenabling hydration.)
 	wrapperElement.textContent = '';
 
 	app.mount( wrapperElement );
