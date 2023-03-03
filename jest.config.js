@@ -25,19 +25,26 @@ module.exports = {
 		'^.+\\.vue$': '@vue/vue3-jest',
 		'.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
 		'^.+\\.tsx?$': 'ts-jest',
+		'node_modules/lodash-es/.*\\.js$': 'babel-jest',
 	},
+	transformIgnorePatterns: [
+		'<rootDir>/node_modules/(?!lodash-es/)',
+	],
 	moduleNameMapper: {
 		'^@/(.*)$': '<rootDir>/src/$1',
 	},
 	setupFilesAfterEnv: [ '<rootDir>/tests/config/setup.ts' ],
 	testEnvironment: '<rootDir>/tests/config/JestCustomEnvironment.js',
+	testEnvironmentOptions: {
+		customExportConditions: [ 'node', 'node-addons' ],
+		url: 'http://localhost/',
+	},
 	snapshotSerializers: [
 		'jest-serializer-vue',
 	],
 	testMatch: [
 		'**/tests/(unit|edge-to-edge)/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
 	],
-	testURL: 'http://localhost/',
 	preset: 'ts-jest',
 	clearMocks: true,
 };
