@@ -43,14 +43,16 @@ These environment variables can be distinguished in two groups - some are releva
   * `HEALTHCHECK_QUERY` is the query string for the OpenAPI `x-amples` healthcheck. Note that the revision and entity id must refer to an existing entity revision on the corresponding Wikibase installation. If this is not set, no healthchecks will be performed, i.e. `x-monitor` will be set to false in the OpenAPI spec.
 
 * **Development level** environment variables
+  Recommendation is to use termbox in conjunction with [mwcli](https://www.mediawiki.org/wiki/Cli).
   * `MEDIAWIKI_NETWORK_TO_JOIN` is the (local docker) network of **your mediawiki development setup**. The SSR service will attach itself to it in order to make it available to wikibase and vice-versa.
-
-    Recommendation is to use termbox in conjunction with [addshore/mediawiki-docker-dev](https://github.com/addshore/mediawiki-docker-dev/).
 
     Check via `docker network ls` for the name, [by default](https://docs.docker.com/compose/networking/) it is derived from your mediawiki development project, e.g. `mediawiki-docker-dev_dps`.
 
     The SSR service can be reached inside of this network at http://node-ssr:<SSR_PORT from your .env file> to get HTML, in turn the SSR services calls <WIKIBASE_REPO> to [get essential information](./src/server/data-access).
 
+  * When using mwcli, then `WIKIBASE_REPO` and `WIKIBASE_REPO_HOSTNAME_ALIAS` will not be the same.
+    * `WIKIBASE_REPO` is the URL of the wiki including the path: `WIKIBASE_REPO=http://<name of repo wiki>.mediawiki.mwdd.localhost:8080/w`
+    * `WIKIBASE_REPO_HOSTNAME_ALIAS` however needs to identify the web server in the network via its docker-compose service name: `WIKIBASE_REPO_HOSTNAME_ALIAS=mediawiki-web`
   * `CSR_PORT` is the port at which you can reach the development server on your machine to live-preview changes to the termbox application. This allows development outside of MediaWiki, using a simulated environment as configured in `src/dev-entry.ts`.
   * `STORYBOOK_PORT` is the port at which you can reach the storybook server on your machine to live-preview changes in the component library
   * `NODE_ENV` is the environment to set for node.js
