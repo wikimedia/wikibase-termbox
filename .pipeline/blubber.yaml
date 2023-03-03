@@ -1,6 +1,6 @@
 version: v4
 
-base: docker-registry.wikimedia.org/nodejs12-slim
+base: docker-registry.wikimedia.org/nodejs16-slim
 
 apt: {
   packages: [
@@ -14,7 +14,7 @@ lives:
 
 variants:
   build:
-    base: docker-registry.wikimedia.org/nodejs12-devel
+    base: docker-registry.wikimedia.org/nodejs16-slim
     copies: [local]
     apt:
       packages: [ git, build-essential, python, pkg-config ] # needed for npm install
