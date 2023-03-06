@@ -45,6 +45,5 @@ module.exports = {
 	testMatch: [
 		'**/tests/(unit|edge-to-edge)/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
 	],
-	preset: 'ts-jest',
 	clearMocks: true,
 };
