@@ -40,7 +40,7 @@
     "lru-cache": "^5.1.1",
     "module-alias": "^2.2.2",
     "openapi-request-coercer": "^2.4.0",
-    "openapi-request-validator": "^3.8.3",
+    "openapi-request-validator": "^12.1.0",
     "response-time": "^2.3.2",
     "rtl-detect": "^1.0.4",
     "service-runner": "^2.9.0",
