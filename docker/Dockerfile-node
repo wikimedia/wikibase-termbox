@@ -1,6 +1,6 @@
 # cf. .pipeline/blubber.yaml
 
-FROM docker-registry.wikimedia.org/nodejs12-devel
+FROM docker-registry.wikimedia.org/nodejs16-slim
 
 RUN apt-get update && \
 	apt-get install -y \
