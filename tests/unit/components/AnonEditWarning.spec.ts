@@ -78,7 +78,8 @@ describe( 'AnonEditWarning', () => {
 				renderStubDefaultSlot: true,
 			},
 		} );
-		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--primaryProgressive' );
+		const button =
+		wrapper.findComponent<typeof EventEmittingButton>( '.wb-ui-event-emitting-button--primaryProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
 		expect( button.props( 'href' ) ).toBe( LOGIN_URL );
@@ -101,7 +102,8 @@ describe( 'AnonEditWarning', () => {
 				renderStubDefaultSlot: true,
 			},
 		} );
-		const button = wrapper.findComponent( '.wb-ui-event-emitting-button--framelessProgressive' );
+		const button =
+		wrapper.findComponent<typeof EventEmittingButton>( '.wb-ui-event-emitting-button--framelessProgressive' );
 
 		expect( button.text() ).toBe( buttonLabel );
 		expect( button.props( 'href' ) ).toBe( SIGNUP_URL );

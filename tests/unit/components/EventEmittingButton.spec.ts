@@ -20,7 +20,7 @@ describe( 'EventEmittingButton', () => {
 		expect( clickEvent ).toBeTruthy();
 		const originalEvent = clickEvent![ 0 ][ 0 ];
 		expect( originalEvent ).toBeInstanceOf( MouseEvent );
-		expect( originalEvent.defaultPrevented ).toBeTruthy();
+		expect( ( originalEvent as MouseEvent ).defaultPrevented ).toBeTruthy();
 	} );
 
 	it( 'can be configured not to prevent default (href) event', () => {
@@ -32,7 +32,7 @@ describe( 'EventEmittingButton', () => {
 		expect( clickEvent ).toBeTruthy();
 		const originalEvent = clickEvent![ 0 ][ 0 ];
 		expect( originalEvent ).toBeInstanceOf( MouseEvent );
-		expect( originalEvent!.defaultPrevented ).toBeFalsy();
+		expect( ( originalEvent as MouseEvent )!.defaultPrevented ).toBeFalsy();
 	} );
 
 	it( 'can have a link target', () => {

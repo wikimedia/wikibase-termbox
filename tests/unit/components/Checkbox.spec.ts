@@ -15,7 +15,7 @@ describe( 'Checkbox', () => {
 
 	it( 'emits an input event when the checked state changes', () => {
 		const wrapper = shallowMountWithProps();
-		wrapper.find( 'input' ).setChecked( true );
+		wrapper.find( 'input' ).setValue( true );
 		expect( wrapper.emitted( 'input' ) ).toBeTruthy();
 	} );
 

@@ -34,7 +34,7 @@ describe( 'buildApp', () => {
 		return buildApp( request, services, config ).then( ( app ) => {
 			expect( mockInitStore ).toBeCalledWith( store, request );
 
-			expect( typeof ( app.$mount || app.mount ) ).toBe( 'function' );
+			expect( typeof ( app.mount ) ).toBe( 'function' );
 		} );
 	} );
 
@@ -56,7 +56,7 @@ describe( 'buildApp', () => {
 		return buildApp( request, services, config ).then( ( app ) => {
 			expect( mockCreateStore ).toHaveBeenCalledWith( services );
 
-			expect( typeof ( app.$mount || app.mount ) ).toBe( 'function' );
+			expect( typeof ( app.mount ) ).toBe( 'function' );
 		} );
 	} );
 

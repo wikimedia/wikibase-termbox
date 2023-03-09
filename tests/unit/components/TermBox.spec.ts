@@ -4,6 +4,7 @@ import TermBox from '@/components/TermBox.vue';
 import EditTools from '@/components/EditTools.vue';
 import MonolingualFingerprintView from '@/components/MonolingualFingerprintView.vue';
 import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vue';
+import EventEmittingButton from '@/components/EventEmittingButton.vue';
 import Modal from '@/components/Modal.vue';
 import Overlay from '@/components/Overlay.vue';
 import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
@@ -111,7 +112,8 @@ describe( 'TermBox.vue', () => {
 					} );
 
 					const editPen = wrapper.findComponent( EditTools )
-						.findComponent( '.wb-ui-event-emitting-button--edit' );
+						.findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' );
 
 					expect( editPen.exists() ).toBeTruthy();
 					expect( editPen.attributes() ).toHaveProperty( 'href', editLinkUrl );
@@ -131,7 +133,8 @@ describe( 'TermBox.vue', () => {
 						plugins: [ store ],
 					} } );
 
-					await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+					await wrapper.findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 					expect( mockActivateEditMode ).toHaveBeenCalled();
 				} );
@@ -145,7 +148,8 @@ describe( 'TermBox.vue', () => {
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						} } );
 
-						await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+						await wrapper.findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 						expect(
 							wrapper.find( '.wb-ui-overlay .wb-ui-modal' ).findComponent( AnonEditWarning ).exists(),
@@ -161,7 +165,8 @@ describe( 'TermBox.vue', () => {
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						} } );
 
-						await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+						await wrapper.findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 						expect( wrapper.findComponent( AnonEditWarning ).exists() ).toBeFalsy();
 					} );
@@ -178,7 +183,8 @@ describe( 'TermBox.vue', () => {
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						} } );
 
-						await wrapper.findComponent( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
+						await wrapper.findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
 
 						expect( wrapper.findComponent( AnonEditWarning ).exists() ).toBeFalsy();
 					} );
@@ -213,7 +219,8 @@ describe( 'TermBox.vue', () => {
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.PUBLISH ]: message,
 						} ) ],
-					} ).findComponent( EditTools ).findComponent( '.wb-ui-event-emitting-button--publish' );
+					} ).findComponent( EditTools ).findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--publish' );
 
 					expect( publish.exists() ).toBeTruthy();
 					expect( publish.props( 'message' ) ).toBe( message );
@@ -362,7 +369,8 @@ describe( 'TermBox.vue', () => {
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.CANCEL ]: message,
 						} ) ],
-					} ).findComponent( EditTools ).findComponent( '.wb-ui-event-emitting-button--cancel' );
+					} ).findComponent( EditTools ).findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--cancel' );
 
 					expect( cancel.exists() ).toBeTruthy();
 					expect( cancel.props( 'message' ) ).toBe( message );
@@ -392,7 +400,8 @@ describe( 'TermBox.vue', () => {
 						mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 					} } );
 
-					await wrapper.findComponent( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
+					await wrapper.findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
 
 					expect( mockEntityRollback ).toHaveBeenCalled();
 					return entityRollbackPromise.then( () => {
@@ -547,7 +556,8 @@ describe( 'TermBox.vue', () => {
 			mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
 		} } );
 
-		await wrapper.findComponent( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+		await wrapper.findComponent<
+						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 		expect( wrapper.findComponent( Overlay ).exists() ).toBeTruthy();
 		expect( wrapper.findComponent( IndeterminateProgressBar ).exists() ).toBeTruthy();
 
