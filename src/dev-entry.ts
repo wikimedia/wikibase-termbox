@@ -6,6 +6,7 @@ import MwWindow from '@/client/mediawiki/MwWindow';
 import getOrEnforceUrlParameter from './mock-data/getOrEnforceUrlParameter';
 import MockupWikibaseContentLanguages from '@/mock-data/MockWikibaseContentLanguages';
 import { message } from './mock-data/MockMwMessages';
+import termboxInit from './client-entry';
 
 const language = getOrEnforceUrlParameter( 'language', 'de' );
 const preferredLanguages = getOrEnforceUrlParameter(
@@ -61,3 +62,5 @@ mwWindow.$ = {
 		},
 	},
 };
+
+termboxInit();

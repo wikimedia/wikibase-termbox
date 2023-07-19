@@ -44,13 +44,19 @@ function externals() {
 module.exports = {
 	outputDir: TARGET_NODE ? 'serverDist' : 'dist',
 	configureWebpack: () => ( {
-		entry: DEV_MODE ? [ './src/dev-entry.ts', mainEntry ] : mainEntry,
+		entry: DEV_MODE ? './src/dev-entry.ts' : mainEntry,
 		externals: externals(),
 		target: TARGET_NODE ? 'node' : 'web',
 		node: TARGET_NODE ? undefined : false,
 		output: {
 			libraryTarget: DEV_MODE ? undefined : 'commonjs2',
-			filename: `${filePrefix}[name].js`,
+			filename: ( pathData ) => {
+				if ( !TARGET_NODE && pathData.chunk.name === 'main' ) {
+					return `${filePrefix}init.js`;
+				}
+
+				return `${filePrefix}[name].js`;
+			},
 		},
 		optimization: {
 			splitChunks: undefined,

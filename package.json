@@ -20,7 +20,7 @@
     "test": "npm-run-all test:*",
     "test:lint": "eslint --max-warnings 0 . && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "VUE_CLI_BABEL_TRANSPILE_MODULES=true jest",
-    "test:distnodiff": "npm run build -- --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.main.js /tmp/dist/wikibase.termbox.main.js",
+    "test:distnodiff": "npm run build -- --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.init.js /tmp/dist/wikibase.termbox.init.js",
     "test:mwlibs": "echo 'disabled (T297381)' # ZUUL_BRANCH=${ZUUL_BRANCH:-master} lib-version-check",
     "storybook": "start-storybook",
     "storybook:build": "build-storybook -o docs/ui"

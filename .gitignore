@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 dist/*
-!dist/wikibase.termbox.main.js
+!dist/wikibase.termbox.init.js
 !dist/wikibase.termbox.main.css
 docs/ui
 # local env files
