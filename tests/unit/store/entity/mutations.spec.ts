@@ -11,7 +11,7 @@ import {
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import EntityState from '@/store/entity/EntityState';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import { newFingerprintableEntity } from '@/datamodel/FingerprintableEntity';
 import { lockState } from '../lockState';
 
 function newEntityState( entity: any = null ): EntityState {
@@ -53,7 +53,7 @@ describe( 'entity/mutations', () => {
 
 		it( 'contains entity data incl baseRevisionFingerprint after initialization', () => {
 			const state: EntityState = newEntityState();
-			const entity = new FingerprintableEntity(
+			const entity = newFingerprintableEntity(
 				'Q123',
 				{ en: { language: 'en', value: 'foo' } },
 				{ en: { language: 'en', value: 'foobar' } },

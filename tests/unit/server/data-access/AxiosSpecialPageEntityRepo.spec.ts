@@ -74,7 +74,6 @@ describe( 'AxiosSpecialPageEntityRepo', () => {
 
 			const repo = newAxiosSpecialPageEntityRepo();
 			repo.getFingerprintableEntity( entityId, revision ).then( ( result: FingerprintableEntity ) => {
-				expect( result ).toBeInstanceOf( FingerprintableEntity );
 				expect( result.id ).toEqual( entity.id );
 				expect( result.labels ).toEqual( entity.labels );
 				expect( result.descriptions ).toEqual( entity.descriptions );

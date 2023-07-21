@@ -18,7 +18,7 @@ import {
 	ENTITY_REVISION_UPDATE,
 	ENTITY_ROLLBACK as ENTITY_ROLLBACK_MUTATION,
 } from '@/store/entity/mutationTypes';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import { newFingerprintableEntity } from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 import newFingerprintable from '../../../newFingerprintable';
@@ -30,7 +30,7 @@ describe( 'entity/actions', () => {
 			const entityId = 'Q42';
 			const revision = 4711;
 
-			const entity = new FingerprintableEntity( entityId, {}, {}, {} );
+			const entity = newFingerprintableEntity( entityId, {}, {}, {} );
 			const entityRepository = {
 				getFingerprintableEntity: ( thisEntityId: string, thisRevision: number ) => {
 					expect( thisEntityId ).toBe( entityId );

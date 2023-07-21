@@ -1,4 +1,4 @@
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import { newFingerprintableEntity } from '@/datamodel/FingerprintableEntity';
 import { Term } from '@wmde/wikibase-datamodel-types';
 
 function stringListToTermListMap( values: { [ language: string ]: string[] } ) {
@@ -29,7 +29,7 @@ interface CondensedFingerprintable {
 }
 
 export default function newFingerprintable( { id, labels, descriptions, aliases }: CondensedFingerprintable ) {
-	return new FingerprintableEntity(
+	return newFingerprintableEntity(
 		id || 'Q1',
 		labels ? stringToTermMap( labels ) : {},
 		descriptions ? stringToTermMap( descriptions ) : {},

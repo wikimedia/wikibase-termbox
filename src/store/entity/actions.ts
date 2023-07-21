@@ -12,7 +12,7 @@ import {
 	ENTITY_ALIAS_REMOVE,
 	ENTITY_ROLLBACK,
 } from '@/store/entity/actionTypes';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import { newFingerprintableEntity } from '@/datamodel/FingerprintableEntity';
 import {
 	EDITABILITY_UPDATE,
 	ENTITY_UPDATE,
@@ -48,7 +48,7 @@ export default (
 	},
 
 	[ ENTITY_SAVE ]( context: ActionContext<EntityState, any> ): Promise<void> {
-		return writingEntityRepository.saveEntity( new FingerprintableEntity(
+		return writingEntityRepository.saveEntity( newFingerprintableEntity(
 			context.state.id,
 			context.state.labels,
 			context.state.descriptions,

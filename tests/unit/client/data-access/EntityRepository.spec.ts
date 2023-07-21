@@ -31,8 +31,6 @@ describe( 'EntityRepository', () => {
 
 		return entityRepository.getFingerprintableEntity( entityId, revision )
 			.then( ( entity: FingerprintableEntity ) => {
-				expect( entity ).toBeInstanceOf( FingerprintableEntity );
-
 				expect( entity.id ).toEqual( entityReturnedFromHook.id );
 				expect( entity.labels ).toEqual( entityReturnedFromHook.labels );
 				expect( entity.descriptions ).toEqual( entityReturnedFromHook.descriptions );

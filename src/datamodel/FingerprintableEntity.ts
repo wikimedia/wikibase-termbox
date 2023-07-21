@@ -1,22 +1,18 @@
 import { AliasesList, TermList } from '@wmde/wikibase-datamodel-types';
 import { Fingerprintable } from '@wmde/wikibase-datamodel-types';
 
-export default class FingerprintableEntity implements Fingerprintable {
-	public readonly id: string;
-	public readonly labels: TermList;
-	public readonly descriptions: TermList;
-	public readonly aliases: AliasesList;
+export default interface FingerprintableEntity extends Fingerprintable {
+	readonly id: string;
+	readonly labels: TermList;
+	readonly descriptions: TermList;
+	readonly aliases: AliasesList;
+}
 
-	public constructor(
-		id: string,
-		labels: TermList,
-		descriptions: TermList,
-		aliases: AliasesList,
-	) {
-		this.id = id;
-		this.labels = labels;
-		this.descriptions = descriptions;
-		this.aliases = aliases;
-	}
-
+export function newFingerprintableEntity(
+	id: string,
+	labels: TermList,
+	descriptions: TermList,
+	aliases: AliasesList,
+): FingerprintableEntity {
+	return { id, labels, descriptions, aliases };
 }

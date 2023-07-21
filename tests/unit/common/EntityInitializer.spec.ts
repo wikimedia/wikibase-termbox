@@ -1,5 +1,4 @@
 import EntityInitializer from '@/common/EntityInitializer';
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
 
 function newEntityInitializer() {
 	return new EntityInitializer();
@@ -45,7 +44,6 @@ describe( 'EntityInitializer', () => {
 		const result = newEntityInitializer()
 			.newFromSerialization( entity );
 
-		expect( result ).toBeInstanceOf( FingerprintableEntity );
 		expect( result.id ).toBe( entity.id );
 		expect( result.labels ).toEqual( entity.labels );
 		expect( result.descriptions ).toEqual( entity.descriptions );

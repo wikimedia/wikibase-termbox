@@ -1,4 +1,4 @@
-import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
+import FingerprintableEntity, { newFingerprintableEntity } from '@/datamodel/FingerprintableEntity';
 import EntityInitializerInterface from './EntityInitializerInterface';
 
 export default class EntityInitializer implements EntityInitializerInterface {
@@ -10,7 +10,7 @@ export default class EntityInitializer implements EntityInitializerInterface {
 			throw new Error( 'invalid entity serialization' );
 		}
 
-		return new FingerprintableEntity(
+		return newFingerprintableEntity(
 			entity.id,
 			entity.labels,
 			entity.descriptions,
