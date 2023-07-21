@@ -7,6 +7,11 @@ import getOrEnforceUrlParameter from './mock-data/getOrEnforceUrlParameter';
 import MockupWikibaseContentLanguages from '@/mock-data/MockWikibaseContentLanguages';
 import { message } from './mock-data/MockMwMessages';
 import termboxInit from './client-entry';
+import EntityRepository from './client/data-access/EntityRepository';
+import { Hooks } from './client/mediawiki/Hooks';
+import EntityInitializer from './common/EntityInitializer';
+import AxiosWritingEntityRepository from './client/data-access/AxiosWritingEntityRepository';
+import axiosFactory from './client/axios/axiosFactory';
 
 const language = getOrEnforceUrlParameter( 'language', 'de' );
 const preferredLanguages = getOrEnforceUrlParameter(
@@ -63,4 +68,15 @@ mwWindow.$ = {
 	},
 };
 
-termboxInit();
+const entityInitializer = new EntityInitializer();
+termboxInit( {
+	readingEntityRepository: new EntityRepository(
+		mwWindow.mw.hook( Hooks.entityLoaded ),
+		entityInitializer,
+	),
+	writingEntityRepository: new AxiosWritingEntityRepository(
+		axiosFactory( mwWindow.mw.config.get( 'wbRepo' ).scriptPath, 'test-user' ),
+		entityInitializer,
+		[],
+	),
+} );

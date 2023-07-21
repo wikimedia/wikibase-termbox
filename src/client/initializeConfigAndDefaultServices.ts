@@ -1,16 +1,11 @@
 import MwWindow from '@/client/mediawiki/MwWindow';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
-import EntityInitializer from '@/common/EntityInitializer';
 import TermboxServices from '@/common/TermboxServices';
 import UlsLanguageTranslationRepository from '@/client/data-access/UlsLanguageTranslationRepository';
 import UlsLanguageRepository from '@/client/data-access/UlsLanguageRepository';
 import MessagesRepository from '@/client/data-access/MessagesRepository';
 import { MessageKey } from '@/common/MessageKey';
-import EntityRepository from '@/client/data-access/EntityRepository';
-import { Hooks } from '@/client/mediawiki/Hooks';
 import axiosFactory from '@/client/axios/axiosFactory';
-import AxiosWritingEntityRepository from '@/client/data-access/AxiosWritingEntityRepository';
-import termboxConfig from '@/config.json'; // in production, this file is provided by ResourceLoader
 import DispatchingUserPreferenceRepository from '@/common/data-access/DispatchingUserPreferenceRepository';
 import { UserPreference } from '@/common/UserPreference';
 import CookieUserPreferenceRepository from '@/client/data-access/CookieUserPreferenceRepository';
@@ -31,7 +26,6 @@ export default function ( mwWindow: MwWindow ): { config: ConfigOptions, service
 	};
 
 	const contentLanguages = mwWindow.wb.WikibaseContentLanguages.getTermLanguages();
-	const entityInitializer = new EntityInitializer();
 	const services = new TermboxServices();
 
 	services.set(
@@ -58,14 +52,6 @@ export default function ( mwWindow: MwWindow ): { config: ConfigOptions, service
 	);
 
 	services.set(
-		'entityRepository',
-		new EntityRepository(
-			mwWindow.mw.hook( Hooks.entityLoaded ),
-			entityInitializer,
-		),
-	);
-
-	services.set(
 		'entityEditabilityResolver',
 		{
 			isEditable() {
@@ -81,11 +67,6 @@ export default function ( mwWindow: MwWindow ): { config: ConfigOptions, service
 	const baseUrl = repoConfig.scriptPath;
 	const userName = mwWindow.mw.config.get( 'wgUserName' );
 	const axios = axiosFactory( baseUrl, userName );
-
-	services.set(
-		'writingEntityRepository',
-		new AxiosWritingEntityRepository( axios, entityInitializer, termboxConfig.tags ),
-	);
 
 	services.set(
 		'userPreferenceRepository',
