@@ -1,4 +1,3 @@
-import ImmediatelyInvokingEntityLoadedHookHandler from '@/mock-data/ImmediatelyInvokingEntityLoadedHookHandler';
 import init from '@/client/init';
 import TermboxRequest from '@/common/TermboxRequest';
 import MwWindow, { MwMessage } from '@/client/mediawiki/MwWindow';
@@ -31,7 +30,6 @@ function mockMwEnv(
 					return null;
 			}
 		} },
-		hook: () => new ImmediatelyInvokingEntityLoadedHookHandler( {} ),
 		Title: title || jest.fn().mockImplementation( () => {
 			return {
 				getUrl: jest.fn(),

@@ -1,6 +1,4 @@
 import MwConfig from '@/client/mediawiki/MwConfig';
-import HookHandler from '@/client/mediawiki/HookHandler';
-import { Hooks } from '@/client/mediawiki/Hooks';
 import { MessageKey } from '@/common/MessageKey';
 
 interface MwTitleInstance {
@@ -33,7 +31,6 @@ export interface MWUserOptions {
 }
 
 interface MediaWiki {
-	hook: ( key: Hooks ) => HookHandler;
 	config: MwConfig;
 	Title: MwTitle;
 	message: MwMessages;
