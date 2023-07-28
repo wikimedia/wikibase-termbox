@@ -33,7 +33,7 @@ describe( 'client-entry', () => {
 		initMock.mockResolvedValueOnce( expectedTermboxRequest );
 		initializeConfigAndDefaultServicesMock.mockReturnValueOnce( { config, services } );
 
-		clientEntry( {} as any ).then( () => {
+		clientEntry( {} as any, true ).then( () => {
 			expect( buildAndAttemptHydrationMock ).toHaveBeenCalledWith(
 				expectedTermboxRequest,
 				services,
@@ -55,10 +55,13 @@ describe( 'client-entry', () => {
 
 		initMock.mockResolvedValueOnce( jest.fn() );
 
-		clientEntry( {
-			readingEntityRepository: expectedReadingEntityRepository,
-			writingEntityRepository: expectedWritingEntityRepository,
-		} ).then( () => {
+		clientEntry(
+			{
+				readingEntityRepository: expectedReadingEntityRepository,
+				writingEntityRepository: expectedWritingEntityRepository,
+			},
+			true,
+		).then( () => {
 			expect( servicesMock.set )
 				.toHaveBeenCalledWith( 'entityRepository', expectedReadingEntityRepository );
 			expect( servicesMock.set )
@@ -66,4 +69,31 @@ describe( 'client-entry', () => {
 			done();
 		} );
 	} );
+
+	it.each( [ true, false ] )(
+		'sets the consumer-defined editability status to %s',
+		( editability: boolean, done: any ) => {
+			const servicesMock = { set: jest.fn() };
+			initializeConfigAndDefaultServicesMock.mockReturnValueOnce( {
+				config: {},
+				services: servicesMock,
+			} );
+
+			initMock.mockResolvedValueOnce( jest.fn() );
+
+			clientEntry(
+				{
+					readingEntityRepository: jest.fn() as any,
+					writingEntityRepository: jest.fn() as any,
+				},
+				editability,
+			).then( async () => {
+				const [ name, editabilityResolver ] = servicesMock.set.mock.lastCall;
+				expect( name ).toEqual( 'entityEditabilityResolver' );
+				expect( await editabilityResolver.isEditable() ).toEqual( editability );
+
+				done();
+			} );
+		},
+	);
 } );

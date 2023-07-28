@@ -64,20 +64,23 @@ mwWindow.$ = {
 	},
 };
 
-termboxInit( {
-	readingEntityRepository: {
-		getFingerprintableEntity( _id: string, _revision: number ): Promise<FingerprintableEntity> {
-			return Promise.resolve( new EntityInitializer().newFromSerialization( entity ) );
+termboxInit(
+	{
+		readingEntityRepository: {
+			getFingerprintableEntity( _id: string, _revision: number ): Promise<FingerprintableEntity> {
+				return Promise.resolve( new EntityInitializer().newFromSerialization( entity ) );
+			},
+		},
+		writingEntityRepository: {
+			saveEntity( entity, baseRevId ): Promise<EntityRevision> {
+				return new Promise( ( resolve ) => {
+					setTimeout( // pretend to save for 1s
+						() => resolve( new EntityRevision( entity, baseRevId + 1 ) ),
+						1000,
+					);
+				} );
+			},
 		},
 	},
-	writingEntityRepository: {
-		saveEntity( entity, baseRevId ): Promise<EntityRevision> {
-			return new Promise( ( resolve ) => {
-				setTimeout( // pretend to save for 1s
-					() => resolve( new EntityRevision( entity, baseRevId + 1 ) ),
-					1000,
-				);
-			} );
-		},
-	},
-} );
+	true,
+);

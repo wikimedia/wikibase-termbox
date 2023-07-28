@@ -11,11 +11,15 @@ type ConfigurableServices = {
 	writingEntityRepository: WritingEntityRepository;
 };
 
-export default ( consumerDefinedServices: ConfigurableServices ): Promise<void> => {
+export default ( consumerDefinedServices: ConfigurableServices, isEditable: boolean ): Promise<void> => {
 	return init().then( ( termboxRequest: TermboxRequest ) => {
 		const { config, services } = initializeConfigAndDefaultServices( window as unknown as MwWindow );
 		services.set( 'entityRepository', consumerDefinedServices.readingEntityRepository );
 		services.set( 'writingEntityRepository', consumerDefinedServices.writingEntityRepository );
+		services.set(
+			'entityEditabilityResolver',
+			{ isEditable() { return Promise.resolve( isEditable ); } },
+		);
 
 		return buildAndAttemptHydration( termboxRequest, services, config );
 	} );

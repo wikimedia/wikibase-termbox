@@ -51,18 +51,6 @@ export default function ( mwWindow: MwWindow ): { config: ConfigOptions, service
 		),
 	);
 
-	services.set(
-		'entityEditabilityResolver',
-		{
-			isEditable() {
-				return Promise.resolve(
-					mwWindow.mw.config.get( 'wbIsEditView' )
-					&& mwWindow.mw.config.get( 'wgRelevantPageIsProbablyEditable' ),
-				);
-			},
-		},
-	);
-
 	const repoConfig = mwWindow.mw.config.get( 'wbRepo' );
 	const baseUrl = repoConfig.scriptPath;
 	const userName = mwWindow.mw.config.get( 'wgUserName' );

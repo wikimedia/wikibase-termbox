@@ -13,8 +13,6 @@ type MwConfigValues = {
 	wbEntityId: string;
 	wgRevisionId: number;
 	wgPageName: string;
-	wbIsEditView: boolean;
-	wgRelevantPageIsProbablyEditable: boolean;
 	wgUserName: string | null;
 	wgUserLanguage: string;
 };
