@@ -11,8 +11,6 @@ export default class MwConfig {
 			wbEntityId: 'Q64',
 			wgRevisionId: 0,
 			wgNamespaceIds: { special: -1 },
-			wgRelevantPageIsProbablyEditable: true,
-			wbIsEditView: true,
 			wbRepo: {
 				scriptPath: '/csrMWProxy',
 			},
