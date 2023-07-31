@@ -12,10 +12,10 @@ jest.mock( '@/client/initializeConfigAndDefaultServices', () => ( {
 	default: () => initializeConfigAndDefaultServicesMock(),
 } ) );
 
-const buildAndAttemptHydrationMock = jest.fn();
-jest.mock( '@/client/buildAndAttemptHydration', () => ( {
+const buildApp = jest.fn();
+jest.mock( '@/common/buildApp', () => ( {
 	__esModule: true,
-	default: ( ...args: any ) => buildAndAttemptHydrationMock( ...args ),
+	default: ( ...args: any ) => buildApp( ...args ),
 } ) );
 
 function newMockConfigAndServices() {
@@ -26,20 +26,23 @@ function newMockConfigAndServices() {
 }
 
 describe( 'client-entry', () => {
-	it( 'initializes the TermboxRequest, config and services, then builds the app', ( done ) => {
+	it( 'initializes the TermboxRequest, config and services, then builds the app', () => {
 		const expectedTermboxRequest = jest.fn();
 		const { config, services } = newMockConfigAndServices();
 
 		initMock.mockResolvedValueOnce( expectedTermboxRequest );
 		initializeConfigAndDefaultServicesMock.mockReturnValueOnce( { config, services } );
 
-		clientEntry( {} as any, true ).then( () => {
-			expect( buildAndAttemptHydrationMock ).toHaveBeenCalledWith(
+		const expectedApp = jest.fn();
+		buildApp.mockReturnValueOnce( expectedApp );
+
+		return clientEntry( {} as any, true ).then( ( app ) => {
+			expect( buildApp ).toHaveBeenCalledWith(
 				expectedTermboxRequest,
 				services,
 				config,
 			);
-			done();
+			expect( app ).toBe( expectedApp );
 		} );
 	} );
 
