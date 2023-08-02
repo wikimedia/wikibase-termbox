@@ -102,7 +102,7 @@ module.exports = {
 	css: {
 		loaderOptions: {
 			sass: {
-				additionalData: '@import "@/styles/_main.scss";',
+				additionalData: '@use "sass:math"; @import "@/styles/_main.scss";',
 			},
 		},
 	},
