@@ -34,4 +34,17 @@ type ConfigurableServices = {
 };
 declare const _default: (consumerDefinedServices: ConfigurableServices, isEditable: boolean) => Promise<App>;
 
-export { _default as default };
+interface LoggableError {
+    getContext(): object;
+}
+
+declare class ContextError extends Error implements LoggableError {
+    private context;
+    constructor(message: string, context?: object);
+    getContext(): object;
+}
+
+declare class TechnicalProblem extends ContextError {
+}
+
+export { EntityRepository, TechnicalProblem, WritingEntityRepository, _default as default };

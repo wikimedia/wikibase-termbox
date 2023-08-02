@@ -4,7 +4,7 @@ const alias = require( '@rollup/plugin-alias' ).default;
 
 module.exports = [
 	{
-		input: './dist/client-entry.d.ts',
+		input: './dist/client-entry-type.d.ts',
 		output: [ { file: 'dist/wikibase.termbox.init.d.ts', format: 'es' } ],
 		plugins: [
 			dts(),
