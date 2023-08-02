@@ -4,6 +4,8 @@
     "target": "esnext",
     "module": "esnext",
     "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "dist/",
     "typeRoots": [
       "./src/types",
       "./src/types/client",

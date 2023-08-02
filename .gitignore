@@ -2,6 +2,7 @@
 node_modules
 dist/*
 !dist/wikibase.termbox.init.js
+!dist/wikibase.termbox.init.d.ts
 !dist/wikibase.termbox.main.css
 docs/ui
 # local env files
