@@ -72,17 +72,6 @@ module.exports = {
 					Object.assign( {}, options, { filename: `${filePrefix}[name].css` } ),
 					...args,
 				] );
-
-			// ResourceLoader has access to /assets/* and /dist/*.css - use assets directly
-			config.module
-				.rule( 'images' )
-				.test( /\.(png|jpe?g|gif|svg)(\?.*)?$/ )
-				.use( 'url-loader' )
-				.loader( 'url-loader' )
-				.options( {
-					limit: -1,
-					name: '[path]/[name].[ext]',
-				} );
 		}
 
 		config.module
@@ -98,6 +87,9 @@ module.exports = {
 						},
 					},
 				} ) );
+
+		config.module.rule( 'js' ).use( 'babel-loader' )
+			.tap( ( options ) => Object.assign( options, { cacheDirectory: false } ) );
 	},
 	css: {
 		loaderOptions: {
