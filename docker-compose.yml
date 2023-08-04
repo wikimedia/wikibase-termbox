@@ -19,8 +19,8 @@ services:
     extends:
       service: node
     ports:
-      - '${CSR_PORT}:8080'
-    command: 'npm run-script serve'
+      - '${CSR_PORT}:${CSR_PORT}'
+    command: 'npm run serve -- --port ${CSR_PORT}'
     external_links:
       - 'nginx-proxy:default.web.mw.localhost'
     networks:
