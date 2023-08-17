@@ -5,62 +5,62 @@ const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 describe( 'Termbox: LicenseOverlay', () => {
 	let id;
 
-	before( () => {
-		id = browser.call( () => WikibaseApi.createItem() );
+	before( async () => {
+		id = await WikibaseApi.createItem();
 	} );
 
-	beforeEach( () => {
-		TermboxPage.openItemPage( id );
-		TermboxPage.switchToEditModeSkipWarning();
-		TermboxPage.publishButton.click();
+	beforeEach( async () => {
+		await TermboxPage.openItemPage( id );
+		await TermboxPage.switchToEditModeSkipWarning();
+		await TermboxPage.publishButton.click();
 	} );
 
-	afterEach( () => {
-		browser.deleteAllCookies();
+	afterEach( async () => {
+		await browser.deleteAllCookies();
 	} );
 
-	it( 'is shown when clicking publish', () => {
-		assert.ok( TermboxPage.licenseOverlay.isExisting() );
+	it( 'is shown when clicking publish', async () => {
+		assert.ok( await TermboxPage.licenseOverlay.isExisting() );
 	} );
 
-	it( 'disappears when clicking cancel and goes back to edit mode', () => {
-		TermboxPage.licenseOverlayCancelButton.click();
+	it( 'disappears when clicking cancel and goes back to edit mode', async () => {
+		await TermboxPage.licenseOverlayCancelButton.click();
 
-		assert.strictEqual( TermboxPage.licenseOverlay.isExisting(), false );
-		assert.ok( TermboxPage.isInEditMode );
+		assert.strictEqual( await TermboxPage.licenseOverlay.isExisting(), false );
+		assert.ok( await TermboxPage.isInEditMode );
 	} );
 
-	it( 'disappears and saves when clicking publish', () => {
-		TermboxPage.licenseOverlaySaveButton.click();
+	it( 'disappears and saves when clicking publish', async () => {
+		await TermboxPage.licenseOverlaySaveButton.click();
 
-		assert.strictEqual( TermboxPage.licenseOverlay.isExisting(), false );
-		TermboxPage.waitUntilSaved();
+		assert.strictEqual( await TermboxPage.licenseOverlay.isExisting(), false );
+		await TermboxPage.waitUntilSaved();
 
-		assert.ok( TermboxPage.isInReadMode );
+		assert.ok( await TermboxPage.isInReadMode );
 	} );
 
-	it( 'does not reappear after saving by default', () => {
-		TermboxPage.licenseOverlaySaveButton.click();
+	it( 'does not reappear after saving by default', async () => {
+		await TermboxPage.licenseOverlaySaveButton.click();
 
-		browser.refresh();
-		TermboxPage.waitForTermboxToLoad();
+		await browser.refresh();
+		await TermboxPage.waitForTermboxToLoad();
 
-		TermboxPage.switchToEditModeSkipWarning();
-		TermboxPage.publishButton.click();
+		await TermboxPage.switchToEditModeSkipWarning();
+		await TermboxPage.publishButton.click();
 
-		assert.strictEqual( TermboxPage.licenseOverlay.isExisting(), false );
+		assert.strictEqual( await TermboxPage.licenseOverlay.isExisting(), false );
 	} );
 
-	it( 'reappears after saving when unchecking the "remember my choice" checkbox', () => {
-		TermboxPage.licenseOverlayCheckbox.click();
-		TermboxPage.licenseOverlaySaveButton.click();
+	it( 'reappears after saving when unchecking the "remember my choice" checkbox', async () => {
+		await TermboxPage.licenseOverlayCheckbox.click();
+		await TermboxPage.licenseOverlaySaveButton.click();
 
-		browser.refresh();
-		TermboxPage.waitForTermboxToLoad();
+		await browser.refresh();
+		await TermboxPage.waitForTermboxToLoad();
 
-		TermboxPage.switchToEditModeSkipWarning();
-		TermboxPage.publishButton.click();
+		await TermboxPage.switchToEditModeSkipWarning();
+		await TermboxPage.publishButton.click();
 
-		assert.ok( TermboxPage.licenseOverlay.isDisplayed() );
+		assert.ok( await TermboxPage.licenseOverlay.isDisplayed() );
 	} );
 } );

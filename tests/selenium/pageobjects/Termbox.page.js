@@ -19,7 +19,7 @@ class TermboxPage extends Page {
 	}
 
 	get isInReadMode() {
-		return !this.isInEditMode;
+		return this.isInEditMode.then( ( isInEditMode ) => !isInEditMode );
 	}
 
 	getMonolingualFingerprintsInSection( section ) {
@@ -95,26 +95,26 @@ class TermboxPage extends Page {
 		return $( '.wb-ui-message-banner .wb-ui-icon-message-box--error' );
 	}
 
-	openItemPage( entityId, primaryLanguage = 'en' ) {
-		super.openTitle( `Item:${entityId}`, { useformat: 'mobile', uselang: primaryLanguage } );
-		this.waitForTermboxToLoad();
+	async openItemPage( entityId, primaryLanguage = 'en' ) {
+		await super.openTitle( `Item:${entityId}`, { useformat: 'mobile', uselang: primaryLanguage } );
+		await this.waitForTermboxToLoad();
 	}
 
-	waitForTermboxToLoad() {
+	async waitForTermboxToLoad() {
 		// The "all entered languages" section only exists in the client-side rendered markup,
 		// and is omitted from the server-side markup. Once it exists Termbox should be fully interactive.
-		this.allEnteredLanguagesButton.waitForExist();
+		await this.allEnteredLanguagesButton.waitForExist();
 	}
 
-	switchToEditModeSkipWarning() {
-		this.editButton.click();
-		if ( this.anonEditWarning.isExisting() ) {
-			this.anonEditWarningDismissButton.click();
+	async switchToEditModeSkipWarning() {
+		await this.editButton.click();
+		if ( await this.anonEditWarning.isExisting() ) {
+			await this.anonEditWarningDismissButton.click();
 		}
 	}
 
-	waitUntilSaved() {
-		this.editButton.waitForExist( { timeout: 20000 } );
+	async waitUntilSaved() {
+		await this.editButton.waitForExist( { timeout: 20000 } );
 	}
 
 }
