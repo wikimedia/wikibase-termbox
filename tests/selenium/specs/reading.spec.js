@@ -46,8 +46,6 @@ describe( 'Termbox: reading', () => {
 
 	describe( 'primary language terms', () => {
 		it( 'contains the expected language with respective terms', async () => {
-			await TermboxPage.openItemPage( id, useLangParam );
-
 			const primaryFingerprint = await TermboxPage.getMonolingualFingerprintsInSection(
 				TermboxPage.primaryMonolingualFingerprint
 			)[ 0 ];
@@ -65,10 +63,6 @@ describe( 'Termbox: reading', () => {
 	} );
 
 	describe( '"in more languages" section', () => {
-		beforeEach( async () => {
-			await TermboxPage.openItemPage( id, useLangParam );
-		} );
-
 		it( 'has a collapse/expand button', async () => {
 			assert.ok( await TermboxPage.inMoreLanguagesButton.isDisplayed() );
 		} );
@@ -112,10 +106,6 @@ describe( 'Termbox: reading', () => {
 	} );
 
 	describe( '"all entered languages" section', () => {
-		beforeEach( async () => {
-			await TermboxPage.openItemPage( id, useLangParam );
-		} );
-
 		it( 'is collapsed by default', async () => {
 			assert.strictEqual( await TermboxPage.allEnteredLanguages.isDisplayed(), false );
 		} );
