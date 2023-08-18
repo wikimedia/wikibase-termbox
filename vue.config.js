@@ -41,8 +41,13 @@ function externals() {
 	];
 }
 
+// This is a hack. Assets are located in ../assets/ relative to dist/. Migrating to Vue CLI 5 made referring to assets
+// outside of dist/ more complicated and this is a workaround to prepend '../' to asset paths. Better solutions welcome.
+const publicPath = DEV_MODE ? '' : '../';
+
 module.exports = {
 	outputDir: TARGET_NODE ? 'serverDist' : 'dist',
+	publicPath,
 	configureWebpack: () => ( {
 		entry: DEV_MODE ? './src/dev-entry.ts' : mainEntry,
 		externals: externals(),
@@ -72,6 +77,10 @@ module.exports = {
 					Object.assign( {}, options, { filename: `${filePrefix}[name].css` } ),
 					...args,
 				] );
+			config.module.rule( 'image' ).set( 'generator', {
+				// Keep image path and filename as they are. ResourceLoader directly accesses assets/.
+				filename: '[path]/[name][ext]',
+			} );
 		}
 
 		config.module
