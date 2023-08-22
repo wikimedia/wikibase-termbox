@@ -1,4 +1,3 @@
-const assert = require( 'assert' );
 const TermboxPage = require( '../pageobjects/Termbox.page' );
 const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 
@@ -20,23 +19,23 @@ describe( 'Termbox: LicenseOverlay', () => {
 	} );
 
 	it( 'is shown when clicking publish', async () => {
-		assert.ok( await TermboxPage.licenseOverlay.isExisting() );
+		await expect( TermboxPage.licenseOverlay ).toExist();
 	} );
 
 	it( 'disappears when clicking cancel and goes back to edit mode', async () => {
 		await TermboxPage.licenseOverlayCancelButton.click();
 
-		assert.strictEqual( await TermboxPage.licenseOverlay.isExisting(), false );
-		assert.ok( await TermboxPage.isInEditMode );
+		await expect( TermboxPage.licenseOverlay ).not.toExist();
+		await expect( await TermboxPage.isInEditMode ).toBe( true );
 	} );
 
 	it( 'disappears and saves when clicking publish', async () => {
 		await TermboxPage.licenseOverlaySaveButton.click();
 
-		assert.strictEqual( await TermboxPage.licenseOverlay.isExisting(), false );
+		await expect( TermboxPage.licenseOverlay ).not.toExist();
 		await TermboxPage.waitUntilSaved();
 
-		assert.ok( await TermboxPage.isInReadMode );
+		await expect( TermboxPage.isInReadMode ).toBe( true );
 	} );
 
 	it( 'does not reappear after saving by default', async () => {
@@ -48,7 +47,7 @@ describe( 'Termbox: LicenseOverlay', () => {
 		await TermboxPage.switchToEditModeSkipWarning();
 		await TermboxPage.publishButton.click();
 
-		assert.strictEqual( await TermboxPage.licenseOverlay.isExisting(), false );
+		await expect( TermboxPage.licenseOverlay ).not.toExist();
 	} );
 
 	it( 'reappears after saving when unchecking the "remember my choice" checkbox', async () => {
@@ -61,6 +60,6 @@ describe( 'Termbox: LicenseOverlay', () => {
 		await TermboxPage.switchToEditModeSkipWarning();
 		await TermboxPage.publishButton.click();
 
-		assert.ok( await TermboxPage.licenseOverlay.isDisplayed() );
+		await expect( TermboxPage.licenseOverlay ).toBeDisplayed();
 	} );
 } );
