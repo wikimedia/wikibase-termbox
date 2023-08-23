@@ -1,4 +1,3 @@
-const assert = require( 'assert' );
 const TermboxPage = require( '../pageobjects/Termbox.page' );
 const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
 const MWUtil = require( 'wdio-mediawiki/Util' );
@@ -19,12 +18,12 @@ describe( 'Termbox: editing', () => {
 
 	describe( 'edit mode', () => {
 		it( 'is in edit mode after clicking the edit button', async () => {
-			assert.ok( await TermboxPage.isInEditMode );
+			await expect( TermboxPage.isInEditMode ).toBe( true );
 		} );
 
 		it( 'switches back to reading mode when clicking the cancel button', async () => {
 			await TermboxPage.cancelButton.click();
-			assert.ok( await TermboxPage.isInReadMode );
+			await expect( TermboxPage.isInReadMode ).toBe( true );
 		} );
 	} );
 
@@ -50,10 +49,10 @@ describe( 'Termbox: editing', () => {
 			const primaryFingerprint = await TermboxPage.getMonolingualFingerprintsInSection(
 				TermboxPage.primaryMonolingualFingerprint
 			)[ 0 ];
-			assert.strictEqual( await primaryFingerprint.label.getText(), label );
-			assert.strictEqual( await primaryFingerprint.description.getText(), description );
-			assert.strictEqual( ( await primaryFingerprint.aliases[ 0 ].getText() ).trim(), alias1 );
-			assert.strictEqual( ( await primaryFingerprint.aliases[ 1 ].getText() ).trim(), alias2 );
+			await expect( primaryFingerprint.label ).toHaveText( label );
+			await expect( primaryFingerprint.description ).toHaveText( description );
+			await expect( primaryFingerprint.aliases[ 0 ] ).toHaveText( alias1, { trim: true } );
+			await expect( primaryFingerprint.aliases[ 1 ] ).toHaveText( alias2, { trim: true } );
 		} );
 
 		it( 'shows an error when an edit fails to save when the entity was protected while editing', async () => {
@@ -61,7 +60,7 @@ describe( 'Termbox: editing', () => {
 			await TermboxPage.publishButton.click();
 			await TermboxPage.licenseOverlaySaveButton.click();
 
-			assert.ok( await TermboxPage.errorBanner.waitForExist() );
+			await expect( TermboxPage.errorBanner ).toExist();
 		} );
 	} );
 } );
