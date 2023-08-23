@@ -31,7 +31,7 @@ describe( 'Termbox: reading', () => {
 	} );
 
 	it( 'is in reading mode when opening the item page', async () => {
-		await expect( TermboxPage.isInReadMode ).toBe( true );
+		await expect( await TermboxPage.isInReadMode ).toBe( true );
 	} );
 
 	describe( 'primary language terms', () => {

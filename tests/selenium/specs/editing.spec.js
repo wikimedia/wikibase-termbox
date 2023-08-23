@@ -18,12 +18,12 @@ describe( 'Termbox: editing', () => {
 
 	describe( 'edit mode', () => {
 		it( 'is in edit mode after clicking the edit button', async () => {
-			await expect( TermboxPage.isInEditMode ).toBe( true );
+			await expect( await TermboxPage.isInEditMode ).toBe( true );
 		} );
 
 		it( 'switches back to reading mode when clicking the cancel button', async () => {
 			await TermboxPage.cancelButton.click();
-			await expect( TermboxPage.isInReadMode ).toBe( true );
+			await expect( await TermboxPage.isInReadMode ).toBe( true );
 		} );
 	} );
 

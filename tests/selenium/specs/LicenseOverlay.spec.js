@@ -35,7 +35,7 @@ describe( 'Termbox: LicenseOverlay', () => {
 		await expect( TermboxPage.licenseOverlay ).not.toExist();
 		await TermboxPage.waitUntilSaved();
 
-		await expect( TermboxPage.isInReadMode ).toBe( true );
+		await expect( await TermboxPage.isInReadMode ).toBe( true );
 	} );
 
 	it( 'does not reappear after saving by default', async () => {
