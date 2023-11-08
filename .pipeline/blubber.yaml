@@ -19,7 +19,7 @@ variants:
     apt:
       packages: [ git, build-essential, python, pkg-config ] # needed for npm install
     node:
-      requirements: [ package.json, package-lock.json, build/ ]
+      requirements: [ package.json, package-lock.json ]
   build-server:
     includes: [ build ]
     builder:

@@ -103,8 +103,8 @@ export default defineComponent( {
 
 	&__language {
 		@include fontSize( 13px );
-		color: $wmui-color-base20;
-		font-family: $font-family-sans;
+		color: $color-subtle;
+		font-family: $font-family-base;
 	}
 
 	&__label-wrapper,

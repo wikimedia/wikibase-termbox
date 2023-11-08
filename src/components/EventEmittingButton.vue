@@ -68,7 +68,7 @@ $block: '.wb-ui-event-emitting-button';
 }
 
 %textButton {
-	font-family: $font-family-sans;
+	font-family: $font-family-base;
 	display: inline-block;
 	cursor: pointer;
 	white-space: nowrap;
@@ -77,9 +77,9 @@ $block: '.wb-ui-event-emitting-button';
 }
 
 %framed {
-	border-width: 1px;
-	border-radius: 2px;
-	border-style: solid;
+	border-width: $border-width-base;
+	border-radius: $border-radius-base;
+	border-style: $border-style-base;
 	box-sizing: border-box;
 	padding: $padding-vertical-base $padding-horizontal-base;
 }
@@ -115,61 +115,61 @@ $block: '.wb-ui-event-emitting-button';
 		@extend %framed;
 
 		// default & hover are flipped compared to background-color-base & background-color-base--hover
-		background-color: $wmui-color-base80;
+		background-color: $background-color-interactive;
 		color: $color-base;
 		border-color: $border-color-base;
 
 		&:hover {
-			background-color: $wmui-color-base100;
-			color: $color-base; // intentionally not $color-base--hover for reasons
-			border-color: $border-color-base--hover;
+			background-color: $background-color-base;
+			color: $color-base; // intentionally not $color-base--hover as it's meant to be removed
+			border-color: $border-color-base;
 		}
 
 		&:active {
-			background-color: $wmui-color-base70;
-			color: $color-base--active;
-			border-color: $border-color-base--active;
+			background-color: #c8ccd1;
+			color: $color-emphasized;
+			border-color: $border-color-interactive;
 		}
 
 		&:focus {
-			box-shadow: $box-shadow-base--focus;
+			box-shadow: $box-shadow-inset-small $box-shadow-color-progressive--focus;
 		}
 	}
 
 	&--primaryProgressive {
 		@extend %textButton;
 		@extend %framed;
-		background-color: $color-primary;
-		color: $color-base--inverted;
-		border-color: $color-primary;
+		background-color: $background-color-progressive;
+		color: $color-inverted;
+		border-color: $border-color-progressive;
 
 		&:hover {
-			background-color: $color-primary--hover;
-			border-color: $color-primary--hover;
+			background-color: $background-color-progressive--hover;
+			border-color: $border-color-progressive--hover;
 		}
 
 		&:active {
-			background-color: $color-primary--active;
-			border-color: $color-primary--active;
+			background-color: $background-color-progressive--active;
+			border-color: $border-color-progressive--active;
 		}
 
 		&:focus {
-			box-shadow: $box-shadow-primary--focus;
+			box-shadow: $box-shadow-inset-small $box-shadow-color-progressive--focus, $box-shadow-inset-medium $box-shadow-color-inverted;
 		}
 	}
 
 	&--framelessProgressive {
 		@extend %textButton;
 		border-width: 0;
-		color: $color-primary;
-		border-color: $wmui-color-base100;
+		color: $color-progressive;
+		border-color: $border-color-inverted;
 
 		&:hover {
-			color: $color-primary--hover;
+			color: $color-progressive--hover;
 		}
 
 		&:active {
-			color: $color-primary--active;
+			color: $color-progressive--active;
 		}
 
 		&:focus {

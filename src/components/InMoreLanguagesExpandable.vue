@@ -44,7 +44,7 @@ export default defineComponent( {
 
 <style lang="scss">
 .wb-ui-in-more-languages-expandable {
-	background-color: $wmui-color-base90;
+	background-color: $background-color-interactive-subtle;
 
 	&__switch {
 		@include toggle-button($svg-arrow-up-base20);

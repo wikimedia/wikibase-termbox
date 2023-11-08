@@ -46,9 +46,9 @@ export default defineComponent( {
 	@include hyphens();
 
 	&--missing {
-		color: $color-moderate-red;
+		color: $color-error;
 		font-weight: normal;
-		font-family: $font-family-sans;
+		font-family: $font-family-base;
 	}
 }
 </style>

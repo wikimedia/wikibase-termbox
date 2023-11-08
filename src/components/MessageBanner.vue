@@ -39,11 +39,11 @@ export default defineComponent( {
 	top: 0;
 	left: 0;
 	width: 100%;
-	background-color: #fff;
+	background-color: $background-color-base;
 	z-index: 1;
-	font-family: $font-family-sans;
-	box-shadow: 0 2px 2px 0 rgba( 0, 0, 0, 0.25 );
-	border-bottom: 1px solid $wmui-color-base50;
+	font-family: $font-family-base;
+	box-shadow: $box-shadow-drop-medium;
+	border-bottom: $border-base;
 
 	h4 {
 		text-align: center;

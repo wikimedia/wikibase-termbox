@@ -22,17 +22,17 @@ export default defineComponent( {
 	left: 5%;
 	top: 50%;
 	transform: translate( 0%, -50% );
-	border: 1px solid #a2a9b1;
-	box-shadow: 0 2px 0 0 rgba( 0, 0, 0, 0.15 );
+	border: $border-base;
+	box-shadow: $box-shadow-drop-medium;
 	box-sizing: border-box;
-	border-radius: 2px;
+	border-radius: $border-radius-base;
 	overflow: hidden;
-	background-color: #fff;
+	background-color: $background-color-base;
 }
 
 .wb-ui-indeterminate-progress-bar__bar {
 	animation: wb-ui-indeterminate-progress-bar__bar--slide 2s infinite linear;
-	background-color: $color-primary;
+	background-color: $background-color-progressive;
 	width: 40%;
 	height: 100%;
 	display: block;

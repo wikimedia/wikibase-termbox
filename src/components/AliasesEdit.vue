@@ -130,7 +130,7 @@ export default defineComponent( {
 <style lang="scss">
 .wb-ui-aliases-edit {
 	@include termInputStandaloneField();
-	background-color: $color-white;
+	background-color: $background-color-base;
 	overflow-y: visible;
 	padding: 1px 3px;
 
@@ -148,7 +148,7 @@ export default defineComponent( {
 		@include termInputGrouped();
 
 		&:focus {
-			color: $alias-edit-focus-color;
+			color: $color-subtle;
 		}
 	}
 }

@@ -42,7 +42,7 @@ export default defineComponent( {
 	@include hyphens();
 
 	&--missing {
-		color: $color-moderate-red;
+		color: $color-error;
 	}
 }
 </style>

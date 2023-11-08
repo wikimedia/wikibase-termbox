@@ -32,13 +32,13 @@ export default defineComponent( {
 	text-align: left;
 
 	&--error {
-		border-color: $error-message-border;
-		background: $error-message-background $svg-error no-repeat 16px 8px;
+		border-color: $border-color-error;
+		background: $background-color-error-subtle $svg-error no-repeat 16px 8px;
 	}
 
 	&--warning {
-		border-color: $warning-message-border;
-		background: $warning-message-background $svg-warning no-repeat 16px 8px;
+		border-color: $border-color-warning;
+		background: $background-color-warning-subtle $svg-warning no-repeat 16px 8px;
 	}
 }
 </style>

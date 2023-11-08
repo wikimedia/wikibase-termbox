@@ -14,7 +14,7 @@ export default defineComponent( {
 
 <style lang="scss">
 .wb-ui-modal {
-	font-family: $font-family-sans;
+	font-family: $font-family-base;
 	margin: 0 auto;
 	max-width: 375px;
 	padding: 16px;

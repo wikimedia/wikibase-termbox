@@ -38,7 +38,7 @@ $label: '.wb-ui-checkbox__label';
 
 .wb-ui-checkbox {
 	&__label {
-		font-family: $font-family-sans;
+		font-family: $font-family-base;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -53,8 +53,8 @@ $label: '.wb-ui-checkbox__label';
 			content: ' ';
 			margin-right: 1em;
 			display: flex;
-			background-color: $color-checkbox; /* Workaround Firefox e.a. */
-			transition: background-color $transition-base, border-color $transition-base, box-shadow $transition-base;
+			background-color: $background-color-base; /* Workaround Firefox e.a. */
+			transition: background-color $transition-duration-base, border-color $transition-duration-base, box-shadow $transition-duration-base;
 		}
 
 		&:hover {
@@ -65,9 +65,9 @@ $label: '.wb-ui-checkbox__label';
 
 		&:active {
 			&:before {
-				background-color: $color-primary--active;
-				border-color: $color-primary--active;
-				box-shadow: inset 0 0 0 $border-width-base $color-primary--active;
+				background-color: $background-color-progressive--active;
+				border-color: $border-color-progressive--active;
+				box-shadow: $box-shadow-inset-small $box-shadow-color-progressive--active;
 			}
 		}
 	}
@@ -81,33 +81,33 @@ $label: '.wb-ui-checkbox__label';
 
 		&:focus + #{$label} {
 			&:before {
-				border-color: $color-primary;
-				box-shadow: inset 0 0 0 $border-width-base $color-primary;
+				border-color: $border-color-progressive;
+				box-shadow: $box-shadow-inset-small $box-shadow-color-progressive--focus;
 			}
 		}
 
 		&:checked {
 			&:focus + #{$label} {
 				&:before {
-					box-shadow: $box-shadow-primary--focus;
+					box-shadow: $box-shadow-inset-small $box-shadow-color-progressive--focus, $box-shadow-inset-medium $box-shadow-color-inverted;
 				}
 			}
 
 			& + #{$label} {
 				&:before {
-					border-color: $color-primary;
-					background: $color-primary $svg-check 50% 50% no-repeat;
+					border-color: $border-color-progressive;
+					background: $background-color-progressive $svg-check 50% 50% no-repeat;
 				}
 
 				&:hover {
 					&:before {
-						background-color: $color-primary--hover;
+						background-color: $background-color-progressive--hover;
 					}
 				}
 
 				&:active {
 					&:before {
-						background-color: $color-primary--active;
+						background-color: $background-color-progressive--active;
 					}
 				}
 			}
