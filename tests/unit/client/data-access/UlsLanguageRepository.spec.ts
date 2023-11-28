@@ -6,6 +6,7 @@ describe( 'UlsLanguageRepository', () => {
 		const langTranslation: StringTMap<string> = { en: 'English', he: 'Hebrew', ar: 'Arabic', de: 'German' };
 		const langDirs: StringTMap<string> = { en: 'ltr', he: 'rtl', ar: 'rtl', de: 'ltr' };
 		const translator = {
+			getAll: () => Object.keys( langTranslation ),
 			getLanguageNameMap: () => langTranslation,
 		};
 		const directionalities = {

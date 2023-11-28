@@ -5,6 +5,7 @@ describe( 'UlsLanguageTranslationRepository', () => {
 	it( 'gets the language name from the given function', () => {
 		const langTranslation = { en: 'English' };
 		const translator = {
+			getAll: () => Object.keys( langTranslation ),
 			getLanguageNameMap: (): StringTMap<string> => langTranslation,
 		};
 

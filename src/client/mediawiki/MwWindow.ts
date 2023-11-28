@@ -44,6 +44,7 @@ interface MediaWiki {
 }
 
 export interface WikibaseContentLanguages {
+	getAll: () => string[];
 	getLanguageNameMap: () => {
 		[ key: string ]: string;
 	};
