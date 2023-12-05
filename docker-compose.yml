@@ -20,6 +20,7 @@ services:
       service: node
     ports:
       - '${CSR_PORT}:${CSR_PORT}'
+    command: 'npm run serve -- --port ${CSR_PORT}'
     networks:
       mediawiki_dev_network:
         aliases:
