@@ -1,6 +1,8 @@
+# syntax=docker-registry.wikimedia.org/repos/releng/blubber/buildkit:v0.16.0
+
 version: v4
 
-base: docker-registry.wikimedia.org/nodejs16-slim
+base: docker-registry.wikimedia.org/nodejs18-slim
 
 apt: {
   packages: [
@@ -14,10 +16,10 @@ lives:
 
 variants:
   build:
-    base: docker-registry.wikimedia.org/nodejs16-slim
+    base: docker-registry.wikimedia.org/nodejs18-devel
     copies: [local]
     apt:
-      packages: [ git, build-essential, python, pkg-config ] # needed for npm install
+      packages: [ git, build-essential, python3, pkg-config ] # needed for npm install
     node:
       requirements: [ package.json, package-lock.json ]
   build-server:
