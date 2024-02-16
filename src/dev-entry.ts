@@ -8,7 +8,7 @@ import { message } from './mock-data/MockMwMessages';
 import termboxInit from './client-entry';
 import EntityInitializer from './common/EntityInitializer';
 import FingerprintableEntity from './datamodel/FingerprintableEntity';
-import EntityRevision from './datamodel/EntityRevision';
+import EntityRevisionWithRedirect from './datamodel/EntityRevisionWithRedirect';
 
 const language = getOrEnforceUrlParameter( 'language', 'de' );
 const preferredLanguages = getOrEnforceUrlParameter(
@@ -72,10 +72,10 @@ termboxInit(
 			},
 		},
 		writingEntityRepository: {
-			saveEntity( entity, baseRevId ): Promise<EntityRevision> {
+			saveEntity( entity, baseRevId ): Promise<EntityRevisionWithRedirect> {
 				return new Promise( ( resolve ) => {
 					setTimeout( // pretend to save for 1s
-						() => resolve( new EntityRevision( entity, baseRevId + 1 ) ),
+						() => resolve( new EntityRevisionWithRedirect( entity, baseRevId + 1 ) ),
 						1000,
 					);
 				} );

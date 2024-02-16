@@ -18,6 +18,7 @@ describe( 'store/entity/index', () => {
 			isEditable: false,
 
 			baseRevisionFingerprint: null,
+			tempUserRedirectUrl: null,
 		} );
 	} );
 } );

@@ -15,17 +15,18 @@ interface EntityRepository {
     getFingerprintableEntity(id: string, revision: number): Promise<FingerprintableEntity>;
 }
 
-declare class EntityRevision {
+declare class EntityRevisionWithRedirect {
     readonly entity: FingerprintableEntity;
     readonly revisionId: number;
-    constructor(entity: FingerprintableEntity, revisionId: number);
+    readonly redirectUrl: string | undefined;
+    constructor(entity: FingerprintableEntity, revisionId: number, redirectUrl?: string | undefined);
 }
 
 interface WritingEntityRepository {
     /**
      * Rejects to TechnicalProblem or EntityNotFound errors in case of problems
      */
-    saveEntity(entity: FingerprintableEntity, baseRevId: number): Promise<EntityRevision>;
+    saveEntity(entity: FingerprintableEntity, baseRevId: number): Promise<EntityRevisionWithRedirect>;
 }
 
 type ConfigurableServices = {

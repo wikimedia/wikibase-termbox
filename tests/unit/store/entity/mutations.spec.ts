@@ -8,6 +8,7 @@ import {
 	ENTITY_SET_DESCRIPTION,
 	ENTITY_REVISION_UPDATE,
 	ENTITY_ROLLBACK,
+	ENTITY_REDIRECT_UPDATE,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import EntityState from '@/store/entity/EntityState';
@@ -23,6 +24,7 @@ function newEntityState( entity: any = null ): EntityState {
 		aliases: {},
 		isEditable: false,
 		baseRevisionFingerprint: null,
+		tempUserRedirectUrl: null,
 	};
 
 	if ( entity !== null ) {
@@ -176,6 +178,13 @@ describe( 'entity/mutations', () => {
 		const revision = 4711;
 		mutations[ ENTITY_REVISION_UPDATE ]( state, revision );
 		expect( state.baseRevision ).toBe( revision );
+	} );
+
+	it( ENTITY_REDIRECT_UPDATE, () => {
+		const newUrl = new URL( 'https://www.example.com' );
+		const state = newEntityState( { tempUserRedirectUrl: new URL( 'https://wiki.example' ) } );
+		mutations[ ENTITY_REDIRECT_UPDATE ]( state, newUrl );
+		expect( state.tempUserRedirectUrl ).toBe( newUrl );
 	} );
 
 	it( ENTITY_REMOVE_ALIAS, () => {

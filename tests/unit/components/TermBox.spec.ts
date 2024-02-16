@@ -21,6 +21,7 @@ import {
 } from '@/store/namespaces';
 import {
 	EDITABILITY_UPDATE,
+	ENTITY_REDIRECT_UPDATE,
 	ENTITY_UPDATE,
 } from '@/store/entity/mutationTypes';
 import { LINKS_UPDATE } from '@/store/links/mutationTypes';
@@ -49,12 +50,18 @@ import { UserPreference } from '@/common/UserPreference';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import mockTempUserConfigService from '../mockTempUserConfigService';
+import { appEvents } from '@/events';
+
+const mockEmitter = { emit: jest.fn() };
 
 function mountWithStore( store: Store<any> ) {
-	return mount( TermBox, { global: {
-		plugins: [ store ],
-		mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-	} } );
+	return mount( TermBox, {
+		global: {
+			plugins: [ store ],
+			mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+		},
+		props: { emitter: mockEmitter },
+	} );
 }
 
 function setStoreInEditMode( store: Store<any> ) {
@@ -79,7 +86,10 @@ describe( 'TermBox.vue', () => {
 		const store = createStore( mockTempUserConfigService as any );
 		const userLanguage = 'en';
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), userLanguage );
-		const wrapper = shallowMount( TermBox, { global: { plugins: [ store ] } } );
+		const wrapper = shallowMount( TermBox, {
+			global: { plugins: [ store ] },
+			props: { emitter: mockEmitter },
+		} );
 
 		expect( wrapper.findComponent( MonolingualFingerprintView ).props() )
 			.toHaveProperty( 'languageCode', userLanguage );
@@ -92,7 +102,10 @@ describe( 'TermBox.vue', () => {
 			it( 'are there', () => {
 				const store = createStore( mockTempUserConfigService as any );
 				store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-				const wrapper = shallowMount( TermBox, { global: { plugins: [ store ] } } );
+				const wrapper = shallowMount( TermBox, {
+					global: { plugins: [ store ] },
+					props: { emitter: mockEmitter },
+				} );
 
 				expect( wrapper.findComponent( EditTools ).exists() ).toBeTruthy();
 			} );
@@ -106,6 +119,7 @@ describe( 'TermBox.vue', () => {
 					const message = 'edit';
 					const wrapper = mount( TermBox, {
 						global: { plugins: [ store ] },
+						props: { emitter: mockEmitter },
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.EDIT ]: message,
 						} ) ],
@@ -129,9 +143,10 @@ describe( 'TermBox.vue', () => {
 					} );
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 
-					const wrapper = mount( TermBox, { global: {
-						plugins: [ store ],
-					} } );
+					const wrapper = mount( TermBox, {
+						global: { plugins: [ store ] },
+						props: { emitter: mockEmitter },
+					} );
 
 					await wrapper.findComponent<
 						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
@@ -143,10 +158,13 @@ describe( 'TermBox.vue', () => {
 					it( 'is shown in a modal overlay for anonymous users', async () => {
 						const store = createStore( mockTempUserConfigService as any );
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
-						const wrapper = mount( TermBox, { global: {
-							plugins: [ store ],
-							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-						} } );
+						const wrapper = mount( TermBox, {
+							global: {
+								plugins: [ store ],
+								mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+							},
+							props: { emitter: mockEmitter },
+						} );
 
 						await wrapper.findComponent<
 						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
@@ -160,10 +178,13 @@ describe( 'TermBox.vue', () => {
 						const store = createStore( mockTempUserConfigService as any );
 						store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 						store.commit( mutation( NS_USER, USER_SET_NAME ), 'Lord Voldemort' );
-						const wrapper = mount( TermBox, { global: {
-							plugins: [ store ],
-							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-						} } );
+						const wrapper = mount( TermBox, {
+							global: {
+								plugins: [ store ],
+								mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+							},
+							props: { emitter: mockEmitter },
+						} );
 
 						await wrapper.findComponent<
 						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
@@ -178,10 +199,13 @@ describe( 'TermBox.vue', () => {
 							mutation( NS_USER, USER_SET_PREFERENCE ),
 							{ name: UserPreference.HIDE_ANON_EDIT_WARNING, value: true },
 						);
-						const wrapper = mount( TermBox, { global: {
-							plugins: [ store ],
-							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-						} } );
+						const wrapper = mount( TermBox, {
+							global: {
+								plugins: [ store ],
+								mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+							},
+							props: { emitter: mockEmitter },
+						} );
 
 						await wrapper.findComponent<
 						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--edit' ).vm.$emit( 'click' );
@@ -195,6 +219,7 @@ describe( 'TermBox.vue', () => {
 								plugins: [ createStore( mockTempUserConfigService as any ) ],
 								mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 							},
+							props: { emitter: mockEmitter },
 							data: () => ( { showEditWarning: true } ),
 						} );
 
@@ -216,6 +241,7 @@ describe( 'TermBox.vue', () => {
 							plugins: [ store ],
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						},
+						props: { emitter: mockEmitter },
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.PUBLISH ]: message,
 						} ) ],
@@ -253,10 +279,13 @@ describe( 'TermBox.vue', () => {
 						name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
 						value: copyrightVersion,
 					} );
-					const wrapper = mount( TermBox, { global: {
-						plugins: [ store ],
-						mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
-					} } );
+					const wrapper = mount( TermBox, {
+						global: {
+							plugins: [ store ],
+							mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
+						},
+						props: { emitter: mockEmitter },
+					} );
 
 					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 					expect( wrapper.findComponent( LicenseAgreement ).exists() ).toBeFalsy();
@@ -293,6 +322,7 @@ describe( 'TermBox.vue', () => {
 								newConfigMixin( { copyrightVersion } as ConfigOptions ),
 							],
 						},
+						props: { emitter: mockEmitter },
 						mixins: [
 							mockMessageMixin( {
 								[ MessageKey.SAVE_ERROR_HEADING ]: errorHeading,
@@ -316,6 +346,48 @@ describe( 'TermBox.vue', () => {
 					expect( deactivateEditMode ).not.toHaveBeenCalled();
 				} );
 
+				it( 'redirects when tempuserredirect is updated', async () => {
+					const targetUrl = 'https://wiki.example';
+					let store = createStore( mockTempUserConfigService as any );
+					const entitySave = jest.fn().mockImplementation( function () {
+						store.commit(
+							mutation( NS_ENTITY, ENTITY_REDIRECT_UPDATE ), targetUrl,
+						);
+					} );
+					const deactivateEditMode = jest.fn();
+					const copyrightVersion = 'wikibase-1';
+					store = hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
+						actions: { [ EDITMODE_DEACTIVATE ]: deactivateEditMode },
+						modules: {
+							[ NS_ENTITY ]: {
+								actions: { [ ENTITY_SAVE ]: entitySave },
+							},
+						},
+					} );
+
+					setStoreInEditMode( store );
+					store.commit( mutation( NS_USER, USER_SET_PREFERENCE ), {
+						name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
+						value: copyrightVersion,
+					} );
+					const wrapper = mount( TermBox, {
+						global: {
+							plugins: [ store ],
+							mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
+						},
+						props: { emitter: mockEmitter },
+					} );
+
+					await wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
+					expect( wrapper.findComponent( LicenseAgreement ).exists() ).toBeFalsy();
+					expect( entitySave ).toHaveBeenCalled();
+
+					await wrapper.vm.$nextTick();
+					expect( deactivateEditMode ).toHaveBeenCalled();
+					expect( mockEmitter.emit ).toHaveBeenCalledTimes( 1 );
+					expect( mockEmitter.emit ).toHaveBeenCalledWith( appEvents.redirect, targetUrl );
+				} );
+
 				it( 'removes the error if saving was successful at the second attempt', async () => {
 					const entitySave = jest.fn()
 						.mockReturnValueOnce( Promise.reject() )
@@ -336,10 +408,13 @@ describe( 'TermBox.vue', () => {
 						value: copyrightVersion,
 					} );
 					window.scrollBy = jest.fn(); // used in MessageBanner
-					const wrapper = mount( TermBox, { global: {
-						plugins: [ store ],
-						mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
-					} } );
+					const wrapper = mount( TermBox, {
+						global: {
+							plugins: [ store ],
+							mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
+						},
+						props: { emitter: mockEmitter },
+					} );
 
 					wrapper.find( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );
 					await flushPromises();
@@ -366,6 +441,7 @@ describe( 'TermBox.vue', () => {
 							plugins: [ store ],
 							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
 						},
+						props: { emitter: mockEmitter },
 						mixins: [ mockMessageMixin( {
 							[ MessageKey.CANCEL ]: message,
 						} ) ],
@@ -395,10 +471,13 @@ describe( 'TermBox.vue', () => {
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( EDITMODE_SET ), true );
 
-					const wrapper = mount( TermBox, { global: {
-						plugins: [ store ],
-						mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-					} } );
+					const wrapper = mount( TermBox, {
+						global: {
+							plugins: [ store ],
+							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+						},
+						props: { emitter: mockEmitter },
+					} );
 
 					await wrapper.findComponent<
 						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--cancel' ).vm.$emit( 'click' );
@@ -434,10 +513,13 @@ describe( 'TermBox.vue', () => {
 					store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 					store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
 
-					const wrapper = mount( TermBox, { global: {
-						plugins: [ store ],
-						mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-					} } );
+					const wrapper = mount( TermBox, {
+						global: {
+							plugins: [ store ],
+							mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+						},
+						props: { emitter: mockEmitter },
+					} );
 
 					await wrapper.find( '.wb-ui-event-emitting-button--edit' ).trigger( 'click' );
 
@@ -505,10 +587,13 @@ describe( 'TermBox.vue', () => {
 			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), true );
 			store.commit( mutation( EDITMODE_SET ), true );
 
-			const wrapper = mount( TermBox, { global: {
-				plugins: [ store ],
-				mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-			} } );
+			const wrapper = mount( TermBox, {
+				global: {
+					plugins: [ store ],
+					mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+				},
+				props: { emitter: mockEmitter },
+			} );
 
 			expect( wrapper.find( '.wb-ui-event-emitting-button--publish' ).exists() ).toBe( true );
 			expect( wrapper.find( '.wb-ui-event-emitting-button--cancel' ).exists() ).toBe( true );
@@ -517,10 +602,13 @@ describe( 'TermBox.vue', () => {
 		it( 'given the entity is not editable are not there', () => {
 			const store = createStore( mockTempUserConfigService as any );
 			store.commit( mutation( NS_ENTITY, EDITABILITY_UPDATE ), false );
-			const wrapper = shallowMount( TermBox, { global: {
-				plugins: [ store ],
-				mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-			} } );
+			const wrapper = shallowMount( TermBox, {
+				global: {
+					plugins: [ store ],
+					mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+				},
+				props: { emitter: mockEmitter },
+			} );
 
 			expect( wrapper.findComponent( EditTools ).exists() ).toBeFalsy();
 		} );
@@ -528,10 +616,13 @@ describe( 'TermBox.vue', () => {
 
 	it( 'shows a list of the user\'s top secondary languages', () => {
 		const store = createStore( mockTempUserConfigService as any );
-		const wrapper = shallowMount( TermBox, { global: {
-			plugins: [ store ],
-			mixins: [ newConfigMixin( {} as ConfigOptions ) ],
-		} } );
+		const wrapper = shallowMount( TermBox, {
+			global: {
+				plugins: [ store ],
+				mixins: [ newConfigMixin( {} as ConfigOptions ) ],
+			},
+			props: { emitter: mockEmitter },
+		} );
 
 		expect( wrapper.findComponent( InMoreLanguagesExpandable ).exists() ).toBeTruthy();
 	} );
@@ -551,10 +642,13 @@ describe( 'TermBox.vue', () => {
 			name: UserPreference.ACKNOWLEDGED_COPYRIGHT_VERSION,
 			value: copyrightVersion,
 		} );
-		const wrapper = mount( TermBox, { global: {
-			plugins: [ store ],
-			mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
-		} } );
+		const wrapper = mount( TermBox, {
+			global: {
+				plugins: [ store ],
+				mixins: [ newConfigMixin( { copyrightVersion } as ConfigOptions ) ],
+			},
+			props: { emitter: mockEmitter },
+		} );
 
 		await wrapper.findComponent<
 						typeof EventEmittingButton>( '.wb-ui-event-emitting-button--publish' ).trigger( 'click' );

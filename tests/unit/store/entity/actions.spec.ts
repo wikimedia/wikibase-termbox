@@ -16,13 +16,14 @@ import {
 	ENTITY_REMOVE_ALIAS,
 	ENTITY_SET_DESCRIPTION as ENTITY_SET_DESCRIPTION_MUTATION,
 	ENTITY_REVISION_UPDATE,
+	ENTITY_REDIRECT_UPDATE,
 	ENTITY_ROLLBACK as ENTITY_ROLLBACK_MUTATION,
 } from '@/store/entity/mutationTypes';
 import { newFingerprintableEntity } from '@/datamodel/FingerprintableEntity';
 import EntityNotFound from '@/common/data-access/error/EntityNotFound';
 import newMockStore from '@wmde/vuex-helpers/dist/newMockStore';
 import newFingerprintable from '../../../newFingerprintable';
-import EntityRevision from '@/datamodel/EntityRevision';
+import EntityRevisionWithRedirect from '@/datamodel/EntityRevisionWithRedirect';
 
 describe( 'entity/actions', () => {
 	describe( ENTITY_INIT, () => {
@@ -142,7 +143,7 @@ describe( 'entity/actions', () => {
 		} );
 
 		it( 'updates the entity with latest data and revision after saving', () => {
-			const responseEntityRevision = new EntityRevision(
+			const responseEntityRevision = new EntityRevisionWithRedirect(
 				newFingerprintable( { id: 'Q123', labels: { en: 'potato', de: 'Kartoffel' } } ),
 				321,
 			);
@@ -159,6 +160,30 @@ describe( 'entity/actions', () => {
 				expect( store.commit )
 					.toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, responseEntityRevision.revisionId );
 				expect( store.commit ).toHaveBeenCalledWith( ENTITY_UPDATE, responseEntityRevision.entity );
+			} );
+		} );
+
+		it( 'updates redirectUrl after save if present', () => {
+			const responseEntityRevision = new EntityRevisionWithRedirect(
+				newFingerprintable( { id: 'Q123', labels: { en: 'potato', de: 'Kartoffel' } } ),
+				321,
+				'https://wiki.example/?redirect',
+			);
+			const writingRepository = {
+				saveEntity: jest.fn().mockResolvedValue( responseEntityRevision ),
+			};
+			const store = { commit: jest.fn() };
+
+			return actions(
+				{ getFingerprintableEntity: jest.fn() },
+				{ isEditable: jest.fn() },
+				writingRepository,
+			)[ ENTITY_SAVE ]( newMockStore( store ) ).then( () => {
+				expect( store.commit )
+					.toHaveBeenCalledWith( ENTITY_REVISION_UPDATE, responseEntityRevision.revisionId );
+				expect( store.commit ).toHaveBeenCalledWith( ENTITY_UPDATE, responseEntityRevision.entity );
+				expect( store.commit )
+					.toHaveBeenCalledWith( ENTITY_REDIRECT_UPDATE, responseEntityRevision.redirectUrl );
 			} );
 		} );
 	} );

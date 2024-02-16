@@ -20,6 +20,7 @@ export default function (
 		aliases: {},
 		baseRevisionFingerprint: null,
 		isEditable: false,
+		tempUserRedirectUrl: null,
 	};
 
 	return {
