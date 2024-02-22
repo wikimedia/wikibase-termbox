@@ -9,10 +9,10 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { MessageKey } from '@/common/MessageKey';
 import mockMessageMixin from '../store/mockMessageMixin';
 import newConfigMixin, { ConfigOptions } from '@/components/mixins/newConfigMixin';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 function createStoreWithLanguage( language: Language ) {
-	const store = createStore( emptyServices as any );
+	const store = createStore( mockTempUserConfigService as any );
 	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
 		[ language.code ]: language,
 	} );

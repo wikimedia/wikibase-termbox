@@ -76,6 +76,7 @@ describe( 'server-entry', () => {
 			'languageRepository',
 			'languageTranslationRepository',
 			'messagesRepository',
+			'tempUserConfig',
 			'userPreferenceRepository',
 			'writingEntityRepository',
 		];
@@ -83,7 +84,7 @@ describe( 'server-entry', () => {
 		mockBuildApp.mockResolvedValue( 'hello' );
 		serverEntry( ssrContext ).then( () => {
 			const calledServices = [];
-			expect( mockServices.set ).toHaveBeenCalledTimes( 7 );
+			expect( mockServices.set ).toHaveBeenCalledTimes( services.length );
 
 			for ( const service of mockServices.set.mock.calls ) {
 				calledServices.push( service[ 0 ] );

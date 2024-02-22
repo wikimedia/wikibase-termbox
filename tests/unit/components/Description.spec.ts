@@ -7,12 +7,12 @@ import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { MessageKey } from '@/common/MessageKey';
 import Language from '@/datamodel/Language';
 import mockMessageMixin from '../store/mockMessageMixin';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 const DESCRIPTION_SELECTOR = '.wb-ui-description';
 
 function createStoreWithLanguage( language: Language ) {
-	const store = createStore( emptyServices as any );
+	const store = createStore( mockTempUserConfigService as any );
 	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
 		[ language.code ]: language,
 	} );
@@ -68,7 +68,7 @@ describe( 'Description', () => {
 
 		it( 'does not add directionality markup for missing description', () => {
 			const inlanguageDirective = jest.fn();
-			const store = createStore( emptyServices as any );
+			const store = createStore( mockTempUserConfigService as any );
 
 			shallowMount( Description, {
 				props: { description: null },

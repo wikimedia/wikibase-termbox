@@ -15,13 +15,13 @@ import {
 import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 const LOGIN_URL = '/login';
 const SIGNUP_URL = '/signup';
 
 function createStoreWithLinksAndMockPreferenceAction( persistPreferenceAction = jest.fn() ) {
-	const store = hotUpdateDeep( createStore( emptyServices as any ), {
+	const store = hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
 		modules: {
 			[ NS_USER ]: {
 				actions: {
@@ -42,7 +42,7 @@ describe( 'AnonEditWarning', () => {
 			mixins: [ mockMessageMixin( {
 				[ MessageKey.EDIT_WARNING_HEADING ]: expectedHeading,
 			} ) ],
-			global: { plugins: [ createStore( emptyServices as any ) ] },
+			global: { plugins: [ createStore( mockTempUserConfigService as any ) ] },
 		} );
 
 		expect( wrapper.find( '.wb-ui-anon-edit-warning__heading' ).text() )
@@ -56,7 +56,7 @@ describe( 'AnonEditWarning', () => {
 				[ MessageKey.EDIT_WARNING_MESSAGE ]: expectedMessage,
 			} ) ],
 			global: {
-				plugins: [ createStore( emptyServices as any ) ],
+				plugins: [ createStore( mockTempUserConfigService as any ) ],
 				renderStubDefaultSlot: true,
 			},
 		} );
@@ -64,6 +64,40 @@ describe( 'AnonEditWarning', () => {
 		expect( wrapper.findComponent( IconMessageBox ).props( 'type' ) ).toBe( 'warning' );
 		expect( wrapper.findComponent( IconMessageBox ).text() ).toBe( expectedMessage );
 	} );
+
+	it.each( [ true, false ] )(
+		'show the correct message when tempuser is %s',
+		( tempUserEnabled: boolean ) => {
+			const services = {
+				get: jest.fn().mockImplementation( ( name ) => {
+					if ( name === 'tempUserConfig' ) {
+						return {
+							isEnabled() {
+								return tempUserEnabled;
+							},
+						};
+					}
+				} ),
+			};
+			const store = hotUpdateDeep( createStore( services as any ), {} );
+			const expectedMessageEnabled = 'If you log in or create an account [...]';
+			const expectedMessageDisabled = 'Your IP address will be disclosed If you [...]';
+			const expectedMessage = ( tempUserEnabled ? expectedMessageEnabled : expectedMessageDisabled );
+			const wrapper = shallowMount( AnonEditWarning, {
+				mixins: [ mockMessageMixin( {
+					[ MessageKey.EDIT_NOTIFICATION_TEMPUSER_MESSAGE ]: expectedMessageEnabled,
+					[ MessageKey.EDIT_WARNING_MESSAGE ]: expectedMessageDisabled,
+				} ) ],
+				global: {
+					plugins: [ store ],
+					renderStubDefaultSlot: true,
+				},
+			} );
+
+			expect( wrapper.findComponent( IconMessageBox ).props( 'type' ) ).toBe( 'warning' );
+			expect( wrapper.findComponent( IconMessageBox ).text() ).toBe( expectedMessage );
+		},
+	);
 
 	it( 'has a login button acting as link that also causes preference persistence', () => {
 		const buttonLabel = 'login';
@@ -137,7 +171,7 @@ describe( 'AnonEditWarning', () => {
 
 	it( 'has a checkbox that is checked by default', () => {
 		const wrapper = shallowMount( AnonEditWarning, { global: {
-			plugins: [ createStore( emptyServices as any ) ],
+			plugins: [ createStore( mockTempUserConfigService as any ) ],
 		} } );
 
 		expect( wrapper.findComponent( Checkbox ).props( 'value' ) ).toBeTruthy();

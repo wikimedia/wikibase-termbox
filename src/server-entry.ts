@@ -99,6 +99,14 @@ export default ( context: BundleRendererContext ): Promise<unknown> => {
 		},
 	);
 
+	services.set(
+		'tempUserConfig',
+		{
+			// this flag is only used in edit mode and SSR only shows view mode
+			isEnabled: () => false,
+		},
+	);
+
 	return buildApp(
 		context.request,
 		services,

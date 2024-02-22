@@ -5,10 +5,10 @@ import { NS_LANGUAGE, NS_USER } from '@/store/namespaces';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import { LANGUAGE_INIT as USER_LANGUAGE_INIT } from '@/store/user/mutationTypes';
 import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 function newInitializedStore() {
-	const store = createStore( emptyServices as any );
+	const store = createStore( mockTempUserConfigService as any );
 
 	store.commit( mutation( NS_USER, USER_LANGUAGE_INIT ), 'ar' );
 	store.commit(

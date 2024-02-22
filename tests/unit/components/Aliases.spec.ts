@@ -7,10 +7,10 @@ import Language from '@/datamodel/Language';
 import { MessageKey } from '@/common/MessageKey';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import mockMessageMixin from '../store/mockMessageMixin';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 function createStoreWithLanguage( language: Language ) {
-	const store = createStore( emptyServices as any );
+	const store = createStore( mockTempUserConfigService as any );
 	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
 		[ language.code ]: language,
 	} );
@@ -61,7 +61,7 @@ describe( 'Aliases', () => {
 	} );
 
 	it( 'renders an empty element if there are no aliases', () => {
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 
 		const wrapper = shallowMount( Aliases, {
 			props: { aliases: [] },

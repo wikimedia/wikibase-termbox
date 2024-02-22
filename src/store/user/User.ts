@@ -4,6 +4,7 @@ interface User {
 	name: string | null;
 	primaryLanguage: string;
 	secondaryLanguages: string[];
+	tempUserEnabled: boolean;
 
 	preferences: { [ key in UserPreference ]?: unknown };
 }

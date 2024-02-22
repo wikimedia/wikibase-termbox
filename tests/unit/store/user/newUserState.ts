@@ -7,6 +7,7 @@ export default function ( user: object|null = null ): User {
 		secondaryLanguages: [],
 		name: null,
 		preferences: {},
+		tempUserEnabled: false,
 	};
 
 	if ( user !== null ) {

@@ -4,7 +4,9 @@
 			{{ message( MESSAGE_KEYS.EDIT_WARNING_HEADING ) }}
 		</h4>
 		<IconMessageBox type="warning">
-			{{ message( MESSAGE_KEYS.EDIT_WARNING_MESSAGE ) }}
+			{{ message(
+				tempUserEnabled ? MESSAGE_KEYS.EDIT_NOTIFICATION_TEMPUSER_MESSAGE : MESSAGE_KEYS.EDIT_WARNING_MESSAGE )
+			}}
 		</IconMessageBox>
 		<p class="wb-ui-anon-edit-warning__persist">
 			<Checkbox
@@ -63,6 +65,7 @@ export default defineComponent( {
 	},
 	computed: {
 		...mapState( NS_LINKS, [ 'loginLinkUrl', 'signUpLinkUrl' ] ),
+		...mapState( NS_USER, [ 'tempUserEnabled' ] )
 	},
 	emits: [ 'dismiss' ],
 	methods: {

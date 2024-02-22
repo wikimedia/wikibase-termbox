@@ -5,6 +5,7 @@ import MessagesRepository from '@/common/data-access/MessagesRepository';
 import EntityEditabilityResolver from '@/common/data-access/EntityEditabilityResolver';
 import WritingEntityRepository from '@/common/data-access/WritingEntityRepository';
 import UserPreferenceRepository from '@/common/data-access/UserPreferenceRepository';
+import TempUserConfiguration from '@/common/data-access/TempUserConfiguration';
 
 export interface Services {
 	languageTranslationRepository: LanguageTranslationRepository;
@@ -14,6 +15,7 @@ export interface Services {
 	entityEditabilityResolver: EntityEditabilityResolver;
 	writingEntityRepository: WritingEntityRepository;
 	userPreferenceRepository: UserPreferenceRepository;
+	tempUserConfig: TempUserConfiguration;
 }
 
 export default class TermboxServices {

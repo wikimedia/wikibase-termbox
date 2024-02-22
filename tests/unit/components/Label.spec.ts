@@ -7,12 +7,12 @@ import { MessageKey } from '@/common/MessageKey';
 import Language from '@/datamodel/Language';
 import { LANGUAGE_UPDATE } from '@/store/language/mutationTypes';
 import mockMessageMixin from '../store/mockMessageMixin';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 const LABEL_SELECTOR = '.wb-ui-label';
 
 function createStoreWithLanguage( language: Language ) {
-	const store = createStore( emptyServices as any );
+	const store = createStore( mockTempUserConfigService as any );
 	store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), {
 		[ language.code ]: language,
 	} );
@@ -70,7 +70,7 @@ describe( 'Label', () => {
 
 		it( 'does not add language markup for missing labels', () => {
 			const inlanguageDirective = jest.fn();
-			const store = createStore( emptyServices as any );
+			const store = createStore( mockTempUserConfigService as any );
 
 			shallowMount( Label, {
 				props: { label: null },

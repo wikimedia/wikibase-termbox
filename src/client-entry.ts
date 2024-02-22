@@ -12,7 +12,11 @@ type ConfigurableServices = {
 	writingEntityRepository: WritingEntityRepository;
 };
 
-export default ( consumerDefinedServices: ConfigurableServices, isEditable: boolean ): Promise<App> => {
+export default (
+	consumerDefinedServices: ConfigurableServices,
+	isEditable: boolean,
+	tempUserEnabled: boolean,
+): Promise<App> => {
 	return init().then( ( termboxRequest: TermboxRequest ) => {
 		const { config, services } = initializeConfigAndDefaultServices( window as unknown as MwWindow );
 		services.set( 'entityRepository', consumerDefinedServices.readingEntityRepository );
@@ -20,6 +24,10 @@ export default ( consumerDefinedServices: ConfigurableServices, isEditable: bool
 		services.set(
 			'entityEditabilityResolver',
 			{ isEditable() { return Promise.resolve( isEditable ); } },
+		);
+		services.set(
+			'tempUserConfig',
+			{ isEnabled() { return tempUserEnabled; } },
 		);
 
 		return buildApp( termboxRequest, services, config );

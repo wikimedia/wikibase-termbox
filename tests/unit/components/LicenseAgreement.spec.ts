@@ -12,7 +12,7 @@ import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
 import { createStore } from '@/store';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 describe( 'LicenseAgreement', () => {
 
@@ -72,7 +72,7 @@ describe( 'LicenseAgreement', () => {
 		const buttonLabel = 'publish';
 		const wrapper = shallowMount( LicenseAgreement, {
 			global: {
-				plugins: [ hotUpdateDeep( createStore( emptyServices as any ), {
+				plugins: [ hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
 					modules: {
 						[ NS_USER ]: {
 							actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
@@ -140,7 +140,7 @@ describe( 'LicenseAgreement', () => {
 				newConfigMixin( { copyrightVersion } as ConfigOptions ),
 			],
 			global: {
-				plugins: [ hotUpdateDeep( createStore( emptyServices as any ), {
+				plugins: [ hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
 					modules: {
 						[ NS_USER ]: {
 							actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },
@@ -164,7 +164,7 @@ describe( 'LicenseAgreement', () => {
 		const wrapper = shallowMount( LicenseAgreement, {
 			mixins,
 			global: {
-				plugins: [ hotUpdateDeep( createStore( emptyServices as any ), {
+				plugins: [ hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
 					modules: {
 						[ NS_USER ]: {
 							actions: { [ USER_PREFERENCE_SET ]: mockSetPreference },

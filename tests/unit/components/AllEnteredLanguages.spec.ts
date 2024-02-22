@@ -10,13 +10,13 @@ import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_ENTITY } from '@/store/namespaces';
 import { ENTITY_UPDATE } from '@/store/entity/mutationTypes';
 import { newFingerprintableEntity } from '@/datamodel/FingerprintableEntity';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 describe( 'AllEnteredLanguages', () => {
 
 	it( 'passes language prop to MonolingualFingerprintView', () => {
 		const language = 'de';
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), newFingerprintableEntity(
 			'Q42',
 			{ [ language ]: { language, value: 'kartoffel' } },
@@ -30,7 +30,7 @@ describe( 'AllEnteredLanguages', () => {
 	} );
 
 	it( 'does not contain the primary user language', () => {
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 		store.commit( mutation( NS_USER, LANGUAGE_INIT ), 'de' );
 
 		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), newFingerprintableEntity(
@@ -50,7 +50,7 @@ describe( 'AllEnteredLanguages', () => {
 	} );
 
 	it( 'does not contain the secondary user languages', () => {
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), [ 'en', 'fr' ] );
 
 		store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), newFingerprintableEntity(

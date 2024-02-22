@@ -2,7 +2,7 @@ import inlanguage from '@/directives/inlanguage';
 import Language from '@/datamodel/Language';
 import { NS_LANGUAGE } from '@/store/namespaces';
 import hotUpdateDeep from '@wmde/vuex-helpers/dist/hotUpdateDeep';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 import { createStore } from '@/store';
 import Label from '@/components/Label.vue';
 import { mount } from '@vue/test-utils';
@@ -15,7 +15,7 @@ describe( 'inlanguage directive', () => {
 		element.setAttribute = jest.fn();
 
 		const getLanguageByCode = jest.fn().mockReturnValue( language );
-		const store = hotUpdateDeep( createStore( emptyServices as any ), {
+		const store = hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
 			modules: {
 				[ NS_LANGUAGE ]: {
 					getters: {

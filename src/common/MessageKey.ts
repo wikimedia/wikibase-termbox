@@ -13,6 +13,7 @@ export enum MessageKey {
 	PLACEHOLDER_EDIT_ALIAS = 'wikibase-alias-edit-placeholder',
 	EDIT_WARNING_HEADING = 'wikibase-anonymouseditwarning-heading',
 	EDIT_WARNING_MESSAGE = 'wikibase-anonymouseditwarning-message',
+	EDIT_NOTIFICATION_TEMPUSER_MESSAGE = 'wikibase-anonymouseditnotificationtempuser-message',
 	EDIT_WARNING_DISMISS_BUTTON = 'wikibase-anonymouseditwarning-dismiss-button',
 	EDIT_WARNING_DISMISS_PERSIST = 'wikibase-anonymouseditwarning-dismiss-persist',
 	LOGIN = 'pt-login',

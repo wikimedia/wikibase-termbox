@@ -33,6 +33,7 @@ export function createStore( services: TermboxServices ): Store<Root> {
 			),
 			[ NS_USER ]: createUser(
 				services.get( 'userPreferenceRepository' ),
+				services.get( 'tempUserConfig' ),
 			),
 			[ NS_LANGUAGE ]: createLanguage(
 				services.get( 'languageRepository' ),

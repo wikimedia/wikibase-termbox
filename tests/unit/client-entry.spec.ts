@@ -36,7 +36,7 @@ describe( 'client-entry', () => {
 		const expectedApp = jest.fn();
 		buildApp.mockReturnValueOnce( expectedApp );
 
-		return clientEntry( {} as any, true ).then( ( app ) => {
+		return clientEntry( {} as any, true, false ).then( ( app ) => {
 			expect( buildApp ).toHaveBeenCalledWith(
 				expectedTermboxRequest,
 				services,
@@ -64,6 +64,7 @@ describe( 'client-entry', () => {
 				writingEntityRepository: expectedWritingEntityRepository,
 			},
 			true,
+			false,
 		).then( () => {
 			expect( servicesMock.set )
 				.toHaveBeenCalledWith( 'entityRepository', expectedReadingEntityRepository );
@@ -72,6 +73,10 @@ describe( 'client-entry', () => {
 			done();
 		} );
 	} );
+
+	function getService( servicesMock: { set: jest.Mock<any, any> }, name: string ) {
+		return servicesMock.set.mock.calls.filter( ( call ) => call[ 0 ] === name )[ 0 ][ 1 ];
+	}
 
 	it.each( [ true, false ] )(
 		'sets the consumer-defined editability status to %s',
@@ -90,10 +95,37 @@ describe( 'client-entry', () => {
 					writingEntityRepository: jest.fn() as any,
 				},
 				editability,
+				false,
 			).then( async () => {
-				const [ name, editabilityResolver ] = servicesMock.set.mock.lastCall;
-				expect( name ).toEqual( 'entityEditabilityResolver' );
+				const editabilityResolver = getService( servicesMock, 'entityEditabilityResolver' );
 				expect( await editabilityResolver.isEditable() ).toEqual( editability );
+
+				done();
+			} );
+		},
+	);
+
+	it.each( [ true, false ] )(
+		'configures the tempuser service to %s',
+		( tempUserEnabled: boolean, done: any ) => {
+			const servicesMock = { set: jest.fn() };
+			initializeConfigAndDefaultServicesMock.mockReturnValueOnce( {
+				config: {},
+				services: servicesMock,
+			} );
+
+			initMock.mockResolvedValueOnce( jest.fn() );
+
+			clientEntry(
+				{
+					readingEntityRepository: jest.fn() as any,
+					writingEntityRepository: jest.fn() as any,
+				},
+				true,
+				tempUserEnabled,
+			).then( async () => {
+				const tempUserConfigService = getService( servicesMock, 'tempUserConfig' );
+				expect( tempUserConfigService.isEnabled() ).toEqual( tempUserEnabled );
 
 				done();
 			} );

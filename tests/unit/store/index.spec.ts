@@ -1,20 +1,20 @@
 import { createStore } from '@/store';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 describe( 'store/index', () => {
 	it( 'creates the store', () => {
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 		expect( store.state.editMode ).toBeFalsy();
 	} );
 
 	it( 'injects the services', () => {
-		createStore( emptyServices as any );
-		expect( emptyServices.get ).toHaveBeenCalledWith( 'entityEditabilityResolver' );
-		expect( emptyServices.get ).toHaveBeenCalledWith( 'entityRepository' );
-		expect( emptyServices.get ).toHaveBeenCalledWith( 'languageRepository' );
-		expect( emptyServices.get ).toHaveBeenCalledWith( 'languageTranslationRepository' );
-		expect( emptyServices.get ).toHaveBeenCalledWith( 'messagesRepository' );
-		expect( emptyServices.get ).toHaveBeenCalledWith( 'writingEntityRepository' );
-		expect( emptyServices.get ).toHaveBeenCalledWith( 'userPreferenceRepository' );
+		createStore( mockTempUserConfigService as any );
+		expect( mockTempUserConfigService.get ).toHaveBeenCalledWith( 'entityEditabilityResolver' );
+		expect( mockTempUserConfigService.get ).toHaveBeenCalledWith( 'entityRepository' );
+		expect( mockTempUserConfigService.get ).toHaveBeenCalledWith( 'languageRepository' );
+		expect( mockTempUserConfigService.get ).toHaveBeenCalledWith( 'languageTranslationRepository' );
+		expect( mockTempUserConfigService.get ).toHaveBeenCalledWith( 'messagesRepository' );
+		expect( mockTempUserConfigService.get ).toHaveBeenCalledWith( 'writingEntityRepository' );
+		expect( mockTempUserConfigService.get ).toHaveBeenCalledWith( 'userPreferenceRepository' );
 	} );
 } );

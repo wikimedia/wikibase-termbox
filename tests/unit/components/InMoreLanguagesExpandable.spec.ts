@@ -9,13 +9,13 @@ import {
 } from '@vue/test-utils';
 import { load } from 'cheerio';
 import { createSSRApp } from 'vue';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 import mockMessageMixin from '../store/mockMessageMixin';
 
 describe( 'InMoreLanguagesExpandable', () => {
 
 	it( 'should show the user\'s secondary languages by default', () => {
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 		const wrapper = shallowMount( InMoreLanguagesExpandable, { global: { plugins: [ store ] } } );
 		expect( wrapper.findComponent( InMoreLanguages ).exists() ).toBeTruthy();
 	} );
@@ -32,7 +32,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 		} );
 
 		it( 'toggle collapses/expands the user\'s secondary languages on click', async () => {
-			const store = createStore( emptyServices as any );
+			const store = createStore( mockTempUserConfigService as any );
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { global: { plugins: [ store ] } } );
 
 			await wrapper.find( '.wb-ui-in-more-languages-expandable__switch' ).trigger( 'click' );
@@ -47,7 +47,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 			// reset vue-test-utils stubbing (transformVNodeArgs internal API) from other tests
 			mount( { render: () => '' } );
 
-			const store = createStore( emptyServices as any );
+			const store = createStore( mockTempUserConfigService as any );
 			const app = createSSRApp( InMoreLanguagesExpandable )
 				.use( store );
 			const $button = load( '' )( await renderToString( app ) )
@@ -56,7 +56,7 @@ describe( 'InMoreLanguagesExpandable', () => {
 		} );
 
 		it( 'removes extra class after mounting on the client side', async () => {
-			const store = createStore( emptyServices as any );
+			const store = createStore( mockTempUserConfigService as any );
 			const wrapper = shallowMount( InMoreLanguagesExpandable, { global: { plugins: [ store ] } } );
 			expect( wrapper.find( '.wb-ui-in-more-languages-expandable__switch' )
 				.classes( 'wb-ui-in-more-languages-expandable__switch--unclickable' ) ).toBe( true );

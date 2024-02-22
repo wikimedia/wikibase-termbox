@@ -32,7 +32,7 @@ type ConfigurableServices = {
     readingEntityRepository: EntityRepository;
     writingEntityRepository: WritingEntityRepository;
 };
-declare const _default: (consumerDefinedServices: ConfigurableServices, isEditable: boolean) => Promise<App>;
+declare const _default: (consumerDefinedServices: ConfigurableServices, isEditable: boolean, tempUserEnabled: boolean) => Promise<App>;
 
 interface LoggableError {
     getContext(): object;

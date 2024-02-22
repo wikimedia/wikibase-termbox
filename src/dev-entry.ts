@@ -83,6 +83,7 @@ termboxInit(
 		},
 	},
 	true,
+	false,
 ).then( ( app ) => {
 	app.mount( '#dev-termbox' );
 } );

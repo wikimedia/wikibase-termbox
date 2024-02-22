@@ -6,13 +6,13 @@ import { SECONDARY_LANGUAGES_INIT } from '@/store/user/mutationTypes';
 import { createStore } from '@/store';
 import { mutation } from '@wmde/vuex-helpers/dist/namespacedStoreMethods';
 import { NS_USER } from '@/store/namespaces';
-import emptyServices from '../emptyServices';
+import mockTempUserConfigService from '../mockTempUserConfigService';
 
 describe( 'InMoreLanguages', () => {
 
 	it( 'shows a list of MonolingualFingerprintViews in the user\'s top secondary languages', () => {
 		const secondaryLanguages = [ 'en', 'fr', 'jp' ];
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 
 		store.commit( mutation( NS_USER, SECONDARY_LANGUAGES_INIT ), secondaryLanguages );
 
@@ -27,7 +27,7 @@ describe( 'InMoreLanguages', () => {
 	} );
 
 	it( 'shows an expandable list of all entered languages', () => {
-		const store = createStore( emptyServices as any );
+		const store = createStore( mockTempUserConfigService as any );
 		const wrapper = shallowMount( InMoreLanguages, { global: { plugins: [ store ] } } );
 
 		expect( wrapper.findComponent( AllEnteredLanguagesExpandable ).exists() ).toBeTruthy();
