@@ -116,7 +116,12 @@ wfLoadExtension( 'UniversalLanguageSelector' );
 
 ## Blubber build
 
-This project can be build with [blubber](https://wikitech.wikimedia.org/wiki/Blubber), configuration is located in the `.pipeline` directory.
+This project can be built with [blubber](https://wikitech.wikimedia.org/wiki/Blubber). The configuration is located in the `.pipeline` directory. The easiest way to run blubber locally (via blubberoid) is by adding the following function to your `~/.bashrc`:
+```bash
+blubber() {
+    curl -s -H "Content-Type: application/yaml" --data-binary "@$1" "https://blubberoid.wikimedia.org/v1/$2"
+}
+```
 
 Instructions above will gradually be migrated to use blubber.
 
