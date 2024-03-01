@@ -1,12 +1,12 @@
 # cf. .pipeline/blubber.yaml
 
-FROM docker-registry.wikimedia.org/nodejs18-slim
+FROM docker-registry.wikimedia.org/nodejs18-devel
 
 RUN apt-get update && \
 	apt-get install -y \
 		ca-certificates \
 		build-essential \
-		python \
+		python3 \
 		pkg-config \
 		git
 
