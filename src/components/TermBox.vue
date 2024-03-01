@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import {
 	mapActions,
 	mapGetters,
@@ -81,6 +81,7 @@ import InMoreLanguagesExpandable from '@/components/InMoreLanguagesExpandable.vu
 import { ENTITY_SAVE, ENTITY_ROLLBACK } from '@/store/entity/actionTypes';
 import { EDITMODE_ACTIVATE, EDITMODE_DEACTIVATE } from '@/store/actionTypes';
 import EventEmittingButton from '@/components/EventEmittingButton.vue';
+import { EventEmitter } from 'events';
 import Messages from '@/components/mixins/Messages';
 import Modal from '@/components/Modal.vue';
 import AnonEditWarning from '@/components/AnonEditWarning.vue';
@@ -92,6 +93,7 @@ import Overlay from '@/components/Overlay.vue';
 import IndeterminateProgressBar from '@/components/IndeterminateProgressBar.vue';
 import MessageBanner from '@/components/MessageBanner.vue';
 import IconMessageBox from '@/components/IconMessageBox.vue';
+import { appEvents } from '@/events';
 
 export default defineComponent( {
 	name: 'TermBox',
@@ -121,9 +123,22 @@ export default defineComponent( {
 		...mapState( [ 'editMode' ] ),
 		...mapState( NS_LINKS, [ 'editLinkUrl' ] ),
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
-		...mapState( NS_ENTITY, [ 'isEditable' ] ),
+		...mapState( NS_ENTITY, [ 'isEditable', 'tempUserRedirectUrl' ] ),
 		...mapGetters( NS_USER, { userIsAnonymous: 'isAnonymous' } ),
 	},
+  watch: {
+    tempUserRedirectUrl( newUrl: URL ) {
+      if ( newUrl !== null ) {
+        this.emitter.emit( appEvents.redirect, newUrl );
+      }
+    }
+  },
+  props: {
+    emitter: {
+      required: true,
+      type: Object as PropType<EventEmitter>,
+    },
+  },
 	methods: {
 		...mapActions( {
 			activateEditMode: EDITMODE_ACTIVATE,

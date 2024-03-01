@@ -1,12 +1,12 @@
 import FingerprintableEntity from '@/datamodel/FingerprintableEntity';
-import EntityRevision from '@/datamodel/EntityRevision';
+import EntityRevisionWithRedirect from '@/datamodel/EntityRevisionWithRedirect';
 
 interface WritingEntityRepository {
 
 	/**
 	 * Rejects to TechnicalProblem or EntityNotFound errors in case of problems
 	 */
-	saveEntity( entity: FingerprintableEntity, baseRevId: number ): Promise<EntityRevision>;
+	saveEntity( entity: FingerprintableEntity, baseRevId: number ): Promise<EntityRevisionWithRedirect>;
 
 }
 

@@ -1,6 +1,6 @@
 <template>
 	<section class="wikibase-entitytermsview" v-inlanguage="primaryLanguage">
-		<TermBox />
+		<TermBox :emitter="emitter" />
 	</section>
 </template>
 
@@ -9,6 +9,13 @@ import { defineComponent } from 'vue';
 import TermBox from './TermBox.vue';
 import { mapState } from 'vuex';
 import { NS_USER } from '@/store/namespaces';
+import { EventEmitter } from 'events';
+import { appEvents } from '@/events';
+
+const emitter = new EventEmitter();
+emitter.on( appEvents.redirect, ( redirectUrl: string ) => {
+	window.location.href = redirectUrl;
+} );
 
 export default defineComponent( {
 	name: 'App',
@@ -16,6 +23,9 @@ export default defineComponent( {
 		TermBox,
 	},
 	computed: {
+		emitter() {
+			return emitter;
+		},
 		...mapState( NS_USER, [ 'primaryLanguage' ] ),
 	},
 } );

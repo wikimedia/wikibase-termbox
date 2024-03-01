@@ -8,7 +8,7 @@ import {
 	ENTITY_SET_DESCRIPTION,
 	ENTITY_REVISION_UPDATE,
 	ENTITY_REMOVE_ALIAS,
-	ENTITY_ROLLBACK,
+	ENTITY_ROLLBACK, ENTITY_REDIRECT_UPDATE,
 } from '@/store/entity/mutationTypes';
 import InvalidEntityException from '@/store/entity/exceptions/InvalidEntityException';
 import { Fingerprintable, Term } from '@wmde/wikibase-datamodel-types';
@@ -82,6 +82,10 @@ export const mutations: MutationTree<EntityState> = {
 
 	[ ENTITY_REVISION_UPDATE ]( state: EntityState, revision: number ) {
 		state.baseRevision = revision;
+	},
+
+	[ ENTITY_REDIRECT_UPDATE ]( state: EntityState, tempUserRedirectUrl: URL ) {
+		state.tempUserRedirectUrl = tempUserRedirectUrl;
 	},
 
 };

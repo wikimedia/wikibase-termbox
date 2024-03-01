@@ -19,7 +19,7 @@ import MessageTranslationCollection from './datamodel/MessageTranslationCollecti
 import WikibaseContentLanguagesRepo, { WikibaseApiContentLanguages }
 	from '@/server/data-access/WikibaseContentLanguagesRepo';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
-import EntityRevision from '@/datamodel/EntityRevision';
+import EntityRevisionWithRedirect from './datamodel/EntityRevisionWithRedirect';
 
 const config: ConfigOptions = {
 	// As of now all config values concern edit mode exclusively, which is not reachable on the server side
@@ -95,7 +95,8 @@ export default ( context: BundleRendererContext ): Promise<unknown> => {
 		'writingEntityRepository',
 		{
 			// ssr does not perform any writing
-			saveEntity: () => ( new Error( 'No valid path for SSR.' ) ) as unknown as Promise<EntityRevision>,
+			saveEntity: () =>
+				( new Error( 'No valid path for SSR.' ) ) as unknown as Promise<EntityRevisionWithRedirect>,
 		},
 	);
 
