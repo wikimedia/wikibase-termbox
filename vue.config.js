@@ -29,9 +29,7 @@ function externals() {
 		return [];
 	}
 
-	// get external packages from @wmde/lib-version-check config
-	const package = require( './package.json' );
-	const resourceLoaderModules = Object.keys( package.config.remoteVersion );
+	const resourceLoaderModules = [ 'vue', 'vuex' ];
 	const resourceLoaderPackageFiles = [
 		'./config.json',
 	];
