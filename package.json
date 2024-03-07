@@ -3,12 +3,6 @@
   "version": "0.1.0",
   "author": "The Wikidata team",
   "private": true,
-  "config": {
-    "remoteVersion": {
-      "vue": "https://raw.githubusercontent.com/wikimedia/mediawiki/#{ZUUL_BRANCH}/resources/lib/vue/vue.common.prod.js",
-      "vuex": "https://raw.githubusercontent.com/wikimedia/mediawiki/#{ZUUL_BRANCH}/resources/lib/vuex/vuex.js"
-    }
-  },
   "scripts": {
     "serve": "WEBPACK_TARGET=dev vue-cli-service serve",
     "doc": "npm run storybook:build",
@@ -22,7 +16,6 @@
     "test:lint": "eslint --max-warnings 0 . && stylelint --syntax scss 'src/**/*.(vue|scss)'",
     "test:unit": "VUE_CLI_BABEL_TRANSPILE_MODULES=true jest",
     "test:distnodiff": "npm run build:prodfiles -- --dest /tmp/dist && diff -q ./dist/wikibase.termbox.main.css /tmp/dist/wikibase.termbox.main.css && diff -q ./dist/wikibase.termbox.init.js /tmp/dist/wikibase.termbox.init.js",
-    "test:mwlibs": "echo 'disabled (T297381)' # ZUUL_BRANCH=${ZUUL_BRANCH:-master} lib-version-check",
     "storybook": "start-storybook",
     "storybook:build": "build-storybook -o docs/ui"
   },
@@ -78,7 +71,6 @@
     "@vue/vue3-jest": "^28.1.0",
     "@wikimedia/codex-design-tokens": "^1.0.1",
     "@wmde/eslint-config-wikimedia-typescript": "^0.2.1",
-    "@wmde/lib-version-check": "^0.1.0",
     "@wmde/wikibase-datamodel-types": "^0.2.0",
     "axios-mock-adapter": "^1.19.0",
     "babel-core": "7.0.0-bridge.0",
