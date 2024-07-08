@@ -2,7 +2,7 @@
 
 version: v4
 
-base: docker-registry.wikimedia.org/nodejs18-slim
+base: docker-registry.wikimedia.org/nodejs20-slim
 
 apt: {
   packages: [
@@ -16,7 +16,7 @@ lives:
 
 variants:
   build:
-    base: docker-registry.wikimedia.org/nodejs18-devel
+    base: docker-registry.wikimedia.org/nodejs20-slim
     copies: [local]
     apt:
       packages: [ git, build-essential, python3, pkg-config ] # needed for npm install
