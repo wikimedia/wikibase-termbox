@@ -8,6 +8,15 @@
 	>
 		{{ label.value }}
 	</component>
+	<component
+		v-else-if="mulLabel"
+		:is="isPrimary ? 'h2' : 'div'"
+		class="wb-ui-label wb-ui-label--mul"
+		:class="{ 'wb-ui-label--primary': isPrimary }"
+		v-inlanguage="'mul'"
+	>
+		{{ mulLabel.value }}
+	</component>
 	<div
 		v-else
 		class="wb-ui-label wb-ui-label--missing"
@@ -30,6 +39,7 @@ export default defineComponent( {
 	mixins: [ Messages ],
 	props: {
 		label: { required: false, default: null, type: Object as PropType<Term> },
+		mulLabel: { required: false, default: null, type: Object as PropType<Term> },
 		isPrimary: { required: false, default: false, type: Boolean },
 	},
 	computed: {
@@ -47,6 +57,12 @@ export default defineComponent( {
 
 	&--missing {
 		color: $color-error;
+		font-weight: normal;
+		font-family: $font-family-base;
+	}
+
+	&--mul {
+		color: $color-subtle;
 		font-weight: normal;
 		font-family: $font-family-base;
 	}

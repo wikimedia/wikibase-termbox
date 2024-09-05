@@ -13,6 +13,7 @@
 			<component
 				:is="editMode ? 'LabelEdit' : 'Label'"
 				:label="getLabelByLanguage( languageCode )"
+				:mul-label="getLabelByLanguage( 'mul' )"
 				@input="onEditLabel"
 				:is-primary="isPrimary"
 				:language-code="editMode ? languageCode : null"

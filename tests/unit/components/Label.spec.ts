@@ -87,6 +87,22 @@ describe( 'Label', () => {
 
 	} );
 
+	describe( 'mul default language support', () => {
+
+		it( 'renders the mul label as fallback if a mul value is supplied', () => {
+			const wrapper = shallowMount( Label, {
+				props: {
+					isPrimary: false,
+					label: null,
+					mulLabel: { language: 'mul', value: 'bloop' },
+				},
+			} );
+			expect( wrapper.find( LABEL_SELECTOR ).element.tagName ).toBe( 'DIV' );
+			expect( wrapper.find( LABEL_SELECTOR ).text() ).toBe( 'bloop' );
+		} );
+
+	} );
+
 	it( 'renders the label as a heading if it is the primary language', () => {
 		const store = createStoreWithLanguage( { code: 'en', directionality: 'ltr' } );
 		const wrapper = shallowMount( Label, {

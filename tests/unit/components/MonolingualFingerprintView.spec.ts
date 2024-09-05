@@ -210,4 +210,39 @@ describe( 'MonolingualFingerprintView.vue', () => {
 		expect( languageNameInUserLanguage.text() ).toBe( languageTranslation );
 	} );
 
+	describe( 'mul default language support', () => {
+
+		it( 'shows mul label as fallback in readmode', () => {
+			const entity = newFingerprintable( {
+				labels: { mul: 'Mul-Kartoffel' },
+				descriptions: { de: 'Art der Gattung Nachtschatten (Solanum)' },
+				aliases: { de: [ ] },
+			} );
+
+			const language = { code: 'de', directionality: 'ltr' };
+
+			const store = createStore( mockTempUserConfigService as any );
+			store.commit( mutation( NS_LANGUAGE, LANGUAGE_UPDATE ), { de: language } );
+			store.commit( mutation( NS_ENTITY, ENTITY_UPDATE ), entity );
+			store.commit( EDITMODE_SET, false );
+
+			const wrapper = shallowMount( MonolingualFingerprintView, {
+				global: { plugins: [ store ] },
+				props: { languageCode: language.code },
+			} );
+
+			expect( wrapper.findComponent( Label ).exists() ).toBeTruthy();
+			expect( wrapper.findComponent( Label ).props( 'mulLabel' ) ).toStrictEqual( entity.labels.mul );
+
+			expect( wrapper.findComponent( Description ).exists() ).toBeTruthy();
+			expect( wrapper.findComponent( Description ).props( 'description' ) )
+				.toStrictEqual( entity.descriptions[ language.code ] );
+
+			expect( wrapper.findComponent( Aliases ).exists() ).toBeTruthy();
+			expect( wrapper.findComponent( Aliases ).props( 'aliases' ) )
+				.toStrictEqual( entity.aliases[ language.code ] );
+		} );
+
+	} );
+
 } );
