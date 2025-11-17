@@ -1,6 +1,6 @@
-const Page = require( 'wdio-mediawiki/Page' );
+import Page from 'wdio-mediawiki/Page.js';
 
-module.exports = class TermboxLanguages {
+export default class TermboxLanguages {
 
 	constructor( preferredLanguages, contentLanguages ) {
 		this.preferredLanguages = preferredLanguages;
@@ -50,4 +50,4 @@ module.exports = class TermboxLanguages {
 		return this.contentLanguages;
 	}
 
-};
+}

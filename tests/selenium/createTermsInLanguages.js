@@ -1,10 +1,10 @@
-const MWUtil = require( 'wdio-mediawiki/Util' );
+import { getTestString } from 'wdio-mediawiki/Util.js';
 
 function newTerm( language ) {
-	return { language, value: MWUtil.getTestString() };
+	return { language, value: getTestString() };
 }
 
-module.exports = ( languages ) => {
+export default function createTermsInLanguages( languages ) {
 	const terms = { labels: {}, descriptions: {}, aliases: {} };
 
 	languages.forEach( ( language ) => {
@@ -14,4 +14,4 @@ module.exports = ( languages ) => {
 	} );
 
 	return terms;
-};
+}

@@ -1,6 +1,6 @@
-const TermboxPage = require( '../pageobjects/Termbox.page' );
-const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
-const MWUtil = require( 'wdio-mediawiki/Util' );
+import TermboxPage from '../pageobjects/Termbox.page.js';
+import WikibaseApi from 'wdio-wikibase/wikibase.api.js';
+import { getTestString } from 'wdio-mediawiki/Util.js';
 
 describe( 'Termbox: editing', () => {
 	let id;
@@ -29,10 +29,10 @@ describe( 'Termbox: editing', () => {
 
 	describe( 'editing', () => {
 		it( 'can edit labels, descriptions, and aliases', async () => {
-			const label = MWUtil.getTestString();
-			const description = MWUtil.getTestString();
-			const alias1 = MWUtil.getTestString();
-			const alias2 = MWUtil.getTestString();
+			const label = getTestString();
+			const description = getTestString();
+			const alias1 = getTestString();
+			const alias2 = getTestString();
 			const primaryTerms = await TermboxPage.getEditableMonolingualFingerprintsInSection(
 				TermboxPage.primaryMonolingualFingerprint
 			)[ 0 ];

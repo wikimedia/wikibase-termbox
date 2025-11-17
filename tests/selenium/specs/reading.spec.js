@@ -1,7 +1,7 @@
-const TermboxPage = require( '../pageobjects/Termbox.page' );
-const TermboxLanguages = require( '../TermboxLanguages' );
-const createTermsInLanguages = require( '../createTermsInLanguages' );
-const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
+import TermboxPage from '../pageobjects/Termbox.page.js';
+import TermboxLanguages from '../TermboxLanguages.js';
+import createTermsInLanguages from '../createTermsInLanguages.js';
+import WikibaseApi from 'wdio-wikibase/wikibase.api.js';
 
 async function assertMonolingualFingerprintHasTermsInLanguage( elements, expectedTerms, language ) {
 	await expect( elements.label ).toHaveText( expectedTerms.labels[ language ].value );

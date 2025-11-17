@@ -1,5 +1,4 @@
-'use strict';
-const Page = require( 'wdio-mediawiki/Page' );
+import Page from 'wdio-mediawiki/Page.js';
 
 class TermboxPage extends Page {
 	get editButton() {
@@ -119,4 +118,4 @@ class TermboxPage extends Page {
 
 }
 
-module.exports = new TermboxPage();
+export default new TermboxPage();

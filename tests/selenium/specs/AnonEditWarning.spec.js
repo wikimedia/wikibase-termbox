@@ -1,6 +1,6 @@
-const TermboxPage = require( '../pageobjects/Termbox.page' );
-const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
-const LoginPage = require( 'wdio-mediawiki/LoginPage' );
+import TermboxPage from '../pageobjects/Termbox.page.js';
+import WikibaseApi from 'wdio-wikibase/wikibase.api.js';
+import LoginPage from 'wdio-mediawiki/LoginPage.js';
 
 describe( 'Termbox: AnonEditWarning', () => {
 	let id;

@@ -1,5 +1,5 @@
-const TermboxPage = require( '../pageobjects/Termbox.page' );
-const WikibaseApi = require( 'wdio-wikibase/wikibase.api' );
+import TermboxPage from '../pageobjects/Termbox.page.js';
+import WikibaseApi from 'wdio-wikibase/wikibase.api.js';
 
 describe( 'Termbox: LicenseOverlay', () => {
 	let id;
