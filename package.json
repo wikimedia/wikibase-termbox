@@ -114,7 +114,7 @@
     "webpack": "^5.88.2"
   },
   "peerDependencies": {
-    "wdio-wikibase": "^5.1.0"
+    "wdio-wikibase": "^7.0.0"
   },
   "browserslist": [
     "last 2 Chrome versions",

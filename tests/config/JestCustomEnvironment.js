@@ -34,6 +34,13 @@ class JestCustomEnvironment extends JSDOMEnvironment {
 		this.global.clearImmediate = function () {
 			throw new Error( 'Unexpected call of clearImmediate()' );
 		};
+		// these globals are needed by undici internals
+		Object.assign( this.global, {
+			TextEncoder,
+			TextDecoder,
+			ReadableStream,
+			MessagePort,
+		} );
 	}
 }
 
