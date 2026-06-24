@@ -72,7 +72,7 @@
     "@wikimedia/codex-design-tokens": "^1.0.1",
     "@wmde/eslint-config-wikimedia-typescript": "^0.2.1",
     "@wmde/wikibase-datamodel-types": "^0.2.0",
-    "axios-mock-adapter": "^1.19.0",
+    "axios-mock-adapter": "^1.21.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^28.1.3",
     "babel-loader": "^8.2.2",
