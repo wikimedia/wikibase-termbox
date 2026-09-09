@@ -40,7 +40,9 @@ export default function ( mwWindow: MwWindow ): { config: ConfigOptions, service
 		'languageRepository',
 		new UlsLanguageRepository(
 			contentLanguages,
-			mwWindow.$.uls.data,
+			mwWindow.$.uls && mwWindow.$.uls.data || ( {
+				getDir: () => 'auto',
+			} ),
 		),
 	);
 
