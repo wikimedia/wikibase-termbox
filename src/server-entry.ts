@@ -25,6 +25,7 @@ const config: ConfigOptions = {
 	// As of now all config values concern edit mode exclusively, which is not reachable on the server side
 	textFieldCharacterLimit: 0,
 	licenseAgreementInnerHtml: '',
+	editSubmitButtonLabelPublish: false,
 	copyrightVersion: '',
 };
 

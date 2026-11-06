@@ -18,7 +18,7 @@
 		<div class="wb-ui-license-agreement__button-group">
 			<EventEmittingButton
 				type="primaryProgressive"
-				:message="message( MESSAGE_KEYS.PUBLISH )"
+				:message="message( saveMessageKey )"
 				@click="savePreferenceAndPublish"
 			/>
 			<EventEmittingButton
@@ -53,6 +53,11 @@ export default defineComponent( {
 	mixins: [ Messages ],
 	data() {
 		return { doNotShowAgain: true };
+	},
+	computed: {
+		saveMessageKey(): string {
+			return ( ( this as unknown as LicenseAgreement ).config.editSubmitButtonLabelPublish ? this.MESSAGE_KEYS.PUBLISH : this.MESSAGE_KEYS.SAVE );
+		}
 	},
 	emits: [ 'save', 'cancel' ],
 	methods: {

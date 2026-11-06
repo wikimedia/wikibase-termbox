@@ -68,32 +68,44 @@ describe( 'LicenseAgreement', () => {
 		expect( link.attributes( 'rel' ) ).toBe( 'nofollow noopener noreferrer' );
 	} );
 
-	it( 'has a publish button which emits save', () => {
-		const buttonLabel = 'publish';
-		const wrapper = shallowMount( LicenseAgreement, {
-			global: {
-				plugins: [ hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
-					modules: {
-						[ NS_USER ]: {
-							actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
-						},
+	describe( 'save / publish button', () => {
+		[ [ MessageKey.PUBLISH, 'publish' ], [ MessageKey.SAVE, 'save' ] ].forEach( ( buttonConfig ) => {
+			it( 'has a labelled button which emits save', () => {
+				const publishConfig = newConfigMixin(
+					{
+						editSubmitButtonLabelPublish: ( buttonConfig[ 1 ] === 'publish' ),
+						textFieldCharacterLimit: 60,
+						licenseAgreementInnerHtml: '',
+						copyrightVersion: '',
 					},
-				} ) ],
-				stubs: { EventEmittingButton },
-			},
-			mixins: [
-				mockMessageMixin( {
-					[ MessageKey.LICENSE_HEADER ]: '',
-					[ MessageKey.PUBLISH ]: buttonLabel,
-				} ),
-				config,
-			],
-		} );
-		const button = wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' );
+				);
+				const wrapper = shallowMount( LicenseAgreement, {
+					global: {
+						plugins: [ hotUpdateDeep( createStore( mockTempUserConfigService as any ), {
+							modules: {
+								[ NS_USER ]: {
+									actions: { [ USER_PREFERENCE_SET ]: jest.fn() },
+								},
+							},
+						} ) ],
+						stubs: { EventEmittingButton },
+					},
+					mixins: [
+						mockMessageMixin( {
+							[ MessageKey.LICENSE_HEADER ]: '',
+							[ buttonConfig[ 0 ] ]: buttonConfig[ 1 ],
+						} ),
+						publishConfig,
+					],
+				} );
+				const button = wrapper.find( '.wb-ui-event-emitting-button--primaryProgressive' );
 
-		expect( button.text() ).toBe( buttonLabel );
-		button.trigger( 'click' );
-		expect( wrapper.emitted( 'save' ) ).toBeTruthy();
+				expect( button.text() ).toBe( buttonConfig[ 1 ] );
+				button.trigger( 'click' );
+				expect( wrapper.emitted( 'save' ) ).toBeTruthy();
+			} );
+		} );
+
 	} );
 
 	it( 'has a cancel button which emits cancel', () => {

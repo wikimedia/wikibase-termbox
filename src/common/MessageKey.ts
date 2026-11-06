@@ -1,6 +1,7 @@
 export enum MessageKey {
 	EDIT = 'wikibase-edit',
 	PUBLISH = 'wikibase-publish',
+	SAVE = 'wikibase-save',
 	CANCEL = 'wikibase-cancel',
 	ALIAS_SEPARATOR = 'wikibase-aliases-separator',
 	ALL_LANGUAGES = 'wikibase-entitytermsforlanguagelistview-more',

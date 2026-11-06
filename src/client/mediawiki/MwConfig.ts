@@ -10,6 +10,7 @@ type MwConfigValues = {
 		version: string;
 		messageHtml: string;
 	};
+	wgEditSubmitButtonLabelPublish: boolean;
 	wbEntityId: string;
 	wgRevisionId: number;
 	wgPageName: string;

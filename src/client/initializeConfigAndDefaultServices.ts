@@ -22,6 +22,7 @@ export default function ( mwWindow: MwWindow ): { config: ConfigOptions, service
 	const config: ConfigOptions = {
 		textFieldCharacterLimit: mwWindow.mw.config.get( 'wbMultiLingualStringLimit' ),
 		licenseAgreementInnerHtml: mwWindow.mw.config.get( 'wbCopyright' ).messageHtml,
+		editSubmitButtonLabelPublish: mwWindow.mw.config.get( 'wgEditSubmitButtonLabelPublish' ),
 		copyrightVersion: mwWindow.mw.config.get( 'wbCopyright' ).version,
 	};
 

@@ -2,6 +2,7 @@
 	"messages": [
 		"wikibase-edit",
 		"wikibase-publish",
+		"wikibase-save",
 		"wikibase-aliases-separator",
 		"wikibase-entitytermsforlanguagelistview-more",
 		"wikibase-entitytermsforlanguagelistview-less",

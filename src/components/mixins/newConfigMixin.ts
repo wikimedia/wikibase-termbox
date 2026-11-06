@@ -3,6 +3,7 @@ import { ComponentOptions } from 'vue';
 export interface ConfigOptions {
 	textFieldCharacterLimit: number;
 	licenseAgreementInnerHtml: string;
+	editSubmitButtonLabelPublish: boolean;
 	copyrightVersion: string;
 }
 
