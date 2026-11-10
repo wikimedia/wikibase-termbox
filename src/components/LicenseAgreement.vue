@@ -3,11 +3,7 @@
 		<h4 class="wb-ui-license-agreement__heading">
 			{{ message( MESSAGE_KEYS.LICENSE_HEADER ) }}
 		</h4>
-		<IconMessageBox
-			type="warning"
-			class="wb-ui-license-agreement__message"
-			v-html="config.licenseAgreementInnerHtml"
-		/>
+		<div class="wb-ui-license-agreement__message" v-html="config.licenseAgreementInnerHtml" />
 		<p class="wb-ui-license-agreement__persist">
 			<Checkbox
 				:value="doNotShowAgain"
@@ -40,7 +36,6 @@ import { NS_USER } from '@/store/namespaces';
 import { USER_PREFERENCE_SET } from '@/store/user/actionTypes';
 import { UserPreference } from '@/common/UserPreference';
 import { ConfigOptions } from '@/components/mixins/newConfigMixin';
-import IconMessageBox from '@/components/IconMessageBox.vue';
 
 interface LicenseAgreement {
 	config: ConfigOptions;
@@ -49,7 +44,7 @@ interface LicenseAgreement {
 
 export default defineComponent( {
 	name: 'LicenseAgreement',
-	components: { IconMessageBox, Checkbox, EventEmittingButton },
+	components: { Checkbox, EventEmittingButton },
 	mixins: [ Messages ],
 	data() {
 		return { doNotShowAgain: true };
@@ -89,6 +84,16 @@ export default defineComponent( {
 		text-align: center;
 		font-weight: bold;
 		margin-top: 10px;
+	}
+
+	&__message {
+		margin-top: 16px;
+		line-height: 19px;
+
+		a.external {
+			background: none;
+			padding-right: inherit;
+		}
 	}
 
 	&__message .external {
